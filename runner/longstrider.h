@@ -24,6 +24,6 @@ void longstrider_destroy();
  * printf meaning that you can pass msg as a formated string, and 
  * then specify list of arguments. If successful, returns the total
  * of characters written. Otherwise, a negative number is returned.*/
-int longstrider_write(char* process_type, char* checkpoint, ... );
+int longstrider_write(char* log_line, ... );
 
 #endif

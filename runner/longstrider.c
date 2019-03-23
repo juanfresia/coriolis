@@ -71,7 +71,7 @@ void longstrider_destroy(longstrider_t* ls){
  * printf meaning that you can pass msg as a formated string, and 
  * then specify list of arguments. If successful, returns the total
  * of characters written. Otherwise, a negative number is returned.*/
-int longstrider_write(char* process_type, char* checkpoint, ... ){
+int longstrider_write(char* log_line, ... ){
 	longstrider_t* ls = longstrider_create(LONGSTRIDER_OUTPUT_FILE, true);
 	if(!(ls && ls->log_file)) return -1;
 		
@@ -82,10 +82,9 @@ int longstrider_write(char* process_type, char* checkpoint, ... ){
 	longstrider_time_string(ls, time_str);
 	
 	va_list args;
-	va_start(args, checkpoint);
+	va_start(args, log_line);
 
-	fprintf(ls->log_file, "%s %d ", process_type, getpid());
-	vfprintf(ls->log_file, checkpoint, args);
+	vfprintf(ls->log_file, log_line, args);
 	fprintf(ls->log_file, "\n");
 	va_end(args);
 	fflush(ls->log_file);
