@@ -13,8 +13,8 @@ class FullPaths(argparse.Action):
                 os.path.abspath(os.path.expanduser(values[0])))
 
 class Instrumenter:
-    def __init__(self, language):
-        self.instrumenter = lang_instrumenter.get_file_instrumenter(language)
+    def __init__(self, language, breakpoints):
+        self.instrumenter = lang_instrumenter.get_file_instrumenter(language, breakpoints)
         print(self.instrumenter.__dict__)
 
     def instrument(self, src_dir, dst_dir):
@@ -42,6 +42,9 @@ if __name__ == "__main__":
                         help='destination directory', default=CURDIR, action=FullPaths)
     parser.add_argument('-l', '--language', metavar='language', nargs=1,
                         help='source code language', default='c', choices=["c", "noop"])
+    parser.add_argument('-b', '--breakpoints', metavar='breakpoints', nargs=1,
+                        action=FullPaths, help='file indicating known breakpoints',
+                        default='./test.break')
 
     # Parse and log captured arguments
     args = parser.parse_args()
@@ -49,6 +52,7 @@ if __name__ == "__main__":
     print("source: ", args.source)
     print("destination: ", args.destination)
     print("language", args.language)
+    print("breakpoints", args.breakpoints)
 
-    inst = Instrumenter(args.language[0])
+    inst = Instrumenter(args.language[0], args.breakpoints)
     inst.instrument(args.source, args.destination)

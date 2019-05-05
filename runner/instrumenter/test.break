@@ -1,0 +1,9 @@
+# Lines starting with '#' and empty lines are ignored
+# Format is:
+#   <breakpoint-name> [<param-name>:<param-type> ...]
+#
+# Valid param-types are: int, float, string, char
+
+leave_tournament    player_id:int
+leave_court         player_id:int   court_id:int
+some_brk            param1:string   param2:int
