@@ -13,8 +13,8 @@ class FullPaths(argparse.Action):
                 os.path.abspath(os.path.expanduser(values[0])))
 
 class Instrumenter:
-    def __init__(self, language, breakpoints):
-        self.instrumenter = lang_instrumenter.get_file_instrumenter(language, breakpoints)
+    def __init__(self, language, checkpoints):
+        self.instrumenter = lang_instrumenter.get_file_instrumenter(language, checkpoints)
         print(self.instrumenter.__dict__)
 
     def instrument(self, src_dir, dst_dir):

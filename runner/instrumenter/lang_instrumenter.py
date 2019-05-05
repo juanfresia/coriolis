@@ -3,11 +3,11 @@
 import re
 import os
 
-import breakpoint
+import checkpoint_parser
 
 class FileInstrumenter:
-    def __init__(self, breakpoint_file):
-        self.breakpoints = breakpoint.parse_from_file(breakpoint_file)
+    def __init__(self, checkpoint_file):
+        self.checkpoints = checkpoint_parser.parse_from_file(checkpoint_file)
 
     def process_lines(self, lines):
         for n, line in enumerate(lines):
@@ -44,8 +44,8 @@ class LanguageCInstrumenter(FileInstrumenter):
         "float":  " %f"
     }
 
-    def __init__(self, breakpoints):
-        super().__init__(breakpoints)
+    def __init__(self, checkpoints):
+        super().__init__(checkpoints)
 
         self.pattern = re.compile(r'^.*// @(\w*).*')
         self.left_spaces = re.compile(r'^\s*')
@@ -56,18 +56,18 @@ class LanguageCInstrumenter(FileInstrumenter):
         format_string = ""
         argument_string = ""
         
-        brk_name = args[0]
+        chk_name = args[0]
 
-        if not brk_name in self.breakpoints:
-            print("[C] Breakpoint {} not found".format(brk_name))
+        if not chk_name in self.checkpoints:
+            print("[C] Checkpoint {} not found".format(chk_name))
             raise Exception
 
-        brk = self.breakpoints[brk_name]
-        if len(args[1:]) != len(brk.args):
-            print("[C] arguments for {} dont match".format(brk_name))
+        chk = self.checkpoints[chk_name]
+        if len(args[1:]) != len(chk.args):
+            print("[C] arguments for {} dont match".format(chk_name))
             raise Exception
 
-        format_string = " ".join(["%s"] + [LanguageCInstrumenter.type_to_format[arg.type] for arg in brk.args])
+        format_string = " ".join(["%s"] + [LanguageCInstrumenter.type_to_format[arg.type] for arg in chk.args])
         args[0] = "\"{}\"".format(args[0])
         argument_string = ", ".join(args)
 
@@ -110,11 +110,13 @@ class LanguageCInstrumenter(FileInstrumenter):
 
         return line
 
-LANGUAGES = {'c': LanguageCInstrumenter,
-             'noop': NoOpInstrumenter}
+LANGUAGES = {
+    'c': LanguageCInstrumenter,
+    'noop': NoOpInstrumenter
+    }
 
-def get_file_instrumenter(lang, breakpoints):
+def get_file_instrumenter(lang, checkpoints):
     if lang in LANGUAGES.keys():
-        return LANGUAGES[lang](breakpoints)
-    return LANGUAGES['noop'](breakpoints)
+        return LANGUAGES[lang](checkpoints)
+    return LANGUAGES['noop'](checkpoints)
 
