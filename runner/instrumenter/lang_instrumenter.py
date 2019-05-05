@@ -68,6 +68,7 @@ class LanguageCInstrumenter(FileInstrumenter):
             raise Exception
 
         format_string = " ".join(["%s"] + [LanguageCInstrumenter.type_to_format[arg.type] for arg in brk.args])
+        args[0] = "\"{}\"".format(args[0])
         argument_string = ", ".join(args)
 
         log_line += format_string + "\", "

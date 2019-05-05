@@ -4,6 +4,15 @@
 #
 # Valid param-types are: int, float, string, char
 
+play_set	    player_id:int
+waiting_at_court    player_id:int
+couldnt_make_team_at_court  player_id:int
+finish_match	    player_id:int
+found_court	    player_id:int   court_id:int
+kicked_from_court   player_id:int   court_id:int
+looking_court	    player_id:int
 leave_tournament    player_id:int
+leave_beach	    player_id:int
+enter_beach	    player_id:int
 leave_court         player_id:int   court_id:int
 some_brk            param1:string   param2:int
