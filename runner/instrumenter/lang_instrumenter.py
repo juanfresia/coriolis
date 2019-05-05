@@ -3,11 +3,11 @@
 import re
 import os
 
-import checkpoint_parser
+import checkpoint_table
 
 class FileInstrumenter:
     def __init__(self, checkpoint_file):
-        self.checkpoints = checkpoint_parser.parse_from_file(checkpoint_file)
+        self.checkpoint_table = checkpoint_table.CheckpointTable(checkpoint_file)
 
     def process_lines(self, lines):
         for n, line in enumerate(lines):
@@ -46,34 +46,29 @@ class LanguageCInstrumenter(FileInstrumenter):
 
     def __init__(self, checkpoints):
         super().__init__(checkpoints)
-
         self.pattern = re.compile(r'^.*// @(\w*).*')
         self.left_spaces = re.compile(r'^\s*')
 
     def format_logging_line(self, args):
         log_line = "longstrider_write(\""
-
         format_string = ""
         argument_string = ""
         
-        chk_name = args[0]
-
-        if not chk_name in self.checkpoints:
-            print("[C] Checkpoint {} not found".format(chk_name))
+        try:
+            arg_types = self.checkpoint_table.get_checkpoint(args[0]).get_arg_types()
+        except Exception as e:
+            print("[C] {}".format(e))
+            raise Exception
+        
+        if len(args[1:]) != len(arg_types):
+            print("[C] arguments for {} dont match".format(args[0]))
             raise Exception
 
-        chk = self.checkpoints[chk_name]
-        if len(args[1:]) != len(chk.args):
-            print("[C] arguments for {} dont match".format(chk_name))
-            raise Exception
-
-        format_string = " ".join(["%s"] + [LanguageCInstrumenter.type_to_format[arg.type] for arg in chk.args])
+        format_string = " ".join(["%s"] + [LanguageCInstrumenter.type_to_format[t] for t in arg_types])
         args[0] = "\"{}\"".format(args[0])
         argument_string = ", ".join(args)
 
-        log_line += format_string + "\", "
-        log_line += argument_string
-        log_line += ");\n"
+        log_line += (format_string + "\", " + argument_string + ");\n")
 
         return log_line
 
@@ -113,10 +108,9 @@ class LanguageCInstrumenter(FileInstrumenter):
 LANGUAGES = {
     'c': LanguageCInstrumenter,
     'noop': NoOpInstrumenter
-    }
+}
 
 def get_file_instrumenter(lang, checkpoints):
     if lang in LANGUAGES.keys():
         return LANGUAGES[lang](checkpoints)
     return LANGUAGES['noop'](checkpoints)
-

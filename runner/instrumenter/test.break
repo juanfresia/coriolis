@@ -15,4 +15,4 @@ leave_tournament    player_id:int
 leave_beach	    player_id:int
 enter_beach	    player_id:int
 leave_court         player_id:int   court_id:int
-some_brk            param1:string   param2:int
+shout_high          player_id:int   smth:string
