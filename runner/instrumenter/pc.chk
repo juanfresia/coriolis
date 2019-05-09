@@ -1,0 +1,8 @@
+# Lines starting with '#' and empty lines are ignored
+# Format is:
+#   <breakpoint-name> [<param-name>:<param-type> ...]
+#
+# Valid param-types are: int, float, string, char
+
+produce         producer_id:int   item:int
+consume         consumer_id:int   item:int
