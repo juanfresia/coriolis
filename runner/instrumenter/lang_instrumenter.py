@@ -88,8 +88,8 @@ class LanguageCInstrumenter(FileInstrumenter):
             print("[C] Matched line is:\n", line)
 
             log_line = line
-            if match.group(1) == "log":
-                line_args = line.replace("//", "").replace("@log", "").split()
+            if match.group(1) == "checkpoint":
+                line_args = line.replace("//", "").replace("@checkpoint", "").split()
                 if len(line_args):
                     try:
                         log_line = self.format_logging_line(line_args)
@@ -98,7 +98,7 @@ class LanguageCInstrumenter(FileInstrumenter):
                         log_line = line
 
                 print("[C] New line is: \n", log_line)
-            elif match.group(1) == "loginclude":
+            elif match.group(1) == "has_checkpoints":
                 print("[C] Other new line is: \n", line)
                 log_line = '#include \"longstrider.h\"'
             return log_line
