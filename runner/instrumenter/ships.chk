@@ -1,0 +1,10 @@
+# Lines starting with '#' and empty lines are ignored
+# Format is:
+#   <breakpoint-name> [<param-name>:<param-type> ...]
+#
+# Valid param-types are: int, float, string, char
+
+ship_stop_at_dock    ship_id:int  dock_id:int
+ship_leave_dock      ship_id:int  dock_id:int
+passenger_board      passenger_id:int  ship_id:int  dock_id:int
+passenger_land       passenger_id:int  ship_id:int  dock_id:int

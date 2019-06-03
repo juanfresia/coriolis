@@ -22,10 +22,7 @@ class RuleChecker:
             self.connect_db()
         s = self.make_rule_transformations(rule_transformations)
         for x in s:
-            if(x["_id"] == False):
-                print("--- RULE FAILED ---")
-                return
-        print("--- RULE PASSED ---")
+            print(x)
 
         
 
@@ -34,49 +31,27 @@ if __name__ == "__main__":
     lp.populate_db()
     
     rc = RuleChecker()
-    # RULE 1: Every item is produced only once
-    # for every i and any p:
-    #   produce(p, i) must happen 1 time
-    rule_1 = [ 
-        match_checkpoint("produce"), 
-        rename_args(["produce"], [("p", "i")]),
-        group_by_arg_name("i"),
-        compare_results_equal(1),
-        reduce_result()
+    # RULE 6: Items are produced in order
+    # for every i, j>i and any p:
+    # produce(p, i) must precede produce(p, j)
+    rule_6 = [
+        match_checkpoint("produce"),
+        rename_args(["produce", "produce"], [("p", "i"), ("p", "j")]),
+        cross_group_arg_names(["produce", "produce"], ["i", "j"]),
+        having_greater_iterator("i", "j"),
+        compare_results_precedence("produce1", "produce2"),
         ]
-    rc.check_rule(rule_1)
-    # RULE 2: 10 items are produced
-    # for any p, i:
-    #   produce(p, i) must happen 10 times
-    rule_2 = [ 
-        match_checkpoint("produce"), 
-        rename_args(["produce"], [("p", "i")]),
-        group_by_arg_name("null"),
-        compare_results_equal(10),
-        reduce_result()
-        ]
-    rc.check_rule(rule_2)
-    # RULE 3: 10 items are consumed
-    # for any c, i:
-    #   consume(c, i) must happen 10 times
-    rule_3 = [ 
-        match_checkpoint("consume"), 
-        rename_args(["consume"], [("c", "i")]),
-        group_by_arg_name("null"),
-        compare_results_equal(10),
-        reduce_result()
-        ]
-    rc.check_rule(rule_3)
+    rc.check_rule(rule_6)
     # RULE 4: Every item is produced before consumed
     # for every i and any p, c:
     #   produce(p, i) must precede consume(c, i)
-    rule_4 = [ 
-        match_checkpoints(["produce", "consume"]), 
+    rule_4 = [
+        match_checkpoints(["produce", "consume"]),
         rename_args(["produce", "consume"], [("p", "i"), ("c", "i")]),
-        group_by_arg_name("i"),
-        compare_results_precedence("produce", "consume"),
-        reduce_result()
+        group_by_arg_names(["i"]),
+        #compare_results_precedence("produce", "consume"),
+        #reduce_result()
         ]
-    rc.check_rule(rule_4)
-    
+    #rc.check_rule(rule_4)
+
     lp.db.concu_collection.drop()
