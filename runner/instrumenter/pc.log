@@ -1,8 +1,0 @@
-produce  1  1
-produce  2  2
-consume  1  1
-produce  2  4
-consume  3  2
-produce  3  3
-consume  2  3
-consume  1  4
