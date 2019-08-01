@@ -3,7 +3,7 @@
 import re
 import os
 
-import checkpoint_table
+from common import checkpoint_table
 
 class FileInstrumenter:
     def __init__(self, checkpoint_file):
