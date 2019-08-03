@@ -5,13 +5,13 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include "runner_lock.h"
-#include "longstrider.h"
+#include "coriolis_lock.h"
+#include "coriolis_logger.h"
 
 // TODO: Use this???
 /* Auxiliar function that creates a pretty-printeable time string. 
  * The final string is stored at str.*/
-void longstrider_time_string(longstrider_t* ls, char* str){
+void coriolis_logger_time_string(coriolis_logger_t* ls, char* str){
 	struct timeval time_now; 
 	gettimeofday (&time_now, NULL);
 	
@@ -26,14 +26,14 @@ void longstrider_time_string(longstrider_t* ls, char* str){
 		sprintf(str, "%.3f s", ((double)timestamp)/1000000L);
  }
 
-/* Opens file at route and dynamically creates a longstrider
+/* Opens file at route and dynamically creates a coriolis_logger
  * instance to write on it. If append is false, then the file is 
- * overwritten. Returns NULL if creating the longstrider failed.*/
-longstrider_t* longstrider_create(char* route, bool append){
+ * overwritten. Returns NULL if creating the coriolis_logger failed.*/
+coriolis_logger_t* coriolis_logger_create(char* route, bool append){
 	FILE *pf = fopen(route, (append ? "a" : "w"));
 	if(!pf)	return NULL;
 	
-	longstrider_t* ls = malloc(sizeof(longstrider_t));
+	coriolis_logger_t* ls = malloc(sizeof(coriolis_logger_t));
 	if(!ls) {
 		fclose(pf);
 		return NULL;
@@ -46,7 +46,7 @@ longstrider_t* longstrider_create(char* route, bool append){
 	
 	ls->time_created = time_start;
 	
-	ls->lock = runner_lock_create("longstrider_log");
+	ls->lock = coriolis_lock_create("coriolis_logger_log");
 	if(!ls->lock) {
 		fclose(pf);
 		free(ls);
@@ -56,30 +56,30 @@ longstrider_t* longstrider_create(char* route, bool append){
 	return ls;
 }
 
-/* Closes the log file and destroys longstrider itself.*/
-void longstrider_destroy(longstrider_t* ls){
+/* Closes the log file and destroys coriolis_logger itself.*/
+void coriolis_logger_destroy(coriolis_logger_t* ls){
 	if(ls && ls->log_file)
 		fclose(ls->log_file);
 		
 	if(ls) {
-		runner_lock_destroy(ls->lock);
+		coriolis_lock_destroy(ls->lock);
 		free(ls);
 	}
 }
 
-/* Write string msg to longstrider log file. Works exactly like 
+/* Write string msg to coriolis_logger log file. Works exactly like 
  * printf meaning that you can pass msg as a formated string, and 
  * then specify list of arguments. If successful, returns the total
  * of characters written. Otherwise, a negative number is returned.*/
-int longstrider_write(char* log_line, ... ){
-	longstrider_t* ls = longstrider_create(LONGSTRIDER_OUTPUT_FILE, true);
+int coriolis_logger_write(char* log_line, ... ){
+	coriolis_logger_t* ls = coriolis_logger_create(CORIOLIS_LOGGER_OUTPUT_FILE, true);
 	if(!(ls && ls->log_file)) return -1;
 		
-	runner_lock_acquire(ls->lock);
+	coriolis_lock_acquire(ls->lock);
 	fflush(ls->log_file);
 	
 	char time_str[10];
-	longstrider_time_string(ls, time_str);
+	coriolis_logger_time_string(ls, time_str);
 	
 	va_list args;
 	va_start(args, log_line);
@@ -88,9 +88,9 @@ int longstrider_write(char* log_line, ... ){
 	fprintf(ls->log_file, "\n");
 	va_end(args);
 	fflush(ls->log_file);
-	runner_lock_release(ls->lock);
+	coriolis_lock_release(ls->lock);
 	// TODO: Find a good way of avoiding this
-	longstrider_destroy(ls);
+	coriolis_logger_destroy(ls);
 	return 0;
 }
 
