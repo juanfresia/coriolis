@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import pymongo # pip3 install pymongo
-from transformation_generator import *
-import log_parser
+from verifier.transformation_generator import *
+from verifier import log_parser
 
 class RuleChecker:
     def __init__(self):
@@ -27,7 +27,7 @@ class RuleChecker:
         
 
 if __name__ == "__main__":
-    lp = log_parser.LogParser("pc.log", "pc.chk")
+    lp = log_parser.LogParser("/vagrant/resources/pc.log", "/vagrant/resources/pc.chk")
     lp.populate_db()
     
     rc = RuleChecker()
