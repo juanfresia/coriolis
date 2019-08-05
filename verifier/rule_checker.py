@@ -1,28 +1,18 @@
 #!/usr/bin/env python3
 
 import pymongo # pip3 install pymongo
-from colorama import Fore, Back, Style # pip3 install colorama
 from verifier.transformation_generator import *
-from verifier import log_parser
+from verifier import log_parser, printer
+from common.jarl_rule import *
 
 class RuleChecker:
     def __init__(self):
         self.client = None
         self.db = None
-        self.passed_rules = 0
-        self.total_rules = 0
-        print("=-=-=-=-=-=-=-=-=-=-=-=- CHECKING RULES -=-=-=-=-=-=-=-=-=-=-=-=")
+        self.rules = []
 
-    def print_rule(self, rule_text, passed=False):
-        rule_fore = Fore.GREEN if passed else Fore.RED
-        print(rule_fore + rule_text + Style.RESET_ALL)
-
-    def print_summary(self):
-        print("=-=-=-=-=-=-=-=-=-=-=-=-=-  SUMMARY  -=-=-=-=-=-=-=-=-=-=-=-=-=")
-        print("")
-        summary_fore = Fore.GREEN if self.passed_rules == self.total_rules else Fore.RED
-        summary = "{} rules, {} assertions, {} failures".format(self.total_rules, self.passed_rules, self.total_rules - self.passed_rules)
-        print(summary_fore + summary + Style.RESET_ALL)
+    def add_rule(self, rule):
+        self.rules.append(rule)
 
     def connect_db(self):
         self.client = pymongo.MongoClient("localhost", 27017)
@@ -32,26 +22,32 @@ class RuleChecker:
         concu_collection = self.db.concu_collection
         return concu_collection.aggregate([t for subt in transformations for t in subt])
     
-    def check_rule(self, rule, rule_transformations, rule_between=None):
+    def check_rule(self, rule):
         if self.db is None:
             self.connect_db()
-
-        rule_passed = True
-        if rule_between is None:
-            s = self.execute_transformations(rule_transformations)
+        # TODO: Think how to do this better
+        rule.set_passed_status(True)
+        if not rule.has_between_clause():
+            s = self.execute_transformations(rule.transformations)
             for x in s:
-                if not x["_id"]: rule_passed = False
+                if not x["_id"]: rule.set_passed_status(False)
         else:
-            rule_ctx = self.execute_transformations(rule_between)
+            rule_ctx = self.execute_transformations(rule.between_clause)
             for ctx in rule_ctx:
-                s = self.execute_transformations([ filter_between_lines(ctx["l1"], ctx["l2"]) ] + rule_transformations)
+                s = self.execute_transformations([ filter_between_lines(ctx["l1"], ctx["l2"]) ] + rule.transformations)
 
                 for x in s:
-                    if not x["_id"]: rule_passed = False
+                    if not x["_id"]: rule.set_passed_status(False)
 
-        if rule_passed: self.passed_rules += 1
-        self.total_rules += 1
-        self.print_rule(rule, rule_passed)
+    def check_all_rules(self):
+        printer.print_verifier_start()
+        passed_rules = 0
+        for i, rule in enumerate(self.rules):
+            self.check_rule(rule)
+            printer.print_rule(i + 1, rule.text, rule.has_passed(), using_verbosity=False)
+            if rule.has_passed(): passed_rules += 1
+        printer.print_verifier_summary(len(self.rules), passed_rules)
+
 
         
 
@@ -61,8 +57,8 @@ if __name__ == "__main__":
     
     rc = RuleChecker()
 
-    rule_1 = (
-        "# RULE 1: Every item is produced only once\n"
+    rule_1_text = (
+        "# Every item is produced only once\n"
         "for every i and any p:\n"
         "produce(p, i) must happen 1 time\n"
     )
@@ -74,8 +70,8 @@ if __name__ == "__main__":
         reduce_result()
     ]
 
-    rule_2 = (
-        "# RULE 2: Every item is consumed only once\n"
+    rule_2_text = (
+        "# Every item is consumed only once\n"
         "for every i and any c:\n"
         "consume(c, i) must happen 1 time\n"
     )
@@ -87,8 +83,8 @@ if __name__ == "__main__":
         reduce_result()
     ]
 
-    rule_3 = (
-        "# RULE 3: 10 items are produced\n"
+    rule_3_text = (
+        "# 10 items are produced\n"
         "for any p, i:\n"
         "produce(p, i) must happen 10 times\n"
     )
@@ -100,8 +96,8 @@ if __name__ == "__main__":
         reduce_result()
     ]
 
-    rule_4 = (
-        "# RULE 4: 10 items are consumed\n"
+    rule_4_text = (
+        "# 10 items are consumed\n"
         "for any c, i:\n"
         "consume(c, i) must happen 10 times\n"
     )
@@ -113,8 +109,8 @@ if __name__ == "__main__":
         reduce_result()
     ]
 
-    rule_5 = (
-        "# RULE 5: Every item is produced before consumed\n"
+    rule_5_text = (
+        "# Every item is produced before consumed\n"
         "for every i and any p, c:\n"
         "produce(p, i) must precede consume(c, i)\n"
     )
@@ -127,8 +123,8 @@ if __name__ == "__main__":
         reduce_result()
     ]
 
-    rule_6 = (
-        "# RULE 6: Items are produced in order\n"
+    rule_6_text = (
+        "# Items are produced in order\n"
         "for every i, j>i and any p:\n"
         "produce(p, i) must precede produce(p, j)\n"
     )
@@ -141,8 +137,8 @@ if __name__ == "__main__":
         reduce_result()
         ]
 
-    rule_7 = (
-        "# RULE 7: Items are consumed in order\n"
+    rule_7_text = (
+        "# Items are consumed in order\n"
         "for every i, j>i and any c:\n"
         "consume(c, i) must precede consume(c, j)\n"
     )
@@ -155,8 +151,8 @@ if __name__ == "__main__":
         reduce_result()
         ]
 
-    rule_8 = (
-        "# RULE 8: The buffer size is 5\n"
+    rule_8_text = (
+        "# The buffer size is 5\n"
         "between produce and next consume:\n"
         "for any p, i:\n"
         "produce(p, i) must happen at most 5 times\n"
@@ -170,15 +166,14 @@ if __name__ == "__main__":
         reduce_result()
     ]
 
+    rc.add_rule(JARLRule(rule_1_text, rule_1_transformations))
+    rc.add_rule(JARLRule(rule_2_text, rule_2_transformations))
+    rc.add_rule(JARLRule(rule_3_text, rule_3_transformations))
+    rc.add_rule(JARLRule(rule_4_text, rule_4_transformations))
+    rc.add_rule(JARLRule(rule_5_text, rule_5_transformations))
+    rc.add_rule(JARLRule(rule_6_text, rule_6_transformations))
+    rc.add_rule(JARLRule(rule_7_text, rule_7_transformations))
+    rc.add_rule(JARLRule(rule_8_text, rule_8_transformations, rule_8_between))
 
-    rc.check_rule(rule_1, rule_1_transformations)
-    rc.check_rule(rule_2, rule_2_transformations)
-    rc.check_rule(rule_3, rule_3_transformations)
-    rc.check_rule(rule_4, rule_4_transformations)
-    rc.check_rule(rule_5, rule_5_transformations)
-    rc.check_rule(rule_6, rule_6_transformations)
-    rc.check_rule(rule_7, rule_7_transformations)
-    rc.check_rule(rule_8, rule_8_transformations, rule_8_between)
-
-    rc.print_summary()
+    rc.check_all_rules()
     lp.db.concu_collection.drop()
