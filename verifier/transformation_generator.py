@@ -136,6 +136,12 @@ def reduce_result():
 
 # Specific methods for the between clause:
 
+def make_between_clause(checkpoint_first, checkpoint_second, using_next=True):
+    return [
+        match_checkpoints([checkpoint_first, checkpoint_second]),
+        find_pairs(checkpoint_first, checkpoint_second, using_next)
+    ]
+
 def filter_between_lines(l_first, l_second):
     return [ {"$match": { "log_line": {"$gte": l_first, "$lte": l_second} }} ]
 
@@ -159,7 +165,7 @@ def find_pairs(checkpoint_first, checkpoint_second, using_next=True):
     else:
         m2["$filter"]["cond"] = {"$lt": ["$$r", "$_id"]}
         m2 = {"$max": m2}
-    steps.append({"$project": { "{}_log_line".format(c1): "$_id", "{}_log_line".format(c2): m2 }})
+    steps.append({"$project": { "l1": "$_id", "l2": m2 }})
 
     return steps
 
