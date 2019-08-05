@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     # RULE 1: Every item is produced only once
     # for every i and any p:
-    #   produce(p, i) must happen 1 time
+    # produce(p, i) must happen 1 time
     rule_1 = [
         match_checkpoints(["produce"]),
         rename_args(["produce"], [("p", "i")]),
@@ -43,10 +43,10 @@ if __name__ == "__main__":
         compare_results_quantity("=", 1),
         #reduce_result()
     ]
-    
+
     # RULE 2: Every item is consumed only once
     # for every i and any c:
-    #   consume(c, i) must happen 1 time
+    # consume(c, i) must happen 1 time
     rule_2 = [
         match_checkpoints(["consume"]),
         rename_args(["consume"], [("c", "i")]),
@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
     # RULE 3: 5 items are produced
     # for any p, i:
-    #   produce(p, i) must happen 5 times
+    # produce(p, i) must happen 5 times
     rule_3 = [
         match_checkpoints(["produce"]),
         rename_args(["produce"], [("p", "i")]),
@@ -68,7 +68,7 @@ if __name__ == "__main__":
 
     # RULE 4: 5 items are consumed
     # for any c, i:
-    #   consume(c, i) must happen 5 times
+    # consume(c, i) must happen 5 times
     rule_4 = [
         match_checkpoints(["consume"]),
         rename_args(["consume"], [("c", "i")]),
@@ -79,7 +79,7 @@ if __name__ == "__main__":
 
     # RULE 5: Every item is produced before consumed
     # for every i and any p, c:
-    #   produce(p, i) must precede consume(c, i)
+    # produce(p, i) must precede consume(c, i)
     rule_5 = [
         match_checkpoints(["produce", "consume"]),
         rename_args(["produce", "consume"], [("p", "i1"), ("c", "i2")]),
@@ -113,13 +113,23 @@ if __name__ == "__main__":
         #reduce_result()
         ]
 
+    # RULE 8: The buffer size is 3
+    # between produce and next consume:
+    # for any p, i:
+    # produce(p, i) must happen at most 3 times
+    rule_8 = [
+        match_checkpoints(["produce", "consume"]),
+        find_pairs("produce", "consume")
+        ]
 
-    rc.check_rule(rule_1)
-    rc.check_rule(rule_2)
-    rc.check_rule(rule_3)
-    rc.check_rule(rule_4)
-    rc.check_rule(rule_5)
-    rc.check_rule(rule_6)
-    rc.check_rule(rule_7)
+
+    #rc.check_rule(rule_1)
+    #rc.check_rule(rule_2)
+    #rc.check_rule(rule_3)
+    #rc.check_rule(rule_4)
+    #rc.check_rule(rule_5)
+    #rc.check_rule(rule_6)
+    #rc.check_rule(rule_7)
+    rc.check_rule(rule_8)
 
     lp.db.concu_collection.drop()

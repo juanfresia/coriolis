@@ -13,6 +13,7 @@ import json
 #   5) Perform comparison of quantity or precedence on each group
 #   6) Reduce the result
 
+
 # 1) Match checkpoints methods
 
 def match_checkpoints(checkpoint_names):
@@ -34,7 +35,7 @@ def rename_args(checkpoint_names, arg_names_list):
 
 # 3) Cross join and group methods
 
-def cross_group_arg_names(checkpoint_names, arg_names):
+def cross_join_checkpoints(checkpoint_names):
     steps = []
     # Step 1: We create a subarray for each checkpoint
     step1 = {"$group": { "_id" : "$checkpoint", "results": {"$push": "$$ROOT"} }}
@@ -61,7 +62,13 @@ def cross_group_arg_names(checkpoint_names, arg_names):
     # Step 5: We unwind every subarray thus performing an all against all join
     for i in range(0, len(checkpoint_names)):
         steps.append({"$unwind": "$r{}".format(i + 1)})
-    # Step 6: We perform the grouping by the arg_names
+
+    return steps
+
+def cross_group_arg_names(checkpoint_names, arg_names):
+    # Step 1: We cross join all checkpoints according their names
+    steps = cross_join_checkpoints(checkpoint_names)
+    # Step 2: We perform the grouping by the arg_names
     step6 = {"$group": { "_id": {} }}
     for i in range(0, len(arg_names)):
         arg_name = "arg_{}".format(arg_names[i])
@@ -70,7 +77,7 @@ def cross_group_arg_names(checkpoint_names, arg_names):
         r = "r{}".format(i+1)
         step6["$group"][r] = {"$push": "$$ROOT.{}".format(r)}
     steps.append(step6)
-    # Step 7: We do some array concat to be consistent with the group_by_arg_names formats
+    # Step 3: We do some array concat to be consistent with the group_by_arg_names formats
     step7 = {"$project": {"_id": "$_id", "results": {"$concatArrays": []}}}
     for i in range(0, len(arg_names)):
         step7["$project"]["results"]["$concatArrays"].append("$r{}".format(i+1))
@@ -126,6 +133,35 @@ def compare_results_precedence(checkpoint_first, checkpoint_second, using_preced
 
 def reduce_result():
     return [ {"$group": { "_id" : "$result" }} ]
+
+# Specific methods for the between clause:
+
+def filter_between_lines(l_first, l_second):
+    return [ {"$match": { "log_line": {"$gte": l_first, "$lte": l_second} }} ]
+
+def sort_by_log_line(ascending=True):
+    return [ {"$sort": {"log_line": 1 if ascending else -1}} ]
+
+def find_pairs(checkpoint_first, checkpoint_second, using_next=True):
+    # Step 1: We cross join to have all checkpoint_first, checkpoint_second pairs
+    steps = cross_join_checkpoints([checkpoint_first, checkpoint_second])
+    # Step 2: We project only the log_lines since that's all we care about
+    c1 = "{}".format(checkpoint_first)
+    c2 = "{}_{}".format("next" if using_next else "prev", checkpoint_second)
+    steps.append({"$project": {c1: "$r1.log_line", c2: "$r2.log_line"}})
+    # Step 3: We group according the first checkpoint
+    steps.append({"$group": { "_id" : "${}".format(c1), c2: {"$push": "${}".format(c2)} }})
+    # Step 4: We find the next or previous checkpoint_second occurrence to form the pair
+    m2 = {"$filter": { "input": "${}".format(c2), "as": "r" }}
+    if using_next:
+        m2["$filter"]["cond"] = {"$gt": ["$$r", "$_id"]}
+        m2 = {"$min": m2}
+    else:
+        m2["$filter"]["cond"] = {"$lt": ["$$r", "$_id"]}
+        m2 = {"$max": m2}
+    steps.append({"$project": { "{}_log_line".format(c1): "$_id", "{}_log_line".format(c2): m2 }})
+
+    return steps
 
 if __name__ == "__main__":
     s = cross_group_arg_names(["produce", "produce"], ["i", "j"])
