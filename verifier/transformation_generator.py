@@ -93,7 +93,8 @@ def having_iterators(i1, expr, i2):
         "<": {"$match": { "r": -1 }},
         ">": {"$match": { "r": 1 }},
         "<=": {"$match": { "$or": [{"r": 0}, {"r": -1}] }},
-        ">=": {"$match": { "$or": [{"r": 0}, {"r": 1}] }}
+        ">=": {"$match": { "$or": [{"r": 0}, {"r": 1}] }},
+        "<>": {"$match": { "$or": [{"r": 1}, {"r": -1}] }}
     }
     steps = [ {"$addFields": { "r": {"$cmp": ["$_id.{}".format(i1), "$_id.{}".format(i2)]} }} ]
     steps.append(EXPR_TO_MATCH[expr])
