@@ -4,7 +4,7 @@ import json
 
 #   This transformation generator module provides a proper interface between CORIOLIS parser
 # and rule validator, allowing the later one to execute the rule validation conforming the
-# rule syntax. Every rule is solved according the following recipe:
+# JARL syntax. Every rule is solved according the following recipe:
 #
 #   1) Match all checkpoints by their names
 #   2) Rename checkpoint arguments as in the rule expression
@@ -12,6 +12,12 @@ import json
 #   4) (If needed) Impose conditions on iterators
 #   5) Perform comparison of quantity or precedence on each group
 #   6) Reduce the result
+#
+#   All of the functions on this module return an array of JSON steps according to Mongo
+# aggregation pipeline.
+#
+# NOTE: You cannot directly execute these steps on the aggregation pipeline. You must
+# flatten them first!!
 
 
 # 1) Match checkpoints methods
@@ -97,7 +103,6 @@ def having_iterators(i1, expr, i2):
     }
     steps = [ {"$addFields": { "r": {"$cmp": ["$_id.{}".format(i1), "$_id.{}".format(i2)]} }} ]
     steps.append(EXPR_TO_MATCH[expr])
-
     return steps
 
 # 5) Comparison of quantity or precedence methods
@@ -134,7 +139,7 @@ def compare_results_precedence(checkpoint_first, checkpoint_second, using_preced
 def reduce_result():
     return [ {"$group": { "_id" : "$result" }} ]
 
-# Specific methods for the between clause:
+# The following methods are specific for the between clause:
 
 def make_between_clause(checkpoint_first, checkpoint_second, using_next=True):
     return [

@@ -1,18 +1,16 @@
 #!/usr/bin/env python3
 
 import pymongo # pip3 install pymongo
-from verifier.transformation_generator import *
-from verifier import log_parser, printer
+from common.transformation_generator import *
+from verifier.log_parser import LogParser
+from verifier.printer import *
 from common.jarl_rule import *
 
 class RuleChecker:
-    def __init__(self):
+    def __init__(self, rules_to_check):
         self.client = None
         self.db = None
-        self.rules = []
-
-    def add_rule(self, rule):
-        self.rules.append(rule)
+        self.rules = rules_to_check
 
     def connect_db(self):
         self.client = pymongo.MongoClient("localhost", 27017)
@@ -20,11 +18,10 @@ class RuleChecker:
     
     def execute_transformations(self, transformations):
         concu_collection = self.db.concu_collection
-        return concu_collection.aggregate([t for subt in transformations for t in subt])
+        return concu_collection.aggregate(transformations)
     
     def check_rule(self, rule):
-        if self.db is None:
-            self.connect_db()
+        if self.db is None: self.connect_db()
         # TODO: Think how to do this better
         rule.set_passed_status(True)
         if not rule.has_between_clause():
@@ -34,28 +31,21 @@ class RuleChecker:
         else:
             rule_ctx = self.execute_transformations(rule.between_clause)
             for ctx in rule_ctx:
-                s = self.execute_transformations([ filter_between_lines(ctx["l1"], ctx["l2"]) ] + rule.transformations)
+                s = self.execute_transformations(filter_between_lines(ctx["l1"], ctx["l2"]) + rule.transformations)
 
                 for x in s:
                     if not x["_id"]: rule.set_passed_status(False)
 
     def check_all_rules(self):
-        printer.print_verifier_start()
-        passed_rules = 0
-        for i, rule in enumerate(self.rules):
+        for rule in self.rules:
             self.check_rule(rule)
-            printer.print_rule(i + 1, rule.text, rule.has_passed(), using_verbosity=False)
-            if rule.has_passed(): passed_rules += 1
-        printer.print_verifier_summary(len(self.rules), passed_rules)
+        return self.rules
 
-
-        
 
 if __name__ == "__main__":
-    lp = log_parser.LogParser("/vagrant/resources/pc.log", "/vagrant/resources/pc.chk")
+    vp = VerifierPrinter(False)
+    lp = LogParser("/vagrant/resources/pc.log", "/vagrant/resources/pc.chk")
     lp.populate_db()
-    
-    rc = RuleChecker()
 
     rule_1_text = (
         "# Every item is produced only once\n"
@@ -166,14 +156,19 @@ if __name__ == "__main__":
         reduce_result()
     ]
 
-    rc.add_rule(JARLRule(rule_1_text, rule_1_transformations))
-    rc.add_rule(JARLRule(rule_2_text, rule_2_transformations))
-    rc.add_rule(JARLRule(rule_3_text, rule_3_transformations))
-    rc.add_rule(JARLRule(rule_4_text, rule_4_transformations))
-    rc.add_rule(JARLRule(rule_5_text, rule_5_transformations))
-    rc.add_rule(JARLRule(rule_6_text, rule_6_transformations))
-    rc.add_rule(JARLRule(rule_7_text, rule_7_transformations))
-    rc.add_rule(JARLRule(rule_8_text, rule_8_transformations, rule_8_between))
+    all_rules = [
+        JARLRule(rule_1_text, rule_1_transformations),
+        JARLRule(rule_2_text, rule_2_transformations),
+        JARLRule(rule_3_text, rule_3_transformations),
+        JARLRule(rule_4_text, rule_4_transformations),
+        JARLRule(rule_5_text, rule_5_transformations),
+        JARLRule(rule_6_text, rule_6_transformations),
+        JARLRule(rule_7_text, rule_7_transformations),
+        JARLRule(rule_8_text, rule_8_transformations, rule_8_between)
+    ]
 
-    rc.check_all_rules()
+    rc = RuleChecker(all_rules)
+    all_rules = rc.check_all_rules()
+    vp.print_verifier_summary(all_rules)
+
     lp.db.concu_collection.drop()
