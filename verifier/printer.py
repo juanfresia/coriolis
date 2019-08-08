@@ -11,7 +11,7 @@ class VerifierPrinter:
         print("=-=-=-=-=-=-=-=-=-=-=-=- CHECKING RULES -=-=-=-=-=-=-=-=-=-=-=-=")
         for i, rule in enumerate(rules):
             self.print_rule(i+1, rule.text, rule.has_passed())
-            if rule.has_passed: passed_rules += 1
+            if rule.has_passed(): passed_rules += 1
         print("=-=-=-=-=-=-=-=-=-=-=-=-=-  SUMMARY  -=-=-=-=-=-=-=-=-=-=-=-=-=")
         summary_fore = Fore.GREEN if passed_rules == len(rules) else Fore.RED
         summary = "{} rules, {} assertions, {} failures".format(len(rules), passed_rules, len(rules) - passed_rules)
