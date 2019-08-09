@@ -3,7 +3,7 @@
 import re
 import os
 
-import checkpoint_table
+from common import checkpoint_table
 
 class FileInstrumenter:
     def __init__(self, checkpoint_file):
@@ -50,7 +50,7 @@ class LanguageCInstrumenter(FileInstrumenter):
         self.left_spaces = re.compile(r'^\s*')
 
     def format_logging_line(self, args):
-        log_line = "longstrider_write(\""
+        log_line = "coriolis_logger_write(\""
         format_string = ""
         argument_string = ""
         
@@ -100,7 +100,7 @@ class LanguageCInstrumenter(FileInstrumenter):
                 print("[C] New line is: \n", log_line)
             elif match.group(1) == "has_checkpoints":
                 print("[C] Other new line is: \n", line)
-                log_line = '#include \"longstrider.h\"'
+                log_line = '#include \"coriolis_logger.h\"'
             return log_line
 
         return line

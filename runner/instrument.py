@@ -4,7 +4,7 @@ import argparse
 import os
 import distutils.dir_util
 
-import lang_instrumenter
+from runner import lang_instrumenter
 
 class FullPaths(argparse.Action):
     """Expand user- and relative-paths"""
@@ -37,22 +37,22 @@ if __name__ == "__main__":
     CURDIR = os.getcwd()
     parser = argparse.ArgumentParser(description='Instrument code.')
     parser.add_argument('-s', '--source', metavar='source', nargs=1,
-                        help='source directory', default=CURDIR, action=FullPaths)
+                        help='Source directory', default=CURDIR, action=FullPaths)
     parser.add_argument('-d', '--destination', metavar='destination', nargs=1,
-                        help='destination directory', default=CURDIR, action=FullPaths)
+                        help='Destination directory', default=CURDIR, action=FullPaths)
     parser.add_argument('-l', '--language', metavar='language', nargs=1,
-                        help='source code language', default='c', choices=["c", "noop"])
-    parser.add_argument('-b', '--breakpoints', metavar='breakpoints', nargs=1,
-                        action=FullPaths, help='file indicating known breakpoints',
-                        default='./test.break')
+                        help='Source code language', default='c', choices=["c", "noop"])
+    parser.add_argument('-c', '--checkpoints', metavar='checkpoints', nargs=1,
+                        action=FullPaths, help='Checkpoint list file',
+                        default='{}/test.chk'.format(CURDIR))
 
     # Parse and log captured arguments
     args = parser.parse_args()
 
-    print("source: ", args.source)
-    print("destination: ", args.destination)
-    print("language", args.language)
-    print("breakpoints", args.breakpoints)
+    print("Source: ", args.source)
+    print("Destination: ", args.destination)
+    print("Language: ", args.language)
+    print("Checkpoints: ", args.checkpoints)
 
-    inst = Instrumenter(args.language[0], args.breakpoints)
+    inst = Instrumenter(args.language[0], args.checkpoints)
     inst.instrument(args.source, args.destination)

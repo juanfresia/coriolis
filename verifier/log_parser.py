@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import pymongo # pip3 install pymongo
-import checkpoint_table
+from common import checkpoint_table
 
 class LogParser:
     def __init__(self, log_file, checkpoint_file):
@@ -39,5 +39,5 @@ class LogParser:
                 concu_collection.insert_one(checkpoint_json)
 
 if __name__ == "__main__":
-    log_parser = LogParser("pc.log", "pc.chk")
+    log_parser = LogParser("/vagrant/resources/pc.log", "/vagrant/resources/pc.chk")
     log_parser.populate_db()

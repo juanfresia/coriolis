@@ -24,6 +24,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision 'shell', privileged: false, inline: <<-SHELL
     sudo apt-get update
     sudo apt-get install python3-pip
+    sudo apt-get install valgrind
     curl -O https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1604-3.6.12.tgz
     tar -zxvf mongodb-linux-x86_64-ubuntu1604-3.6.12.tgz
     mkdir -p mongodb
