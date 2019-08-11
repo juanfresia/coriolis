@@ -9,7 +9,7 @@
 #include "lock.h"
 #include "semaphore.h"
 
-#include "coriolis_logger.h"
+// @has_checkpoints
 int AGENT_ITERATIONS = 10;
 
 enum Semaphores {
@@ -46,20 +46,20 @@ void agent_main(int num_servings) {
     // What it is going to serve
     unsigned int serving;
     for (int i = 0; i < AGENT_ITERATIONS; i++) {
-        coriolis_logger_write("%s", "agent_sleep");
+        // @checkpoint agent_sleep
         sleep(1);
         sem_wait(semid, AGENT_SEM);
 
-        coriolis_logger_write("%s", "agent_wake");
+        // @checkpoint agent_wake
         serving = rand() % 3;
         printf("Agent serving: %d\n", serving);
 
-        coriolis_logger_write("%s  %d", "agent_produce", serving);
+        // @checkpoint agent_produce serving
         sem_post(semid, serving);
         serving = (serving + 1) % 3;
         printf("Agent serving: %d\n", serving);
 
-        coriolis_logger_write("%s  %d", "agent_produce", serving);
+        // @checkpoint agent_produce serving
         sem_post(semid, serving);
     }
     exit(0);
@@ -73,12 +73,12 @@ void smoker_main(int resource) {
     }
 
     for (int i = 0; i < AGENT_ITERATIONS; i++) {
-        coriolis_logger_write("%s  %d", "smoker_sleep", resource);
+        // @checkpoint smoker_sleep resource
         sem_wait(semid, resource + 3);
         printf("[Smoker %d] Got everything, smoking\n", resource);
-        coriolis_logger_write("%s   %d  %d", "smoker_take_element", resource, ((resource + 1) % 3));
-        coriolis_logger_write("%s   %d  %d", "smoker_take_element", resource, ((resource + 2) % 3));
-        coriolis_logger_write("%s  %d", "smoker_smoke", resource);
+        // @checkpoint smoker_take_element resource ((resource + 1) % 3))
+        // @checkpoint smoker_take_element resource ((resource + 2) % 3))
+        // @checkpoint smoker_smoke resource
         sem_post(semid, AGENT_SEM);
     }
     exit(0);

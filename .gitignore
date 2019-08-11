@@ -124,5 +124,4 @@ dmypy.json
 .idea/
 
 .vagrant/
-ConcuVoley/
 *.DS_Store

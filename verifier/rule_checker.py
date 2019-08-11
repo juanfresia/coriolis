@@ -43,7 +43,7 @@ class RuleChecker:
 
 def smokers_main():
     vp = VerifierPrinter(False)
-    lp = LogParser("/vagrant/examples/smokers/smokers.log", "/vagrant/examples/smokers/smokers.chk")
+    lp = LogParser("/vagrant/resources/smokers/smokers_1.log", "/vagrant/resources/smokers/smokers.chk")
     lp.populate_db()
 
     rule_1_text = (
@@ -91,7 +91,7 @@ def smokers_main():
 
 if __name__ == "__main__":
     vp = VerifierPrinter(False)
-    lp = LogParser("/vagrant/resources/pc.log", "/vagrant/resources/pc.chk")
+    lp = LogParser("/vagrant/resources/prod_cons_1.log", "/vagrant/resources/prod_cons.chk")
     lp.populate_db()
 
     rule_1_text = (
