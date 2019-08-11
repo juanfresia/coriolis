@@ -1,0 +1,18 @@
+# Lines starting with '#' and empty lines are ignored
+# Format is:
+#   <breakpoint-name> [<param-name>:<param-type> ...]
+#
+# Valid param-types are: int, float, string, char
+
+agent_produce       element_id:int
+agent_wake
+agent_sleep
+
+smoker_smoke       smoker_id:int
+smoker_take_element smoker_id:int element_id:int
+smoker_sleep        smoker_id:int
+
+# Only one smoker smokes at a time
+# between agent_wake and next agent_wake:
+#    for any s:
+#        smoker_smoke(s) must happen 1 time

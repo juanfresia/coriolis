@@ -41,9 +41,56 @@ class RuleChecker:
             self.check_rule(rule)
         return self.rules
 
+def smokers_main():
+    vp = VerifierPrinter(True)
+    lp = LogParser("/vagrant/examples/smokers/smokers.log", "/vagrant/examples/smokers/smokers.chk")
+    lp.populate_db()
+
+    rule_1_text = (
+        "# Only one smoker smokes at a time\n"
+        "between agent_wake and next agent_wake\n"
+        "for any s\n"
+        "smoker_smoke(s) must happen 1 time\n"
+    )
+    rule_1_between = scope_between("agent_wake", "agent_wake", True)
+    rule_1_transformations = [
+        match_checkpoints(["smoker_smoke"]),
+        rename_args(["smoker_smoke"], [("s")]),
+        cross_group_arg_names(["smoker_smoke"], ["null"]),
+        compare_results_quantity("=", 1),
+        reduce_result()
+    ]
+
+    rule_2_text = (
+            "# Smoker that smoked could really smoke\n"
+            "between agent_wake and next smoker_smoke\n"
+            "for any s, e\n"
+            "smoker_take_element(s, e) must happen 2 times\n"
+    )
+    rule_2_between = scope_between("agent_wake", "smoker_smoke", True)
+    rule_2_transformations = [
+        match_checkpoints(["smoker_take_element"]),
+        rename_args(["smoker_take_element"], [("s", "e")]),
+        cross_group_arg_names(["smoker_take_element"], ["null"]),
+        #having_iterators("s", "=", "e"),
+        compare_results_quantity("=", 2),
+        reduce_result()
+    ]
+
+    all_rules = [
+        JARLRule(rule_1_text, rule_1_transformations, rule_1_between),
+        JARLRule(rule_2_text, rule_2_transformations, rule_2_between),
+    ]
+
+    rc = RuleChecker(all_rules)
+    all_rules = rc.check_all_rules()
+    vp.print_verifier_summary(all_rules)
+
+    lp.db.concu_collection.drop()
+
 
 if __name__ == "__main__":
-    vp = VerifierPrinter(False)
+    vp = VerifierPrinter(True)
     lp = LogParser("/vagrant/resources/pc.log", "/vagrant/resources/pc.chk")
     lp.populate_db()
 
