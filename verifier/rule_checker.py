@@ -51,7 +51,7 @@ class RuleChecker:
 
         
 
-if __name__ == "__main__":
+def smokers_test():
     lp = log_parser.LogParser("/vagrant/examples/smokers/smokers.log", "/vagrant/examples/smokers/smokers.chk")
     lp.populate_db()
     
