@@ -4,7 +4,7 @@ import json
 
 #   This transformation generator module provides a proper interface between CORIOLIS parser
 # and rule validator, allowing the later one to execute the rule validation conforming the
-# rule syntax. Every rule is solved according the following recipe:
+# JARL syntax. Every rule is solved according the following recipe:
 #
 #   1) Match all checkpoints by their names
 #   2) Rename checkpoint arguments as in the rule expression
@@ -12,6 +12,12 @@ import json
 #   4) (If needed) Impose conditions on iterators
 #   5) Perform comparison of quantity or precedence on each group
 #   6) Reduce the result
+#
+#   All of the functions on this module return an array of JSON steps according to Mongo
+# aggregation pipeline.
+#
+# NOTE: You cannot directly execute these steps on the aggregation pipeline. You must
+# flatten them first!!
 
 
 # 1) Match checkpoints methods
@@ -69,19 +75,20 @@ def cross_group_arg_names(checkpoint_names, arg_names):
     # Step 1: We cross join all checkpoints according their names
     steps = cross_join_checkpoints(checkpoint_names)
     # Step 2: We perform the grouping by the arg_names
-    step6 = {"$group": { "_id": {} }}
+    step2 = {"$group": { "_id": {} }}
     for i in range(0, len(arg_names)):
-        arg_name = "arg_{}".format(arg_names[i])
-        step6["$group"]["_id"][arg_names[i]] = "$r{}.{}".format(i+1, arg_name)
+        for arg in arg_names[i]:
+            arg_name = "arg_{}".format(arg)
+            step2["$group"]["_id"][arg] = "$r{}.{}".format(i+1, arg_name)
     for i in range(0, len(checkpoint_names)):
         r = "r{}".format(i+1)
-        step6["$group"][r] = {"$push": "$$ROOT.{}".format(r)}
-    steps.append(step6)
+        step2["$group"][r] = {"$push": "$$ROOT.{}".format(r)}
+    steps.append(step2)
     # Step 3: We do some array concat to be consistent with the group_by_arg_names formats
-    step7 = {"$project": {"_id": "$_id", "results": {"$concatArrays": []}}}
-    for i in range(0, len(arg_names)):
-        step7["$project"]["results"]["$concatArrays"].append("$r{}".format(i+1))
-    steps.append(step7)
+    step3 = {"$project": {"_id": "$_id", "results": {"$concatArrays": []}}}
+    for i in range(0, len(checkpoint_names)):
+        step3["$project"]["results"]["$concatArrays"].append("$r{}".format(i+1))
+    steps.append(step3)
 
     return steps
 
@@ -94,11 +101,10 @@ def having_iterators(i1, expr, i2):
         ">": {"$match": { "r": 1 }},
         "<=": {"$match": { "$or": [{"r": 0}, {"r": -1}] }},
         ">=": {"$match": { "$or": [{"r": 0}, {"r": 1}] }},
-        "<>": {"$match": { "$or": [{"r": 1}, {"r": -1}] }}
+        "!=": {"$match": { "$or": [{"r": -1}, {"r": 1}] }}
     }
     steps = [ {"$addFields": { "r": {"$cmp": ["$_id.{}".format(i1), "$_id.{}".format(i2)]} }} ]
     steps.append(EXPR_TO_MATCH[expr])
-
     return steps
 
 # 5) Comparison of quantity or precedence methods
@@ -110,6 +116,7 @@ def compare_results_quantity(expr, n):
         ">": "$gt",
         "<=": "$lte",
         ">=": "$gte",
+        "!=": "$ne",
     }
     return [ {"$project": { "result": {EXPR_TO_CMP[expr]: [{"$size": "$results"}, n]} }} ]
 
@@ -135,15 +142,29 @@ def compare_results_precedence(checkpoint_first, checkpoint_second, using_preced
 def reduce_result():
     return [ {"$group": { "_id" : "$result" }} ]
 
-# Specific methods for the between clause:
+# The following methods are specific for rule scopes:
 
-def make_between_clause(checkpoint_first, checkpoint_second, using_next=True):
+def scope_between(checkpoint_first, checkpoint_second, using_next=True):
     return [
         match_checkpoints([checkpoint_first, checkpoint_second]),
         find_pairs(checkpoint_first, checkpoint_second, using_next)
     ]
 
+def scope_after(checkpoint_name):
+    return [
+        match_checkpoints([checkpoint_name]),
+        [ {"$project": {"l1": "$log_line", "l2": "MAX"}} ]
+    ]
+
+def scope_before(checkpoint_name):
+    return [
+        match_checkpoints([checkpoint_name]),
+        [ {"$project": {"l2": "MIN", "l2": "$log_line"}} ]
+    ]
+
 def filter_between_lines(l_first, l_second):
+    if l_second == "MAX": return [ {"$match": { "log_line": {"$gte": l_first} }} ]
+    if l_first == "MIN": return [ {"$match": { "log_line": {"$lte": l_second} }} ]
     return [ {"$match": { "log_line": {"$gte": l_first, "$lte": l_second} }} ]
 
 def sort_by_log_line(ascending=True):
@@ -171,7 +192,5 @@ def find_pairs(checkpoint_first, checkpoint_second, using_next=True):
     return steps
 
 if __name__ == "__main__":
-    s = cross_group_arg_names(["produce", "produce"], ["i", "j"])
-    print(json.dumps(s, indent=4))
-    s = cross_group_arg_names(["produce", "consume"], ["i", "i"])
+    s = scope_between("produce", "consume")
     print(json.dumps(s, indent=4))
