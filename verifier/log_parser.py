@@ -32,6 +32,7 @@ class LogParser:
         with open(self.log_file) as lf:
             for i, line in enumerate(lf):
                 args = line.split()
+                if len(args) == 0: continue # Skip empty lines
                 arg_types = self.checkpoint_table.get_checkpoint(args[0]).get_arg_types()
                 for j in range(0, len(arg_types)):
                     args[j + 1] = self.cast_arg_with_type(args[j + 1], arg_types[j])
