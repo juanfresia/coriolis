@@ -54,8 +54,8 @@ if __name__ == "__main__":
     )
     rule_1_transformations = [
         match_checkpoints(["produce"]),
-        rename_args(["produce"], [("p", "i")]),
-        cross_group_arg_names(["produce"], ["i"]),
+        rename_args(["produce"], [ ["p", "i"] ]),
+        cross_group_arg_names(["produce"], [ ["i"] ]),
         compare_results_quantity("=", 1),
         reduce_result()
     ]
@@ -67,8 +67,8 @@ if __name__ == "__main__":
     )
     rule_2_transformations = [
         match_checkpoints(["consume"]),
-        rename_args(["consume"], [("c", "i")]),
-        cross_group_arg_names(["consume"], ["i"]),
+        rename_args(["consume"], [ ["c", "i"] ]),
+        cross_group_arg_names(["consume"], [ ["i"] ]),
         compare_results_quantity("=", 1),
         reduce_result()
     ]
@@ -80,8 +80,8 @@ if __name__ == "__main__":
     )
     rule_3_transformations = [
         match_checkpoints(["produce"]),
-        rename_args(["produce"], [("p", "i")]),
-        cross_group_arg_names(["produce"], ["null"]),
+        rename_args(["produce"], [ ["p", "i"] ]),
+        cross_group_arg_names(["produce"], [ ["null"] ]),
         compare_results_quantity("=", 10),
         reduce_result()
     ]
@@ -93,8 +93,8 @@ if __name__ == "__main__":
     )
     rule_4_transformations = [
         match_checkpoints(["consume"]),
-        rename_args(["consume"], [("c", "i")]),
-        cross_group_arg_names(["consume"], ["null"]),
+        rename_args(["consume"], [ ["c", "i"] ]),
+        cross_group_arg_names(["consume"], [ ["null"] ]),
         compare_results_quantity("=", 10),
         reduce_result()
     ]
@@ -106,8 +106,8 @@ if __name__ == "__main__":
     )
     rule_5_transformations = [
         match_checkpoints(["produce", "consume"]),
-        rename_args(["produce", "consume"], [("p", "i1"), ("c", "i2")]),
-        cross_group_arg_names(["produce", "consume"], ["i1", "i2"]),
+        rename_args(["produce", "consume"], [ ["p", "i1"], ["c", "i2"] ]),
+        cross_group_arg_names(["produce", "consume"], [("i1",), ("i2",)]),
         having_iterators("i1", "=", "i2"),
         compare_results_precedence("produce1", "consume2"),
         reduce_result()
@@ -120,8 +120,8 @@ if __name__ == "__main__":
     )
     rule_6_transformations = [
         match_checkpoints(["produce"]),
-        rename_args(["produce", "produce"], [("p", "i"), ("p", "j")]),
-        cross_group_arg_names(["produce", "produce"], ["i", "j"]),
+        rename_args(["produce", "produce"], [ ["p", "i"], ["p", "j"] ]),
+        cross_group_arg_names(["produce", "produce"], [ ["i"], ["j"] ]),
         having_iterators("j", ">", "i"),
         compare_results_precedence("produce1", "produce2"),
         reduce_result()
@@ -134,8 +134,8 @@ if __name__ == "__main__":
     )
     rule_7_transformations = [
         match_checkpoints(["consume"]),
-        rename_args(["consume", "consume"], [("c", "i"), ("c", "j")]),
-        cross_group_arg_names(["consume", "consume"], ["i", "j"]),
+        rename_args(["consume", "consume"], [ ["c", "i"], ["c", "j"] ]),
+        cross_group_arg_names(["consume", "consume"], [ ["i"], ["j"] ]),
         having_iterators("j", ">", "i"),
         compare_results_precedence("consume1", "consume2"),
         reduce_result()
@@ -143,16 +143,46 @@ if __name__ == "__main__":
 
     rule_8_text = (
         "# The buffer size is 5\n"
-        "between produce and next consume:\n"
+        "between every produce and next consume:\n"
         "for any p, i:\n"
         "produce(p, i) must happen at most 5 times\n"
     )
-    rule_8_between = make_between_clause("produce", "consume", True)
+    rule_8_between = scope_between("produce", "consume", True)
     rule_8_transformations = [
         match_checkpoints(["produce"]),
-        rename_args(["produce"], [("p", "i")]),
-        cross_group_arg_names(["produce"], ["null"]),
+        rename_args(["produce"], [ ["p", "i"] ]),
+        cross_group_arg_names(["produce"], [ ["null"] ]),
         compare_results_quantity("<=", 5),
+        reduce_result()
+    ]
+
+    rule_9_text = (
+        "# Item is consumed only once (written differently)\n"
+        "after every consume:\n"
+        "for every c, i:\n"
+        "consume(c, i) must happen 1 times\n"
+    )
+    rule_9_after = scope_after("consume")
+    rule_9_transformations = [
+        match_checkpoints(["consume"]),
+        rename_args(["consume"], [ ["c", "i"] ]),
+        cross_group_arg_names(["consume"], [ ["c", "i"] ]),
+        compare_results_quantity("=", 1),
+        reduce_result()
+    ]
+
+    rule_10_text = (
+        "# Item is produced only once (written differently)\n"
+        "before every produce:\n"
+        "for produce p, i:\n"
+        "produce(p, i) must happen 1 times\n"
+    )
+    rule_10_before = scope_after("produce")
+    rule_10_transformations = [
+        match_checkpoints(["produce"]),
+        rename_args(["produce"], [ ["p", "i"] ]),
+        cross_group_arg_names(["produce"], [ ["p", "i"] ]),
+        compare_results_quantity("=", 1),
         reduce_result()
     ]
 
@@ -164,7 +194,9 @@ if __name__ == "__main__":
         JARLRule(rule_5_text, rule_5_transformations),
         JARLRule(rule_6_text, rule_6_transformations),
         JARLRule(rule_7_text, rule_7_transformations),
-        JARLRule(rule_8_text, rule_8_transformations, rule_8_between)
+        JARLRule(rule_8_text, rule_8_transformations, rule_8_between),
+        JARLRule(rule_9_text, rule_9_transformations, rule_9_after),
+        JARLRule(rule_9_text, rule_9_transformations, rule_10_before)
     ]
 
     rc = RuleChecker(all_rules)
