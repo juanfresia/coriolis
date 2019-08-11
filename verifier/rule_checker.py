@@ -3,8 +3,8 @@
 import pymongo # pip3 install pymongo
 from common.transformation_generator import *
 from verifier.log_parser import LogParser
-from verifier.printer import *
-from common.jarl_rule import *
+from verifier.printer import VerifierPrinter
+from common.jarl_rule import JARLRule
 
 class RuleChecker:
     def __init__(self, rules_to_check):
@@ -42,7 +42,7 @@ class RuleChecker:
         return self.rules
 
 def smokers_main():
-    vp = VerifierPrinter(True)
+    vp = VerifierPrinter(False)
     lp = LogParser("/vagrant/examples/smokers/smokers.log", "/vagrant/examples/smokers/smokers.chk")
     lp.populate_db()
 
@@ -90,7 +90,7 @@ def smokers_main():
 
 
 if __name__ == "__main__":
-    vp = VerifierPrinter(True)
+    vp = VerifierPrinter(False)
     lp = LogParser("/vagrant/resources/pc.log", "/vagrant/resources/pc.chk")
     lp.populate_db()
 

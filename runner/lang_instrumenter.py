@@ -6,8 +6,12 @@ import os
 from common import checkpoint_table
 
 class FileInstrumenter:
-    def __init__(self, checkpoint_file):
+    def __init__(self, checkpoint_file, debug=False):
         self.checkpoint_table = checkpoint_table.CheckpointTable(checkpoint_file)
+        self.debug = debug
+
+    def _debug_message(self, msg):
+        if self.debug: print(msg)
 
     def process_lines(self, lines):
         for n, line in enumerate(lines):
@@ -30,11 +34,14 @@ class FileInstrumenter:
         raise NotImplementedError
 
 class NoOpInstrumenter(FileInstrumenter):
+    def __init__(self, checkpoints, debug=False):
+        super().__init__(checkpoints, debug)
+
     def instrument_line(self, line):
         return line
 
     def can_instrument(self, path):
-        print("[NoOp] Can instrument?: ", path)
+        self._debug_message("[NoOp] Can instrument?: {}".format(path))
         return False
 
 class LanguageCInstrumenter(FileInstrumenter):
@@ -44,8 +51,8 @@ class LanguageCInstrumenter(FileInstrumenter):
         "float":  " %f"
     }
 
-    def __init__(self, checkpoints):
-        super().__init__(checkpoints)
+    def __init__(self, checkpoints, debug=False):
+        super().__init__(checkpoints, debug)
         self.pattern = re.compile(r'^.*// @(\w*).*')
         self.left_spaces = re.compile(r'^\s*')
 
@@ -57,11 +64,11 @@ class LanguageCInstrumenter(FileInstrumenter):
         try:
             arg_types = self.checkpoint_table.get_checkpoint(args[0]).get_arg_types()
         except Exception as e:
-            print("[C] {}".format(e))
+            self._debug_message("[C] {}".format(e))
             raise Exception
         
         if len(args[1:]) != len(arg_types):
-            print("[C] arguments for {} dont match".format(args[0]))
+            self._debug_message("[C] arguments for {} dont match".format(args[0]))
             raise Exception
 
         format_string = " ".join(["%s"] + [LanguageCInstrumenter.type_to_format[t] for t in arg_types])
@@ -73,19 +80,19 @@ class LanguageCInstrumenter(FileInstrumenter):
         return log_line
 
     def can_instrument(self, path):
-        print("[C] Can instrument?: ", path)
+        self._debug_message("[C] Can instrument?: {}".format(path))
         ext = os.path.splitext(path)[-1].lower()
         return ext in ['.c', '.h']
 
     def instrument_file_inline(self, path):
-        print("[C] Instrumenting: ", path)
+        self._debug_message("[C] Instrumenting: ".format(path))
         super().instrument_file_inline(path)
 
     def instrument_line(self, line):
         match = self.pattern.match(line)
         if match:
             indentation = self.left_spaces.match(line).group()
-            print("[C] Matched line is:\n", line)
+            self._debug_message("[C] Matched line is:\n{}".format(line))
 
             log_line = line
             if match.group(1) == "checkpoint":
@@ -97,9 +104,9 @@ class LanguageCInstrumenter(FileInstrumenter):
                     except:
                         log_line = line
 
-                print("[C] New line is: \n", log_line)
+                self._debug_message("[C] New line is:\n{}".format(log_line))
             elif match.group(1) == "has_checkpoints":
-                print("[C] Other new line is: \n", line)
+                self._debug_message("[C] Other new line is:\n{}".format(line))
                 log_line = '#include \"coriolis_logger.h\"'
             return log_line
 
@@ -112,5 +119,5 @@ LANGUAGES = {
 
 def get_file_instrumenter(lang, checkpoints):
     if lang in LANGUAGES.keys():
-        return LANGUAGES[lang](checkpoints)
+        return LANGUAGES[lang](checkpoints, True)
     return LANGUAGES['noop'](checkpoints)
