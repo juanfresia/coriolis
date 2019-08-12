@@ -1,6 +1,6 @@
 CFLAGS := -g
 VFLAGS := --leak-check=full --show-leak-kinds=all --track-origins=yes
-ARCHIVOS = lock.o semaphore.o log.o coriolis_lock.o coriolis_logger.o
+ARCHIVOS = lock.o semaphore.o coriolis_lock.o coriolis_logger.o
 PROGRAMA = main
 
 all: clean $(PROGRAMA)

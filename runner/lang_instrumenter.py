@@ -107,7 +107,7 @@ class LanguageCInstrumenter(FileInstrumenter):
                 self._debug_message("[C] New line is:\n{}".format(log_line))
             elif match.group(1) == "has_checkpoints":
                 self._debug_message("[C] Other new line is:\n{}".format(line))
-                log_line = '#include \"coriolis_logger.h\"'
+                log_line = '#include \"coriolis_logger.h\"\n'
             return log_line
 
         return line

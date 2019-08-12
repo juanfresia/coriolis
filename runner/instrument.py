@@ -56,3 +56,6 @@ if __name__ == "__main__":
 
     inst = Instrumenter(args.language[0], args.checkpoints)
     inst.instrument(args.source, args.destination)
+
+    # TODO: Remove this (it copies the coriolis logger)
+    distutils.dir_util.copy_tree("/vagrant/runner/libs/", args.destination)

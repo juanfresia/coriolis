@@ -76,8 +76,8 @@ void smoker_main(int resource) {
         // @checkpoint smoker_sleep resource
         sem_wait(semid, resource + 3);
         printf("[Smoker %d] Got everything, smoking\n", resource);
-        // @checkpoint smoker_take_element resource ((resource + 1) % 3))
-        // @checkpoint smoker_take_element resource ((resource + 2) % 3))
+        // @checkpoint smoker_take_element resource ((resource+1)%3)
+        // @checkpoint smoker_take_element resource ((resource+2)%3)
         // @checkpoint smoker_smoke resource
         sem_post(semid, AGENT_SEM);
     }
