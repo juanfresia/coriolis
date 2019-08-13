@@ -67,9 +67,9 @@ class TestProducerConsumer1(unittest.TestCase):
         match_checkpoints(["produce", "consume"]),
         rename_args(["produce", "consume"], [ ["p", "i1"], ["c", "i2"] ]),
         cross_group_arg_names(["produce", "consume"], [("i1",), ("i2",)]),
-        having_iterators("i1", "=", "i2"),
-        compare_results_precedence("produce1", "consume2"),
-        reduce_result()
+        impose_iterator_condition("i1", "=", "i2"),
+        #compare_results_precedence("produce1", "consume2"),
+        #reduce_result()
     ]
 
     rule_6_statement = (
@@ -81,7 +81,7 @@ class TestProducerConsumer1(unittest.TestCase):
         match_checkpoints(["produce"]),
         rename_args(["produce", "produce"], [ ["p", "i"], ["p", "j"] ]),
         cross_group_arg_names(["produce", "produce"], [ ["i"], ["j"] ]),
-        having_iterators("j", ">", "i"),
+        impose_iterator_condition("j", ">", "i"),
         compare_results_precedence("produce1", "produce2"),
         reduce_result()
         ]
@@ -95,7 +95,7 @@ class TestProducerConsumer1(unittest.TestCase):
         match_checkpoints(["consume"]),
         rename_args(["consume", "consume"], [ ["c", "i"], ["c", "j"] ]),
         cross_group_arg_names(["consume", "consume"], [ ["i"], ["j"] ]),
-        having_iterators("j", ">", "i"),
+        impose_iterator_condition("j", ">", "i"),
         compare_results_precedence("consume1", "consume2"),
         reduce_result()
         ]
@@ -144,6 +144,20 @@ class TestProducerConsumer1(unittest.TestCase):
         compare_results_quantity("=", 1),
         reduce_result()
     ]
+
+    rule_11_statement = (
+        "# Consumer cannot consume items smaller than their own ID\n"
+        "for every c, i<c\n"
+        "consume(c, i) must not happen\n"
+    )
+    rule_11_transformations = [
+        match_checkpoints(["consume"]),
+        rename_args(["consume"], [ ["c", "i"] ]),
+        cross_group_arg_names(["consume"], [ ["c", "i"] ]),
+        impose_iterator_condition("i", "<", "c"),
+        compare_results_quantity("=", 0),
+        reduce_result()
+        ]
 
     def test_every_item_produced_once(self):
         self.lp.populate_db()
@@ -237,7 +251,8 @@ class TestProducerConsumer1(unittest.TestCase):
             JARLRule(self.rule_7_statement, self.rule_7_transformations),
             JARLRule(self.rule_8_statement, self.rule_8_transformations, self.rule_8_between),
             JARLRule(self.rule_9_statement, self.rule_9_transformations, self.rule_9_after),
-            JARLRule(self.rule_9_statement, self.rule_9_transformations, self.rule_10_before)
+            JARLRule(self.rule_10_statement, self.rule_10_transformations, self.rule_10_before),
+            JARLRule(self.rule_11_statement, self.rule_11_transformations),
         ]
         rc = RuleChecker(all_rules)
         all_rules = rc.check_all_rules()

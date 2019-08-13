@@ -15,8 +15,8 @@ class TestSmokers(unittest.TestCase):
     rule_1_between = scope_between("agent_wake", "agent_wake", True)
     rule_1_transformations = [
         match_checkpoints(["smoker_smoke"]),
-        rename_args(["smoker_smoke"], [("s")]),
-        cross_group_arg_names(["smoker_smoke"], ["null"]),
+        rename_args(["smoker_smoke"], [ ["s"] ]),
+        cross_group_arg_names(["smoker_smoke"], [ ["null"] ]),
         compare_results_quantity("=", 1),
         reduce_result()
     ]
@@ -30,9 +30,9 @@ class TestSmokers(unittest.TestCase):
     rule_2_between = scope_between("agent_wake", "smoker_smoke", True)
     rule_2_transformations = [
         match_checkpoints(["smoker_take_element"]),
-        rename_args(["smoker_take_element"], [("s", "e")]),
-        cross_group_arg_names(["smoker_take_element"], ["null"]),
-        # having_iterators("s", "=", "e"),
+        rename_args(["smoker_take_element"], [ ["s", "e"] ]),
+        cross_group_arg_names(["smoker_take_element"], [ ["null"] ]),
+        impose_wildcard_condition("s", "=", "e"),
         compare_results_quantity("=", 2),
         reduce_result()
     ]

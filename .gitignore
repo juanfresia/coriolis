@@ -55,7 +55,6 @@ coverage.xml
 *.pot
 
 # Django stuff:
-*.log
 local_settings.py
 db.sqlite3
 
@@ -125,3 +124,4 @@ dmypy.json
 
 .vagrant/
 *.DS_Store
+ubuntu-xenial-16.04-cloudimg-console.log

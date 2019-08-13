@@ -9,7 +9,7 @@ import json
 #   1) Match all checkpoints by their names
 #   2) Rename checkpoint arguments as in the rule expression
 #   3) Perform a cross join and grouping according to the rule iterators
-#   4) (If needed) Impose conditions on iterators
+#   4) (If needed) Impose conditions on checkpoint arguments
 #   5) Perform comparison of quantity or precedence on each group
 #   6) Reduce the result
 #
@@ -19,6 +19,18 @@ import json
 # NOTE: You cannot directly execute these steps on the aggregation pipeline. You must
 # flatten them first!!
 
+# Auxiliar methods
+
+def expr_to_cmp(expr):
+    EXPR_TO_CMP = {
+        "=": "$eq",
+        "<": "$lt",
+        ">": "$gt",
+        "<=": "$lte",
+        ">=": "$gte",
+        "!=": "$ne",
+    }
+    return EXPR_TO_CMP[expr]
 
 # 1) Match checkpoints methods
 
@@ -92,33 +104,23 @@ def cross_group_arg_names(checkpoint_names, arg_names):
 
     return steps
 
-# 4) Having conditions on iterators methods
+# 4) Impose conditions on arguments
 
-def having_iterators(i1, expr, i2):
-    EXPR_TO_MATCH = {
-        "=": {"$match": { "r": 0 }},
-        "<": {"$match": { "r": -1 }},
-        ">": {"$match": { "r": 1 }},
-        "<=": {"$match": { "$or": [{"r": 0}, {"r": -1}] }},
-        ">=": {"$match": { "$or": [{"r": 0}, {"r": 1}] }},
-        "!=": {"$match": { "$or": [{"r": -1}, {"r": 1}] }}
-    }
-    steps = [ {"$addFields": { "r": {"$cmp": ["$_id.{}".format(i1), "$_id.{}".format(i2)]} }} ]
-    steps.append(EXPR_TO_MATCH[expr])
+def impose_iterator_condition(i1, expr, i2, using_literal=False):
+    if not using_literal: i2 = "$_id.{}".format(i2)
+    return [ {"$match": { "$expr": {expr_to_cmp(expr): ["$_id.{}".format(i1), i2]} }} ]
+
+def impose_wildcard_condition(w1, expr, w2, using_literal=False):
+    if not using_literal: w2 = "$$r.arg_{}".format(w2)
+    cond = {"input": "$results", "as": "r", "cond": { expr_to_cmp(expr): ["$$r.arg_{}".format(w1), w2] }}
+    steps = [ {"$project": {"_id": "$_id", "results": { "$filter": cond }}} ]
+    steps.append( {"$match": { "$expr": {"$ne": ["$results", []]} }} ) # Discard empty results arrays
     return steps
 
 # 5) Comparison of quantity or precedence methods
 
 def compare_results_quantity(expr, n):
-    EXPR_TO_CMP = {
-        "=": "$eq",
-        "<": "$lt",
-        ">": "$gt",
-        "<=": "$lte",
-        ">=": "$gte",
-        "!=": "$ne",
-    }
-    return [ {"$project": { "result": {EXPR_TO_CMP[expr]: [{"$size": "$results"}, n]} }} ]
+    return [ {"$project": { "result": {expr_to_cmp(expr): [{"$size": "$results"}, n]} }} ]
 
 def compare_results_precedence(checkpoint_first, checkpoint_second, using_precede=True):
     steps = []
