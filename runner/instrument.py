@@ -39,9 +39,9 @@ if __name__ == "__main__":
     parser.add_argument('-s', '--source', metavar='source', nargs=1,
                         help='Source directory', default=CURDIR, action=FullPaths)
     parser.add_argument('-d', '--destination', metavar='destination', nargs=1,
-                        help='Destination directory', default=CURDIR, action=FullPaths)
+                        help='Destination directory', default=CURDIR+"/out/", action=FullPaths)
     parser.add_argument('-l', '--language', metavar='language', nargs=1,
-                        help='Source code language', default='c', choices=["c", "noop"])
+                        help='Source code language', default='c', choices=["c", "py", "noop"])
     parser.add_argument('-c', '--checkpoints', metavar='checkpoints', nargs=1,
                         action=FullPaths, help='Checkpoint list file',
                         default='{}/test.chk'.format(CURDIR))

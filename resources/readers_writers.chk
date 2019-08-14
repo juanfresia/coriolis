@@ -1,0 +1,8 @@
+# Lines starting with '#' and empty lines are ignored
+# Format is:
+#   <breakpoint-name> [<param-name>:<param-type> ...]
+#
+# Valid param-types are: int, float, string, char
+
+read_buffer    reader_id:int   buffer_id:int   value:string
+write_buffer   writer_id:int   buffer_id:int   value:string

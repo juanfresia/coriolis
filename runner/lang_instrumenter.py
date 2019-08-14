@@ -82,7 +82,7 @@ class LanguageCInstrumenter(FileInstrumenter):
     def can_instrument(self, path):
         self._debug_message("[C] Can instrument?: {}".format(path))
         ext = os.path.splitext(path)[-1].lower()
-        return ext in ['.c', '.h']
+        return ext in [".c", ".h"]
 
     def instrument_file_inline(self, path):
         self._debug_message("[C] Instrumenting: ".format(path))
@@ -112,8 +112,71 @@ class LanguageCInstrumenter(FileInstrumenter):
 
         return line
 
+class LanguagePyInstrumenter(FileInstrumenter):
+    def __init__(self, checkpoints, debug=False):
+        super().__init__(checkpoints, debug)
+        self.pattern = re.compile(r'^.*# @(\w*).*')
+        self.left_spaces = re.compile(r'^\s*')
+
+    def format_logging_line(self, args):
+        log_line = "coriolis_logger_write(\""
+        format_string = ""
+        argument_string = ""
+
+        try:
+            arg_types = self.checkpoint_table.get_checkpoint(args[0]).get_arg_types()
+        except Exception as e:
+            self._debug_message("[Py] {}".format(e))
+            raise Exception
+
+        if len(args[1:]) != len(arg_types):
+            self._debug_message("[Py] arguments for {} dont match".format(args[0]))
+            raise Exception
+
+        format_string = " ".join(["{}"] + ["{} " for t in arg_types])
+        args[0] = "\"{}\"".format(args[0])
+        argument_string = ", ".join(args)
+
+        log_line += (format_string + "\", " + argument_string + "))\n")
+
+        return log_line
+
+    def can_instrument(self, path):
+        self._debug_message("[Py] Can instrument?: {}".format(path))
+        ext = os.path.splitext(path)[-1].lower()
+        return ext in [".py"]
+
+    def instrument_file_inline(self, path):
+        self._debug_message("[Py] Instrumenting: ".format(path))
+        super().instrument_file_inline(path)
+
+    def instrument_line(self, line):
+        match = self.pattern.match(line)
+        if match:
+            indentation = self.left_spaces.match(line).group()
+            self._debug_message("[Py] Matched line is:\n{}".format(line))
+
+            log_line = line
+            if match.group(1) == "checkpoint":
+                line_args = line.replace("#", "").replace("@checkpoint", "").split()
+                if len(line_args):
+                    try:
+                        log_line = self.format_logging_line(line_args)
+                        log_line = indentation + log_line
+                    except:
+                        log_line = line
+
+                self._debug_message("[Py] New line is:\n{}".format(log_line))
+            elif match.group(1) == "has_checkpoints":
+                self._debug_message("[Py] Other new line is:\n{}".format(line))
+                log_line = 'from coriolis_logger import *\n'
+            return log_line
+
+        return line
+
 LANGUAGES = {
     'c': LanguageCInstrumenter,
+    'py': LanguagePyInstrumenter,
     'noop': NoOpInstrumenter
 }
 
