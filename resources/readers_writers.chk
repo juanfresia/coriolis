@@ -4,5 +4,9 @@
 #
 # Valid param-types are: int, float, string, char
 
-read_buffer    reader_id:int   buffer_id:int   value:string
-write_buffer   writer_id:int   buffer_id:int   value:string
+read_room    reader_id:int   room_id:int   message:string
+write_room   writer_id:int   room_id:int   message:string
+reader_enter reader_id:int   room_id:int
+writer_enter reader_id:int   room_id:int
+reader_exit  reader_id:int   room_id:int
+writer_exit  reader_id:int   room_id:int

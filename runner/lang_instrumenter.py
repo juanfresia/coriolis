@@ -137,7 +137,7 @@ class LanguagePyInstrumenter(FileInstrumenter):
         args[0] = "\"{}\"".format(args[0])
         argument_string = ", ".join(args)
 
-        log_line += (format_string + "\", " + argument_string + "))\n")
+        log_line += (format_string + "\".format(" + argument_string + "))\n")
 
         return log_line
 
