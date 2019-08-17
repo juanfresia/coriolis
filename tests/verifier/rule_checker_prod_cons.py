@@ -102,11 +102,11 @@ class TestProducerConsumer1(unittest.TestCase):
 
     rule_8_statement = (
         "# The buffer size is 5\n"
-        "between every produce and next consume:\n"
+        "between every produce and next consume or beyond:\n"
         "for any p, i:\n"
         "produce(p, i) must happen at most 5 times\n"
     )
-    rule_8_between = scope_between("produce", "consume", True)
+    rule_8_between = scope_between("produce", "consume", True, True)
     rule_8_transformations = [
         match_checkpoints(["produce"]),
         rename_args(["produce"], [ ["p", "i"] ]),

@@ -146,11 +146,17 @@ def reduce_result():
 
 # The following methods are specific for rule scopes:
 
-def scope_between(checkpoint_first, checkpoint_second, using_next=True):
-    return [
+def scope_between(checkpoint_first, checkpoint_second, using_next=True, using_beyond=False):
+    steps = [
         match_checkpoints([checkpoint_first, checkpoint_second]),
         find_pairs(checkpoint_first, checkpoint_second, using_next)
     ]
+    if using_beyond: # We replace all None with MIN or MAX values
+        l = "l2" if using_next else "l1"
+        m = "MAX" if using_next else "MIN"
+        steps.append([ {"$addFields": {l: {"$ifNull": ["${}".format(l), m]}}} ])
+
+    return steps
 
 def scope_after(checkpoint_name):
     return [
@@ -161,7 +167,7 @@ def scope_after(checkpoint_name):
 def scope_before(checkpoint_name):
     return [
         match_checkpoints([checkpoint_name]),
-        [ {"$project": {"l2": "MIN", "l2": "$log_line"}} ]
+        [ {"$project": {"l1": "MIN", "l2": "$log_line"}} ]
     ]
 
 def filter_between_lines(l_first, l_second):
@@ -186,10 +192,11 @@ def find_pairs(checkpoint_first, checkpoint_second, using_next=True):
     if using_next:
         m2["$filter"]["cond"] = {"$gt": ["$$r", "$_id"]}
         m2 = {"$min": m2}
+        steps.append({"$project": { "l1": "$_id", "l2": m2 }})
     else:
         m2["$filter"]["cond"] = {"$lt": ["$$r", "$_id"]}
         m2 = {"$max": m2}
-    steps.append({"$project": { "l1": "$_id", "l2": m2 }})
+        steps.append({"$project": { "l2": "$_id", "l1": m2 }})
 
     return steps
 
