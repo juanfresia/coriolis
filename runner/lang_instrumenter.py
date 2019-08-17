@@ -133,7 +133,7 @@ class LanguagePyInstrumenter(FileInstrumenter):
             self._debug_message("[Py] arguments for {} dont match".format(args[0]))
             raise Exception
 
-        format_string = " ".join(["{}"] + ["{} " for t in arg_types])
+        format_string = " ".join(["{}"] + [" {}" for t in arg_types])
         args[0] = "\"{}\"".format(args[0])
         argument_string = ", ".join(args)
 
