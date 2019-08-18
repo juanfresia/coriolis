@@ -4,16 +4,16 @@ from random import randint
 
 # @has_checkpoints
 
-WRITERS_AMOUNT = 4
-READERS_AMOUNT = 5
-BUFFERS_AMOUNT = 3
-WRITERS_ROUNDS = 5
-READERS_ROUNDS = 5
+WRITERS_AMOUNT = 3
+READERS_AMOUNT = 2
+BUFFERS_AMOUNT = 1
+WRITERS_ROUNDS = 3
+READERS_ROUNDS = 2
 
 def generate_random_msg(): # Just for flavour
-    A = ["What a wonderful", "I had a terrible", "Such a nice", "This is an awful", "We had a cool", "A pathetic", "Good"]
+    A = ["Wonderful", "Terrible", "Nice", "Awful", "Cool", "Pathetic", "Good", "Bad", "Lame"]
     B = ["day", "night", "experience", "dinner", "life", "code", "time", "job", "duty", "party", "meeting", "evening"]
-    return A[randint(0, len(A)-1)] + " " + B[randint(0, len(B)-1)]
+    return A[randint(0, len(A)-1)] + "-" + B[randint(0, len(B)-1)]
 
 class Room():
     def __init__(self, id):

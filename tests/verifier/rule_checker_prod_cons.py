@@ -11,248 +11,238 @@ class TestProducerConsumer1(unittest.TestCase):
         "for every i and any p:\n"
         "produce(p, i) must happen 1 time\n"
     )
-    rule_1_transformations = [
-        match_checkpoints(["produce"]),
-        rename_args(["produce"], [ ["p", "i"] ]),
-        cross_group_arg_names(["produce"], [ ["i"] ]),
-        compare_results_quantity("=", 1),
-        reduce_result()
-    ]
+    rule_1_fact = RuleFact([
+        MatchCheckpoints(["produce"]),
+        RenameArgs(["produce"], [ ["p", "i"] ]),
+        CrossAndGroupByArgs(["produce"], [ ["i"] ]),
+        CompareResultsQuantity("=", 1),
+        ReduceResult()
+    ])
+    rule_1 = JARLRule(rule_1_statement, rule_1_fact)
 
     rule_2_statement = (
         "# Every item is consumed only once\n"
         "for every i and any c:\n"
         "consume(c, i) must happen 1 time\n"
     )
-    rule_2_transformations = [
-        match_checkpoints(["consume"]),
-        rename_args(["consume"], [ ["c", "i"] ]),
-        cross_group_arg_names(["consume"], [ ["i"] ]),
-        compare_results_quantity("=", 1),
-        reduce_result()
-    ]
+    rule_2_fact = RuleFact([
+        MatchCheckpoints(["consume"]),
+        RenameArgs(["consume"], [ ["c", "i"] ]),
+        CrossAndGroupByArgs(["consume"], [ ["i"] ]),
+        CompareResultsQuantity("=", 1),
+        ReduceResult()
+    ])
+    rule_2 = JARLRule(rule_2_statement, rule_2_fact)
 
     rule_3_statement = (
         "# 10 items are produced\n"
         "for any p, i:\n"
         "produce(p, i) must happen 10 times\n"
     )
-    rule_3_transformations = [
-        match_checkpoints(["produce"]),
-        rename_args(["produce"], [ ["p", "i"] ]),
-        cross_group_arg_names(["produce"], [ ["null"] ]),
-        compare_results_quantity("=", 10),
-        reduce_result()
-    ]
+    rule_3_fact = RuleFact([
+        MatchCheckpoints(["produce"]),
+        RenameArgs(["produce"], [ ["p", "i"] ]),
+        CrossAndGroupByArgs(["produce"], [ ["null"] ]),
+        CompareResultsQuantity("=", 10),
+        ReduceResult()
+    ])
+    rule_3 = JARLRule(rule_3_statement, rule_3_fact)
 
     rule_4_statement = (
         "# 10 items are consumed\n"
         "for any c, i:\n"
         "consume(c, i) must happen 10 times\n"
     )
-    rule_4_transformations = [
-        match_checkpoints(["consume"]),
-        rename_args(["consume"], [ ["c", "i"] ]),
-        cross_group_arg_names(["consume"], [ ["null"] ]),
-        compare_results_quantity("=", 10),
-        reduce_result()
-    ]
+    rule_4_fact = RuleFact([
+        MatchCheckpoints(["consume"]),
+        RenameArgs(["consume"], [ ["c", "i"] ]),
+        CrossAndGroupByArgs(["consume"], [ ["null"] ]),
+        CompareResultsQuantity("=", 10),
+        ReduceResult()
+    ])
+    rule_4 = JARLRule(rule_4_statement, rule_4_fact)
 
     rule_5_statement = (
         "# Every item is produced before consumed\n"
         "for every i and any p, c:\n"
         "produce(p, i) must precede consume(c, i)\n"
     )
-    rule_5_transformations = [
-        match_checkpoints(["produce", "consume"]),
-        rename_args(["produce", "consume"], [ ["p", "i1"], ["c", "i2"] ]),
-        cross_group_arg_names(["produce", "consume"], [("i1",), ("i2",)]),
-        impose_iterator_condition("i1", "=", "i2"),
-        #compare_results_precedence("produce1", "consume2"),
-        #reduce_result()
-    ]
+    rule_5_fact = RuleFact([
+        MatchCheckpoints(["produce", "consume"]),
+        RenameArgs(["produce", "consume"], [ ["p", "i1"], ["c", "i2"] ]),
+        CrossAndGroupByArgs(["produce", "consume"], [("i1",), ("i2",)]),
+        ImposeIteratorCondition("i1", "=", "i2"),
+        CompareResultsPrecedence("produce1", "consume2"),
+        ReduceResult()
+    ])
+    rule_5 = JARLRule(rule_5_statement, rule_5_fact)
 
     rule_6_statement = (
         "# Items are produced in order\n"
         "for every i, j>i and any p:\n"
         "produce(p, i) must precede produce(p, j)\n"
     )
-    rule_6_transformations = [
-        match_checkpoints(["produce"]),
-        rename_args(["produce", "produce"], [ ["p", "i"], ["p", "j"] ]),
-        cross_group_arg_names(["produce", "produce"], [ ["i"], ["j"] ]),
-        impose_iterator_condition("j", ">", "i"),
-        compare_results_precedence("produce1", "produce2"),
-        reduce_result()
-        ]
+    rule_6_fact = RuleFact([
+        MatchCheckpoints(["produce"]),
+        RenameArgs(["produce", "produce"], [ ["p", "i"], ["p", "j"] ]),
+        CrossAndGroupByArgs(["produce", "produce"], [ ["i"], ["j"] ]),
+        ImposeIteratorCondition("j", ">", "i"),
+        CompareResultsPrecedence("produce1", "produce2"),
+        ReduceResult()
+    ])
+    rule_6 = JARLRule(rule_6_statement, rule_6_fact)
 
     rule_7_statement = (
         "# Items are consumed in order\n"
         "for every i, j>i and any c:\n"
         "consume(c, i) must precede consume(c, j)\n"
     )
-    rule_7_transformations = [
-        match_checkpoints(["consume"]),
-        rename_args(["consume", "consume"], [ ["c", "i"], ["c", "j"] ]),
-        cross_group_arg_names(["consume", "consume"], [ ["i"], ["j"] ]),
-        impose_iterator_condition("j", ">", "i"),
-        compare_results_precedence("consume1", "consume2"),
-        reduce_result()
-        ]
+    rule_7_fact = RuleFact([
+        MatchCheckpoints(["consume"]),
+        RenameArgs(["consume", "consume"], [ ["c", "i"], ["c", "j"] ]),
+        CrossAndGroupByArgs(["consume", "consume"], [ ["i"], ["j"] ]),
+        ImposeIteratorCondition("j", ">", "i"),
+        CompareResultsPrecedence("consume1", "consume2"),
+        ReduceResult()
+    ])
+    rule_7 = JARLRule(rule_7_statement, rule_7_fact)
 
     rule_8_statement = (
         "# The buffer size is 5\n"
-        "between every produce and next consume or beyond:\n"
-        "for any p, i:\n"
-        "produce(p, i) must happen at most 5 times\n"
+        "for any pid, cid, i1, i2:\n"
+        "between every produce(pid, i1) and next consume(cid, i2):\n"
+        "  for any p, i:\n"
+        "  produce(p, i) must happen at most 5 times\n"
     )
-    rule_8_between = scope_between("produce", "consume", True, True)
-    rule_8_transformations = [
-        match_checkpoints(["produce"]),
-        rename_args(["produce"], [ ["p", "i"] ]),
-        cross_group_arg_names(["produce"], [ ["null"] ]),
-        compare_results_quantity("<=", 5),
-        reduce_result()
-    ]
+    rule_8_scope = RuleScope([
+        MatchCheckpoints(["produce", "consume"]),
+        RenameArgs(["produce", "consume"], [ ["pid", "i1"], ["cid", "i2"] ]),
+        CrossAndGroupByArgs(["produce", "consume"], [ ["null"], ["null"] ]),
+        ScopeBetween("produce1", "consume2")
+    ])
+    rule_8_fact = RuleFact([
+        MatchCheckpoints(["produce"]),
+        RenameArgs(["produce"], [ ["p", "i"] ]),
+        CrossAndGroupByArgs(["produce"], [ ["null"] ]),
+        CompareResultsQuantity("<=", 5),
+        ReduceResult()
+    ])
+    rule_8 = JARLRule(rule_8_statement, rule_8_fact, rule_8_scope)
 
     rule_9_statement = (
         "# Item is consumed only once (written differently)\n"
-        "after every consume:\n"
-        "for every c, i:\n"
-        "consume(c, i) must happen 1 times\n"
+        "for any cid, iid:\n"
+        "after every consume(cid, iid):\n"
+        "  for every i and any c:\n"
+        "  consume(c, i) must happen 1 times\n"
     )
-    rule_9_after = scope_after("consume")
-    rule_9_transformations = [
-        match_checkpoints(["consume"]),
-        rename_args(["consume"], [ ["c", "i"] ]),
-        cross_group_arg_names(["consume"], [ ["c", "i"] ]),
-        compare_results_quantity("=", 1),
-        reduce_result()
-    ]
+    rule_9_scope = RuleScope([
+        MatchCheckpoints(["consume"]),
+        RenameArgs(["consume"], [ ["cid", "iid"] ]),
+        CrossAndGroupByArgs(["consume"], [ ["null"] ]),
+        ScopeAfter("consume1")
+    ])
+    rule_9_fact = RuleFact([
+        MatchCheckpoints(["consume"]),
+        RenameArgs(["consume"], [ ["c", "i"] ]),
+        CrossAndGroupByArgs(["consume"], [ ["i"] ]),
+        CompareResultsQuantity("=", 1),
+        ReduceResult()
+    ])
+    rule_9 = JARLRule(rule_9_statement, rule_9_fact, rule_9_scope)
 
     rule_10_statement = (
         "# Item is produced only once (written differently)\n"
-        "before every produce:\n"
-        "for produce p, i:\n"
-        "produce(p, i) must happen 1 times\n"
+        "for any pid, iid:\n"
+        "before every produce(pid, iid):\n"
+        "  for every i and any p:\n"
+        "  produce(p, i) must happen 1 times\n"
     )
-    rule_10_before = scope_after("produce")
-    rule_10_transformations = [
-        match_checkpoints(["produce"]),
-        rename_args(["produce"], [ ["p", "i"] ]),
-        cross_group_arg_names(["produce"], [ ["p", "i"] ]),
-        compare_results_quantity("=", 1),
-        reduce_result()
-    ]
+    rule_10_scope = RuleScope([
+        MatchCheckpoints(["produce"]),
+        RenameArgs(["produce"], [ ["pid", "iid"] ]),
+        CrossAndGroupByArgs(["produce"], [ ["null"] ]),
+        ScopeBefore("produce1")
+    ])
+    rule_10_fact = RuleFact([
+        MatchCheckpoints(["produce"]),
+        RenameArgs(["produce"], [ ["p", "i"] ]),
+        CrossAndGroupByArgs(["produce"], [ ["i"] ]),
+        CompareResultsQuantity("=", 1),
+        ReduceResult()
+    ])
+    rule_10 = JARLRule(rule_10_statement, rule_10_fact, rule_10_scope)
 
     rule_11_statement = (
         "# Consumer cannot consume items smaller than their own ID\n"
-        "for every c, i<c\n"
+        "for every c, i<c:\n"
         "consume(c, i) must not happen\n"
     )
-    rule_11_transformations = [
-        match_checkpoints(["consume"]),
-        rename_args(["consume"], [ ["c", "i"] ]),
-        cross_group_arg_names(["consume"], [ ["c", "i"] ]),
-        impose_iterator_condition("i", "<", "c"),
-        compare_results_quantity("=", 0),
-        reduce_result()
-        ]
+    rule_11_fact = RuleFact([
+        MatchCheckpoints(["consume"]),
+        RenameArgs(["consume"], [ ["c", "i"] ]),
+        CrossAndGroupByArgs(["consume"], [ ["c", "i"] ]),
+        ImposeIteratorCondition("i", "<", "c"),
+        CompareResultsQuantity("=", 0),
+        ReduceResult()
+    ])
+    rule_11 = JARLRule(rule_11_statement, rule_11_fact)
+
+    def check_one_rule(self, rule):
+        self.lp.populate_db()
+        rc = RuleChecker([ rule ])
+        rule = rc.check_all_rules()[0]
+        self.lp.db.concu_collection.drop()
+
+        self.assertTrue(rule.has_passed())
 
     def test_every_item_produced_once(self):
-        self.lp.populate_db()
-        rc = RuleChecker([ JARLRule(self.rule_1_statement, self.rule_1_transformations) ])
-        rule = rc.check_all_rules()[0]
-        self.lp.db.concu_collection.drop()
-
-        self.assertTrue(rule.has_passed())
+        self.check_one_rule(self.rule_1)
 
     def test_every_item_consumed_once(self):
-        self.lp.populate_db()
-        rc = RuleChecker([ JARLRule(self.rule_2_statement, self.rule_2_transformations) ])
-        rule = rc.check_all_rules()[0]
-        self.lp.db.concu_collection.drop()
-
-        self.assertTrue(rule.has_passed())
+        self.check_one_rule(self.rule_2)
 
     def test_ten_items_produced(self):
-        self.lp.populate_db()
-        rc = RuleChecker([ JARLRule(self.rule_3_statement, self.rule_3_transformations) ])
-        rule = rc.check_all_rules()[0]
-        self.lp.db.concu_collection.drop()
-
-        self.assertTrue(rule.has_passed())
+        self.check_one_rule(self.rule_3)
 
     def test_ten_items_consumed(self):
-        self.lp.populate_db()
-        rc = RuleChecker([ JARLRule(self.rule_4_statement, self.rule_4_transformations) ])
-        rule = rc.check_all_rules()[0]
-        self.lp.db.concu_collection.drop()
-
-        self.assertTrue(rule.has_passed())
+        self.check_one_rule(self.rule_4)
 
     def test_items_produced_before_consumed(self):
-        self.lp.populate_db()
-        rc = RuleChecker([ JARLRule(self.rule_5_statement, self.rule_5_transformations) ])
-        rule = rc.check_all_rules()[0]
-        self.lp.db.concu_collection.drop()
-
-        self.assertTrue(rule.has_passed())
+        self.check_one_rule(self.rule_5)
 
     def test_items_produced_in_order(self):
-        self.lp.populate_db()
-        rc = RuleChecker([ JARLRule(self.rule_6_statement, self.rule_6_transformations) ])
-        rule = rc.check_all_rules()[0]
-        self.lp.db.concu_collection.drop()
-
-        self.assertTrue(rule.has_passed())
+        self.check_one_rule(self.rule_6)
 
     def test_items_consumed_in_order(self):
-        self.lp.populate_db()
-        rc = RuleChecker([ JARLRule(self.rule_7_statement, self.rule_7_transformations) ])
-        rule = rc.check_all_rules()[0]
-        self.lp.db.concu_collection.drop()
-
-        self.assertTrue(rule.has_passed())
+        self.check_one_rule(self.rule_7)
 
     def test_buffer_size_five(self):
-        self.lp.populate_db()
-        rc = RuleChecker([ JARLRule(self.rule_8_statement, self.rule_8_transformations, self.rule_8_between) ])
-        rule = rc.check_all_rules()[0]
-        self.lp.db.concu_collection.drop()
-
-        self.assertTrue(rule.has_passed())
+        self.check_one_rule(self.rule_8)
 
     def test_items_not_consumed_after_consumed(self):
-        self.lp.populate_db()
-        rc = RuleChecker([ JARLRule(self.rule_9_statement, self.rule_9_transformations, self.rule_9_after) ])
-        rule = rc.check_all_rules()[0]
-        self.lp.db.concu_collection.drop()
-
-        self.assertTrue(rule.has_passed())
+        self.check_one_rule(self.rule_9)
 
     def test_items_not_produced_before_produced(self):
-        self.lp.populate_db()
-        rc = RuleChecker([ JARLRule(self.rule_10_statement, self.rule_10_transformations, self.rule_10_before) ])
-        rule = rc.check_all_rules()[0]
-        self.lp.db.concu_collection.drop()
+        self.check_one_rule(self.rule_10)
 
-        self.assertTrue(rule.has_passed())
+    def test_cant_consume_items_smaller_than_id(self):
+        self.check_one_rule(self.rule_11)
 
     def test_all_rules(self):
         self.lp.populate_db()
         all_rules = [
-            JARLRule(self.rule_1_statement, self.rule_1_transformations),
-            JARLRule(self.rule_2_statement, self.rule_2_transformations),
-            JARLRule(self.rule_3_statement, self.rule_3_transformations),
-            JARLRule(self.rule_4_statement, self.rule_4_transformations),
-            JARLRule(self.rule_5_statement, self.rule_5_transformations),
-            JARLRule(self.rule_6_statement, self.rule_6_transformations),
-            JARLRule(self.rule_7_statement, self.rule_7_transformations),
-            JARLRule(self.rule_8_statement, self.rule_8_transformations, self.rule_8_between),
-            JARLRule(self.rule_9_statement, self.rule_9_transformations, self.rule_9_after),
-            JARLRule(self.rule_10_statement, self.rule_10_transformations, self.rule_10_before),
-            JARLRule(self.rule_11_statement, self.rule_11_transformations),
+            self.rule_1,
+            self.rule_2,
+            self.rule_3,
+            self.rule_4,
+            self.rule_5,
+            self.rule_6,
+            self.rule_7,
+            self.rule_8,
+            self.rule_9,
+            self.rule_10,
+            self.rule_11,
         ]
         rc = RuleChecker(all_rules)
         all_rules = rc.check_all_rules()
@@ -262,7 +252,7 @@ class TestProducerConsumer1(unittest.TestCase):
         for rule in all_rules:
             if rule.has_failed(): all_passed = False
 
-        #VerifierPrinter(False).print_verifier_summary(all_rules)
+        #VerifierPrinter(True).print_verifier_summary(all_rules)
         self.assertTrue(all_passed)
 
 if __name__ == '__main__':

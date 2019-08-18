@@ -10,7 +10,7 @@
 #include "semaphore.h"
 
 // @has_checkpoints
-int AGENT_ITERATIONS = 10;
+int AGENT_ITERATIONS = 20;
 
 enum Semaphores {
     TOBACO_SEM = 0,

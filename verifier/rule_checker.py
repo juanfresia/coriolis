@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 import pymongo # pip3 install pymongo
-from common.transformation_generator import *
+from common.aggregation_steps import *
 from verifier.log_parser import LogParser
 from verifier.printer import VerifierPrinter
-from common.jarl_rule import JARLRule
+from common.jarl_rule import JARLRule, RuleScope, RuleFact
 
 class RuleChecker:
     def __init__(self, rules_to_check):
@@ -16,27 +16,22 @@ class RuleChecker:
         self.client = pymongo.MongoClient("localhost", 27017)
         self.db = self.client.concu_db
     
-    def execute_transformations(self, transformations):
+    def execute_aggregation_steps(self, aggregation_steps):
+        if self.db is None: self.connect_db()
         concu_collection = self.db.concu_collection
-        return concu_collection.aggregate(transformations)
+        return concu_collection.aggregate(aggregation_steps)
     
     def check_rule(self, rule):
-        if self.db is None: self.connect_db()
-        # TODO: Think how to do this better
         rule.set_passed_status(True)
-        if not rule.has_scope():
-            s = self.execute_transformations(rule.transformations)
-            for x in s:
-                #print(x)
+        rule_scope = RuleScope.get_default_scope()
+        if rule.has_scope():
+            rule_scope = self.execute_aggregation_steps(rule.evaluate_scope_steps())
+        for s in rule_scope:
+            l_first, l_second = RuleScope.parse_scope_log_lines(s)
+            r = self.execute_aggregation_steps(FilterByLogLines(l_first, l_second).evaluate() + rule.evaluate_fact_steps(s))
+            for x in r:
                 if not x["_id"]: rule.set_passed_status(False)
-        else:
-            rule_ctx = self.execute_transformations(rule.scope)
-            for ctx in rule_ctx:
-                #print(ctx)
-                s = self.execute_transformations(filter_between_lines(ctx["l1"], ctx["l2"]) + rule.transformations)
 
-                for x in s:
-                    if not x["_id"]: rule.set_passed_status(False)
 
     def check_all_rules(self):
         for rule in self.rules:
@@ -44,28 +39,40 @@ class RuleChecker:
         return self.rules
 
 
+
+
 if __name__ == "__main__":
-    print("Run any of the tests.verifier.rule_checker instead")
-    lp = LogParser("/vagrant/resources/prod_cons_1.log", "/vagrant/resources/prod_cons.chk")
+    #print("Run any of the tests.verifier.rule_checker instead")
+    lp = LogParser("/vagrant/resources/readers_writers_2.log", "/vagrant/resources/readers_writers.chk")
 
-    rule_8_statement = (
-        "# The buffer size is 5\n"
-        "between every produce and next consume:\n"
-        "for any p, i:\n"
-        "produce(p, i) must happen at most 5 times\n"
+    rule_1_statement = (
+        "# While there are writers, readers cannot enter\n"
+        "for every w1, w2=w1, r1, r2=r1:\n"
+        "between every writer_enter(w1, r1) and next writer_exit(w2, r2)\n"
+        "  for every room=r1 and any r:\n"
+        "  reader_enter(r, room) must not happen\n"
     )
-    rule_8_between = scope_between("produce", "consume", False, True)
-    rule_8_transformations = [
-        match_checkpoints(["produce"]),
-        rename_args(["produce"], [ ["p", "i"] ]),
-        cross_group_arg_names(["produce"], [ ["null"] ]),
-        compare_results_quantity("<=", 5),
-        reduce_result()
-    ]
-
+    rule_1_scope = RuleScope([
+        MatchCheckpoints(["writer_enter", "writer_exit"]),
+        RenameArgs(["writer_enter", "writer_exit"], [ ["w1", "r1"], ["w2", "r2"] ]),
+        CrossAndGroupByArgs(["writer_enter", "writer_exit"], [ ["w1", "r1"], ["w2", "r2"] ]),
+        ImposeIteratorCondition("w1", "=", "w2"),
+        ImposeIteratorCondition("r1", "=", "r2"),
+        ScopeBetween("writer_enter1", "writer_exit2")
+    ])
+    rule_1_fact = RuleFact([
+        MatchCheckpoints(["reader_enter"]),
+        RenameArgs(["reader_enter"], [ ["r", "room"] ]),
+        CrossAndGroupByArgs(["reader_enter"], [ ["room"] ]),
+        ImposeIteratorCondition("room", "=", "#r1", True),
+        CompareResultsQuantity("=", 0),
+        ReduceResult()
+    ])
+    rule_1 = JARLRule(rule_1_statement, rule_1_fact, rule_1_scope)
+    rule_1.set_dynamic_scope_arg("r1", True)
     lp.populate_db()
-    rc = RuleChecker([JARLRule(rule_8_statement, rule_8_transformations, rule_8_between)])
+    rc = RuleChecker([rule_1])
     all_rules = rc.check_all_rules()
     lp.db.concu_collection.drop()
 
-    VerifierPrinter(False).print_verifier_summary(all_rules)
+    VerifierPrinter(True).print_verifier_summary(all_rules)

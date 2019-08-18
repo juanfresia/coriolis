@@ -2,17 +2,17 @@
 
 ## Rule statements
 
-A rule _statement_ is the complete declaration of the rule, the whole text. It consists of the following well defined parts:
+A rule _statement_ is the complete declaration of the rule, the whole text. It consists of the following two well-defined parts:
 
 ```
-(1)  between every produce and next consume
-(2)  for any p, i 
-(3)  produce(p, i) must happen less than 5 times 
+(1)  for every w
+     between every writer_enter(w) and next writer_exit(w)
+(2)    for any r 
+       reader_enter(r) must not happen 
 ```
 
 - **(1) Scope:** Defines which section(s) of the log should be considered to test the rule.
-- **(2) Filters:** Determines how should the checkpoint arguments be used to match the checkpoints under test.
-- **(3) Fact:** The concrete action the rule states, and which should be asserted.
+- **(2) Fact:** The concrete action the rule states, and which should be asserted.
 
 ## Rule scope
 

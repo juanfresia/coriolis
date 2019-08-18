@@ -1,0 +1,39 @@
+reader_enter  1  1
+reader_enter  2  1
+read_room  1  1  NULL
+read_room  2  1  NULL
+reader_exit  1  1
+reader_exit  2  1
+writer_enter  2  1
+write_room  2  1  Good-dinner
+writer_exit  2  1
+writer_enter  1  1
+write_room  1  1  Terrible-evening
+writer_exit  1  1
+writer_enter  3  1
+write_room  3  1  Good-life
+writer_exit  3  1
+reader_enter  2  1
+reader_enter  1  1
+read_room  2  1  Good-life
+read_room  1  1  Good-life
+reader_exit  2  1
+reader_exit  1  1
+writer_enter  1  1
+write_room  1  1  Nice-day
+writer_exit  1  1
+writer_enter  2  1
+write_room  2  1  Wonderful-day
+writer_exit  2  1
+writer_enter  3  1
+write_room  3  1  Pathetic-dinner
+writer_exit  3  1
+writer_enter  1  1
+write_room  1  1  Lame-evening
+writer_exit  1  1
+writer_enter  2  1
+write_room  2  1  Terrible-meeting
+writer_exit  2  1
+writer_enter  3  1
+write_room  3  1  Awful-job
+writer_exit  3  1
