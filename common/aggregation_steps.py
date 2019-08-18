@@ -174,7 +174,7 @@ class ImposeWildcardCondition(AggregationStep):
         w2 = self.w2 if self.using_literal else "$$r.arg_{}".format(self.w2)
         cond = {"input": "$results", "as": "r", "cond": { self._expr_to_cmp(self.expr): ["$$r.arg_{}".format(self.w1), w2] }}
         steps = [ {"$project": {"_id": "$_id", "results": { "$filter": cond }}} ]
-        steps.append( {"$match": { "$expr": {"$ne": ["$results", []]} }} ) # Discard empty results arrays
+        #steps.append( {"$match": { "$expr": {"$ne": ["$results", []]} }} ) # Discard empty results arrays
         return steps
 
 

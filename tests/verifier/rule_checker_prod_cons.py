@@ -3,7 +3,7 @@ import unittest
 from verifier.rule_checker import *
 
 
-class TestProducerConsumer1(unittest.TestCase):
+class TestProducersConsumers(unittest.TestCase):
     lp = LogParser("/vagrant/resources/prod_cons_1.log", "/vagrant/resources/prod_cons.chk")
 
     rule_1_statement = (
