@@ -1,18 +1,11 @@
 #!/usr/bin/env python3
 
-import pymongo # pip3 install pymongo
 from common import checkpoint_table
 
 class LogParser:
     def __init__(self, log_file, checkpoint_file):
         self.checkpoint_table = checkpoint_table.CheckpointTable(checkpoint_file)
         self.log_file = log_file
-        self.client = None
-        self.db = None
-        
-    def connect_db(self):
-        self.client = pymongo.MongoClient("localhost", 27017)
-        self.db = self.client.concu_db
     
     def cast_arg_with_type(self, arg, type):
         if type == "int": return int(arg)
@@ -25,10 +18,7 @@ class LogParser:
         for i in range(0, len(args)): json["arg_{}".format(i + 1)] = args[i]
         return json
     
-    def populate_db(self):
-        if self.db is None: self.connect_db()
-        concu_collection = self.db.concu_collection
-
+    def populate_db(self, mongo_client):
         with open(self.log_file) as lf:
             for i, line in enumerate(lf):
                 args = line.split() #TODO: Add separator
@@ -37,7 +27,8 @@ class LogParser:
                 for j in range(0, len(arg_types)):
                     args[j + 1] = self.cast_arg_with_type(args[j + 1], arg_types[j])
                 checkpoint_json = self.create_checkpoint_json(i+1, args[0], args[1:])
-                concu_collection.insert_one(checkpoint_json)
+                mongo_client.insert_one(checkpoint_json)
+
 
 if __name__ == "__main__":
     log_parser = LogParser("/vagrant/resources/prod_cons_1.log", "/vagrant/resources/prod_cons.chk")

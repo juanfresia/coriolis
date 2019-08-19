@@ -4,7 +4,8 @@ from verifier.rule_checker import *
 
 
 class TestReadersWriters(unittest.TestCase):
-    lp = LogParser("/vagrant/resources/readers_writers_2.log", "/vagrant/resources/readers_writers.chk")
+    log_file = "/vagrant/resources/readers_writers_2.log"
+    checkpoint_file = "/vagrant/resources/readers_writers.chk"
 
     rule_1_statement = (
         "# If a writer is on a room, readers cannot enter\n"
@@ -303,11 +304,8 @@ class TestReadersWriters(unittest.TestCase):
 
 
     def check_one_rule(self, rule):
-        self.lp.populate_db()
-        rc = RuleChecker([ rule ])
+        rc = RuleChecker([ rule ], self.log_file, self.checkpoint_file)
         rule = rc.check_all_rules()[0]
-        self.lp.db.concu_collection.drop()
-
         self.assertTrue(rule.has_passed())
 
     def test_reader_cant_enter_if_writer(self):
@@ -347,7 +345,6 @@ class TestReadersWriters(unittest.TestCase):
         self.check_one_rule(self.rule_12)
 
     def test_all_rules(self):
-        self.lp.populate_db()
         all_rules = [
             self.rule_1,
             self.rule_2,
@@ -362,9 +359,8 @@ class TestReadersWriters(unittest.TestCase):
             self.rule_11,
             self.rule_12,
         ]
-        rc = RuleChecker(all_rules)
+        rc = RuleChecker(all_rules, self.log_file, self.checkpoint_file)
         all_rules = rc.check_all_rules()
-        self.lp.db.concu_collection.drop()
 
         all_passed = True
         for rule in all_rules:

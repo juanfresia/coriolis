@@ -4,7 +4,8 @@ from verifier.rule_checker import *
 
 
 class TestProducersConsumers(unittest.TestCase):
-    lp = LogParser("/vagrant/resources/prod_cons_1.log", "/vagrant/resources/prod_cons.chk")
+    log_file = "/vagrant/resources/prod_cons_1.log"
+    checkpoint_file = "/vagrant/resources/prod_cons.chk"
 
     rule_1_statement = (
         "# Every item is produced only once\n"
@@ -189,11 +190,8 @@ class TestProducersConsumers(unittest.TestCase):
     rule_11 = JARLRule(rule_11_statement, rule_11_fact)
 
     def check_one_rule(self, rule):
-        self.lp.populate_db()
-        rc = RuleChecker([ rule ])
+        rc = RuleChecker([ rule ], self.log_file, self.checkpoint_file)
         rule = rc.check_all_rules()[0]
-        self.lp.db.concu_collection.drop()
-
         self.assertTrue(rule.has_passed())
 
     def test_every_item_produced_once(self):
@@ -230,7 +228,6 @@ class TestProducersConsumers(unittest.TestCase):
         self.check_one_rule(self.rule_11)
 
     def test_all_rules(self):
-        self.lp.populate_db()
         all_rules = [
             self.rule_1,
             self.rule_2,
@@ -244,9 +241,8 @@ class TestProducersConsumers(unittest.TestCase):
             self.rule_10,
             self.rule_11,
         ]
-        rc = RuleChecker(all_rules)
+        rc = RuleChecker(all_rules, self.log_file, self.checkpoint_file)
         all_rules = rc.check_all_rules()
-        self.lp.db.concu_collection.drop()
 
         all_passed = True
         for rule in all_rules:

@@ -4,7 +4,8 @@ from verifier.rule_checker import *
 
 
 class TestSmokers(unittest.TestCase):
-    lp = LogParser("/vagrant/resources/smokers_2.log", "/vagrant/resources/smokers.chk")
+    log_file = "/vagrant/resources/smokers_2.log"
+    checkpoint_file = "/vagrant/resources/smokers.chk"
 
     rule_1_statement = (
         "# Only one smoker smokes at a time\n"
@@ -219,11 +220,8 @@ class TestSmokers(unittest.TestCase):
     rule_11 = JARLRule(rule_11_statement, rule_11_fact)
 
     def check_one_rule(self, rule):
-        self.lp.populate_db()
-        rc = RuleChecker([ rule ])
+        rc = RuleChecker([ rule ], self.log_file, self.checkpoint_file)
         rule = rc.check_all_rules()[0]
-        self.lp.db.concu_collection.drop()
-
         self.assertTrue(rule.has_passed())
 
     def test_one_smoke_per_round(self):
@@ -260,7 +258,6 @@ class TestSmokers(unittest.TestCase):
         self.check_one_rule(self.rule_11)
 
     def test_all_rules(self):
-        self.lp.populate_db()
         all_rules = [
             self.rule_1,
             self.rule_2,
@@ -274,9 +271,8 @@ class TestSmokers(unittest.TestCase):
             self.rule_10,
             self.rule_11,
         ]
-        rc = RuleChecker(all_rules)
+        rc = RuleChecker(all_rules, self.log_file, self.checkpoint_file)
         all_rules = rc.check_all_rules()
-        self.lp.db.concu_collection.drop()
 
         all_passed = True
         for rule in all_rules:
