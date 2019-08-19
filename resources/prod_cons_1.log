@@ -15,6 +15,6 @@ consume  2  7
 produce  1  8
 consume  1  8
 produce  2  9
-produce  1  10
 consume  1  9
+produce  1  10
 consume  3  10

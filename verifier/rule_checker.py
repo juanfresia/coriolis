@@ -22,7 +22,7 @@ class RuleChecker:
         return concu_collection.aggregate(aggregation_steps)
     
     def check_rule(self, rule):
-        rule.set_passed_status(True)
+        rule.set_passed()
         rule_scope = RuleScope.get_default_scope()
         if rule.has_scope():
             rule_scope = self.execute_aggregation_steps(rule.evaluate_scope_steps())
@@ -30,7 +30,7 @@ class RuleChecker:
             l_first, l_second = RuleScope.parse_scope_log_lines(s)
             r = self.execute_aggregation_steps(FilterByLogLines(l_first, l_second).evaluate() + rule.evaluate_fact_steps(s))
             for x in r:
-                if not x["_id"]: rule.set_passed_status(False)
+                if not x["_id"]: rule.set_failed(x["info"])
 
 
     def check_all_rules(self):
@@ -43,35 +43,24 @@ class RuleChecker:
 
 if __name__ == "__main__":
     #print("Run any of the tests.verifier.rule_checker instead")
-    lp = LogParser("/vagrant/resources/readers_writers_2.log", "/vagrant/resources/readers_writers.chk")
+    lp = LogParser("/vagrant/resources/prod_cons_1.log", "/vagrant/resources/prod_cons.chk")
 
-    rule_1_statement = (
-        "# While there are writers, readers cannot enter\n"
-        "for every w1, w2=w1, r1, r2=r1:\n"
-        "between every writer_enter(w1, r1) and next writer_exit(w2, r2)\n"
-        "  for every room=r1 and any r:\n"
-        "  reader_enter(r, room) must not happen\n"
+    rule_5_statement = (
+        "# Every item is produced before consumed\n"
+        "for every i1, i2=i1 and any p, c, :\n"
+        "produce(p, i1) must precede consume(c, i2)\n"
     )
-    rule_1_scope = RuleScope([
-        MatchCheckpoints(["writer_enter", "writer_exit"]),
-        RenameArgs(["writer_enter", "writer_exit"], [ ["w1", "r1"], ["w2", "r2"] ]),
-        CrossAndGroupByArgs(["writer_enter", "writer_exit"], [ ["w1", "r1"], ["w2", "r2"] ]),
-        ImposeIteratorCondition("w1", "=", "w2"),
-        ImposeIteratorCondition("r1", "=", "r2"),
-        ScopeBetween("writer_enter1", "writer_exit2")
-    ])
-    rule_1_fact = RuleFact([
-        MatchCheckpoints(["reader_enter"]),
-        RenameArgs(["reader_enter"], [ ["r", "room"] ]),
-        CrossAndGroupByArgs(["reader_enter"], [ ["room"] ]),
-        ImposeIteratorCondition("room", "=", "#r1", True),
-        CompareResultsQuantity("=", 0),
+    rule_5_fact = RuleFact([
+        MatchCheckpoints(["produce", "consume"]),
+        RenameArgs(["produce", "consume"], [["p", "i1"], ["c", "i2"]]),
+        CrossAndGroupByArgs(["produce", "consume"], [("i1",), ("i2",)]),
+        ImposeIteratorCondition("i1", "=", "i2"),
+        CompareResultsPrecedence("produce1", "consume2"),
         ReduceResult()
     ])
-    rule_1 = JARLRule(rule_1_statement, rule_1_fact, rule_1_scope)
-    rule_1.set_dynamic_scope_arg("r1", True)
+    rule_5 = JARLRule(rule_5_statement, rule_5_fact)
     lp.populate_db()
-    rc = RuleChecker([rule_1])
+    rc = RuleChecker([rule_5])
     all_rules = rc.check_all_rules()
     lp.db.concu_collection.drop()
 

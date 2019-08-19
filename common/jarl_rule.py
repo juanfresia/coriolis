@@ -7,6 +7,7 @@ class JARLRule:
         self.fact = fact
         self.scope = scope
         self.status = "Pending"
+        self.failed_info = ""
         self._dynamic_args = {}
 
     def set_dynamic_scope_arg(self, scope_arg, first_checkpoint=True):
@@ -21,8 +22,15 @@ class JARLRule:
             dynamic_args[k] = RuleScope.parse_scope_arg(s, v[0], v[1])
         return self.fact.evaluate_steps(dynamic_args)
 
-    def set_passed_status(self, has_passed):
-        self.status = "Passed" if has_passed else "Failed"
+    def set_passed(self):
+        self.status = "Passed"
+
+    def set_failed(self, failed_info=""):
+        self.status = "Failed"
+        self.failed_info = failed_info
+
+    def get_failed_info(self):
+        return self.failed_info
 
     def has_passed(self):
         return self.status == "Passed"

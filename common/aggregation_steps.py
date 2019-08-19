@@ -20,7 +20,6 @@ class AggregationStep:
                 setattr(self, k, dynamic_args[getattr(self, k)])
         return self._mongofy()
 
-
     def _mongofy(self):
         raise NotImplementedError
 
@@ -34,6 +33,9 @@ class AggregationStep:
             "!=": "$ne",
         }
         return EXPR_TO_CMP[expr]
+
+    def _int_to_str(self, x):
+        return {"$substr": [x, 0, -1]}
 
 #   Every rule is solved according to the following recipe:
 #
@@ -184,8 +186,14 @@ class CompareResultsQuantity(AggregationStep):
         self.expr = expr
         self.n = n
 
+    def _make_info_message(self):
+        log_lines = {"$map": { "input": "$results", "as": "r", "in": {"$concat": [ " ", self._int_to_str("$$r.log_line") ]} }}
+        log_lines = {"$reduce": {"input": log_lines, "initialValue": "", "in": {"$concat": ["$$value", "$$this"]}}}
+        return {"$concat": [ "Checkpoint happened ", self._int_to_str({"$size": "$results"}), " times (involved lines on log:", log_lines, ").\n" ]}
+
     def _mongofy(self):
-        return [ {"$project": { "result": {self._expr_to_cmp(self.expr): [{"$size": "$results"}, self.n]} }} ]
+        info = self._make_info_message()
+        return [ {"$project": { "result": {self._expr_to_cmp(self.expr): [{"$size": "$results"}, self.n]}, "info": info }} ]
 
 class CompareResultsPrecedence(AggregationStep):
     def __init__(self, checkpoint_first, checkpoint_second, using_precede=True):
@@ -193,6 +201,10 @@ class CompareResultsPrecedence(AggregationStep):
         self.checkpoint_first = checkpoint_first
         self.checkpoint_second = checkpoint_second
         self.using_precede = using_precede
+
+    def _make_info_message(self):
+        msg = "Checkpoint did not {} as expected (involved lines on log: ".format("precede" if self.using_precede else "follow")
+        return {"$concat": [ msg, self._int_to_str("$first"), " ", self._int_to_str("$second"), ").\n" ]}
 
     def _mongofy(self):
         steps = []
@@ -208,16 +220,24 @@ class CompareResultsPrecedence(AggregationStep):
         if self.using_precede:
             steps.append( {"$match": { "$expr": {"$ne": ["$second" , None]} }} )
         # Step 3: We check every first value is less than the second value
-        steps.append( {"$project": { "result": {"$lt": ["$first", "$second"]} }} )
+        steps.append( {"$project": { "result": {"$lt": ["$first", "$second"]}, "info": self._make_info_message() }} )
         return steps
 
 
 class ReduceResult(AggregationStep):
-    def __init__(self):
+    def __init__(self, and_results=True):
         super().__init__()
+        self.and_results = and_results
 
     def _mongofy(self):
-        return [ {"$group": { "_id" : "$result" }} ]
+        steps = [ {"$addFields": {"info": {"$cond": ["$result", "", "$info"]}}} ]
+        op = "$and" if self.and_results else "$or"
+        initial_value = self.and_results
+        steps.append( {"$group": { "_id" : "null", "r": {"$push": "$$ROOT"} }} )
+        _id = {"$reduce": {"input": "$r", "initialValue": initial_value, "in": {op: ["$$value", "$$this.result"]}}}
+        info = {"$reduce": {"input": "$r", "initialValue": "", "in": {"$concat": ["$$value", "$$this.info"]}}}
+        steps.append( {"$project": {"_id": _id, "info": info}} )
+        return steps
 
 
 class FilterByLogLines(AggregationStep):
