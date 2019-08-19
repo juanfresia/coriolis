@@ -9,7 +9,6 @@ import json
 # returned if you concatenate many of these steps into a single array). The dynamic_args
 # dict allows the Aggregation class to override values when calling evaluate, thus providing
 # a way to set an AggregationStep value after the creation of the object instance.
-
 class AggregationStep:
     def __init__(self):
         self.overridable_list = []
@@ -55,8 +54,19 @@ class AggregationStep:
 #     6) Perform comparison of quantity or precedence on each group
 #     7) Reduce the result
 #
-#   The following classes are designed to solve the above specified steps
+#   The following classes are designed to solve the above specified steps.
 
+
+# USAGE EXAMPLE: MatchCheckpoints( ["f", "h"] )
+# Input:
+#   {'log_line': 1, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'f'}
+#   {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g'}
+#   {'log_line': 3, 'arg_1': 2, 'arg_2': 2, 'checkpoint': 'f'}
+#   {'log_line': 4, 'arg_1': 2, 'arg_2': 3, 'checkpoint': 'h'}
+# Output:
+#   {'log_line': 1, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'f'}
+#   {'log_line': 3, 'arg_1': 2, 'arg_2': 2, 'checkpoint': 'f'}
+#   {'log_line': 4, 'arg_1': 2, 'arg_2': 3, 'checkpoint': 'h'}
 class MatchCheckpoints(AggregationStep):
     def __init__(self, checkpoint_names):
         super().__init__()
@@ -66,7 +76,15 @@ class MatchCheckpoints(AggregationStep):
         checkpoint_names = [{"checkpoint": cn} for cn in self.checkpoint_names]
         return [ {"$match": {"$or": checkpoint_names }} ]
 
-
+# USAGE EXAMPLE: RenameArgs( ["f", "g"], [ ["i", "j"], ["a1", "a2"] ] )
+# Input:
+#   {'log_line': 1, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'f'}
+#   {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g'}
+#   {'log_line': 3, 'arg_1': 2, 'arg_2': 2, 'checkpoint': 'f'}
+# Output:
+#   {'log_line': 1, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'f', 'arg_i': 1, 'arg_j': 1}
+#   {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g', 'arg_a1': 1, 'arg_a2': 1}
+#   {'log_line': 3, 'arg_1': 2, 'arg_2': 2, 'checkpoint': 'f', 'arg_i': 2, 'arg_j': 2}
 class RenameArgs(AggregationStep):
     def  __init__(self, checkpoint_names, arg_names_list):
         super().__init__()
@@ -84,7 +102,22 @@ class RenameArgs(AggregationStep):
                 steps.append( {"$addFields": {"arg_{}".format(self.arg_names_list[i][j]): r} } )
         return steps
 
-
+# USAGE EXAMPLE: CrossJoinCheckpoints( ["f", "g"] )
+# Input:
+#   {'log_line': 1, 'arg_1': 1, 'checkpoint': 'f', 'arg_p': 1}
+#   {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g', 'arg_c': 1, 'arg_i': 1}
+#   {'log_line': 3, 'arg_1': 2, 'checkpoint': 'f', 'arg_p': 2}
+#   {'log_line': 4, 'arg_1': 2, 'checkpoint': 'f', 'arg_p': 2}
+#   {'log_line': 5, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g', 'arg_c': 1, 'arg_i': 2}
+# Output:
+#   {'r1': {'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_p': 1}, 'r2': {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 1}}
+#   {'r1': {'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_p': 1}, 'r2': {'log_line': 5, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 2}}
+#   {'r1': {'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_p': 2}, 'r2': {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 1}}
+#   {'r1': {'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_p': 2}, 'r2': {'log_line': 5, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 2}}
+#   {'r1': {'log_line': 4, 'arg_1': 2, 'checkpoint': 'f1', 'arg_p': 2}, 'r2': {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 1}}
+#   {'r1': {'log_line': 4, 'arg_1': 2, 'checkpoint': 'f1', 'arg_p': 2}, 'r2': {'log_line': 5, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 2}}
+#
+# NOTE: The checkpoint names are modified by adding a number sufix (i.e. from "f","g" to "f1","g2")
 class CrossJoinCheckpoints(AggregationStep):
     def __init__(self, checkpoint_names):
         super().__init__()
@@ -120,7 +153,22 @@ class CrossJoinCheckpoints(AggregationStep):
 
         return steps
 
-
+# USAGE EXAMPLE: CrossAndGroupByArgs( ["f", "g"], [ ["i1"], ["i2"] ] )
+# Input:
+#   {'log_line': 1, 'arg_1': 1, 'checkpoint': 'f', 'arg_i1': 1}
+#   {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g', 'arg_c': 1, 'arg_i2': 1}
+#   {'log_line': 3, 'arg_1': 2, 'checkpoint': 'f', 'arg_i1': 2}
+#   {'log_line': 4, 'arg_1': 3, 'checkpoint': 'f', 'arg_i1': 3}
+#   {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g', 'arg_c': 1, 'arg_i2': 2}
+# Output:
+#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 1}}
+#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 1}}
+#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 2}}
+#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 2}}
+#   {'results': [{'log_line': 4, 'arg_1': 3, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 3}}
+#   {'results': [{'log_line': 4, 'arg_1': 3, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 3}}
+#
+# NOTE: The checkpoint names are modified by adding a number sufix (i.e. from "f","g" to "f1","g2")
 class CrossAndGroupByArgs(AggregationStep):
     def __init__(self, checkpoint_names, arg_names):
         super().__init__()
@@ -148,7 +196,18 @@ class CrossAndGroupByArgs(AggregationStep):
 
         return steps
 
-
+# USAGE EXAMPLE: ImposeIteratorCondition("i1", "<=", "i2")
+# Input:
+#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 1}}
+#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 1}}
+#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 2}}
+#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 2}}
+#   {'results': [{'log_line': 4, 'arg_1': 3, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 3}}
+#   {'results': [{'log_line': 4, 'arg_1': 3, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 3}}
+# Output:
+#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 1}}
+#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 1}}
+#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 2}}
 class ImposeIteratorCondition(AggregationStep):
     def __init__(self, i1, expr, i2, using_literal=False):
         super().__init__()
@@ -162,7 +221,21 @@ class ImposeIteratorCondition(AggregationStep):
         i2 = self.i2 if self.using_literal else "$_id.{}".format(self.i2)
         return [ {"$match": { "$expr": {self._expr_to_cmp(self.expr): ["$_id.{}".format(self.i1), i2]} }} ]
 
-
+# USAGE EXAMPLE: ImposeWildcardCondition("w1", ">=", "w2")
+# Input:
+#   {'results': [{'log_line': 1, 'arg_1': 1, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 1, 'arg_w2': 0}]}
+#   {'results': [{'log_line': 2, 'arg_1': 1, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 1, 'arg_w2': 2}]}
+#   {'results': [{'log_line': 3, 'arg_1': 2, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 2, 'arg_w2': 4}]}
+#   {'results': [{'log_line': 4, 'arg_1': 2, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 2, 'arg_w2': 4}]}
+#   {'results': [{'log_line': 5, 'arg_1': 3, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 3, 'arg_w2': 2}]}
+#   {'results': [{'log_line': 6, 'arg_1': 3, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 3, 'arg_w2': 0}]}
+# Output:
+#   {'results': [{'log_line': 1, 'arg_1': 1, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 1, 'arg_w2': 0}]}
+#   {'results': []}
+#   {'results': []}
+#   {'results': []}
+#   {'results': [{'log_line': 5, 'arg_1': 3, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 3, 'arg_w2': 2}]}
+#   {'results': [{'log_line': 6, 'arg_1': 3, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 3, 'arg_w2': 0}]}
 class ImposeWildcardCondition(AggregationStep):
     def __init__(self, w1, expr, w2, using_literal=False):
         super().__init__()
@@ -179,7 +252,15 @@ class ImposeWildcardCondition(AggregationStep):
         #steps.append( {"$match": { "$expr": {"$ne": ["$results", []]} }} ) # Discard empty results arrays
         return steps
 
-
+# USAGE EXAMPLE: CompareResultsQuantity("=", 1)
+# Input:
+#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1}], '_id': {'i': 1}}
+#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_x': 2}], '_id': {'i': 2}}
+#   {'results': [{'log_line': 7, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3}, {'log_line': 11, 'arg_1': 4, 'checkpoint': 'f1', 'arg_x': 4}], '_id': {'i': 3}}
+# Output:
+#   {'result': True, 'info': 'Some info message', '_id': {'i': 1}}
+#   {'result': True, 'info': 'Some info message', '_id': {'i': 2}}
+#   {'result': False, 'info': 'Some info message', '_id': {'i': 3}}
 class CompareResultsQuantity(AggregationStep):
     def __init__(self, expr, n):
         super().__init__()
@@ -195,6 +276,15 @@ class CompareResultsQuantity(AggregationStep):
         info = self._make_info_message()
         return [ {"$project": { "result": {self._expr_to_cmp(self.expr): [{"$size": "$results"}, self.n]}, "info": info }} ]
 
+# USAGE EXAMPLE: CompareResultsPrecedence("f1", "g2")
+# Input:
+#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 7, 'arg_1': 2, 'checkpoint': 'g2', 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 2}}
+#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'arg_1': 1, 'checkpoint': 'g2', 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 1}}
+#   {'results': [{'log_line': 5, 'arg_1': 3, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 4, 'arg_1': 3, 'checkpoint': 'g2', 'arg_i2': 3}], '_id': {'i2': 3, 'i1': 3}}
+# Output:
+#   {'result': True, 'info': 'Some info message', '_id': {'i1': 2, 'i2': 2}}
+#   {'result': True, 'info': 'Some info message', '_id': {'i1': 1, 'i2': 1}}
+#   {'result': False, 'info': 'Some info message', '_id': {'i1': 3, 'i2': 3}}
 class CompareResultsPrecedence(AggregationStep):
     def __init__(self, checkpoint_first, checkpoint_second, using_precede=True):
         super().__init__()
@@ -223,7 +313,14 @@ class CompareResultsPrecedence(AggregationStep):
         steps.append( {"$project": { "result": {"$lt": ["$first", "$second"]}, "info": self._make_info_message() }} )
         return steps
 
-
+# USAGE EXAMPLE: ReduceResult()
+# Input:
+#   {'result': False, 'info': 'Info message 1\n'}
+#   {'result': True, 'info': 'Info message 2\n'}
+#   {'result': False, 'info': 'Info message 3\n'}
+#   {'result': True, 'info': 'Info message 4\n'}
+# Output:
+#   {'_id': False, 'info': 'Info message 1\nInfo message 3\n'}
 class ReduceResult(AggregationStep):
     def __init__(self, and_results=True):
         super().__init__()
@@ -239,7 +336,17 @@ class ReduceResult(AggregationStep):
         steps.append( {"$project": {"_id": _id, "info": info}} )
         return steps
 
-
+# USAGE EXAMPLE: FilterByLogLines(2, 4)
+# Input:
+#   {'log_line': 1, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'f'}
+#   {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g'}
+#   {'log_line': 3, 'arg_1': 2, 'arg_2': 2, 'checkpoint': 'f'}
+#   {'log_line': 4, 'arg_1': 2, 'arg_2': 3, 'checkpoint': 'h'}
+#   {'log_line': 5, 'arg_1': 3, 'arg_2': 9, 'checkpoint': 'g'}
+# Output:
+#   {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g'}
+#   {'log_line': 3, 'arg_1': 2, 'arg_2': 2, 'checkpoint': 'f'}
+#   {'log_line': 4, 'arg_1': 2, 'arg_2': 3, 'checkpoint': 'h'}
 class FilterByLogLines(AggregationStep):
     def __init__(self, l_first, l_second):
         super().__init__()
@@ -261,7 +368,21 @@ class SortByLogLine(AggregationStep):
     def _mongofy(self):
         return [ {"$sort": {"log_line": 1 if self.ascending else -1}} ]
 
-
+# USAGE EXAMPLE: ScopeAfter("f1")
+# Input:
+#   {'_id': {'null': None}, 'results': [
+#     {'log_line': 2, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1},
+#     {'log_line': 6, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1},
+#     {'log_line': 8, 'arg_1': 2, 'checkpoint': 'f1', 'arg_x': 2},
+#     {'log_line': 9, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3},
+#     {'log_line': 10, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3}
+#   ]}
+# Output:
+#   {'_id': {'null': None}, 'c1': {'log_line': 2, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1}, 'c2': {'log_line': 'MAX'}}
+#   {'_id': {'null': None}, 'c1': {'log_line': 6, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1}, 'c2': {'log_line': 'MAX'}}
+#   {'_id': {'null': None}, 'c1': {'log_line': 8, 'arg_1': 2, 'checkpoint': 'f1', 'arg_x': 2}, 'c2': {'log_line': 'MAX'}}
+#   {'_id': {'null': None}, 'c1': {'log_line': 9, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3}, 'c2': {'log_line': 'MAX'}}
+#   {'_id': {'null': None}, 'c1': {'log_line': 10, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3}, 'c2': {'log_line': 'MAX'}}
 class ScopeAfter(AggregationStep):
     def __init__(self, checkpoint_name):
         super().__init__()
@@ -273,7 +394,21 @@ class ScopeAfter(AggregationStep):
         steps.append( {"$project": {"c1": "$results", "c2": {"log_line": "MAX"}}} )
         return steps
 
-
+# USAGE EXAMPLE: ScopeBefore("f1")
+# Input:
+#   {'_id': {'null': None}, 'results': [
+#     {'log_line': 2, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1},
+#     {'log_line': 6, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1},
+#     {'log_line': 8, 'arg_1': 2, 'checkpoint': 'f1', 'arg_x': 2},
+#     {'log_line': 9, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3},
+#     {'log_line': 10, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3}
+#   ]}
+# Output:
+#   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 2, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1}},
+#   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 6, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1}},
+#   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 8, 'arg_1': 2, 'checkpoint': 'f1', 'arg_x': 2}},
+#   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 9, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3}},
+#   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 10, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3}}
 class ScopeBefore(AggregationStep):
     def __init__(self, checkpoint_name):
         super().__init__()
@@ -285,7 +420,19 @@ class ScopeBefore(AggregationStep):
         steps.append( {"$project": {"c2": "$results", "c1": {"log_line": "MIN"}}} )
         return steps
 
-
+# USAGE EXAMPLE: ScopeBetween("f1", "g2")
+# Input:
+#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'arg_1': 1, 'checkpoint': 'g2', 'arg_i2': 1}], '_id': {'i1': 1, 'i2': 1}}
+#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 6, 'arg_1': 2, 'checkpoint': 'g2', 'arg_i2': 2}], '_id': {'i1': 1, 'i2': 2}}
+#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 2, 'arg_1': 1, 'checkpoint': 'g2', 'arg_i2': 1}], '_id': {'i1': 2, 'i2': 1}}
+#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 6, 'arg_1': 2, 'checkpoint': 'g2', 'arg_i2': 2}], '_id': {'i1': 2, 'i2': 2}}
+#   {'results': [{'log_line': 4, 'arg_1': 3, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 2, 'arg_1': 1, 'checkpoint': 'g2', 'arg_i2': 1}], '_id': {'i1': 3, 'i2': 1}}
+#   {'results': [{'log_line': 4, 'arg_1': 3, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 6, 'arg_1': 2, 'checkpoint': 'g2', 'arg_i2': 2}], '_id': {'i1': 3, 'i2': 2}}
+# Output:
+#   {'c2': {'log_line': 2, 'arg_1': 1, 'checkpoint': 'g2', 'arg_i2': 1}, 'c1': {'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, '_id': {'i1': 1, 'i2': 1}}
+#   {'c2': {'log_line': 6, 'arg_1': 2, 'checkpoint': 'g2', 'arg_i2': 2}, 'c1': {'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, '_id': {'i1': 1, 'i2': 2}}
+#   {'c2': {'log_line': 6, 'arg_1': 2, 'checkpoint': 'g2', 'arg_i2': 2}, 'c1': {'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, '_id': {'i1': 2, 'i2': 2}}
+#   {'c2': {'log_line': 6, 'arg_1': 2, 'checkpoint': 'g2', 'arg_i2': 2}, 'c1': {'log_line': 4, 'arg_1': 3, 'checkpoint': 'f1', 'arg_i1': 3}, '_id': {'i1': 3, 'i2': 2}}
 class ScopeBetween(AggregationStep):
     def __init__(self, checkpoint_first, checkpoint_second, using_next=True, using_beyond=False):
         super().__init__()
