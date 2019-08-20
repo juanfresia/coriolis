@@ -1,10 +1,19 @@
 #!/usr/bin/env python3
 
+import argparse
+import os
+
 from common.aggregation_steps import *
 from verifier.log_parser import LogParser
 from verifier.mongo_client import MongoClient
 from verifier.printer import VerifierPrinter
 from common.jarl_rule import JARLRule, RuleScope, RuleFact
+
+class FullPaths(argparse.Action):
+    """Expand user- and relative-paths"""
+    def __call__(self, parser, namespace, values, option_string=None):
+        setattr(namespace, self.dest,
+                os.path.abspath(os.path.expanduser(values[0])))
 
 class RuleChecker:
     def __init__(self, rules_to_check, log_file, checkpoint_file):
@@ -13,7 +22,6 @@ class RuleChecker:
         self.lp = LogParser(log_file, checkpoint_file)
     
     def execute_aggregation_steps(self, aggregation_steps):
-        #print("+ + + {}".format(aggregation_steps))
         return self.mongo_client.aggregate(aggregation_steps)
     
     def check_rule(self, rule):
@@ -22,14 +30,9 @@ class RuleChecker:
         if rule.has_scope():
             rule_scope = self.execute_aggregation_steps(rule.evaluate_scope_steps())
         for s in rule_scope:
-            #print("1) Current scope: {}".format(s))
-            l_first, l_second = RuleScope.parse_scope_log_lines(s)
-            r = self.execute_aggregation_steps(FilterByLogLines(l_first, l_second).evaluate() + rule.evaluate_fact_steps(s))
-            #print("3) Execution [lines {}-{}]:".format(l_first, l_second))
+            r = self.execute_aggregation_steps(rule.evaluate_fact_steps(s))
             for x in r:
-                #print(x)
-                if not x["_id"]: rule.set_failed(x["info"])
-            #print("")
+                if not x["_id"]: rule.set_failed(failed_info=x["info"])
 
     def check_all_rules(self):
         self.lp.populate_db(self.mongo_client)
@@ -40,24 +43,26 @@ class RuleChecker:
 
 
 if __name__ == "__main__":
-    #print("Run any of the tests.verifier.rule_checker instead")
-    rule_5_statement = (
-        "# Every item is produced before consumed\n"
-        "for every i1, i2=i1 and any p, c, :\n"
-        "produce(p, i1) must precede consume(c, i2)\n"
-    )
-    rule_5_fact = RuleFact([
-        MatchCheckpoints(["produce", "consume"]),
-        RenameArgs(["produce", "consume"], [["p", "i1"], ["c", "i2"]]),
-        CrossAndGroupByArgs(["produce", "consume"], [("i1",), ("i2",)]),
-        ImposeIteratorCondition("i1", "=", "i2"),
-        CompareResultsPrecedence("produce1", "consume2"),
-        ReduceResult()
-    ])
-    rule_5 = JARLRule(rule_5_statement, rule_5_fact)
-
-    rc = RuleChecker([ rule_5 ], "/vagrant/resources/prod_cons_1.log", "/vagrant/resources/prod_cons.chk")
-    all_rules = rc.check_all_rules()
-
-
-    VerifierPrinter(True).print_verifier_summary(all_rules)
+    # Set arguments
+    CURDIR = os.getcwd()
+    parser = argparse.ArgumentParser(description='Verifies concurrent rules based on log file.')
+    parser.add_argument('-l', '--log-file', metavar='logfile', nargs=1,
+                        action=FullPaths, help='Log file',
+                        default='{}/coriolis_run.log'.format(CURDIR))
+    parser.add_argument('-c', '--checkpoints', metavar='checkpoints', nargs=1,
+                        action=FullPaths, help='Checkpoint list file',
+                        default='{}/rules.chk'.format(CURDIR))
+    parser.add_argument('-r', '--rules', metavar='rules', nargs=1,
+                        action=FullPaths, help='Rules parsed .py file',
+                        default='{}/rules.py'.format(CURDIR))
+    parser.add_argument('-v', '--verbose',action='store_true', help="Enables verbosity")
+    # Parse arguments
+    args = parser.parse_args()
+    try:
+        exec(open(args.rules).read())
+        rc = RuleChecker(all_rules, args.log_file, args.checkpoints)
+        all_rules = rc.check_all_rules()
+        VerifierPrinter(args.verbose).print_verifier_summary(all_rules)
+    except NameError as e:
+        print("FATAL: The {} file seems to be corrupt:".format(args.rules))
+        print(str(e))

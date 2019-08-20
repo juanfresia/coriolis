@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import copy
+from common.aggregation_steps import *
 
 class JARLRule:
     def __init__(self, statement_text, fact, scope=None):
@@ -17,10 +18,12 @@ class JARLRule:
         return self.scope.evaluate_steps()
 
     def evaluate_fact_steps(self, s):
+        l_first, l_second = RuleScope.parse_scope_log_lines(s)
+
         dynamic_args = {}
         for (k, v) in self._dynamic_args.items():
             dynamic_args[k] = RuleScope.parse_scope_arg(s, v[0], v[1])
-        return self.fact.evaluate_steps(dynamic_args)
+        return FilterByLogLines(l_first, l_second).evaluate() + self.fact.evaluate_steps(dynamic_args)
 
     def set_passed(self):
         self.status = "Passed"
