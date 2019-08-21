@@ -1,5 +1,31 @@
 # JARL Language Specification Guide
 
+## Abstract
+
+JARL aims to define a "common language"" for writing business level user-defined rules for concurrent programs. This specification guide covers the main aspects of the language, providing different useful examples for each topic.
+
+## Table of contents
+
+TODO: Fill when finished
+
+
+## Execution checkpoints
+In order to define easily readable and writable concurrent rules, JARL depends on the concept of _checkpoints_ during the program execution. Checkpoints are precisely defined points of the code which the underlying testing runtime will be available to trace. Essentially, checkpoints might be seen as ordinary functions, except they are really not implemented by the developer of the program but by the testing framework itself.
+
+These checkpoints are meant to represent concrete events of the concurrent problem, that users would like to trace while their program is running. For instance, in producer-consumer problem, the consumer processes should have a "consume" checkpoint in their codes, while producer processes should have a "produce" one. The true purpose of these checkpoints is, then, to be used as "control points" during the concurrent execution. 
+
+The underlying testing runtime must be able to detect _when_ did these checkpoints happened and with _which argument values_. These argument values are fetched from the program execution (i.e. they match code variables) and allow definition of JARL rules matching some criteria. Currently, JARL supported argument types are `int`, `float`, `char` and `string` (with no whitespaces).
+
+A program set of checkpoints and their respective arguments should be defined a priori, on a separate file in a sort of checkpoints table. A possible checkpoints table for the producer-consumer example could be like the following:
+
+```
+# Format is:
+#   <breakpoint-name> [<arg-name>:<arg-type> ...]
+
+produce   producer_id:int   item:int
+consume   consumer_id:int   item:int
+``` 
+
 ## Rule statements
 
 A rule _statement_ is the complete declaration of the rule, the whole text. It consists of the following two well-defined parts:
