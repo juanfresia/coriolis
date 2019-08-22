@@ -1,5 +1,7 @@
 # JARL Language Specification Guide
 
+![](jarl_logo2.png)
+
 ## Abstract
 
 JARL aims to define a "common language"" for writing business level user-defined rules for concurrent programs. This specification guide covers the main aspects of the language, providing different useful examples for each topic.
@@ -10,9 +12,10 @@ TODO: Fill when finished
 
 
 ## Execution checkpoints
+
 In order to define easily readable and writable concurrent rules, JARL depends on the concept of _checkpoints_ during the program execution. Checkpoints are precisely defined points of the code which the underlying testing runtime will be available to trace. Essentially, checkpoints might be seen as ordinary functions, except they are really not implemented by the developer of the program but by the testing framework itself.
 
-These checkpoints are meant to represent concrete events of the concurrent problem, that users would like to trace while their program is running. For instance, in producer-consumer problem, the consumer processes should have a "consume" checkpoint in their codes, while producer processes should have a "produce" one. The true purpose of these checkpoints is, then, to be used as "control points" during the concurrent execution. 
+These checkpoints are meant to represent concrete events of the concurrent problem that users would like to trace while their program is running. For instance, in the producer-consumer problem, consumer processes should have a "consume" checkpoint in their codes, while producer processes should have a "produce" one. The true purpose of these checkpoints is, then, to be used as "control points" during the concurrent execution. 
 
 The underlying testing runtime must be able to detect _when_ did these checkpoints happened and with _which argument values_. These argument values are fetched from the program execution (i.e. they match code variables) and allow definition of JARL rules matching some criteria. Currently, JARL supported argument types are `int`, `float`, `char` and `string` (with no whitespaces).
 
@@ -26,19 +29,64 @@ produce   producer_id:int   item:int
 consume   consumer_id:int   item:int
 ``` 
 
-## Rule statements
+## Rule statement
 
-A rule _statement_ is the complete declaration of the rule, the whole text. It consists of the following two well-defined parts:
+A rule _statement_ is the complete declaration of a JARL rule, addressing certain checkpoints of the code with their arguments. It consists of the following two well-defined parts:
 
-```
-(1)  for every w
-     between every writer_enter(w) and next writer_exit(w)
-(2)    for any r 
-       reader_enter(r) must not happen 
-```
+- **Scope definition:** Defines which time intervals during the execution of the concurrent program should be considered to test the rule.
+- **Fact definition:** The concrete action the rule states, and which should be asserted inside every declared scope.
 
-- **(1) Scope:** Defines which section(s) of the log should be considered to test the rule.
-- **(2) Fact:** The concrete action the rule states, and which should be asserted.
+Checkpoints can be referenced inside both sections together with their arguments. For instance, `produce(p, i)` may refer to the `produce` checkpoint defined on the previous section. As it will be shown in the following sections, JARL syntax allows the writer of the concurrent rules to address these arguments by their values generically, thus providing a flexible and clean way for explaining business-layered concurrent concerns.
+
+## Rule fact
+
+The _fact_ of a rule statement indicates what should be asserted during the rule validation. Hence rule facts represent checkings to verify for the concurrent testing runtime. JARL specifies two different kinds of possible assertions: checkpoint counting and checkpoint precedence.
+
+### Checkpoint counting
+
+Checkpoint counting facts state that some checkpoint must happen a certain number of times during the program execution. The full syntax for a checkpoint `f(x)` would be: 
+
+```f(x) must happen [ <N> | at least <N> | at most <N> ] times ```
+
+Examples:
+
+```semaphore_acquire(sem_id) must happen at most 5 times```
+
+```consume_item() must happen 10 times```
+
+```message_recieve(msg) must happen at least 1 times```
+
+Additionally, it is suggested (although not totally needed) that the following two extra options for `must happen` be present on any JARL parser:
+
+- `must happen` as an alias of `must happen at least 1 times`
+- `must not happen` as an alias of `must happen 0 times`
+
+### Checkpoint precedence
+
+Checkpoint precedence facts expose an order relationship between two checkpoints, in the sense they express that a checkpoint must happen before or after another one. The full syntax for two checkpoints `f(x)` and `g(y)` would be:
+
+```f(x) must [ precede | follow ] g(y)```
+
+Examples:
+
+```produce(item) must precede consume(item)```
+
+```lock_release(lock_id) must follow lock_acquire(lock_id)```
+
+Although it is clear which checkpoint comes before or after the other on both cases, it truly is important to note the logic difference between the `precede` and the `follow` words.
+
+Let `T(X)` be the time when checkpoint `X` happens during the execution of a concurrent program. Then:
+
+- `X must precede Y` is _true_ iff `T(X)` < `T(Y)` or `Y` does not happen when `X` does.
+- `X must follow Y` is _false_ iff `T(X)` < `T(Y)` or `X` does not happen when `Y` does.
+
+### Argument matching with iterators
+
+
+
+### Argument matching with wildcards
+
+### Imposing argument conditions (filtering)
 
 ## Rule scope
 
@@ -129,14 +177,3 @@ for every i, j>i
 
 In the above examples, if `i` took the values `1, 2, 3` and `j` took the values `1, 2, 7, 8` then the `(i, j)` pairs to consider would be `(1,1), (2,2)` for the first example and `(1,2), (1,7), (1,8), (2,7), (2,8), (3,7), (3,8)` for the second.
 
-## Rule fact
-
-The _fact_ of a rule statement indicates what should be asserted during the rule validation. These facts can represent two different kind of checkings: 
-
-1. ```f(...) must happen [ <N> | at least <N> | at most <N> ] times ```
-
-The amount of matching calls to `f(...)` must meet a certain criteria. 
-
-2. ```f(...) must [ precede | follow ] g(...)```
-
-All matching calls to `f(...)` must come before or after all matching calls of `g(...)`.
