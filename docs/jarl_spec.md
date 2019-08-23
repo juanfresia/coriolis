@@ -13,13 +13,13 @@ TODO: Fill when finished
 
 ## Execution checkpoints
 
-In order to define easily readable and writable concurrent rules, JARL depends on the concept of _checkpoints_ during the program execution. Checkpoints are precisely defined points of the code which the underlying testing runtime will be available to trace. Essentially, checkpoints might be seen as ordinary functions, except they are really not implemented by the developer of the program but by the testing framework itself.
+With the purpose of defining easily readable and writable concurrent rules, JARL syntax imposes the existence of _checkpoints_ inside the program. Checkpoints are precisely defined points of the code which the underlying testing runtime will be available to trace. Essentially, checkpoints might be seen as ordinary functions, except they are really not implemented by the developer of the program but by the testing framework itself.
 
 These checkpoints are meant to represent concrete events of the concurrent problem that users would like to trace while their program is running. For instance, in the producer-consumer problem, consumer processes should have a "consume" checkpoint in their codes, while producer processes should have a "produce" one. The true purpose of these checkpoints is, then, to be used as "control points" during the concurrent execution. 
 
 The underlying testing runtime must be able to detect _when_ did these checkpoints happened and with _which argument values_. These argument values are fetched from the program execution (i.e. they match code variables) and allow definition of JARL rules matching some criteria. Currently, JARL supported argument types are `int`, `float`, `char` and `string` (with no whitespaces).
 
-A program set of checkpoints and their respective arguments should be defined a priori, on a separate file in a sort of checkpoints table. A possible checkpoints table for the producer-consumer example could be like the following:
+A program set of checkpoints and their respective arguments should be defined a priori, on a separate file in a sort of checkpoints table. A possible checkpoints table for the producer-consumer example could be like the following (lines with `#` are considered comments):
 
 ```
 # Format is:
@@ -82,7 +82,36 @@ Let `T(X)` be the time when checkpoint `X` happens during the execution of a con
 
 ### Argument matching with iterators
 
+In order to extend previous rule facts in a generic manner, JARL supports argument matching via iterators using the `for every` reserved words. The syntax is the following:
 
+```
+for every [iterator ...]:
+<rule_fact>
+```
+
+The list of iterators implies the enclosed rule fact should be valid for every value that the specified arguments acquire during the program execution. 
+
+Examples:
+
+```
+# Every message is written before read
+for every msg:
+write(msg) must precede read(msg)
+```
+
+```
+# Every shared resource must be released
+for every shmid:
+shm_destroy(shmid) must happen 1 time
+```
+
+```
+# m is called for every i,j combination
+for every i, j:
+m(i, j) must happen at least 1 time
+```
+
+In very concrete words, iterators define a grouping behaviour when matching the checkpoint arguments values. For instance, suppose that during a program execution with a rule defined like the last example the argument `i` took the values `1, 2, 3` and the argument `j` took the values `1, 2, 7, 8`. This way, the `for every i, j` block will group the checkpoint calls in 12 possible categories according to the pair `(i, j)` values: `(1,1), (1,2), (1,7), (1,8), (2,1), (2,2), (2,7), (2,8), (3,1), (3,2), (3,7), (3,8)`. The rule fact (`m` being called) must then be validated inside all of this 12 groups individually.
 
 ### Argument matching with wildcards
 
@@ -161,7 +190,7 @@ for every i, j
 for any p, q
 ```
 
-The `iterators` list of arguments specifies a grouping behaviour when matching the checkpoint arguments values. For instance, suppose that during a program execution the argument `i` took the values `1, 2, 3` and the argument `j` took the values `1, 2, 7, 8`. This way, the `for every i, j` block will group the checkpoint calls in 12 possible categories according to the pair `(i, j)` values: `(1,1), (1,2), (1,7), (1,8), (2,1), (2,2), (2,7), (2,8), (3,1), (3,2), (3,7), (3,8)`. The rule must then be validated inside all of this 12 groups. On the other hand, the `wildcards` list of arguments allows those certain arguments to match any value.
+
 
 Additionally, conditions can be imposed for making filtering more customizable. 
 
