@@ -4,11 +4,24 @@
 
 ## Abstract
 
-JARL aims to define a "common language"" for writing business level user-defined rules for concurrent programs. This specification guide covers the main aspects of the language, providing different useful examples for each topic.
+JARL aims to define a "common language" for writing business level user-defined rules for concurrent programs. This specification guide covers the main aspects of the language, providing different useful examples for each topic.
 
 ## Table of contents
 
-TODO: Fill when finished
+- [Execution checkpoints](#execution-checkpoints)
+- [Rule statement](#rule-statement)
+- [Rule fact](#rule-fact)
+  - [Checkpoint counting](#checkpoint-counting)
+  - [Checkpoint precedence](#checkpoint-precedence)
+  - [Argument matching with iterators](#argument-matching-with-iterators)
+  - [Argument matching with wildcards](#argument-matching-with-wildcards)
+  - [Combining argument matchers](#combining-argument-matchers)
+  - [Imposing argument conditions (filtering)](#imposing-argument-conditions-filtering)
+- [Rule scope](#rule-scope)
+  - [After scope](#after-scope)
+  - [Before scope](#before-scope)
+  - [Between scope](#between-scope)
+  - [Argument matching in rule scopes](#argument-matching-in-rule-scopes)
 
 
 ## Execution checkpoints
@@ -82,7 +95,7 @@ Let `T(X)` be the time when checkpoint `X` happens during the execution of a con
 
 ### Argument matching with iterators
 
-In order to extend previous rule facts in a generic manner, JARL supports argument matching via iterators using the `for every` reserved words. The syntax is the following:
+In order to extend previous rule facts in a generic manner, JARL supports argument matching via _iterators_ using the `for every` reserved words. The syntax is the following:
 
 ```
 for every [iterator ...]:
@@ -115,94 +128,246 @@ In very concrete words, iterators define a grouping behaviour when matching the 
 
 ### Argument matching with wildcards
 
+In addition to checkpoints' argument matching with iterators, JARL language provides a different matching system using _wildcards_ via the `for any` reserved words. The syntax for this is:
+
+```
+for any [wildcard ...]:
+<rule_fact>
+```
+
+The list of wildcards implies the enclosed rule fact should be valid for any value, resulting in a "matching everything" scheme.
+
+Examples:
+
+```
+# 10 items are produced among all producers
+for any item_id:
+produce(item_id) must happen 10 times
+```
+
+```
+# At most 5 processes wait on the semaphore
+for any pid:
+sem_wait(pid) must happen at most 5 times
+```
+
+```
+# m is called 5 times
+for any i, j:
+m(i, j) must happen 5 times
+```
+
+Note that the grouping argument scheme for wildcard matching is completely different that with iterators: since the arguments can match anything, all function calls will fall inside the same group. Let us suppose that, during a program execution with a rule defined like the last example, `m` was called with the following `(i, j)` argument values: `(1,1), (1,2), (2,1), (1,2), (3,7), (3,8)`. The rule fact validation will then fail, since the `any i, j` matched 6 values (the `(1,2)` is counted twice!)
+
+### Combining argument matchers
+
+As it would be expected, JARL supports combining matching via iterators and wildcards with the reserved word `and`. The resulting syntax becomes then:
+
+```
+for every [iterator ...] and any [wildcard ...]:
+<rule_fact>
+```
+
+Examples:
+
+```
+# All items are must have been produced before consumed
+for every item_id and any cid, pid:
+produce(pid, item_id) must precede consume(cid, item_id)
+```
+
+```
+# All acquired locks are released
+for every lock_id and any pid:
+lock_release(lock_id, pid) must follow lock_acquire(lock_id, pid)
+```
+
+```
+# 10 messages must be queued on every message queue
+for every msqid and any msg:
+msq_send(msqid, msg) must happen 10 times
+```
+
+```
+# m is called at most once for every i
+for every i and any j:
+m(i, j) must happen at most 1 times
+```
+
+Of course, the grouping argument behaviour when combining wildcards and iterators is a mixture of both cases. This way, assume that during a program execution with a rule defined like the last example, `m` was called with the following `(i, j)` argument values: `(1,1), (2,2), (5,1), (3,7), (6,8)`. Hence, the rule fact will be validated in five groups, matching any value of `j` in every case. If a sixth call with `(1,2)` were to happen, the rule fact validation would then fail, because `(1,1)` and `(1,2)` fall on the same group defined by the `i` value.
+
 ### Imposing argument conditions (filtering)
+
+In JARL, it is also possible to _filter_ wildcards and iterators argument values according to binary conditions. This filtering will affect the argument matching by imposing extra restrictions on the checkpoints' argument values. The following is a list of all supported conditions:
+
+- Equal to: `=`
+- Not equal to: `!=`
+- Greater than: `>`
+- Less than: `<`
+- Greater than or equal to: `>=`
+- Less than or equal to: `<=`
+
+Comparisons can be made between iterators or wildcards, or against literal values, However, JARL does not currently support comparing a wildcard against an iterator. The following are examples of each of the possible scenarios that can thus be made:
+
+- Comparison between wildcards:
+
+```
+# Smokers never take elements they already have
+for any smoker_id, element_id=smoker_id:
+smoker_take_element(smoker_id, element_id) must happen 0 times
+```
+
+- Comparison between iterators:
+
+```
+# Items are produced in order
+for every i, j>i and any p:
+produce(p, i) must precede produce(p, j)
+```
+
+- Comparison against literal values:
+
+```
+# Semaphore cannot have negative value
+for every semid, k<0:
+sem_create(semid, k) must happen 0 times
+```
 
 ## Rule scope
 
-The _scope_ of a rule statement specifies time ranges, during the program execution, in which the rule should be valid. For CORIOLIS logging-based implementation, this is translated as ranges inside the log file (i.e. the rule should be valid between certain log lines).
+The _scope_ of a rule statement specifies a time range, during the program execution, in which the rule should be valid. Since checkpoints are the main control points for the testing runtime, scopes are defined relatively to them (i.e. the rule should be valid between two checkpoint calls).
 
-A rule form can take any of the following forms:
+**Note**: If no scope for a rule is provided, the implicit scope taken is the whole program execution.
 
-1. ```between [ every | any ] f and [ next | previous ] g```:  
+The syntax for the three JARL explicitly-defined scopes is specified in the following sections.
 
-The rule must be validated between a call of `f` and the next or previous call of `g`. if the `every` word was used, the rule must be valid in every checked range. If the `any` word was used, the rule must be valid in at least one range.
+### After scope:
+
+In an `after` scope, the rule must be valid since a call to a certain checkpoint and until the end of the execution. This checkpoint _is included_ inside the scope considered for the rule validation. The syntax of a complete rule with an `after` scope is:
+
+```
+after <checkpoint>:
+<rule-fact>
+```
 
 Examples:
 
 ```
-between every lock_acquire and previous lock_release
+# Released resource cannot be accessed
+after shm_destroy:
+for any pid:
+shm_read(pid) must happen 0 times
 ```
 
 ```
-between any open_door and next close_door
+# At most 5 processes are awaken via notify
+after notify_all:
+for any pid:
+process_awake(pid) must happen at most 5 times
 ```
 
-```
-between every produce and next consume
-```
+In the case that the checkpoint inside the `after` scope is called more than once, the rule should be valid _after every call_ and until the end of the execution.
 
-**Note:** In the last case, if `consume` is not called after some `produce`, then those checkpoints will fall into no validation range and hence it would be as if they did not exist for such rule.
+### Before scope:
 
-2. ```after [ every | any ] f```
-
-The rule must be valid since a call to `f` and until the end of the execution. The usage of `every` or `any` is like in the `between` scope.
-
-Examples:
-```
-after any sem_destroy
-```
-```
-after every consume
-```
-
-3. ```before [ every | any ] f```
-
-The rule must be valid from the beginning of the execution and until a call to `f`. The usage of `every` or `any` is like in the `between` scope.
-
-Examples:
-```
-before every sem_create
-```
-```
-before any produce
-```
-
-**Note:** In all scopes, the range definition is _inclusive_. For instance, in a `between every f and next g` scope, `f` and `g` are included in every validation range as the left and right extremes of such range.
-
-## Rule filters
-
-Rule _filters_ define how should the checkpoint arguments be matched in order to validate the rule statement. In other words, they specify a concrete grouping strategy for rule validation.
-
-In their most basic form, filters have the following general structure:
-
-```for every [ iterators... ] and any [ wildcards... ]```
-
-Examples:
-
+In a `before` scope, the rule must be valid since the beginning of the program execution and until a call to some checkpoint. This checkpoint _is included_ inside the scope considered for the rule validation. The syntax of a complete rule with a `before` scope is:
 
 ```
-for every i, j and any w
+before <checkpoint>:
+<rule-fact>
 ```
-```
-for every i, j
-```
-```
-for any p, q
-```
-
-
-
-Additionally, conditions can be imposed for making filtering more customizable. 
 
 Examples:
 
 ```
-for every i, j=i
+# Lock cannot be acquired if it was not yet created
+before lock_create:
+for any pid:
+lock_acquire(pid) must happen 0 times
 ```
 
 ```
-for every i, j>i
+# At most 5 processes can wait on the semaphore
+before sem_signal:
+for any pid:
+sem_waig(pid) must happen at most 5 times
 ```
 
-In the above examples, if `i` took the values `1, 2, 3` and `j` took the values `1, 2, 7, 8` then the `(i, j)` pairs to consider would be `(1,1), (2,2)` for the first example and `(1,2), (1,7), (1,8), (2,7), (2,8), (3,7), (3,8)` for the second.
+In the case that the checkpoint inside the `before` scope is called more than once, the rule should be valid _before every call_ since the beginning of the execution.
 
+### Between scope:
+
+In a `between` scope, the rule must be valid between the callings of two certain checkpoints (that may or may not be different). These two checkpoints _are included_ inside the scope considered for the rule validation. The syntax of a complete rule with a `before` scope is:
+
+```
+between <checkpoint_1> and [ next | previous ] <checkpoint_2>:
+<rule-fact>
+```  
+
+Examples:
+
+```
+# Lock should not be destroyed twice
+between lock_destroy and previous lock_create:
+lock_destroy must happen 1 times
+```
+
+```
+# The items buffer size is 5
+between produce and next consume:
+produce must happen at most 5 times
+```
+
+**Note:** A `between` scope is necessarily defined by two checkpoint calls. Hence, if in the last example `consume` is not called after some `produce`, then those `produce` checkpoints will fall into no validation range and would be as if they did not exist for such rule.
+
+### Argument matching in rule scopes
+
+JARL supports argument matching inside scopes in the same way that with rule facts. Thus, any JARL rule can be written as:  
+
+```
+for every [iterator ...] and any [wildcard ...]:
+<rule-scope>:
+<rule_fact>
+```
+
+Examples: 
+
+```
+# Elements cannot be taken after smoking if agent does not wake again
+for any smoker_id:
+between smoker_smoke(smoker_id) and next agent_wake:
+for any sid, element_id:
+smoker_take_element(sid, element_id) must happen 0 times
+```
+
+```
+# If a reader reads something, a writer wrote it
+for every reader_id, buffer, msg:
+before read_buffer(reader_id, buffer, msg):
+for any b=buffer, m=msg, writer_id:
+write_buffer(writer_id, b, m) must happen at least 1 times
+```
+
+```
+# Locks must not be acquired after their destruction
+for every lock_id:
+after lock_destroy(lock_id):
+for every lid=lock_id:
+lock_acquire(lid) must happen 0 times
+```
+
+```
+# At most 10 elements can enter inside the buffer
+for any producer_id, cconsumer_id, i1, i2:
+between every produce(producer_id, i1) and next consume(cconsumer_id, i2):
+for any p, i:
+produce(producer_id, i) must happen at most 10 times
+```
+
+```
+# On every queue, messages are sent before received
+for every msqid:
+between msq_create(msqid) and next msq_destroy(msqid):
+for every m=msqid and any msg_id:
+msq_send(m, msg_id) must precede msq_receive(m, msg_id)
+```

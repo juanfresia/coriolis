@@ -111,7 +111,7 @@ class TestProducersConsumers(unittest.TestCase):
     rule_8_statement = (
         "# The buffer size is 5\n"
         "for any pid, cid, i1, i2:\n"
-        "between every produce(pid, i1) and next consume(cid, i2):\n"
+        "between produce(pid, i1) and next consume(cid, i2):\n"
         "  for any p, i:\n"
         "  produce(p, i) must happen at most 5 times\n"
     )
@@ -133,7 +133,7 @@ class TestProducersConsumers(unittest.TestCase):
     rule_9_statement = (
         "# Item is consumed only once (written differently)\n"
         "for any cid, iid:\n"
-        "after every consume(cid, iid):\n"
+        "after consume(cid, iid):\n"
         "  for every i and any c:\n"
         "  consume(c, i) must happen 1 times\n"
     )
@@ -155,7 +155,7 @@ class TestProducersConsumers(unittest.TestCase):
     rule_10_statement = (
         "# Item is produced only once (written differently)\n"
         "for any pid, iid:\n"
-        "before every produce(pid, iid):\n"
+        "before produce(pid, iid):\n"
         "  for every i and any p:\n"
         "  produce(p, i) must happen 1 times\n"
     )
