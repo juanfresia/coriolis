@@ -1,0 +1,140 @@
+atom_spawn  H  1
+atom_spawn  H  2
+atom_spawn  H  3
+atom_spawn  H  4
+atom_spawn  H  5
+atom_spawn  H  6
+atom_spawn  H  7
+atom_spawn  H  8
+atom_spawn  H  9
+atom_spawn  H  10
+atom_spawn  H  11
+atom_spawn  H  12
+atom_spawn  H  13
+atom_spawn  H  14
+atom_spawn  H  15
+atom_spawn  H  16
+atom_spawn  H  17
+atom_spawn  H  18
+atom_spawn  H  19
+atom_spawn  H  20
+atom_spawn  H  21
+atom_spawn  H  22
+atom_spawn  H  23
+atom_spawn  H  24
+atom_spawn  H  25
+atom_spawn  H  27
+atom_spawn  H  29
+atom_spawn  H  26
+atom_spawn  H  28
+atom_spawn  H  30
+atom_spawn  H  31
+atom_spawn  H  32
+atom_spawn  H  34
+atom_spawn  H  33
+atom_spawn  H  35
+atom_spawn  H  36
+atom_spawn  H  37
+atom_spawn  H  38
+atom_spawn  H  39
+atom_spawn  H  40
+atom_spawn  O  41
+atom_spawn  O  42
+atom_spawn  O  44
+atom_spawn  O  43
+atom_spawn  O  45
+atom_spawn  O  46
+atom_spawn  O  48
+atom_spawn  O  47
+atom_spawn  O  50
+atom_spawn  O  49
+atom_spawn  O  51
+atom_spawn  O  53
+atom_spawn  O  52
+atom_spawn  O  54
+atom_spawn  O  56
+atom_spawn  O  55
+atom_spawn  O  57
+atom_spawn  O  58
+atom_spawn  O  60
+atom_spawn  O  59
+atom_die  H  1
+atom_die  H  2
+water_made
+atom_die  O  48
+atom_die  H  15
+water_made
+atom_die  O  44
+atom_die  H  25
+water_made
+atom_die  O  41
+atom_die  H  16
+water_made
+atom_die  O  53
+atom_die  H  6
+atom_die  H  20
+atom_die  H  5
+atom_die  H  37
+water_made
+atom_die  O  42
+atom_die  H  14
+atom_die  H  11
+atom_die  H  7
+water_made
+atom_die  O  58
+atom_die  H  22
+water_made
+atom_die  O  56
+atom_die  H  29
+atom_die  H  3
+atom_die  H  9
+water_made
+atom_die  O  45
+water_made
+atom_die  O  47
+atom_die  H  35
+atom_die  H  17
+water_made
+atom_die  O  60
+atom_die  H  8
+atom_die  H  28
+atom_die  H  4
+atom_die  H  40
+water_made
+atom_die  O  51
+water_made
+atom_die  O  46
+atom_die  H  36
+atom_die  H  13
+atom_die  H  21
+atom_die  H  34
+water_made
+atom_die  O  59
+water_made
+atom_die  O  52
+atom_die  H  18
+atom_die  H  12
+atom_die  H  31
+atom_die  H  19
+water_made
+atom_die  O  57
+water_made
+atom_die  O  55
+atom_die  H  26
+atom_die  H  39
+atom_die  H  10
+atom_die  H  33
+water_made
+atom_die  O  50
+water_made
+atom_die  O  43
+atom_die  H  27
+atom_die  H  30
+atom_die  H  23
+water_made
+atom_die  O  49
+atom_die  H  24
+water_made
+atom_die  O  54
+atom_die  H  38
+atom_die  H  32

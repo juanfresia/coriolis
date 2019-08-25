@@ -209,7 +209,7 @@ class LanguagePyInstrumenter(FileInstrumenter):
                     except:
                         log_line = line
             elif match.group(1) == "has_checkpoints":
-                self._debug_message("Other new line is:\n{}".format(line))
+                log_line = "from coriolis_logger import *\n"
 
             self._debug_message("New line is:\n{}".format(log_line))
             return log_line
