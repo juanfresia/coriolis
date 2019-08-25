@@ -32,7 +32,7 @@ class RuleChecker:
         for s in rule_scope:
             r = self.execute_aggregation_steps(rule.evaluate_fact_steps(s))
             for x in r:
-                if not x["_id"]: rule.set_failed(failed_info=x["info"])
+                if not x["_id"]: rule.set_failed(failed_scope=s, failed_info=x["info"])
 
     def check_all_rules(self):
         self.lp.populate_db(self.mongo_client)

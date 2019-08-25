@@ -121,10 +121,10 @@ shm_destroy(shmid) must happen 1 time
 ```
 # m is called for every i,j combination
 for every i, j:
-m(i, j) must happen at least 1 time
+m(i, j) must happen at least 2 times
 ```
 
-In very concrete words, iterators define a grouping behaviour when matching the checkpoint arguments values. For instance, suppose that during a program execution with a rule defined like the last example the argument `i` took the values `1, 2, 3` and the argument `j` took the values `1, 2, 7, 8`. This way, the `for every i, j` block will group the checkpoint calls in 12 possible categories according to the pair `(i, j)` values: `(1,1), (1,2), (1,7), (1,8), (2,1), (2,2), (2,7), (2,8), (3,1), (3,2), (3,7), (3,8)`. The rule fact (`m` being called) must then be validated inside all of this 12 groups individually.
+In very concrete words, iterators define a grouping behaviour when matching the checkpoint arguments values. For instance, suppose that during a program execution with a rule defined like the last example `m` was called with the following `(i, j)` argument values: `(1,1), (1,2), (3,7), (1,1), (2,1), (1,2), (2,1), (2,8), (3,7)`. The rule fact (`m` being called) should then be validated inside of the 5 groups `(1,1), (1,2), (3,7), (2,1), (2,8)`, resulting in a failure since `(2,8)` was only called once.
 
 ### Argument matching with wildcards
 

@@ -1,7 +1,7 @@
 rule_1_statement = (
     "# If a writer is on a room, readers cannot enter\n"
     "for every w1, w2=w1, room1, room2=room1:\n"
-    "between every writer_enter(w1, room1) and next writer_exit(w2, room2):\n"
+    "between writer_enter(w1, room1) and next writer_exit(w2, room2):\n"
     "  for every room=room1 and any r:\n"
     "  reader_enter(r, room) must not happen\n"
 )
@@ -27,7 +27,7 @@ rule_1.set_dynamic_scope_arg("room1", True)
 rule_2_statement = (
     "# If a reader is on a room, writers cannot enter\n"
     "for every r1, r2=r1, room1, room2=room1:\n"
-    "between every reader_enter(r1, room1) and next reader_exit(r2, room2):\n"
+    "between reader_enter(r1, room1) and next reader_exit(r2, room2):\n"
     "  for every room=room1 and any w:\n"
     "  writer_enter(w, room) must not happen\n"
 )
@@ -81,7 +81,7 @@ rule_4 = JARLRule(rule_4_statement, rule_4_fact)
 rule_5_statement = (
     "# Only one writer can be on a room at the same time\n"
     "for every w1, w2=w1, room1, room2=room1:\n"
-    "between every writer_enter(w1, room1) and next writer_exit(w2, room2):\n"
+    "between writer_enter(w1, room1) and next writer_exit(w2, room2):\n"
     "  for every room=room1 and any w!=w1:\n"
     "  writer_enter(w, room) must not happen\n"
 )
@@ -109,7 +109,7 @@ rule_5.set_dynamic_scope_arg("room1", True)
 rule_6_statement = (
     "# Writer writes the room (only one time) when inside\n"
     "for every w1, w2=w1, room1, room2=room1:\n"
-    "between every writer_enter(w1, room1) and next writer_exit(w2, room2):\n"
+    "between writer_enter(w1, room1) and next writer_exit(w2, room2):\n"
     "  for every room=room1,w=w1 and any msg:\n"
     "  write_room(w, room, msg) must happen 1 times\n"
 )
@@ -137,7 +137,7 @@ rule_6.set_dynamic_scope_arg("room1", True)
 rule_7_statement = (
     "# Reader reads the room (only one time) when inside\n"
     "for every r1, r2=r1, room1, room2=room1:\n"
-    "between every reader_enter(r1, room1) and next reader_exit(r2, room2):\n"
+    "between reader_enter(r1, room1) and next reader_exit(r2, room2):\n"
     "  for every room=room1,r=r1 and any msg:\n"
     "  read_room(r, room, msg) must happen 1 times\n"
 )
@@ -165,7 +165,7 @@ rule_7.set_dynamic_scope_arg("room1", True)
 rule_8_statement = (
     "# Writers cannot write before entering a room first\n"
     "for every w1, w2=w1 and any room1, room2:\n"
-    "between every writer_exit(w1, room1) and next writer_enter(w2, room2):\n"
+    "between writer_exit(w1, room1) and next writer_enter(w2, room2):\n"
     "  for every w=w1 and any room, msg:\n"
     "  write_room(w, room, msg) must happen 0 times\n"
 )
@@ -190,7 +190,7 @@ rule_8.set_dynamic_scope_arg("w1", True)
 rule_9_statement = (
     "# Readers cannot read before entering a room first\n"
     "for every r1, r2=r1 and any room1, room2:\n"
-    "between every reader_exit(r1, room1) and next reader_enter(r2, room2):\n"
+    "between reader_exit(r1, room1) and next reader_enter(r2, room2):\n"
     "  for every r=r1 and any room, msg:\n"
     "  read_room(r, room, msg) must happen 0 times\n"
 )
@@ -215,7 +215,7 @@ rule_9.set_dynamic_scope_arg("r1", True)
 rule_10_statement = (
     "# If a reader reads something, a writer wrote it\n"
     "for every r, room, msg!='NULL':\n"
-    "before every read_room(r, room, msg):\n"
+    "before read_room(r, room, msg):\n"
     "  for any roomid=room, m=msg, w:\n"
     "  write_room(w, roomid, m) must happen at least 1 times\n"
 )
@@ -242,7 +242,7 @@ rule_10.set_dynamic_scope_arg("msg", False)
 rule_11_statement = (
     "# Reader always reads room last message\n"
     "for every r1, m1!='NULL', r2=r1, m2=m1 and any r, w:\n"
-    "between every read_room(r, r1, m1) and previous write_room(w, r2, m2):\n"
+    "between read_room(r, r1, m1) and previous write_room(w, r2, m2):\n"
     "  for any wid, roomid=r2, m:\n"
     "  write_room(wid, roomid, m) must happen 0 times\n"
 )
@@ -271,7 +271,7 @@ rule_11.set_dynamic_scope_arg("m2", True)
 rule_12_statement = (
     "# If a reader read NULL it is because the room was never written\n"
     "for every r, room, msg='NULL':\n"
-    "before every read_room(r, room, msg):\n"
+    "before read_room(r, room, msg):\n"
     "  for any roomid=room, m, w:\n"
     "  write_room(w, roomid, m) must happen 0 times\n"
 )

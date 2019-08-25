@@ -31,4 +31,8 @@ class VerifierPrinter:
             print(rule_fore + rule.text + Style.RESET_ALL)
             if rule.has_failed():
                 print("Reason:")
-                print(rule.get_failed_info())
+                l_first, l_second = rule.get_failed_scope()
+                failed_scope = "<Between log lines {}-{}>".format(l_first, l_second)
+                if l_first == "MIN": failed_scope = "<Before log line {}>".format(l_second)
+                if l_second == "MAX": failed_scope = "<After log line {}>".format(l_first)
+                print("{}: {}".format(failed_scope, rule.get_failed_info()))

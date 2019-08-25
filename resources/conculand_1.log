@@ -20,9 +20,9 @@ resident_spawn  2434  32243  male
 resident_queued  2434
 employee_serve  0  2434  resident
 employee_request_document  0
+resident_show_document  2434  32243  male
 employee_allow_resident  0  32243
 employee_ready  0
-resident_show_document  2434  32243  male
 resident_die  2434  32243  male
 resident_die  2434  32243  male
 employee_return_seal  1
@@ -61,9 +61,9 @@ tourist_spawn  2438  253913  eyes:gray-hair:darkbrown-skin:light-element:black-g
 tourist_queued  2438
 employee_serve  3  2438  tourist
 employee_request_passport  3
+tourist_show_passport  2438  253913  eyes:gray-hair:darkbrown-skin:light-element:black-gender:female-
 employee_deny_tourist  3  253913
 employee_ready  3
-tourist_show_passport  2438  253913  eyes:gray-hair:darkbrown-skin:light-element:black-gender:female-
 tourist_die  2438  253913  eyes:gray-hair:darkbrown-skin:light-element:black-gender:female-
 tourist_die  2438  253913  eyes:gray-hair:darkbrown-skin:light-element:black-gender:female-
 tourist_spawn  2439  166398  eyes:blue-hair:violet-skin:light-element:blonde-gender:male-
