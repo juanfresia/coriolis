@@ -33,7 +33,7 @@ coriolis_logger_t* coriolis_logger_create(char* route, bool append){
 	FILE *pf = fopen(route, (append ? "a" : "w"));
 	if(!pf)	return NULL;
 	
-	coriolis_logger_t* ls = malloc(sizeof(coriolis_logger_t));
+	coriolis_logger_t* ls = (coriolis_logger_t*) malloc(sizeof(coriolis_logger_t));
 	if(!ls) {
 		fclose(pf);
 		return NULL;

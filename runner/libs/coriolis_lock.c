@@ -12,7 +12,7 @@
 coriolis_lock_t* coriolis_lock_create(char* lock_name){
 	if(!lock_name) return NULL;
 	
-	coriolis_lock_t* lock = malloc(sizeof(coriolis_lock_t));
+	coriolis_lock_t* lock = (coriolis_lock_t*) malloc(sizeof(coriolis_lock_t));
 	if(!lock) return NULL;
 	
 	lock->fl.l_type = F_WRLCK;
