@@ -34,6 +34,7 @@ oxyQueue = Semaphore(0)
 hydroQueue = Semaphore(0)
 
 def bond(atom_type, atom_id):
+    # @checkpoint bond atom_type atom_id
     print("[ ID: {:02d} ] {} called bond".format(atom_id, atom_type))
     time.sleep(randint(1, 10) / 500.0)
 

@@ -16,22 +16,22 @@ atom_spawn  H  15
 atom_spawn  H  16
 atom_spawn  H  17
 atom_spawn  H  18
-atom_spawn  H  19
 atom_spawn  H  20
-atom_spawn  H  21
+atom_spawn  H  19
 atom_spawn  H  22
+atom_spawn  H  21
 atom_spawn  H  23
 atom_spawn  H  24
 atom_spawn  H  25
-atom_spawn  H  27
-atom_spawn  H  29
 atom_spawn  H  26
 atom_spawn  H  28
+atom_spawn  H  27
+atom_spawn  H  29
 atom_spawn  H  30
 atom_spawn  H  31
 atom_spawn  H  32
-atom_spawn  H  34
 atom_spawn  H  33
+atom_spawn  H  34
 atom_spawn  H  35
 atom_spawn  H  36
 atom_spawn  H  37
@@ -40,101 +40,161 @@ atom_spawn  H  39
 atom_spawn  H  40
 atom_spawn  O  41
 atom_spawn  O  42
-atom_spawn  O  44
 atom_spawn  O  43
+atom_spawn  O  44
 atom_spawn  O  45
 atom_spawn  O  46
-atom_spawn  O  48
 atom_spawn  O  47
-atom_spawn  O  50
+atom_spawn  O  48
 atom_spawn  O  49
+atom_spawn  O  50
 atom_spawn  O  51
-atom_spawn  O  53
 atom_spawn  O  52
 atom_spawn  O  54
-atom_spawn  O  56
 atom_spawn  O  55
+bond  H  9
+bond  O  45
+bond  H  17
+atom_spawn  O  53
+atom_spawn  O  56
 atom_spawn  O  57
 atom_spawn  O  58
-atom_spawn  O  60
 atom_spawn  O  59
-atom_die  H  1
-atom_die  H  2
-water_made
-atom_die  O  48
-atom_die  H  15
-water_made
-atom_die  O  44
-atom_die  H  25
-water_made
-atom_die  O  41
-atom_die  H  16
-water_made
-atom_die  O  53
-atom_die  H  6
-atom_die  H  20
-atom_die  H  5
-atom_die  H  37
-water_made
-atom_die  O  42
-atom_die  H  14
-atom_die  H  11
-atom_die  H  7
-water_made
-atom_die  O  58
-atom_die  H  22
-water_made
-atom_die  O  56
-atom_die  H  29
-atom_die  H  3
+atom_spawn  O  60
 atom_die  H  9
-water_made
-atom_die  O  45
-water_made
-atom_die  O  47
-atom_die  H  35
 atom_die  H  17
 water_made
-atom_die  O  60
-atom_die  H  8
-atom_die  H  28
+atom_die  O  45
+bond  O  46
+bond  H  5
+bond  H  4
+water_made
 atom_die  H  4
-atom_die  H  40
-water_made
-atom_die  O  51
-water_made
 atom_die  O  46
-atom_die  H  36
-atom_die  H  13
-atom_die  H  21
-atom_die  H  34
+bond  O  47
+bond  H  22
+bond  H  6
+atom_die  H  5
+atom_die  H  6
 water_made
-atom_die  O  59
+atom_die  O  47
+bond  O  41
+bond  H  29
+bond  H  23
+atom_die  H  22
+atom_die  H  29
 water_made
-atom_die  O  52
-atom_die  H  18
-atom_die  H  12
-atom_die  H  31
-atom_die  H  19
-water_made
-atom_die  O  57
-water_made
-atom_die  O  55
-atom_die  H  26
-atom_die  H  39
-atom_die  H  10
-atom_die  H  33
-water_made
-atom_die  O  50
-water_made
-atom_die  O  43
-atom_die  H  27
-atom_die  H  30
+atom_die  O  41
+bond  O  54
+bond  H  2
+bond  H  16
+atom_die  H  16
 atom_die  H  23
 water_made
-atom_die  O  49
+atom_die  O  54
+bond  O  43
+bond  H  8
+bond  H  14
+atom_die  H  2
+water_made
+atom_die  O  43
+bond  H  26
+bond  H  30
+bond  O  58
+atom_die  H  8
+atom_die  H  30
+atom_die  H  14
+atom_die  H  26
+water_made
+bond  O  53
+bond  H  7
+bond  H  3
+atom_die  O  58
+water_made
+atom_die  O  53
+bond  O  51
+bond  H  20
+bond  H  18
+atom_die  H  3
+atom_die  H  18
+water_made
+atom_die  H  7
+atom_die  O  51
+bond  H  12
+bond  O  52
+bond  H  10
+atom_die  H  20
+atom_die  H  12
+atom_die  H  10
+water_made
+atom_die  O  52
+bond  H  11
+bond  O  60
+bond  H  31
+atom_die  H  31
+atom_die  H  11
+water_made
+bond  O  48
+bond  H  15
+bond  H  36
+atom_die  O  60
+atom_die  H  15
+atom_die  H  36
+water_made
+atom_die  O  48
+bond  O  57
+bond  H  32
+bond  H  1
+water_made
+atom_die  O  57
+bond  H  37
+bond  O  44
+bond  H  34
+atom_die  H  34
+water_made
+atom_die  O  44
+bond  O  42
+bond  H  39
+bond  H  24
+atom_die  H  1
+atom_die  H  32
+atom_die  H  39
+atom_die  H  37
 atom_die  H  24
 water_made
-atom_die  O  54
+atom_die  O  42
+bond  O  49
+bond  H  35
+bond  H  40
+water_made
+atom_die  O  49
+bond  O  55
+bond  H  38
+bond  H  13
+atom_die  H  35
 atom_die  H  38
-atom_die  H  32
+atom_die  H  13
+water_made
+atom_die  H  40
+atom_die  O  55
+bond  O  56
+bond  H  25
+bond  H  19
+atom_die  H  25
+water_made
+atom_die  O  56
+bond  O  50
+bond  H  33
+bond  H  21
+atom_die  H  33
+atom_die  H  19
+atom_die  H  21
+water_made
+atom_die  O  50
+bond  O  59
+bond  H  27
+bond  H  28
+atom_die  H  28
+atom_die  H  27
+water_made
+atom_die  O  59
