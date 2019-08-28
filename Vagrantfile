@@ -7,7 +7,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.provider "virtualbox" do |vb|
     vb.customize ['modifyvm', :id, '--nictype1', 'virtio']
-    vb.memory = 1024
+    vb.memory = 4096
     vb.cpus = 2
     vb.linked_clone = true
   end

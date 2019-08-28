@@ -7,7 +7,7 @@ class MongoClient:
         self.concu_collection = self.client.concu_db.concu_collection
 
     def aggregate(self, pipeline_steps):
-        return self.concu_collection.aggregate(pipeline_steps)
+        return self.concu_collection.aggregate(pipeline_steps, allowDiskUse=True)
 
     def insert_one(self, document):
         self.concu_collection.insert_one(document)

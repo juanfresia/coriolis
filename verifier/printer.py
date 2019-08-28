@@ -32,7 +32,7 @@ class VerifierPrinter:
             if rule.has_failed():
                 print("Reason:")
                 l_first, l_second = rule.get_failed_scope()
-                failed_scope = "<Between log lines {}-{}>".format(l_first, l_second)
-                if l_first == "MIN": failed_scope = "<Before log line {}>".format(l_second)
-                if l_second == "MAX": failed_scope = "<After log line {}>".format(l_first)
-                print("{}: {}".format(failed_scope, rule.get_failed_info()))
+                failed_scope = "Between log lines {}-{}:".format(l_first, l_second)
+                if l_first == "MIN": failed_scope = "Before log line {}:".format(l_second)
+                if l_second == "MAX": failed_scope = "After log line {}:".format(l_first)
+                print("{}\n{}".format(failed_scope, rule.get_failed_info()))

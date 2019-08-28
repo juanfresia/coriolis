@@ -2,12 +2,13 @@
 
 import argparse
 import os
+import multiprocessing
 
-from common.aggregation_steps import *
 from verifier.log_parser import LogParser
 from verifier.mongo_client import MongoClient
 from verifier.printer import VerifierPrinter
 from common.jarl_rule import JARLRule, RuleScope, RuleFact
+from common.aggregation_steps import *
 
 class FullPaths(argparse.Action):
     """Expand user- and relative-paths"""
@@ -15,31 +16,33 @@ class FullPaths(argparse.Action):
         setattr(namespace, self.dest,
                 os.path.abspath(os.path.expanduser(values[0])))
 
+
+
 class RuleChecker:
     def __init__(self, rules_to_check, log_file, checkpoint_file):
-        self.mongo_client = MongoClient()
         self.rules = rules_to_check
         self.lp = LogParser(log_file, checkpoint_file)
-    
-    def execute_aggregation_steps(self, aggregation_steps):
-        return self.mongo_client.aggregate(aggregation_steps)
-    
-    def check_rule(self, rule):
+        self.workers = multiprocessing.Pool(processes = 2) #TODO: Decide if this should be a constant or the default CPU amount
+        self.mongo_client = MongoClient()
+
+    @staticmethod
+    def check_rule(rule):
+        client = MongoClient()
         rule.set_passed()
         rule_scope = RuleScope.get_default_scope()
         if rule.has_scope():
-            rule_scope = self.execute_aggregation_steps(rule.evaluate_scope_steps())
+            rule_scope = client.aggregate(rule.evaluate_scope_steps())
         for s in rule_scope:
-            r = self.execute_aggregation_steps(rule.evaluate_fact_steps(s))
+            r = client.aggregate(rule.evaluate_fact_steps(s))
             for x in r:
                 if not x["_id"]: rule.set_failed(failed_scope=s, failed_info=x["info"])
+        return rule
 
     def check_all_rules(self):
-        self.lp.populate_db(self.mongo_client)
-        for rule in self.rules:
-            self.check_rule(rule)
+        self.lp.populate_db(MongoClient()) # TODO: Make populate_db parallel too
+        all_rules = self.workers.map(RuleChecker.check_rule, self.rules)
         self.mongo_client.drop()
-        return self.rules
+        return all_rules
 
 
 if __name__ == "__main__":

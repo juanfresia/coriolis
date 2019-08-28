@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python -m unittest discover -s tests -p '*.py' -t .
+python3 -m unittest discover -s tests -p '*.py' -t .
