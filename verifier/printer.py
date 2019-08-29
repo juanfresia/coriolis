@@ -11,7 +11,7 @@ class VerifierPrinter:
         print("=-=-=-=-=-=-=-=-=-=-=-=- CHECKING RULES -=-=-=-=-=-=-=-=-=-=-=-=")
         if self.using_verbosity: print()
         for i, rule in enumerate(rules):
-            self.print_rule(i+1, rule)
+            self._print_rule(i+1, rule)
             if rule.has_passed(): passed_rules += 1
         print("=-=-=-=-=-=-=-=-=-=-=-=-=-  SUMMARY  -=-=-=-=-=-=-=-=-=-=-=-=-=")
         if self.using_verbosity: print()
@@ -19,7 +19,15 @@ class VerifierPrinter:
         summary = "{} rules, {} assertions, {} failures".format(len(rules), passed_rules, len(rules) - passed_rules)
         print(summary_fore + summary + Style.RESET_ALL)
 
-    def print_rule(self, rule_number, rule):
+    def _rule_failed_scope_string(self, rule):
+        l_first, l_second = rule.get_failed_scope()
+        failed_scope = "Between log lines {}-{}:".format(l_first, l_second)
+        if l_first == "MIN": failed_scope = "Before log line {}:".format(l_second)
+        if l_second == "MAX": failed_scope = "After log line {}:".format(l_first)
+        return failed_scope
+
+
+    def _print_rule(self, rule_number, rule):
         if self.using_verbosity and (rule_number > 1):
             print("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
             print()
@@ -31,8 +39,5 @@ class VerifierPrinter:
             print(rule_fore + rule.text + Style.RESET_ALL)
             if rule.has_failed():
                 print("Reason:")
-                l_first, l_second = rule.get_failed_scope()
-                failed_scope = "Between log lines {}-{}:".format(l_first, l_second)
-                if l_first == "MIN": failed_scope = "Before log line {}:".format(l_second)
-                if l_second == "MAX": failed_scope = "After log line {}:".format(l_first)
+                failed_scope = self._rule_failed_scope_string(rule)
                 print("{}\n{}".format(failed_scope, rule.get_failed_info()))
