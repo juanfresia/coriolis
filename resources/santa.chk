@@ -1,0 +1,18 @@
+# Lines starting with '#' and empty lines are ignored
+# Format is:
+#   <breakpoint-name> [<param-name>:<param-type> ...]
+#
+# Valid param-types are: int, float, string, char
+
+santa_wake
+santa_sleep
+prepare_sleigh
+help_elves
+
+reindeer_arrive    id:int
+get_hitched        id:int
+reindeer_leave     id:int
+
+elf_arrive         id:int
+get_help           id:int
+elf_leave          id:int

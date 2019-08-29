@@ -1,0 +1,461 @@
+santa_sleep
+elf_arrive  2
+elf_arrive  4
+elf_arrive  1
+santa_wake
+help_elves
+elf_arrive  5
+reindeer_arrive  3
+santa_sleep
+get_help  1
+get_help  2
+get_help  4
+elf_leave  4
+elf_arrive  12
+reindeer_arrive  9
+elf_arrive  10
+elf_arrive  3
+elf_arrive  6
+elf_arrive  9
+elf_leave  2
+elf_arrive  11
+elf_leave  1
+santa_wake
+help_elves
+get_help  5
+santa_sleep
+get_help  12
+get_help  11
+elf_leave  5
+elf_leave  11
+elf_arrive  8
+elf_arrive  5
+elf_leave  12
+santa_wake
+help_elves
+elf_arrive  7
+reindeer_arrive  5
+elf_arrive  1
+reindeer_arrive  1
+reindeer_arrive  8
+elf_arrive  2
+elf_arrive  4
+santa_sleep
+get_help  9
+get_help  6
+get_help  3
+elf_leave  6
+reindeer_arrive  6
+elf_leave  3
+elf_leave  9
+santa_wake
+help_elves
+elf_arrive  6
+elf_arrive  11
+reindeer_arrive  4
+reindeer_arrive  7
+get_help  10
+get_help  8
+get_help  5
+santa_sleep
+reindeer_arrive  2
+santa_wake
+prepare_sleigh
+get_hitched  3
+get_hitched  5
+get_hitched  8
+get_hitched  1
+get_hitched  6
+get_hitched  7
+get_hitched  4
+get_hitched  2
+elf_leave  8
+reindeer_leave  3
+elf_leave  10
+elf_arrive  12
+elf_leave  5
+reindeer_leave  7
+santa_sleep
+elf_arrive  9
+santa_wake
+elf_arrive  3
+reindeer_leave  4
+reindeer_leave  5
+help_elves
+get_hitched  9
+reindeer_leave  2
+get_help  7
+reindeer_leave  6
+get_help  1
+reindeer_leave  8
+get_help  2
+reindeer_leave  1
+elf_arrive  5
+santa_sleep
+elf_leave  1
+elf_leave  2
+elf_arrive  10
+reindeer_leave  9
+elf_leave  7
+santa_wake
+elf_arrive  2
+help_elves
+reindeer_arrive  8
+reindeer_arrive  6
+elf_arrive  7
+elf_arrive  1
+get_help  4
+get_help  6
+get_help  11
+santa_sleep
+reindeer_arrive  9
+elf_leave  4
+elf_leave  6
+elf_leave  11
+santa_wake
+reindeer_arrive  1
+help_elves
+elf_arrive  6
+elf_arrive  8
+elf_arrive  11
+get_help  12
+get_help  9
+get_help  3
+santa_sleep
+reindeer_arrive  3
+elf_leave  3
+elf_arrive  4
+reindeer_arrive  4
+elf_leave  9
+elf_leave  12
+santa_wake
+help_elves
+reindeer_arrive  7
+reindeer_arrive  5
+santa_sleep
+get_help  10
+get_help  5
+reindeer_arrive  2
+get_help  2
+santa_wake
+prepare_sleigh
+elf_arrive  9
+get_hitched  7
+get_hitched  8
+get_hitched  6
+elf_leave  2
+get_hitched  3
+elf_leave  5
+get_hitched  2
+elf_leave  10
+elf_arrive  3
+get_hitched  1
+get_hitched  5
+get_hitched  4
+reindeer_leave  8
+reindeer_leave  3
+reindeer_leave  2
+get_hitched  9
+santa_sleep
+santa_wake
+help_elves
+elf_arrive  12
+reindeer_leave  9
+reindeer_leave  7
+reindeer_leave  6
+reindeer_leave  1
+reindeer_leave  5
+get_help  6
+get_help  7
+get_help  1
+reindeer_leave  4
+santa_sleep
+elf_arrive  10
+elf_leave  1
+elf_leave  7
+elf_leave  6
+santa_wake
+help_elves
+get_help  8
+get_help  11
+get_help  4
+santa_sleep
+reindeer_arrive  8
+elf_arrive  6
+elf_leave  4
+elf_leave  8
+elf_leave  11
+santa_wake
+help_elves
+elf_arrive  1
+get_help  3
+elf_arrive  5
+get_help  12
+get_help  9
+santa_sleep
+elf_arrive  2
+elf_leave  3
+reindeer_arrive  2
+elf_leave  12
+elf_arrive  7
+elf_arrive  4
+elf_leave  9
+santa_wake
+help_elves
+reindeer_arrive  6
+elf_arrive  9
+reindeer_arrive  5
+elf_arrive  12
+reindeer_arrive  3
+elf_arrive  3
+get_help  1
+get_help  6
+santa_sleep
+get_help  10
+elf_arrive  8
+elf_leave  10
+reindeer_arrive  9
+elf_leave  6
+reindeer_arrive  1
+elf_leave  1
+santa_wake
+elf_arrive  11
+help_elves
+reindeer_arrive  7
+reindeer_arrive  4
+get_help  5
+get_help  2
+get_help  7
+santa_sleep
+santa_wake
+elf_leave  2
+prepare_sleigh
+elf_arrive  10
+elf_arrive  6
+get_hitched  2
+elf_leave  7
+get_hitched  8
+get_hitched  7
+get_hitched  4
+get_hitched  1
+get_hitched  5
+get_hitched  3
+get_hitched  9
+elf_leave  5
+santa_sleep
+get_hitched  6
+santa_wake
+help_elves
+reindeer_leave  4
+elf_arrive  7
+reindeer_leave  8
+reindeer_leave  9
+reindeer_leave  5
+reindeer_leave  7
+reindeer_leave  6
+reindeer_leave  2
+reindeer_leave  1
+reindeer_leave  3
+get_help  4
+get_help  9
+santa_sleep
+get_help  12
+elf_arrive  1
+reindeer_arrive  2
+reindeer_arrive  7
+elf_leave  4
+elf_arrive  5
+elf_leave  12
+elf_leave  9
+santa_wake
+help_elves
+get_help  3
+get_help  8
+get_help  11
+santa_sleep
+elf_arrive  2
+elf_leave  3
+elf_leave  11
+reindeer_arrive  4
+reindeer_arrive  3
+reindeer_arrive  6
+elf_arrive  4
+elf_leave  8
+santa_wake
+help_elves
+reindeer_arrive  5
+elf_arrive  9
+santa_sleep
+get_help  6
+get_help  7
+get_help  10
+elf_arrive  12
+elf_leave  7
+elf_arrive  8
+elf_arrive  11
+elf_leave  6
+reindeer_arrive  8
+elf_leave  10
+santa_wake
+help_elves
+elf_arrive  6
+get_help  5
+get_help  1
+santa_sleep
+get_help  2
+reindeer_arrive  9
+elf_leave  5
+reindeer_arrive  1
+elf_arrive  10
+santa_wake
+prepare_sleigh
+elf_arrive  3
+get_hitched  4
+get_hitched  7
+get_hitched  3
+get_hitched  5
+elf_leave  2
+santa_sleep
+get_hitched  8
+get_hitched  6
+get_hitched  1
+get_hitched  9
+elf_arrive  7
+elf_leave  1
+get_hitched  2
+santa_wake
+reindeer_leave  7
+help_elves
+reindeer_leave  9
+reindeer_leave  2
+reindeer_leave  4
+reindeer_leave  8
+reindeer_leave  6
+reindeer_leave  3
+reindeer_leave  5
+get_help  4
+get_help  12
+santa_sleep
+get_help  9
+elf_arrive  1
+reindeer_leave  1
+elf_leave  4
+santa_wake
+elf_leave  9
+elf_leave  12
+help_elves
+elf_arrive  4
+elf_arrive  5
+get_help  8
+get_help  11
+get_help  6
+reindeer_arrive  8
+santa_sleep
+reindeer_arrive  2
+elf_leave  8
+reindeer_arrive  6
+elf_leave  6
+elf_leave  11
+santa_wake
+elf_arrive  2
+help_elves
+get_help  7
+santa_sleep
+get_help  3
+get_help  10
+reindeer_arrive  9
+elf_leave  10
+reindeer_arrive  4
+elf_leave  3
+elf_leave  7
+santa_wake
+help_elves
+reindeer_arrive  3
+elf_arrive  9
+reindeer_arrive  5
+reindeer_arrive  7
+elf_arrive  8
+get_help  1
+get_help  5
+get_help  4
+santa_sleep
+elf_arrive  12
+reindeer_arrive  1
+elf_arrive  10
+elf_leave  1
+elf_arrive  6
+elf_leave  5
+santa_wake
+prepare_sleigh
+elf_arrive  11
+get_hitched  1
+get_hitched  2
+get_hitched  6
+get_hitched  3
+get_hitched  7
+get_hitched  8
+get_hitched  9
+santa_sleep
+get_hitched  4
+elf_leave  4
+reindeer_leave  7
+get_hitched  5
+santa_wake
+reindeer_leave  6
+reindeer_leave  2
+reindeer_leave  9
+elf_arrive  3
+help_elves
+reindeer_leave  1
+reindeer_leave  8
+elf_arrive  7
+reindeer_leave  3
+reindeer_leave  4
+elf_arrive  5
+get_help  2
+get_help  9
+santa_sleep
+get_help  8
+reindeer_arrive  1
+reindeer_leave  5
+elf_leave  9
+reindeer_arrive  8
+elf_leave  8
+elf_arrive  1
+reindeer_arrive  4
+reindeer_arrive  3
+elf_leave  2
+santa_wake
+help_elves
+elf_arrive  2
+get_help  12
+get_help  10
+reindeer_arrive  2
+elf_arrive  9
+santa_sleep
+get_help  6
+elf_arrive  4
+elf_leave  10
+elf_leave  6
+elf_leave  12
+santa_wake
+help_elves
+elf_arrive  8
+get_help  7
+get_help  11
+get_help  3
+santa_sleep
+reindeer_arrive  6
+reindeer_arrive  7
+elf_leave  11
+elf_leave  3
+elf_leave  7
+santa_wake
+reindeer_arrive  9
+elf_arrive  6
+elf_arrive  3
+reindeer_arrive  5
+elf_arrive  10
+elf_arrive  11
+elf_arrive  12
+elf_arrive  7
