@@ -21,10 +21,10 @@ class VerifierPrinter:
 
     def _rule_failed_scope_string(self, rule):
         l_first, l_second = rule.get_failed_scope()
-        failed_scope = "Between log lines {}-{}:".format(l_first, l_second)
-        if l_first == "MIN": failed_scope = "Before log line {}:".format(l_second)
-        if l_second == "MAX": failed_scope = "After log line {}:".format(l_first)
-        return failed_scope
+        if l_second == "MAX" and l_first == "MIN": return "During the whole execution:"
+        if l_first == "MIN": return "Before log line {}:".format(l_second)
+        if l_second == "MAX": return "After log line {}:".format(l_first)
+        return "Between log lines {}-{}:".format(l_first, l_second)
 
 
     def _print_rule(self, rule_number, rule):
