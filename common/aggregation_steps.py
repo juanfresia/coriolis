@@ -141,9 +141,11 @@ class CrossJoinCheckpoints(AggregationStep):
             step2["$project"]["r{}".format(i + 1)] = r
         steps.append(step2)
         # Step 3: We rename all checkpoints adding a number to them
+        all_checkpoints = {}
         for i in range(0, len(self.checkpoint_names)):
             checkpoint_name = self.checkpoint_names[i] + str(i + 1)
-            steps.append({"$addFields": { "r{}.checkpoint".format(i + 1): checkpoint_name }})
+            all_checkpoints["r{}.checkpoint".format(i + 1)] = checkpoint_name
+        steps.append({"$addFields": all_checkpoints})
         # Step 4: We combine all documents into a single one with an array field for each checkpoint
         step4_1 = {"$group": {"_id": "null"}}
         step4_2 = {"$project": {"_id": "$_id"}}
