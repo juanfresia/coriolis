@@ -34,8 +34,11 @@ class RuleChecker:
             rule_scope = client.aggregate(rule.evaluate_scope_steps())
         for s in rule_scope:
             r = client.aggregate(rule.evaluate_fact_steps(s))
+            found_no_results = True # Have to do this because pymongo cursor has no "len" method
             for x in r:
+                found_no_results = False
                 if not x["_id"]: rule.set_failed(failed_scope=s, failed_info=x["info"])
+            if found_no_results: rule.set_default(scope=s, info="No matching checkpoints found!")
         return rule
 
     def check_all_rules(self):

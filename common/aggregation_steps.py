@@ -286,14 +286,13 @@ class CompareResultsQuantity(AggregationStep):
 #   {'result': True, 'info': 'Some info message', '_id': {'i1': 1, 'i2': 1}}
 #   {'result': False, 'info': 'Some info message', '_id': {'i1': 3, 'i2': 3}}
 class CompareResultsPrecedence(AggregationStep):
-    def __init__(self, checkpoint_first, checkpoint_second, using_precede=True):
+    def __init__(self, checkpoint_first, checkpoint_second):
         super().__init__()
         self.checkpoint_first = checkpoint_first
         self.checkpoint_second = checkpoint_second
-        self.using_precede = using_precede
 
     def _make_info_message(self):
-        msg = "Checkpoint did not {} as expected (involved lines on log: ".format("precede" if self.using_precede else "follow")
+        msg = "Checkpoint {} did not precede {} (involved lines on log: ".format(self.checkpoint_first[:-1], self.checkpoint_second[:-1])
         return {"$concat": [ msg, self._int_to_str("$first"), " ", self._int_to_str("$second"), ").\n" ]}
 
     def _mongofy(self):
@@ -306,9 +305,6 @@ class CompareResultsPrecedence(AggregationStep):
         m1 = {"$max": "$first.log_line"}
         m2 = {"$min": "$second.log_line"}
         steps.append( {"$project": { "first": m1, "second": m2 }} )
-        # Step 2.5: We purge all records with no "second" value
-        if self.using_precede:
-            steps.append( {"$match": { "$expr": {"$ne": ["$second" , None]} }} )
         # Step 3: We check every first value is less than the second value
         steps.append( {"$project": { "result": {"$lt": ["$first", "$second"]}, "info": self._make_info_message() }} )
         return steps

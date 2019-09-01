@@ -25,7 +25,7 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_1 = JARLRule(rule_1_statement, rule_1_fact, rule_1_scope)
+    rule_1 = JARLRule(rule_1_statement, rule_1_fact, rule_1_scope, passed_by_default=False)
 
     rule_2_statement = (
         "# Smoker that smoked took two elements\n"
@@ -48,7 +48,7 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 2),
         ReduceResult()
     ])
-    rule_2 = JARLRule(rule_2_statement, rule_2_fact, rule_2_scope)
+    rule_2 = JARLRule(rule_2_statement, rule_2_fact, rule_2_scope, passed_by_default=False)
     rule_2.set_dynamic_scope_arg("s", False)
 
     rule_3_statement = (
@@ -72,7 +72,7 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_3 = JARLRule(rule_3_statement, rule_3_fact, rule_3_scope)
+    rule_3 = JARLRule(rule_3_statement, rule_3_fact, rule_3_scope, passed_by_default=False)
     rule_3.set_dynamic_scope_arg("s", False)
 
     rule_4_statement = (
@@ -95,7 +95,7 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_4 = JARLRule(rule_4_statement, rule_4_fact, rule_4_scope)
+    rule_4 = JARLRule(rule_4_statement, rule_4_fact, rule_4_scope, passed_by_default=True)
 
     rule_5_statement = (
         "# Agent produces 2 items per round\n"
@@ -115,7 +115,7 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 2),
         ReduceResult()
     ])
-    rule_5 = JARLRule(rule_5_statement, rule_5_fact, rule_5_scope)
+    rule_5 = JARLRule(rule_5_statement, rule_5_fact, rule_5_scope, passed_by_default=False)
 
     rule_6_statement = (
         "# Elements arent produced if agent is sleeping\n"
@@ -135,7 +135,7 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_6 = JARLRule(rule_6_statement, rule_6_fact, rule_6_scope)
+    rule_6 = JARLRule(rule_6_statement, rule_6_fact, rule_6_scope, passed_by_default=True)
 
     rule_7_statement = (
         "# Smokers never take elements they already have\n"
@@ -150,7 +150,7 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_7 = JARLRule(rule_7_statement, rule_7_fact)
+    rule_7 = JARLRule(rule_7_statement, rule_7_fact, passed_by_default=True)
 
     rule_8_statement = (
         "# Smoker smokes once between dreams\n"
@@ -174,7 +174,7 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_8 = JARLRule(rule_8_statement, rule_8_fact, rule_8_scope)
+    rule_8 = JARLRule(rule_8_statement, rule_8_fact, rule_8_scope, passed_by_default=False)
     rule_8.set_dynamic_scope_arg("s1", False)
 
     rule_9_statement = (
@@ -189,7 +189,7 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 40),
         ReduceResult()
     ])
-    rule_9 = JARLRule(rule_9_statement, rule_9_fact)
+    rule_9 = JARLRule(rule_9_statement, rule_9_fact, passed_by_default=False)
 
     rule_10_statement = (
         "# All elements are taken\n"
@@ -199,11 +199,11 @@ class TestSmokers(unittest.TestCase):
     rule_10_fact = RuleFact([
         MatchCheckpoints(["smoker_take_element"]),
         RenameArgs(["smoker_take_element"], [ ["s", "e"] ]),
-        CrossAndGroupByArgs(["smoker_smoke"], [ ["null"] ]),
+        CrossAndGroupByArgs(["smoker_take_element"], [ ["null"] ]),
         CompareResultsQuantity("=", 40),
         ReduceResult()
     ])
-    rule_10 = JARLRule(rule_10_statement, rule_10_fact)
+    rule_10 = JARLRule(rule_10_statement, rule_10_fact, passed_by_default=False)
 
     rule_11_statement = (
         "# 20 cigarettes can be smoked\n"
@@ -217,7 +217,7 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 20),
         ReduceResult()
     ])
-    rule_11 = JARLRule(rule_11_statement, rule_11_fact)
+    rule_11 = JARLRule(rule_11_statement, rule_11_fact, passed_by_default=False)
 
     def check_one_rule(self, rule):
         rc = RuleChecker([ rule ], self.log_file, self.checkpoint_file)

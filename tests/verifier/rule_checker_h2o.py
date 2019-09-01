@@ -19,7 +19,7 @@ class TestH2O(unittest.TestCase):
         CompareResultsQuantity("=", 60),
         ReduceResult()
     ])
-    rule_1 = JARLRule(rule_1_statement, rule_1_fact)
+    rule_1 = JARLRule(rule_1_statement, rule_1_fact, passed_by_default=False)
 
     rule_2_statement = (
         "# All 60 atoms eventually die\n"
@@ -33,7 +33,7 @@ class TestH2O(unittest.TestCase):
         CompareResultsQuantity("=", 60),
         ReduceResult()
     ])
-    rule_2 = JARLRule(rule_2_statement, rule_2_fact)
+    rule_2 = JARLRule(rule_2_statement, rule_2_fact, passed_by_default=False)
 
     rule_3_statement = (
         "# Atoms die after spawning\n"
@@ -57,7 +57,7 @@ class TestH2O(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_3 = JARLRule(rule_3_statement, rule_3_fact, rule_3_scope)
+    rule_3 = JARLRule(rule_3_statement, rule_3_fact, rule_3_scope, passed_by_default=False)
     rule_3.set_dynamic_scope_arg("atom_id", True)
     rule_3.set_dynamic_scope_arg("atom_type", True)
 
@@ -73,7 +73,7 @@ class TestH2O(unittest.TestCase):
         CompareResultsQuantity("=", 60),
         ReduceResult()
     ])
-    rule_4 = JARLRule(rule_4_statement, rule_4_fact)
+    rule_4 = JARLRule(rule_4_statement, rule_4_fact, passed_by_default=False)
 
     rule_5_statement = (
         "# Atoms bond while being alive\n"
@@ -98,7 +98,7 @@ class TestH2O(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_5 = JARLRule(rule_5_statement, rule_5_fact, rule_5_scope)
+    rule_5 = JARLRule(rule_5_statement, rule_5_fact, rule_5_scope, passed_by_default=False)
     rule_5.set_dynamic_scope_arg("aid1", True)
     rule_5.set_dynamic_scope_arg("at1", True)
 
@@ -113,7 +113,7 @@ class TestH2O(unittest.TestCase):
         CompareResultsQuantity("=", 20),
         ReduceResult()
     ])
-    rule_6 = JARLRule(rule_6_statement, rule_6_fact)
+    rule_6 = JARLRule(rule_6_statement, rule_6_fact, passed_by_default=False)
 
     rule_7_statement = (
         "# 2 hydrogen atoms must bond to make a new water molecule\n"
@@ -135,7 +135,7 @@ class TestH2O(unittest.TestCase):
         CompareResultsQuantity("=", 2),
         ReduceResult()
     ])
-    rule_7 = JARLRule(rule_7_statement, rule_7_fact, rule_7_scope)
+    rule_7 = JARLRule(rule_7_statement, rule_7_fact, rule_7_scope, passed_by_default=False)
 
     rule_8_statement = (
         "# 1 oxygen atom must bond to make a new water molecule\n"
@@ -157,7 +157,7 @@ class TestH2O(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_8 = JARLRule(rule_8_statement, rule_8_fact, rule_8_scope)
+    rule_8 = JARLRule(rule_8_statement, rule_8_fact, rule_8_scope, passed_by_default=False)
 
     rule_9_statement = (
         "# In total, 3 atoms bond to make a new water molecule\n"
@@ -178,7 +178,7 @@ class TestH2O(unittest.TestCase):
         CompareResultsQuantity("=", 3),
         ReduceResult()
     ])
-    rule_9 = JARLRule(rule_9_statement, rule_9_fact, rule_9_scope)
+    rule_9 = JARLRule(rule_9_statement, rule_9_fact, rule_9_scope, passed_by_default=False)
 
     rule_10_statement = (
         "# At most 2 bonds can happen between consecutive hydrogen bonds\n"
@@ -203,7 +203,7 @@ class TestH2O(unittest.TestCase):
         CompareResultsQuantity("<=", 2),
         ReduceResult()
     ])
-    rule_10 = JARLRule(rule_10_statement, rule_10_fact, rule_10_scope)
+    rule_10 = JARLRule(rule_10_statement, rule_10_fact, rule_10_scope, passed_by_default=True)
 
     rule_11_statement = (
         "# At most 4 bonds can happen between consecutive oxygen bonds\n"
@@ -228,7 +228,7 @@ class TestH2O(unittest.TestCase):
         CompareResultsQuantity("<=", 4),
         ReduceResult()
     ])
-    rule_11 = JARLRule(rule_11_statement, rule_11_fact, rule_11_scope)
+    rule_11 = JARLRule(rule_11_statement, rule_11_fact, rule_11_scope, passed_by_default=True)
 
     def check_one_rule(self, rule):
         rc = RuleChecker([ rule ], self.log_file, self.checkpoint_file)
@@ -267,6 +267,7 @@ class TestH2O(unittest.TestCase):
 
     def test_at_most_4_bonds_between_oxygen_bonds(self):
         self.check_one_rule(self.rule_11)
+
 
     def test_all_rules(self):
         all_rules = [
@@ -309,7 +310,7 @@ class TestHighLoadH2O(unittest.TestCase):
         CompareResultsQuantity("=", 1500),
         ReduceResult()
     ])
-    rule_1 = JARLRule(rule_1_statement, rule_1_fact)
+    rule_1 = JARLRule(rule_1_statement, rule_1_fact, passed_by_default=False)
 
     rule_2_statement = (
         "# All 1500 atoms eventually die\n"
@@ -323,7 +324,7 @@ class TestHighLoadH2O(unittest.TestCase):
         CompareResultsQuantity("=", 1500),
         ReduceResult()
     ])
-    rule_2 = JARLRule(rule_2_statement, rule_2_fact)
+    rule_2 = JARLRule(rule_2_statement, rule_2_fact, passed_by_default=False)
 
     rule_3_statement = (
         "# Atoms die after spawning\n"
@@ -347,7 +348,7 @@ class TestHighLoadH2O(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_3 = JARLRule(rule_3_statement, rule_3_fact, rule_3_scope)
+    rule_3 = JARLRule(rule_3_statement, rule_3_fact, rule_3_scope, passed_by_default=False)
     rule_3.set_dynamic_scope_arg("atom_id", True)
     rule_3.set_dynamic_scope_arg("atom_type", True)
 
@@ -363,7 +364,7 @@ class TestHighLoadH2O(unittest.TestCase):
         CompareResultsQuantity("=", 1500),
         ReduceResult()
     ])
-    rule_4 = JARLRule(rule_4_statement, rule_4_fact)
+    rule_4 = JARLRule(rule_4_statement, rule_4_fact, passed_by_default=False)
 
     rule_5_statement = (
         "# Atoms bond while being alive\n"
@@ -388,7 +389,7 @@ class TestHighLoadH2O(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_5 = JARLRule(rule_5_statement, rule_5_fact, rule_5_scope)
+    rule_5 = JARLRule(rule_5_statement, rule_5_fact, rule_5_scope, passed_by_default=False)
     rule_5.set_dynamic_scope_arg("aid1", True)
     rule_5.set_dynamic_scope_arg("at1", True)
 
@@ -403,7 +404,7 @@ class TestHighLoadH2O(unittest.TestCase):
         CompareResultsQuantity("=", 500),
         ReduceResult()
     ])
-    rule_6 = JARLRule(rule_6_statement, rule_6_fact)
+    rule_6 = JARLRule(rule_6_statement, rule_6_fact, passed_by_default=False)
 
     rule_7_statement = (
         "# 2 hydrogen atoms must bond to make a new water molecule\n"
@@ -425,7 +426,7 @@ class TestHighLoadH2O(unittest.TestCase):
         CompareResultsQuantity("=", 2),
         ReduceResult()
     ])
-    rule_7 = JARLRule(rule_7_statement, rule_7_fact, rule_7_scope)
+    rule_7 = JARLRule(rule_7_statement, rule_7_fact, rule_7_scope, passed_by_default=False)
 
     rule_8_statement = (
         "# 1 oxygen atom must bond to make a new water molecule\n"
@@ -447,7 +448,7 @@ class TestHighLoadH2O(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_8 = JARLRule(rule_8_statement, rule_8_fact, rule_8_scope)
+    rule_8 = JARLRule(rule_8_statement, rule_8_fact, rule_8_scope, passed_by_default=False)
 
     rule_9_statement = (
         "# In total, 3 atoms bond to make a new water molecule\n"
@@ -468,7 +469,7 @@ class TestHighLoadH2O(unittest.TestCase):
         CompareResultsQuantity("=", 3),
         ReduceResult()
     ])
-    rule_9 = JARLRule(rule_9_statement, rule_9_fact, rule_9_scope)
+    rule_9 = JARLRule(rule_9_statement, rule_9_fact, rule_9_scope, passed_by_default=False)
 
     rule_10_statement = (
         "# At most 2 bonds can happen between consecutive hydrogen bonds\n"
@@ -493,7 +494,7 @@ class TestHighLoadH2O(unittest.TestCase):
         CompareResultsQuantity("<=", 2),
         ReduceResult()
     ])
-    rule_10 = JARLRule(rule_10_statement, rule_10_fact, rule_10_scope)
+    rule_10 = JARLRule(rule_10_statement, rule_10_fact, rule_10_scope, passed_by_default=True)
 
     rule_11_statement = (
         "# At most 4 bonds can happen between consecutive oxygen bonds\n"
@@ -518,7 +519,7 @@ class TestHighLoadH2O(unittest.TestCase):
         CompareResultsQuantity("<=", 4),
         ReduceResult()
     ])
-    rule_11 = JARLRule(rule_11_statement, rule_11_fact, rule_11_scope)
+    rule_11 = JARLRule(rule_11_statement, rule_11_fact, rule_11_scope, passed_by_default=True)
 
     def check_one_rule(self, rule):
         rc = RuleChecker([ rule ], self.log_file, self.checkpoint_file)

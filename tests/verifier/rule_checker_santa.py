@@ -25,7 +25,7 @@ class TestSanta(unittest.TestCase):
         CompareResultsQuantity("<=", 1),
         ReduceResult()
     ])
-    rule_1 = JARLRule(rule_1_statement, rule_1_fact, rule_1_scope)
+    rule_1 = JARLRule(rule_1_statement, rule_1_fact, rule_1_scope, passed_by_default=True)
 
     rule_2_statement = (
         "# Santa helps the elves at most once when awake\n"
@@ -45,7 +45,7 @@ class TestSanta(unittest.TestCase):
         CompareResultsQuantity("<=", 1),
         ReduceResult()
     ])
-    rule_2 = JARLRule(rule_2_statement, rule_2_fact, rule_2_scope)
+    rule_2 = JARLRule(rule_2_statement, rule_2_fact, rule_2_scope, passed_by_default=True)
 
     rule_3_statement = (
         "# Santa cant prepare his sleigh if asleep\n"
@@ -65,7 +65,7 @@ class TestSanta(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_3 = JARLRule(rule_3_statement, rule_3_fact, rule_3_scope)
+    rule_3 = JARLRule(rule_3_statement, rule_3_fact, rule_3_scope, passed_by_default=True)
 
     rule_4_statement = (
         "# Santa cant help the elves if asleep\n"
@@ -85,7 +85,7 @@ class TestSanta(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_4 = JARLRule(rule_4_statement, rule_4_fact, rule_4_scope)
+    rule_4 = JARLRule(rule_4_statement, rule_4_fact, rule_4_scope, passed_by_default=True)
 
     rule_5_statement = (
         "# Elves leave only after getting help\n"
@@ -109,7 +109,7 @@ class TestSanta(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_5 = JARLRule(rule_5_statement, rule_5_fact, rule_5_scope)
+    rule_5 = JARLRule(rule_5_statement, rule_5_fact, rule_5_scope, passed_by_default=False)
     rule_5.set_dynamic_scope_arg("e1", True)
 
     rule_6_statement = (
@@ -134,7 +134,7 @@ class TestSanta(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_6 = JARLRule(rule_6_statement, rule_6_fact, rule_6_scope)
+    rule_6 = JARLRule(rule_6_statement, rule_6_fact, rule_6_scope, passed_by_default=False)
     rule_6.set_dynamic_scope_arg("r1", True)
 
     rule_7_statement = (
@@ -157,7 +157,7 @@ class TestSanta(unittest.TestCase):
         CompareResultsQuantity("<=", 3),
         ReduceResult()
     ])
-    rule_7 = JARLRule(rule_7_statement, rule_7_fact, rule_7_scope)
+    rule_7 = JARLRule(rule_7_statement, rule_7_fact, rule_7_scope, passed_by_default=True)
 
     rule_8_statement = (
         "# Santa hitches the reindeers in groups of 9\n"
@@ -179,7 +179,7 @@ class TestSanta(unittest.TestCase):
         CompareResultsQuantity("<=", 9),
         ReduceResult()
     ])
-    rule_8 = JARLRule(rule_8_statement, rule_8_fact, rule_8_scope)
+    rule_8 = JARLRule(rule_8_statement, rule_8_fact, rule_8_scope, passed_by_default=True)
 
     rule_9_statement = (
         "# Elves cannot be helped if they dont arrive with Santa\n"
@@ -203,7 +203,7 @@ class TestSanta(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_9 = JARLRule(rule_9_statement, rule_9_fact, rule_9_scope)
+    rule_9 = JARLRule(rule_9_statement, rule_9_fact, rule_9_scope, passed_by_default=True)
     rule_9.set_dynamic_scope_arg("e1", True)
 
     rule_10_statement = (
@@ -228,7 +228,7 @@ class TestSanta(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_10 = JARLRule(rule_10_statement, rule_10_fact, rule_10_scope)
+    rule_10 = JARLRule(rule_10_statement, rule_10_fact, rule_10_scope, passed_by_default=True)
     rule_10.set_dynamic_scope_arg("r1", True)
 
     rule_11_statement = (
@@ -341,7 +341,7 @@ class TestHighLoadSanta(unittest.TestCase):
         CompareResultsQuantity("<=", 1),
         ReduceResult()
     ])
-    rule_1 = JARLRule(rule_1_statement, rule_1_fact, rule_1_scope)
+    rule_1 = JARLRule(rule_1_statement, rule_1_fact, rule_1_scope, passed_by_default=True)
 
     rule_2_statement = (
         "# Santa helps the elves at most once when awake\n"
@@ -361,7 +361,7 @@ class TestHighLoadSanta(unittest.TestCase):
         CompareResultsQuantity("<=", 1),
         ReduceResult()
     ])
-    rule_2 = JARLRule(rule_2_statement, rule_2_fact, rule_2_scope)
+    rule_2 = JARLRule(rule_2_statement, rule_2_fact, rule_2_scope, passed_by_default=True)
 
     rule_3_statement = (
         "# Santa cant prepare his sleigh if asleep\n"
@@ -381,7 +381,7 @@ class TestHighLoadSanta(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_3 = JARLRule(rule_3_statement, rule_3_fact, rule_3_scope)
+    rule_3 = JARLRule(rule_3_statement, rule_3_fact, rule_3_scope, passed_by_default=True)
 
     rule_4_statement = (
         "# Santa cant help the elves if asleep\n"
@@ -401,7 +401,7 @@ class TestHighLoadSanta(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_4 = JARLRule(rule_4_statement, rule_4_fact, rule_4_scope)
+    rule_4 = JARLRule(rule_4_statement, rule_4_fact, rule_4_scope, passed_by_default=True)
 
     rule_5_statement = (
         "# Elves leave only after getting help\n"
@@ -425,7 +425,7 @@ class TestHighLoadSanta(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_5 = JARLRule(rule_5_statement, rule_5_fact, rule_5_scope)
+    rule_5 = JARLRule(rule_5_statement, rule_5_fact, rule_5_scope, passed_by_default=False)
     rule_5.set_dynamic_scope_arg("e1", True)
 
     rule_6_statement = (
@@ -450,7 +450,7 @@ class TestHighLoadSanta(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_6 = JARLRule(rule_6_statement, rule_6_fact, rule_6_scope)
+    rule_6 = JARLRule(rule_6_statement, rule_6_fact, rule_6_scope, passed_by_default=False)
     rule_6.set_dynamic_scope_arg("r1", True)
 
     rule_7_statement = (
@@ -473,7 +473,7 @@ class TestHighLoadSanta(unittest.TestCase):
         CompareResultsQuantity("<=", 8),
         ReduceResult()
     ])
-    rule_7 = JARLRule(rule_7_statement, rule_7_fact, rule_7_scope)
+    rule_7 = JARLRule(rule_7_statement, rule_7_fact, rule_7_scope, passed_by_default=True)
 
     rule_8_statement = (
         "# Santa hitches the reindeers in groups of 15\n"
@@ -495,7 +495,7 @@ class TestHighLoadSanta(unittest.TestCase):
         CompareResultsQuantity("<=", 15),
         ReduceResult()
     ])
-    rule_8 = JARLRule(rule_8_statement, rule_8_fact, rule_8_scope)
+    rule_8 = JARLRule(rule_8_statement, rule_8_fact, rule_8_scope, passed_by_default=True)
 
     rule_9_statement = (
         "# Elves cannot be helped if they dont arrive with Santa\n"
@@ -519,7 +519,7 @@ class TestHighLoadSanta(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_9 = JARLRule(rule_9_statement, rule_9_fact, rule_9_scope)
+    rule_9 = JARLRule(rule_9_statement, rule_9_fact, rule_9_scope, passed_by_default=True)
     rule_9.set_dynamic_scope_arg("e1", True)
 
     rule_10_statement = (
@@ -544,7 +544,7 @@ class TestHighLoadSanta(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_10 = JARLRule(rule_10_statement, rule_10_fact, rule_10_scope)
+    rule_10 = JARLRule(rule_10_statement, rule_10_fact, rule_10_scope, passed_by_default=True)
     rule_10.set_dynamic_scope_arg("r1", True)
 
     rule_11_statement = (

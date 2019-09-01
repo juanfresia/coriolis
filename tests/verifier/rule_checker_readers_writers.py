@@ -30,7 +30,7 @@ class TestReadersWriters(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_1 = JARLRule(rule_1_statement, rule_1_fact, rule_1_scope)
+    rule_1 = JARLRule(rule_1_statement, rule_1_fact, rule_1_scope, passed_by_default=True)
     rule_1.set_dynamic_scope_arg("room1", True)
 
     rule_2_statement = (
@@ -56,7 +56,7 @@ class TestReadersWriters(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_2 = JARLRule(rule_2_statement, rule_2_fact, rule_2_scope)
+    rule_2 = JARLRule(rule_2_statement, rule_2_fact, rule_2_scope, passed_by_default=True)
     rule_2.set_dynamic_scope_arg("room1", True)
 
     rule_3_statement = (
@@ -71,7 +71,7 @@ class TestReadersWriters(unittest.TestCase):
         CompareResultsQuantity("=", 2),
         ReduceResult()
     ])
-    rule_3 = JARLRule(rule_3_statement, rule_3_fact)
+    rule_3 = JARLRule(rule_3_statement, rule_3_fact, passed_by_default=False)
 
     rule_4_statement = (
         "# Each writer writes a room 4 times\n"
@@ -85,7 +85,7 @@ class TestReadersWriters(unittest.TestCase):
         CompareResultsQuantity("=", 4),
         ReduceResult()
     ])
-    rule_4 = JARLRule(rule_4_statement, rule_4_fact)
+    rule_4 = JARLRule(rule_4_statement, rule_4_fact, passed_by_default=False)
 
     rule_5_statement = (
         "# Only one writer can be on a room at the same time\n"
@@ -111,7 +111,7 @@ class TestReadersWriters(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_5 = JARLRule(rule_5_statement, rule_5_fact, rule_5_scope)
+    rule_5 = JARLRule(rule_5_statement, rule_5_fact, rule_5_scope, passed_by_default=True)
     rule_5.set_dynamic_scope_arg("w1", True)
     rule_5.set_dynamic_scope_arg("room1", True)
 
@@ -139,7 +139,7 @@ class TestReadersWriters(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_6 = JARLRule(rule_6_statement, rule_6_fact, rule_6_scope)
+    rule_6 = JARLRule(rule_6_statement, rule_6_fact, rule_6_scope, passed_by_default=False)
     rule_6.set_dynamic_scope_arg("w1", True)
     rule_6.set_dynamic_scope_arg("room1", True)
 
@@ -167,7 +167,7 @@ class TestReadersWriters(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_7 = JARLRule(rule_7_statement, rule_7_fact, rule_7_scope)
+    rule_7 = JARLRule(rule_7_statement, rule_7_fact, rule_7_scope, passed_by_default=False)
     rule_7.set_dynamic_scope_arg("r1", True)
     rule_7.set_dynamic_scope_arg("room1", True)
 
@@ -193,7 +193,7 @@ class TestReadersWriters(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_8 = JARLRule(rule_8_statement, rule_8_fact, rule_8_scope)
+    rule_8 = JARLRule(rule_8_statement, rule_8_fact, rule_8_scope, passed_by_default=True)
     rule_8.set_dynamic_scope_arg("w1", True)
 
     rule_9_statement = (
@@ -218,7 +218,7 @@ class TestReadersWriters(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_9 = JARLRule(rule_9_statement, rule_9_fact, rule_9_scope)
+    rule_9 = JARLRule(rule_9_statement, rule_9_fact, rule_9_scope, passed_by_default=True)
     rule_9.set_dynamic_scope_arg("r1", True)
 
     rule_10_statement = (
@@ -244,7 +244,7 @@ class TestReadersWriters(unittest.TestCase):
         CompareResultsQuantity(">=", 1),
         ReduceResult()
     ])
-    rule_10 = JARLRule(rule_10_statement, rule_10_fact, rule_10_scope)
+    rule_10 = JARLRule(rule_10_statement, rule_10_fact, rule_10_scope, passed_by_default=True)
     rule_10.set_dynamic_scope_arg("room", False)
     rule_10.set_dynamic_scope_arg("msg", False)
 
@@ -273,7 +273,7 @@ class TestReadersWriters(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_11 = JARLRule(rule_11_statement, rule_11_fact, rule_11_scope)
+    rule_11 = JARLRule(rule_11_statement, rule_11_fact, rule_11_scope, passed_by_default=True)
     rule_11.set_dynamic_scope_arg("r2", True)
     rule_11.set_dynamic_scope_arg("m2", True)
 
@@ -299,7 +299,7 @@ class TestReadersWriters(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_12 = JARLRule(rule_12_statement, rule_12_fact, rule_12_scope)
+    rule_12 = JARLRule(rule_12_statement, rule_12_fact, rule_12_scope, passed_by_default=True)
     rule_12.set_dynamic_scope_arg("room", False)
 
 
@@ -343,6 +343,7 @@ class TestReadersWriters(unittest.TestCase):
 
     def test_null_read_because_room_never_written(self):
         self.check_one_rule(self.rule_12)
+
 
     def test_all_rules(self):
         all_rules = [

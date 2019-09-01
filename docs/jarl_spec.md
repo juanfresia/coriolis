@@ -78,20 +78,18 @@ Additionally, it is suggested (although not totally needed) that the following t
 
 Checkpoint precedence facts expose an order relationship between two checkpoints, in the sense they express that a checkpoint must happen before or after another one. The full syntax for two checkpoints `f(x)` and `g(y)` would be:
 
-```f(x) must [ precede | follow ] g(y)```
+```f(x) must precede g(y)```
 
 Examples:
 
 ```produce(item) must precede consume(item)```
 
-```lock_release(lock_id) must follow lock_acquire(lock_id)```
+```lock_acquire(lock_id) must precede lock_release(lock_id)```
 
-Although it is clear which checkpoint comes before or after the other on both cases, it truly is important to note the logic difference between the `precede` and the `follow` words.
+Although it is clear which checkpoint comes before or after the other on both cases, it is important to explicitily define the logic meaning of the `must precede` clause.
 
-Let `T(X)` be the time when checkpoint `X` happens during the execution of a concurrent program. Then:
+Let `T(X)` be the time when checkpoint `X` happens during the execution of a concurrent program. Then, `X must precede Y` will result in a _failed_ assertion when, given that both `X` and `Y` happened, `T(X)` > `T(Y)`. This way, if either `X` or `Y` did not happen, the precedence will default to _true_. 
 
-- `X must precede Y` is _true_ iff `T(X)` < `T(Y)` or `Y` does not happen when `X` does.
-- `X must follow Y` is _false_ iff `T(X)` < `T(Y)` or `X` does not happen when `Y` does.
 
 ### Argument matching with iterators
 

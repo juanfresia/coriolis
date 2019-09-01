@@ -3,11 +3,12 @@ import copy
 from common.aggregation_steps import *
 
 class JARLRule:
-    def __init__(self, statement_text, fact, scope=None):
+    def __init__(self, statement_text, fact, scope=None, passed_by_default=True):
         self.text = statement_text
         self.fact = fact
         self.scope = scope
         self.status = "Pending"
+        self.passed_by_default = passed_by_default
         self.failed_info = ""
         self.failed_scope = None
         self._dynamic_args = {}
@@ -33,6 +34,9 @@ class JARLRule:
         self.status = "Failed"
         self.failed_scope = failed_scope
         self.failed_info = failed_info
+
+    def set_default(self, scope=None, info=""):
+        self.set_passed() if self.passed_by_default else self.set_failed(scope, info)
 
     def get_failed_info(self):
         return self.failed_info
