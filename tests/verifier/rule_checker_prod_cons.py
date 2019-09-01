@@ -203,7 +203,6 @@ class TestProducersConsumers(unittest.TestCase):
         rule = rc.check_all_rules()[0]
         self.assertTrue(rule.has_passed())
 
-
     def test_every_item_produced_once(self):
         self.check_one_rule(self.rule_1)
 
@@ -236,7 +235,6 @@ class TestProducersConsumers(unittest.TestCase):
 
     def test_cant_consume_items_smaller_than_id(self):
         self.check_one_rule(self.rule_11)
-
 
     def test_all_rules(self):
         all_rules = [

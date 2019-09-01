@@ -64,7 +64,7 @@ class TestAggregationSteps(unittest.TestCase):
             {'log_line': 1, 'arg_1': 8, 'checkpoint': 'f'}
         ]
         expected_output = [
-            {'log_line': 1, 'arg_1': 8, 'checkpoint': 'f', 'arg_x': 8}
+            {'log_line': 1, 'checkpoint': 'f', 'arg_x': 8}
         ]
         self.check_aggregation_step(step, input, expected_output)
 
@@ -75,8 +75,8 @@ class TestAggregationSteps(unittest.TestCase):
             {'log_line': 2, 'arg_1': 6, 'checkpoint': 'f'}
         ]
         expected_output = [
-            {'log_line': 1, 'arg_1': 8, 'checkpoint': 'f', 'arg_x': 8, 'arg_y': 8},
-            {'log_line': 2, 'arg_1': 6, 'checkpoint': 'f', 'arg_x': 6, 'arg_y': 6}
+            {'log_line': 1, 'checkpoint': 'f', 'arg_x': 8, 'arg_y': 8},
+            {'log_line': 2, 'checkpoint': 'f', 'arg_x': 6, 'arg_y': 6}
         ]
         self.check_aggregation_step(step, input, expected_output)
 
@@ -88,9 +88,9 @@ class TestAggregationSteps(unittest.TestCase):
             {'log_line': 3, 'arg_1': 2, 'arg_2': 2, 'checkpoint': 'f'}
         ]
         expected_output = [
-            {'log_line': 1, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'f', 'arg_i': 1, 'arg_j': 1},
-            {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g', 'arg_a1': 1, 'arg_a2': 1},
-            {'log_line': 3, 'arg_1': 2, 'arg_2': 2, 'checkpoint': 'f', 'arg_i': 2, 'arg_j': 2}
+            {'log_line': 1, 'checkpoint': 'f', 'arg_i': 1, 'arg_j': 1},
+            {'log_line': 2, 'checkpoint': 'g', 'arg_a1': 1, 'arg_a2': 1},
+            {'log_line': 3, 'checkpoint': 'f', 'arg_i': 2, 'arg_j': 2}
         ]
         self.check_aggregation_step(step, input, expected_output)
 

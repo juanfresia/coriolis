@@ -82,9 +82,9 @@ class MatchCheckpoints(AggregationStep):
 #   {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g'}
 #   {'log_line': 3, 'arg_1': 2, 'arg_2': 2, 'checkpoint': 'f'}
 # Output:
-#   {'log_line': 1, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'f', 'arg_i': 1, 'arg_j': 1}
-#   {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g', 'arg_a1': 1, 'arg_a2': 1}
-#   {'log_line': 3, 'arg_1': 2, 'arg_2': 2, 'checkpoint': 'f', 'arg_i': 2, 'arg_j': 2}
+#   {'log_line': 1, 'checkpoint': 'f', 'arg_i': 1, 'arg_j': 1}
+#   {'log_line': 2, 'checkpoint': 'g', 'arg_a1': 1, 'arg_a2': 1}
+#   {'log_line': 3, 'checkpoint': 'f', 'arg_i': 2, 'arg_j': 2}
 class RenameArgs(AggregationStep):
     def  __init__(self, checkpoint_names, arg_names_list):
         super().__init__()
@@ -93,29 +93,35 @@ class RenameArgs(AggregationStep):
 
     def _mongofy(self):
         steps = []
+        all_args = {"log_line": 1, "checkpoint": 1}
         for i in range(0, len(self.checkpoint_names)):
+            new_args = {}
             for j in range(0, len(self.arg_names_list[i])):
                 cond = {"$eq": ["$checkpoint", self.checkpoint_names[i]]}
                 true_case = "$arg_{}".format(j + 1)
                 false_case = "$arg_{}".format(self.arg_names_list[i][j])
                 r = {"$cond": [cond, true_case, false_case]}
-                steps.append( {"$addFields": {"arg_{}".format(self.arg_names_list[i][j]): r} } )
+                new_args["arg_{}".format(self.arg_names_list[i][j])] = r
+                all_args["arg_{}".format(self.arg_names_list[i][j])] = 1
+            steps.append( {"$addFields": new_args } )
+
+        steps.append( {"$project": all_args} )
         return steps
 
 # USAGE EXAMPLE: CrossJoinCheckpoints( ["f", "g"] )
 # Input:
-#   {'log_line': 1, 'arg_1': 1, 'checkpoint': 'f', 'arg_p': 1}
-#   {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g', 'arg_c': 1, 'arg_i': 1}
-#   {'log_line': 3, 'arg_1': 2, 'checkpoint': 'f', 'arg_p': 2}
-#   {'log_line': 4, 'arg_1': 2, 'checkpoint': 'f', 'arg_p': 2}
-#   {'log_line': 5, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g', 'arg_c': 1, 'arg_i': 2}
+#   {'log_line': 1, 'checkpoint': 'f', 'arg_p': 1}
+#   {'log_line': 2, 'checkpoint': 'g', 'arg_c': 1, 'arg_i': 1}
+#   {'log_line': 3, 'checkpoint': 'f', 'arg_p': 2}
+#   {'log_line': 4, 'checkpoint': 'f', 'arg_p': 2}
+#   {'log_line': 5, 'checkpoint': 'g', 'arg_c': 1, 'arg_i': 2}
 # Output:
-#   {'r1': {'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_p': 1}, 'r2': {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 1}}
-#   {'r1': {'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_p': 1}, 'r2': {'log_line': 5, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 2}}
-#   {'r1': {'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_p': 2}, 'r2': {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 1}}
-#   {'r1': {'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_p': 2}, 'r2': {'log_line': 5, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 2}}
-#   {'r1': {'log_line': 4, 'arg_1': 2, 'checkpoint': 'f1', 'arg_p': 2}, 'r2': {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 1}}
-#   {'r1': {'log_line': 4, 'arg_1': 2, 'checkpoint': 'f1', 'arg_p': 2}, 'r2': {'log_line': 5, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 2}}
+#   {'r1': {'log_line': 1, 'checkpoint': 'f1', 'arg_p': 1}, 'r2': {'log_line': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 1}}
+#   {'r1': {'log_line': 1, 'checkpoint': 'f1', 'arg_p': 1}, 'r2': {'log_line': 5, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 2}}
+#   {'r1': {'log_line': 3, 'checkpoint': 'f1', 'arg_p': 2}, 'r2': {'log_line': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 1}}
+#   {'r1': {'log_line': 3, 'checkpoint': 'f1', 'arg_p': 2}, 'r2': {'log_line': 5, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 2}}
+#   {'r1': {'log_line': 4, 'checkpoint': 'f1', 'arg_p': 2}, 'r2': {'log_line': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 1}}
+#   {'r1': {'log_line': 4, 'checkpoint': 'f1', 'arg_p': 2}, 'r2': {'log_line': 5, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i': 2}}
 #
 # NOTE: The checkpoint names are modified by adding a number sufix (i.e. from "f","g" to "f1","g2")
 class CrossJoinCheckpoints(AggregationStep):
@@ -155,18 +161,18 @@ class CrossJoinCheckpoints(AggregationStep):
 
 # USAGE EXAMPLE: CrossAndGroupByArgs( ["f", "g"], [ ["i1"], ["i2"] ] )
 # Input:
-#   {'log_line': 1, 'arg_1': 1, 'checkpoint': 'f', 'arg_i1': 1}
-#   {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g', 'arg_c': 1, 'arg_i2': 1}
-#   {'log_line': 3, 'arg_1': 2, 'checkpoint': 'f', 'arg_i1': 2}
-#   {'log_line': 4, 'arg_1': 3, 'checkpoint': 'f', 'arg_i1': 3}
-#   {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g', 'arg_c': 1, 'arg_i2': 2}
+#   {'log_line': 1, 'checkpoint': 'f', 'arg_i1': 1}
+#   {'log_line': 2, 'checkpoint': 'g', 'arg_c': 1, 'arg_i2': 1}
+#   {'log_line': 3, 'checkpoint': 'f', 'arg_i1': 2}
+#   {'log_line': 4, 'checkpoint': 'f', 'arg_i1': 3}
+#   {'log_line': 6, 'checkpoint': 'g', 'arg_c': 1, 'arg_i2': 2}
 # Output:
-#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 1}}
-#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 1}}
-#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 2}}
-#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 2}}
-#   {'results': [{'log_line': 4, 'arg_1': 3, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 3}}
-#   {'results': [{'log_line': 4, 'arg_1': 3, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 3}}
+#   {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 1}}
+#   {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 6, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 1}}
+#   {'results': [{'log_line': 3, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 2}}
+#   {'results': [{'log_line': 3, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 6, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 2}}
+#   {'results': [{'log_line': 4, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 3}}
+#   {'results': [{'log_line': 4, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 6, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 3}}
 #
 # NOTE: The checkpoint names are modified by adding a number sufix (i.e. from "f","g" to "f1","g2")
 class CrossAndGroupByArgs(AggregationStep):
@@ -198,16 +204,16 @@ class CrossAndGroupByArgs(AggregationStep):
 
 # USAGE EXAMPLE: ImposeIteratorCondition("i1", "<=", "i2")
 # Input:
-#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 1}}
-#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 1}}
-#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 2}}
-#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 2}}
-#   {'results': [{'log_line': 4, 'arg_1': 3, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 3}}
-#   {'results': [{'log_line': 4, 'arg_1': 3, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 3}}
+#   {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 1}}
+#   {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 6, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 1}}
+#   {'results': [{'log_line': 3, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 2}}
+#   {'results': [{'log_line': 3, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 6, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 2}}
+#   {'results': [{'log_line': 4, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 3}}
+#   {'results': [{'log_line': 4, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 6, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 3}}
 # Output:
-#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 1}}
-#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 1}}
-#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 6, 'arg_1': 1, 'arg_2': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 2}}
+#   {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 1}}
+#   {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 6, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 1}}
+#   {'results': [{'log_line': 3, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 6, 'checkpoint': 'g2', 'arg_c': 1, 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 2}}
 class ImposeIteratorCondition(AggregationStep):
     def __init__(self, i1, expr, i2, using_literal=False):
         super().__init__()
@@ -223,19 +229,19 @@ class ImposeIteratorCondition(AggregationStep):
 
 # USAGE EXAMPLE: ImposeWildcardCondition("w1", ">=", "w2")
 # Input:
-#   {'results': [{'log_line': 1, 'arg_1': 1, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 1, 'arg_w2': 0}]}
-#   {'results': [{'log_line': 2, 'arg_1': 1, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 1, 'arg_w2': 2}]}
-#   {'results': [{'log_line': 3, 'arg_1': 2, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 2, 'arg_w2': 4}]}
-#   {'results': [{'log_line': 4, 'arg_1': 2, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 2, 'arg_w2': 4}]}
-#   {'results': [{'log_line': 5, 'arg_1': 3, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 3, 'arg_w2': 2}]}
-#   {'results': [{'log_line': 6, 'arg_1': 3, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 3, 'arg_w2': 0}]}
+#   {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_w1': 1, 'arg_w2': 0}]}
+#   {'results': [{'log_line': 2, 'checkpoint': 'f1', 'arg_w1': 1, 'arg_w2': 2}]}
+#   {'results': [{'log_line': 3, 'checkpoint': 'f1', 'arg_w1': 2, 'arg_w2': 4}]}
+#   {'results': [{'log_line': 4, 'checkpoint': 'f1', 'arg_w1': 2, 'arg_w2': 4}]}
+#   {'results': [{'log_line': 5, 'checkpoint': 'f1', 'arg_w1': 3, 'arg_w2': 2}]}
+#   {'results': [{'log_line': 6, 'checkpoint': 'f1', 'arg_w1': 3, 'arg_w2': 0}]}
 # Output:
-#   {'results': [{'log_line': 1, 'arg_1': 1, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 1, 'arg_w2': 0}]}
+#   {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_w1': 1, 'arg_w2': 0}]}
 #   {'results': []}
 #   {'results': []}
 #   {'results': []}
-#   {'results': [{'log_line': 5, 'arg_1': 3, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 3, 'arg_w2': 2}]}
-#   {'results': [{'log_line': 6, 'arg_1': 3, 'arg_2': 6, 'checkpoint': 'f1', 'arg_w1': 3, 'arg_w2': 0}]}
+#   {'results': [{'log_line': 5, 'checkpoint': 'f1', 'arg_w1': 3, 'arg_w2': 2}]}
+#   {'results': [{'log_line': 6, 'checkpoint': 'f1', 'arg_w1': 3, 'arg_w2': 0}]}
 class ImposeWildcardCondition(AggregationStep):
     def __init__(self, w1, expr, w2, using_literal=False):
         super().__init__()
@@ -254,9 +260,9 @@ class ImposeWildcardCondition(AggregationStep):
 
 # USAGE EXAMPLE: CompareResultsQuantity("=", 1)
 # Input:
-#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1}], '_id': {'i': 1}}
-#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_x': 2}], '_id': {'i': 2}}
-#   {'results': [{'log_line': 7, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3}, {'log_line': 11, 'arg_1': 4, 'checkpoint': 'f1', 'arg_x': 4}], '_id': {'i': 3}}
+#   {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_x': 1}], '_id': {'i': 1}}
+#   {'results': [{'log_line': 3, 'checkpoint': 'f1', 'arg_x': 2}], '_id': {'i': 2}}
+#   {'results': [{'log_line': 7, 'checkpoint': 'f1', 'arg_x': 3}, {'log_line': 11, 'checkpoint': 'f1', 'arg_x': 4}], '_id': {'i': 3}}
 # Output:
 #   {'result': True, 'info': 'Some info message', '_id': {'i': 1}}
 #   {'result': True, 'info': 'Some info message', '_id': {'i': 2}}
@@ -278,9 +284,9 @@ class CompareResultsQuantity(AggregationStep):
 
 # USAGE EXAMPLE: CompareResultsPrecedence("f1", "g2")
 # Input:
-#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 7, 'arg_1': 2, 'checkpoint': 'g2', 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 2}}
-#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'arg_1': 1, 'checkpoint': 'g2', 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 1}}
-#   {'results': [{'log_line': 5, 'arg_1': 3, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 4, 'arg_1': 3, 'checkpoint': 'g2', 'arg_i2': 3}], '_id': {'i2': 3, 'i1': 3}}
+#   {'results': [{'log_line': 3, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 7, 'checkpoint': 'g2', 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 2}}
+#   {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'checkpoint': 'g2', 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 1}}
+#   {'results': [{'log_line': 5, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 4, 'checkpoint': 'g2', 'arg_i2': 3}], '_id': {'i2': 3, 'i1': 3}}
 # Output:
 #   {'result': True, 'info': 'Some info message', '_id': {'i1': 2, 'i2': 2}}
 #   {'result': True, 'info': 'Some info message', '_id': {'i1': 1, 'i2': 1}}
@@ -367,18 +373,18 @@ class SortByLogLine(AggregationStep):
 # USAGE EXAMPLE: ScopeAfter("f1")
 # Input:
 #   {'_id': {'null': None}, 'results': [
-#     {'log_line': 2, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1},
-#     {'log_line': 6, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1},
-#     {'log_line': 8, 'arg_1': 2, 'checkpoint': 'f1', 'arg_x': 2},
-#     {'log_line': 9, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3},
-#     {'log_line': 10, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3}
+#     {'log_line': 2, 'checkpoint': 'f1', 'arg_x': 1},
+#     {'log_line': 6, 'checkpoint': 'f1', 'arg_x': 1},
+#     {'log_line': 8, 'checkpoint': 'f1', 'arg_x': 2},
+#     {'log_line': 9, 'checkpoint': 'f1', 'arg_x': 3},
+#     {'log_line': 10, 'checkpoint': 'f1', 'arg_x': 3}
 #   ]}
 # Output:
-#   {'_id': {'null': None}, 'c1': {'log_line': 2, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1}, 'c2': {'log_line': 'MAX'}}
-#   {'_id': {'null': None}, 'c1': {'log_line': 6, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1}, 'c2': {'log_line': 'MAX'}}
-#   {'_id': {'null': None}, 'c1': {'log_line': 8, 'arg_1': 2, 'checkpoint': 'f1', 'arg_x': 2}, 'c2': {'log_line': 'MAX'}}
-#   {'_id': {'null': None}, 'c1': {'log_line': 9, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3}, 'c2': {'log_line': 'MAX'}}
-#   {'_id': {'null': None}, 'c1': {'log_line': 10, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3}, 'c2': {'log_line': 'MAX'}}
+#   {'_id': {'null': None}, 'c1': {'log_line': 2, 'checkpoint': 'f1', 'arg_x': 1}, 'c2': {'log_line': 'MAX'}}
+#   {'_id': {'null': None}, 'c1': {'log_line': 6, 'checkpoint': 'f1', 'arg_x': 1}, 'c2': {'log_line': 'MAX'}}
+#   {'_id': {'null': None}, 'c1': {'log_line': 8, 'checkpoint': 'f1', 'arg_x': 2}, 'c2': {'log_line': 'MAX'}}
+#   {'_id': {'null': None}, 'c1': {'log_line': 9, 'checkpoint': 'f1', 'arg_x': 3}, 'c2': {'log_line': 'MAX'}}
+#   {'_id': {'null': None}, 'c1': {'log_line': 10, 'checkpoint': 'f1', 'arg_x': 3}, 'c2': {'log_line': 'MAX'}}
 class ScopeAfter(AggregationStep):
     def __init__(self, checkpoint_name):
         super().__init__()
@@ -393,18 +399,18 @@ class ScopeAfter(AggregationStep):
 # USAGE EXAMPLE: ScopeBefore("f1")
 # Input:
 #   {'_id': {'null': None}, 'results': [
-#     {'log_line': 2, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1},
-#     {'log_line': 6, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1},
-#     {'log_line': 8, 'arg_1': 2, 'checkpoint': 'f1', 'arg_x': 2},
-#     {'log_line': 9, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3},
-#     {'log_line': 10, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3}
+#     {'log_line': 2, 'checkpoint': 'f1', 'arg_x': 1},
+#     {'log_line': 6, 'checkpoint': 'f1', 'arg_x': 1},
+#     {'log_line': 8, 'checkpoint': 'f1', 'arg_x': 2},
+#     {'log_line': 9, 'checkpoint': 'f1', 'arg_x': 3},
+#     {'log_line': 10, 'checkpoint': 'f1', 'arg_x': 3}
 #   ]}
 # Output:
-#   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 2, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1}},
-#   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 6, 'arg_1': 1, 'checkpoint': 'f1', 'arg_x': 1}},
-#   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 8, 'arg_1': 2, 'checkpoint': 'f1', 'arg_x': 2}},
-#   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 9, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3}},
-#   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 10, 'arg_1': 3, 'checkpoint': 'f1', 'arg_x': 3}}
+#   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 2, 'checkpoint': 'f1', 'arg_x': 1}},
+#   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 6, 'checkpoint': 'f1', 'arg_x': 1}},
+#   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 8, 'checkpoint': 'f1', 'arg_x': 2}},
+#   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 9, 'checkpoint': 'f1', 'arg_x': 3}},
+#   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 10, 'checkpoint': 'f1', 'arg_x': 3}}
 class ScopeBefore(AggregationStep):
     def __init__(self, checkpoint_name):
         super().__init__()
@@ -418,17 +424,17 @@ class ScopeBefore(AggregationStep):
 
 # USAGE EXAMPLE: ScopeBetween("f1", "g2")
 # Input:
-#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'arg_1': 1, 'checkpoint': 'g2', 'arg_i2': 1}], '_id': {'i1': 1, 'i2': 1}}
-#   {'results': [{'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 6, 'arg_1': 2, 'checkpoint': 'g2', 'arg_i2': 2}], '_id': {'i1': 1, 'i2': 2}}
-#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 2, 'arg_1': 1, 'checkpoint': 'g2', 'arg_i2': 1}], '_id': {'i1': 2, 'i2': 1}}
-#   {'results': [{'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 6, 'arg_1': 2, 'checkpoint': 'g2', 'arg_i2': 2}], '_id': {'i1': 2, 'i2': 2}}
-#   {'results': [{'log_line': 4, 'arg_1': 3, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 2, 'arg_1': 1, 'checkpoint': 'g2', 'arg_i2': 1}], '_id': {'i1': 3, 'i2': 1}}
-#   {'results': [{'log_line': 4, 'arg_1': 3, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 6, 'arg_1': 2, 'checkpoint': 'g2', 'arg_i2': 2}], '_id': {'i1': 3, 'i2': 2}}
+#   {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'checkpoint': 'g2', 'arg_i2': 1}], '_id': {'i1': 1, 'i2': 1}}
+#   {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 6, 'checkpoint': 'g2', 'arg_i2': 2}], '_id': {'i1': 1, 'i2': 2}}
+#   {'results': [{'log_line': 3, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 2, 'checkpoint': 'g2', 'arg_i2': 1}], '_id': {'i1': 2, 'i2': 1}}
+#   {'results': [{'log_line': 3, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 6, 'checkpoint': 'g2', 'arg_i2': 2}], '_id': {'i1': 2, 'i2': 2}}
+#   {'results': [{'log_line': 4, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 2, 'checkpoint': 'g2', 'arg_i2': 1}], '_id': {'i1': 3, 'i2': 1}}
+#   {'results': [{'log_line': 4, 'checkpoint': 'f1', 'arg_i1': 3}, {'log_line': 6, 'checkpoint': 'g2', 'arg_i2': 2}], '_id': {'i1': 3, 'i2': 2}}
 # Output:
-#   {'c2': {'log_line': 2, 'arg_1': 1, 'checkpoint': 'g2', 'arg_i2': 1}, 'c1': {'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, '_id': {'i1': 1, 'i2': 1}}
-#   {'c2': {'log_line': 6, 'arg_1': 2, 'checkpoint': 'g2', 'arg_i2': 2}, 'c1': {'log_line': 1, 'arg_1': 1, 'checkpoint': 'f1', 'arg_i1': 1}, '_id': {'i1': 1, 'i2': 2}}
-#   {'c2': {'log_line': 6, 'arg_1': 2, 'checkpoint': 'g2', 'arg_i2': 2}, 'c1': {'log_line': 3, 'arg_1': 2, 'checkpoint': 'f1', 'arg_i1': 2}, '_id': {'i1': 2, 'i2': 2}}
-#   {'c2': {'log_line': 6, 'arg_1': 2, 'checkpoint': 'g2', 'arg_i2': 2}, 'c1': {'log_line': 4, 'arg_1': 3, 'checkpoint': 'f1', 'arg_i1': 3}, '_id': {'i1': 3, 'i2': 2}}
+#   {'c2': {'log_line': 2, 'checkpoint': 'g2', 'arg_i2': 1}, 'c1': {'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, '_id': {'i1': 1, 'i2': 1}}
+#   {'c2': {'log_line': 6, 'checkpoint': 'g2', 'arg_i2': 2}, 'c1': {'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, '_id': {'i1': 1, 'i2': 2}}
+#   {'c2': {'log_line': 6, 'checkpoint': 'g2', 'arg_i2': 2}, 'c1': {'log_line': 3, 'checkpoint': 'f1', 'arg_i1': 2}, '_id': {'i1': 2, 'i2': 2}}
+#   {'c2': {'log_line': 6, 'checkpoint': 'g2', 'arg_i2': 2}, 'c1': {'log_line': 4, 'checkpoint': 'f1', 'arg_i1': 3}, '_id': {'i1': 3, 'i2': 2}}
 class ScopeBetween(AggregationStep):
     def __init__(self, checkpoint_first, checkpoint_second, using_next=True, using_beyond=False):
         super().__init__()
