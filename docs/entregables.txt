@@ -1,0 +1,19 @@
+
+Hoy es 28 de julio!!!!
+
+El 28 de agosto tenemos que tener: 
+- Esquema de reglas bien definido
+- Implementación del chequeo de las reglas 
+- O sea, el lado derecho de la foto!
+- Verificar que ande lo que tenemos en C++
+- NTH: File implementer para Rust! (Python?)
+
+El 28 de septiembre tenemos que tener:
+- Parser de reglas
+- Vinculación con la parte del checker
+- O sea, todo el lado de arriba
+
+El 28 de octubre tenemos que tener: 
+Everything!
+
+

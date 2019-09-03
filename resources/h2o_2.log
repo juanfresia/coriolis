@@ -1,0 +1,5000 @@
+atom_spawn  H  1
+atom_spawn  H  2
+atom_spawn  H  3
+atom_spawn  H  4
+atom_spawn  H  5
+atom_spawn  H  6
+atom_spawn  H  8
+atom_spawn  H  7
+atom_spawn  H  9
+atom_spawn  H  10
+atom_spawn  H  11
+atom_spawn  H  12
+atom_spawn  H  13
+atom_spawn  H  14
+atom_spawn  H  15
+atom_spawn  H  17
+atom_spawn  H  16
+atom_spawn  H  18
+atom_spawn  H  19
+atom_spawn  H  21
+atom_spawn  H  20
+atom_spawn  H  23
+atom_spawn  H  22
+atom_spawn  H  25
+atom_spawn  H  24
+atom_spawn  H  26
+atom_spawn  H  27
+atom_spawn  H  28
+atom_spawn  H  31
+atom_spawn  H  30
+atom_spawn  H  29
+atom_spawn  H  32
+atom_spawn  H  33
+atom_spawn  H  34
+atom_spawn  H  35
+atom_spawn  H  36
+atom_spawn  H  37
+atom_spawn  H  38
+atom_spawn  H  39
+atom_spawn  H  40
+atom_spawn  H  41
+atom_spawn  H  42
+atom_spawn  H  43
+atom_spawn  H  44
+atom_spawn  H  45
+atom_spawn  H  46
+atom_spawn  H  47
+atom_spawn  H  48
+atom_spawn  H  49
+atom_spawn  H  50
+atom_spawn  H  51
+atom_spawn  H  52
+atom_spawn  H  53
+atom_spawn  H  55
+atom_spawn  H  54
+atom_spawn  H  56
+atom_spawn  H  58
+atom_spawn  H  59
+atom_spawn  H  57
+atom_spawn  H  60
+atom_spawn  H  62
+atom_spawn  H  61
+atom_spawn  H  63
+atom_spawn  H  64
+atom_spawn  H  66
+atom_spawn  H  65
+atom_spawn  H  67
+atom_spawn  H  68
+atom_spawn  H  69
+atom_spawn  H  70
+atom_spawn  H  71
+atom_spawn  H  72
+atom_spawn  H  73
+atom_spawn  H  74
+atom_spawn  H  75
+atom_spawn  H  76
+atom_spawn  H  77
+atom_spawn  H  78
+atom_spawn  H  80
+atom_spawn  H  79
+atom_spawn  H  81
+atom_spawn  H  82
+atom_spawn  H  83
+atom_spawn  H  84
+atom_spawn  H  85
+atom_spawn  H  86
+atom_spawn  H  87
+atom_spawn  H  88
+atom_spawn  H  89
+atom_spawn  H  90
+atom_spawn  H  91
+atom_spawn  H  92
+atom_spawn  H  93
+atom_spawn  H  94
+atom_spawn  H  95
+atom_spawn  H  96
+atom_spawn  H  98
+atom_spawn  H  97
+atom_spawn  H  99
+atom_spawn  H  101
+atom_spawn  H  100
+atom_spawn  H  102
+atom_spawn  H  103
+atom_spawn  H  104
+atom_spawn  H  105
+atom_spawn  H  106
+atom_spawn  H  107
+atom_spawn  H  108
+atom_spawn  H  109
+atom_spawn  H  110
+atom_spawn  H  111
+atom_spawn  H  112
+atom_spawn  H  113
+atom_spawn  H  114
+atom_spawn  H  115
+atom_spawn  H  116
+atom_spawn  H  117
+atom_spawn  H  118
+atom_spawn  H  119
+atom_spawn  H  121
+atom_spawn  H  120
+atom_spawn  H  122
+atom_spawn  H  123
+atom_spawn  H  124
+atom_spawn  H  125
+atom_spawn  H  127
+atom_spawn  H  126
+atom_spawn  H  128
+atom_spawn  H  129
+atom_spawn  H  130
+atom_spawn  H  131
+atom_spawn  H  132
+atom_spawn  H  134
+atom_spawn  H  133
+atom_spawn  H  136
+atom_spawn  H  135
+atom_spawn  H  137
+atom_spawn  H  138
+atom_spawn  H  139
+atom_spawn  H  141
+atom_spawn  H  140
+atom_spawn  H  142
+atom_spawn  H  143
+atom_spawn  H  144
+atom_spawn  H  145
+atom_spawn  H  146
+atom_spawn  H  147
+atom_spawn  H  148
+atom_spawn  H  150
+atom_spawn  H  149
+atom_spawn  H  151
+atom_spawn  H  152
+atom_spawn  H  153
+atom_spawn  H  154
+atom_spawn  H  155
+atom_spawn  H  156
+atom_spawn  H  157
+atom_spawn  H  158
+atom_spawn  H  159
+atom_spawn  H  160
+atom_spawn  H  161
+atom_spawn  H  163
+atom_spawn  H  162
+atom_spawn  H  164
+atom_spawn  H  165
+atom_spawn  H  166
+atom_spawn  H  167
+atom_spawn  H  168
+atom_spawn  H  169
+atom_spawn  H  170
+atom_spawn  H  172
+atom_spawn  H  173
+atom_spawn  H  171
+atom_spawn  H  174
+atom_spawn  H  175
+atom_spawn  H  176
+atom_spawn  H  177
+atom_spawn  H  178
+atom_spawn  H  179
+atom_spawn  H  180
+atom_spawn  H  181
+atom_spawn  H  182
+atom_spawn  H  183
+atom_spawn  H  184
+atom_spawn  H  185
+atom_spawn  H  186
+atom_spawn  H  187
+atom_spawn  H  188
+atom_spawn  H  189
+atom_spawn  H  190
+atom_spawn  H  191
+atom_spawn  H  192
+atom_spawn  H  193
+atom_spawn  H  194
+atom_spawn  H  195
+atom_spawn  H  196
+atom_spawn  H  197
+atom_spawn  H  198
+atom_spawn  H  200
+atom_spawn  H  199
+atom_spawn  H  202
+atom_spawn  H  201
+atom_spawn  H  203
+atom_spawn  H  204
+atom_spawn  H  205
+atom_spawn  H  209
+atom_spawn  H  206
+atom_spawn  H  210
+atom_spawn  H  207
+atom_spawn  H  211
+atom_spawn  H  208
+atom_spawn  H  212
+atom_spawn  H  213
+atom_spawn  H  215
+atom_spawn  H  216
+atom_spawn  H  214
+atom_spawn  H  217
+atom_spawn  H  218
+atom_spawn  H  219
+atom_spawn  H  220
+atom_spawn  H  222
+atom_spawn  H  221
+atom_spawn  H  223
+atom_spawn  H  224
+atom_spawn  H  225
+atom_spawn  H  226
+atom_spawn  H  227
+atom_spawn  H  228
+atom_spawn  H  229
+atom_spawn  H  230
+atom_spawn  H  231
+atom_spawn  H  232
+atom_spawn  H  233
+atom_spawn  H  234
+atom_spawn  H  235
+atom_spawn  H  237
+atom_spawn  H  238
+atom_spawn  H  239
+atom_spawn  H  236
+atom_spawn  H  240
+atom_spawn  H  241
+atom_spawn  H  242
+atom_spawn  H  243
+atom_spawn  H  244
+atom_spawn  H  245
+atom_spawn  H  246
+atom_spawn  H  247
+atom_spawn  H  248
+atom_spawn  H  249
+atom_spawn  H  250
+atom_spawn  H  251
+atom_spawn  H  253
+atom_spawn  H  252
+atom_spawn  H  254
+atom_spawn  H  255
+atom_spawn  H  256
+atom_spawn  H  258
+atom_spawn  H  257
+atom_spawn  H  259
+atom_spawn  H  260
+atom_spawn  H  261
+atom_spawn  H  262
+atom_spawn  H  263
+atom_spawn  H  264
+atom_spawn  H  265
+atom_spawn  H  266
+atom_spawn  H  267
+atom_spawn  H  268
+atom_spawn  H  269
+atom_spawn  H  270
+atom_spawn  H  271
+atom_spawn  H  272
+atom_spawn  H  273
+atom_spawn  H  274
+atom_spawn  H  275
+atom_spawn  H  276
+atom_spawn  H  278
+atom_spawn  H  279
+atom_spawn  H  277
+atom_spawn  H  280
+atom_spawn  H  281
+atom_spawn  H  282
+atom_spawn  H  283
+atom_spawn  H  284
+atom_spawn  H  285
+atom_spawn  H  286
+atom_spawn  H  287
+atom_spawn  H  288
+atom_spawn  H  289
+atom_spawn  H  290
+atom_spawn  H  291
+atom_spawn  H  292
+atom_spawn  H  293
+atom_spawn  H  294
+atom_spawn  H  295
+atom_spawn  H  297
+atom_spawn  H  296
+atom_spawn  H  298
+atom_spawn  H  299
+atom_spawn  H  300
+atom_spawn  H  301
+atom_spawn  H  302
+atom_spawn  H  303
+atom_spawn  H  304
+atom_spawn  H  305
+atom_spawn  H  306
+atom_spawn  H  307
+atom_spawn  H  308
+atom_spawn  H  310
+atom_spawn  H  309
+atom_spawn  H  311
+atom_spawn  H  312
+atom_spawn  H  314
+atom_spawn  H  313
+atom_spawn  H  315
+atom_spawn  H  316
+atom_spawn  H  317
+atom_spawn  H  319
+atom_spawn  H  318
+atom_spawn  H  320
+atom_spawn  H  322
+atom_spawn  H  321
+atom_spawn  H  323
+atom_spawn  H  324
+atom_spawn  H  325
+atom_spawn  H  326
+atom_spawn  H  327
+atom_spawn  H  328
+atom_spawn  H  329
+atom_spawn  H  331
+atom_spawn  H  330
+atom_spawn  H  332
+atom_spawn  H  333
+atom_spawn  H  334
+atom_spawn  H  335
+atom_spawn  H  336
+atom_spawn  H  337
+atom_spawn  H  338
+atom_spawn  H  339
+atom_spawn  H  340
+atom_spawn  H  341
+atom_spawn  H  342
+atom_spawn  H  343
+atom_spawn  H  345
+atom_spawn  H  344
+atom_spawn  H  346
+atom_spawn  H  347
+atom_spawn  H  348
+atom_spawn  H  349
+atom_spawn  H  350
+atom_spawn  H  351
+atom_spawn  H  352
+atom_spawn  H  353
+atom_spawn  H  354
+atom_spawn  H  355
+atom_spawn  H  356
+atom_spawn  H  357
+atom_spawn  H  358
+atom_spawn  H  359
+atom_spawn  H  360
+atom_spawn  H  361
+atom_spawn  H  362
+atom_spawn  H  363
+atom_spawn  H  365
+atom_spawn  H  364
+atom_spawn  H  366
+atom_spawn  H  368
+atom_spawn  H  370
+atom_spawn  H  367
+atom_spawn  H  369
+atom_spawn  H  371
+atom_spawn  H  372
+atom_spawn  H  373
+atom_spawn  H  374
+atom_spawn  H  375
+atom_spawn  H  376
+atom_spawn  H  378
+atom_spawn  H  377
+atom_spawn  H  380
+atom_spawn  H  379
+atom_spawn  H  382
+atom_spawn  H  381
+atom_spawn  H  383
+atom_spawn  H  384
+atom_spawn  H  385
+atom_spawn  H  386
+atom_spawn  H  387
+atom_spawn  H  388
+atom_spawn  H  389
+atom_spawn  H  390
+atom_spawn  H  391
+atom_spawn  H  392
+atom_spawn  H  393
+atom_spawn  H  394
+atom_spawn  H  395
+atom_spawn  H  397
+atom_spawn  H  396
+atom_spawn  H  398
+atom_spawn  H  399
+atom_spawn  H  400
+atom_spawn  H  401
+atom_spawn  H  402
+atom_spawn  H  403
+atom_spawn  H  404
+atom_spawn  H  405
+atom_spawn  H  406
+atom_spawn  H  407
+atom_spawn  H  408
+atom_spawn  H  409
+atom_spawn  H  410
+atom_spawn  H  411
+atom_spawn  H  412
+atom_spawn  H  413
+atom_spawn  H  414
+atom_spawn  H  415
+atom_spawn  H  417
+atom_spawn  H  416
+atom_spawn  H  418
+atom_spawn  H  419
+atom_spawn  H  420
+atom_spawn  H  421
+atom_spawn  H  422
+atom_spawn  H  423
+atom_spawn  H  425
+atom_spawn  H  424
+atom_spawn  H  427
+atom_spawn  H  426
+atom_spawn  H  428
+atom_spawn  H  429
+atom_spawn  H  430
+atom_spawn  H  431
+atom_spawn  H  432
+atom_spawn  H  434
+atom_spawn  H  433
+atom_spawn  H  435
+atom_spawn  H  436
+atom_spawn  H  437
+atom_spawn  H  438
+atom_spawn  H  439
+atom_spawn  H  440
+atom_spawn  H  441
+atom_spawn  H  443
+atom_spawn  H  442
+atom_spawn  H  444
+atom_spawn  H  445
+atom_spawn  H  446
+atom_spawn  H  447
+atom_spawn  H  448
+atom_spawn  H  449
+atom_spawn  H  451
+atom_spawn  H  450
+atom_spawn  H  453
+atom_spawn  H  452
+atom_spawn  H  455
+atom_spawn  H  454
+atom_spawn  H  456
+atom_spawn  H  457
+atom_spawn  H  458
+atom_spawn  H  459
+atom_spawn  H  460
+atom_spawn  H  461
+atom_spawn  H  463
+atom_spawn  H  462
+atom_spawn  H  465
+atom_spawn  H  464
+atom_spawn  H  466
+atom_spawn  H  467
+atom_spawn  H  468
+atom_spawn  H  469
+atom_spawn  H  470
+atom_spawn  H  472
+atom_spawn  H  471
+atom_spawn  H  473
+atom_spawn  H  474
+atom_spawn  H  475
+atom_spawn  H  476
+atom_spawn  H  477
+atom_spawn  H  478
+atom_spawn  H  479
+atom_spawn  H  480
+atom_spawn  H  481
+atom_spawn  H  483
+atom_spawn  H  482
+atom_spawn  H  484
+atom_spawn  H  485
+atom_spawn  H  487
+atom_spawn  H  486
+atom_spawn  H  488
+atom_spawn  H  489
+atom_spawn  H  490
+atom_spawn  H  491
+atom_spawn  H  492
+atom_spawn  H  493
+atom_spawn  H  495
+atom_spawn  H  494
+atom_spawn  H  496
+atom_spawn  H  497
+atom_spawn  H  498
+atom_spawn  H  499
+atom_spawn  H  500
+atom_spawn  H  501
+atom_spawn  H  502
+atom_spawn  H  503
+atom_spawn  H  505
+atom_spawn  H  504
+atom_spawn  H  506
+atom_spawn  H  507
+atom_spawn  H  508
+atom_spawn  H  509
+atom_spawn  H  510
+atom_spawn  H  511
+atom_spawn  H  513
+atom_spawn  H  512
+atom_spawn  H  514
+atom_spawn  H  515
+atom_spawn  H  516
+atom_spawn  H  517
+atom_spawn  H  518
+atom_spawn  H  519
+atom_spawn  H  520
+atom_spawn  H  521
+atom_spawn  H  522
+atom_spawn  H  523
+atom_spawn  H  524
+atom_spawn  H  525
+atom_spawn  H  528
+atom_spawn  H  527
+atom_spawn  H  526
+atom_spawn  H  529
+atom_spawn  H  530
+atom_spawn  H  531
+atom_spawn  H  532
+atom_spawn  H  534
+atom_spawn  H  533
+atom_spawn  H  535
+atom_spawn  H  536
+atom_spawn  H  538
+atom_spawn  H  537
+atom_spawn  H  541
+atom_spawn  H  539
+atom_spawn  H  540
+atom_spawn  H  542
+atom_spawn  H  543
+atom_spawn  H  544
+atom_spawn  H  545
+atom_spawn  H  546
+atom_spawn  H  547
+atom_spawn  H  548
+atom_spawn  H  549
+atom_spawn  H  550
+atom_spawn  H  552
+atom_spawn  H  551
+atom_spawn  H  553
+atom_spawn  H  554
+atom_spawn  H  555
+atom_spawn  H  556
+atom_spawn  H  559
+atom_spawn  H  557
+atom_spawn  H  558
+atom_spawn  H  560
+atom_spawn  H  561
+atom_spawn  H  562
+atom_spawn  H  563
+atom_spawn  H  564
+atom_spawn  H  565
+atom_spawn  H  566
+atom_spawn  H  567
+atom_spawn  H  568
+atom_spawn  H  571
+atom_spawn  H  569
+atom_spawn  H  570
+atom_spawn  H  572
+atom_spawn  H  573
+atom_spawn  H  574
+atom_spawn  H  575
+atom_spawn  H  577
+atom_spawn  H  576
+atom_spawn  H  578
+atom_spawn  H  579
+atom_spawn  H  580
+atom_spawn  H  581
+atom_spawn  H  582
+atom_spawn  H  583
+atom_spawn  H  584
+atom_spawn  H  585
+atom_spawn  H  586
+atom_spawn  H  587
+atom_spawn  H  588
+atom_spawn  H  589
+atom_spawn  H  590
+atom_spawn  H  591
+atom_spawn  H  593
+atom_spawn  H  592
+atom_spawn  H  594
+atom_spawn  H  595
+atom_spawn  H  596
+atom_spawn  H  597
+atom_spawn  H  598
+atom_spawn  H  599
+atom_spawn  H  600
+atom_spawn  H  601
+atom_spawn  H  602
+atom_spawn  H  603
+atom_spawn  H  604
+atom_spawn  H  605
+atom_spawn  H  606
+atom_spawn  H  607
+atom_spawn  H  608
+atom_spawn  H  609
+atom_spawn  H  610
+atom_spawn  H  611
+atom_spawn  H  612
+atom_spawn  H  613
+atom_spawn  H  614
+atom_spawn  H  615
+atom_spawn  H  616
+atom_spawn  H  617
+atom_spawn  H  618
+atom_spawn  H  619
+atom_spawn  H  621
+atom_spawn  H  620
+atom_spawn  H  622
+atom_spawn  H  623
+atom_spawn  H  624
+atom_spawn  H  625
+atom_spawn  H  626
+atom_spawn  H  627
+atom_spawn  H  628
+atom_spawn  H  629
+atom_spawn  H  630
+atom_spawn  H  631
+atom_spawn  H  633
+atom_spawn  H  632
+atom_spawn  H  634
+atom_spawn  H  635
+atom_spawn  H  636
+atom_spawn  H  637
+atom_spawn  H  638
+atom_spawn  H  639
+atom_spawn  H  640
+atom_spawn  H  641
+atom_spawn  H  642
+atom_spawn  H  643
+atom_spawn  H  644
+atom_spawn  H  645
+atom_spawn  H  646
+atom_spawn  H  647
+atom_spawn  H  648
+atom_spawn  H  649
+atom_spawn  H  650
+atom_spawn  H  651
+atom_spawn  H  653
+atom_spawn  H  652
+atom_spawn  H  655
+atom_spawn  H  654
+atom_spawn  H  656
+atom_spawn  H  657
+atom_spawn  H  658
+atom_spawn  H  659
+atom_spawn  H  660
+atom_spawn  H  661
+atom_spawn  H  662
+atom_spawn  H  663
+atom_spawn  H  664
+atom_spawn  H  665
+atom_spawn  H  667
+atom_spawn  H  666
+atom_spawn  H  668
+atom_spawn  H  669
+atom_spawn  H  670
+atom_spawn  H  671
+atom_spawn  H  672
+atom_spawn  H  673
+atom_spawn  H  674
+atom_spawn  H  675
+atom_spawn  H  676
+atom_spawn  H  677
+atom_spawn  H  678
+atom_spawn  H  679
+atom_spawn  H  680
+atom_spawn  H  681
+atom_spawn  H  682
+atom_spawn  H  684
+atom_spawn  H  683
+atom_spawn  H  686
+atom_spawn  H  685
+atom_spawn  H  687
+atom_spawn  H  688
+atom_spawn  H  689
+atom_spawn  H  691
+atom_spawn  H  692
+atom_spawn  H  690
+atom_spawn  H  693
+atom_spawn  H  695
+atom_spawn  H  694
+atom_spawn  H  696
+atom_spawn  H  697
+atom_spawn  H  698
+atom_spawn  H  699
+atom_spawn  H  700
+atom_spawn  H  701
+atom_spawn  H  702
+atom_spawn  H  703
+atom_spawn  H  704
+atom_spawn  H  705
+atom_spawn  H  706
+atom_spawn  H  707
+atom_spawn  H  708
+atom_spawn  H  709
+atom_spawn  H  710
+atom_spawn  H  711
+atom_spawn  H  712
+atom_spawn  H  713
+atom_spawn  H  714
+atom_spawn  H  715
+atom_spawn  H  716
+atom_spawn  H  718
+atom_spawn  H  717
+atom_spawn  H  719
+atom_spawn  H  720
+atom_spawn  H  721
+atom_spawn  H  722
+atom_spawn  H  723
+atom_spawn  H  724
+atom_spawn  H  725
+atom_spawn  H  726
+atom_spawn  H  727
+atom_spawn  H  729
+atom_spawn  H  728
+atom_spawn  H  730
+atom_spawn  H  731
+atom_spawn  H  732
+atom_spawn  H  733
+atom_spawn  H  734
+atom_spawn  H  735
+atom_spawn  H  736
+atom_spawn  H  737
+atom_spawn  H  738
+atom_spawn  H  739
+atom_spawn  H  741
+atom_spawn  H  740
+atom_spawn  H  743
+atom_spawn  H  742
+atom_spawn  H  744
+atom_spawn  H  745
+atom_spawn  H  746
+atom_spawn  H  747
+atom_spawn  H  748
+atom_spawn  H  749
+atom_spawn  H  750
+atom_spawn  H  751
+atom_spawn  H  752
+atom_spawn  H  753
+atom_spawn  H  754
+atom_spawn  H  755
+atom_spawn  H  757
+atom_spawn  H  756
+atom_spawn  H  758
+atom_spawn  H  759
+atom_spawn  H  760
+atom_spawn  H  761
+atom_spawn  H  762
+atom_spawn  H  763
+atom_spawn  H  764
+atom_spawn  H  765
+atom_spawn  H  766
+atom_spawn  H  767
+atom_spawn  H  768
+atom_spawn  H  769
+atom_spawn  H  770
+atom_spawn  H  771
+atom_spawn  H  772
+atom_spawn  H  774
+atom_spawn  H  773
+atom_spawn  H  775
+atom_spawn  H  776
+atom_spawn  H  778
+atom_spawn  H  777
+atom_spawn  H  780
+atom_spawn  H  779
+atom_spawn  H  782
+atom_spawn  H  781
+atom_spawn  H  783
+atom_spawn  H  784
+atom_spawn  H  785
+atom_spawn  H  786
+atom_spawn  H  787
+atom_spawn  H  788
+atom_spawn  H  789
+atom_spawn  H  791
+atom_spawn  H  790
+atom_spawn  H  793
+atom_spawn  H  792
+atom_spawn  H  794
+atom_spawn  H  795
+atom_spawn  H  796
+atom_spawn  H  797
+atom_spawn  H  799
+atom_spawn  H  798
+atom_spawn  H  800
+atom_spawn  H  802
+atom_spawn  H  801
+atom_spawn  H  803
+atom_spawn  H  804
+atom_spawn  H  805
+atom_spawn  H  807
+atom_spawn  H  806
+atom_spawn  H  808
+atom_spawn  H  809
+atom_spawn  H  810
+atom_spawn  H  811
+atom_spawn  H  812
+atom_spawn  H  813
+atom_spawn  H  814
+atom_spawn  H  815
+atom_spawn  H  816
+atom_spawn  H  817
+atom_spawn  H  818
+atom_spawn  H  819
+atom_spawn  H  820
+atom_spawn  H  821
+atom_spawn  H  822
+atom_spawn  H  825
+atom_spawn  H  824
+atom_spawn  H  823
+atom_spawn  H  826
+atom_spawn  H  827
+atom_spawn  H  829
+atom_spawn  H  831
+atom_spawn  H  830
+atom_spawn  H  828
+atom_spawn  H  833
+atom_spawn  H  832
+atom_spawn  H  834
+atom_spawn  H  835
+atom_spawn  H  836
+atom_spawn  H  837
+atom_spawn  H  839
+atom_spawn  H  838
+atom_spawn  H  840
+atom_spawn  H  842
+atom_spawn  H  841
+atom_spawn  H  843
+atom_spawn  H  844
+atom_spawn  H  845
+atom_spawn  H  847
+atom_spawn  H  846
+atom_spawn  H  848
+atom_spawn  H  849
+atom_spawn  H  850
+atom_spawn  H  851
+atom_spawn  H  852
+atom_spawn  H  854
+atom_spawn  H  853
+atom_spawn  H  855
+atom_spawn  H  856
+atom_spawn  H  858
+atom_spawn  H  857
+atom_spawn  H  859
+atom_spawn  H  860
+atom_spawn  H  862
+atom_spawn  H  861
+atom_spawn  H  863
+atom_spawn  H  864
+atom_spawn  H  865
+atom_spawn  H  866
+atom_spawn  H  867
+atom_spawn  H  868
+atom_spawn  H  869
+atom_spawn  H  870
+atom_spawn  H  872
+atom_spawn  H  871
+atom_spawn  H  873
+atom_spawn  H  874
+atom_spawn  H  875
+atom_spawn  H  876
+atom_spawn  H  877
+atom_spawn  H  878
+atom_spawn  H  879
+atom_spawn  H  880
+atom_spawn  H  881
+atom_spawn  H  882
+atom_spawn  H  884
+atom_spawn  H  883
+atom_spawn  H  885
+atom_spawn  H  886
+atom_spawn  H  887
+atom_spawn  H  888
+atom_spawn  H  889
+atom_spawn  H  890
+atom_spawn  H  892
+atom_spawn  H  891
+atom_spawn  H  894
+atom_spawn  H  893
+atom_spawn  H  895
+atom_spawn  H  896
+atom_spawn  H  897
+atom_spawn  H  898
+atom_spawn  H  899
+atom_spawn  H  900
+atom_spawn  H  901
+atom_spawn  H  902
+atom_spawn  H  903
+atom_spawn  H  904
+atom_spawn  H  905
+atom_spawn  H  906
+atom_spawn  H  907
+atom_spawn  H  908
+atom_spawn  H  909
+atom_spawn  H  910
+atom_spawn  H  911
+atom_spawn  H  912
+atom_spawn  H  913
+atom_spawn  H  914
+atom_spawn  H  915
+atom_spawn  H  916
+atom_spawn  H  918
+atom_spawn  H  917
+atom_spawn  H  919
+atom_spawn  H  920
+atom_spawn  H  921
+atom_spawn  H  922
+atom_spawn  H  923
+atom_spawn  H  924
+atom_spawn  H  925
+atom_spawn  H  926
+atom_spawn  H  927
+atom_spawn  H  928
+atom_spawn  H  929
+atom_spawn  H  930
+atom_spawn  H  931
+atom_spawn  H  932
+atom_spawn  H  933
+atom_spawn  H  934
+atom_spawn  H  935
+atom_spawn  H  936
+atom_spawn  H  937
+atom_spawn  H  938
+atom_spawn  H  939
+atom_spawn  H  940
+atom_spawn  H  941
+atom_spawn  H  942
+atom_spawn  H  943
+atom_spawn  H  944
+atom_spawn  H  946
+atom_spawn  H  945
+atom_spawn  H  947
+atom_spawn  H  948
+atom_spawn  H  949
+atom_spawn  H  950
+atom_spawn  H  952
+atom_spawn  H  951
+atom_spawn  H  953
+atom_spawn  H  954
+atom_spawn  H  955
+atom_spawn  H  956
+atom_spawn  H  957
+atom_spawn  H  958
+atom_spawn  H  959
+atom_spawn  H  960
+atom_spawn  H  961
+atom_spawn  H  963
+atom_spawn  H  962
+atom_spawn  H  964
+atom_spawn  H  966
+atom_spawn  H  965
+atom_spawn  H  967
+atom_spawn  H  969
+atom_spawn  H  968
+atom_spawn  H  971
+atom_spawn  H  970
+atom_spawn  H  972
+atom_spawn  H  973
+atom_spawn  H  974
+atom_spawn  H  975
+atom_spawn  H  976
+atom_spawn  H  977
+atom_spawn  H  978
+atom_spawn  H  979
+atom_spawn  H  980
+atom_spawn  H  981
+atom_spawn  H  982
+atom_spawn  H  984
+atom_spawn  H  983
+atom_spawn  H  985
+atom_spawn  H  986
+atom_spawn  H  987
+atom_spawn  H  988
+atom_spawn  H  989
+atom_spawn  H  990
+atom_spawn  H  992
+atom_spawn  H  991
+atom_spawn  H  993
+atom_spawn  H  994
+atom_spawn  H  995
+atom_spawn  H  996
+atom_spawn  H  997
+atom_spawn  H  998
+atom_spawn  H  999
+atom_spawn  H  1000
+atom_spawn  O  1001
+atom_spawn  O  1002
+atom_spawn  O  1003
+atom_spawn  O  1004
+atom_spawn  O  1005
+atom_spawn  O  1006
+atom_spawn  O  1007
+atom_spawn  O  1009
+atom_spawn  O  1008
+atom_spawn  O  1010
+atom_spawn  O  1012
+atom_spawn  O  1011
+atom_spawn  O  1014
+atom_spawn  O  1013
+atom_spawn  O  1015
+atom_spawn  O  1017
+atom_spawn  O  1016
+atom_spawn  O  1018
+atom_spawn  O  1019
+atom_spawn  O  1020
+bond  O  1006
+atom_spawn  O  1022
+bond  H  4
+atom_spawn  O  1023
+bond  H  5
+atom_spawn  O  1021
+atom_spawn  O  1025
+atom_spawn  O  1024
+atom_spawn  O  1027
+atom_spawn  O  1026
+atom_spawn  O  1028
+atom_spawn  O  1029
+atom_spawn  O  1032
+atom_spawn  O  1031
+atom_spawn  O  1030
+atom_spawn  O  1033
+atom_spawn  O  1034
+atom_spawn  O  1035
+atom_spawn  O  1036
+atom_spawn  O  1037
+atom_spawn  O  1038
+atom_spawn  O  1039
+atom_spawn  O  1040
+atom_spawn  O  1041
+atom_spawn  O  1042
+atom_spawn  O  1044
+atom_spawn  O  1043
+atom_spawn  O  1047
+atom_spawn  O  1045
+atom_spawn  O  1046
+atom_spawn  O  1049
+atom_spawn  O  1048
+atom_spawn  O  1050
+atom_spawn  O  1051
+atom_spawn  O  1053
+atom_spawn  O  1052
+atom_spawn  O  1054
+atom_spawn  O  1055
+atom_spawn  O  1056
+atom_spawn  O  1057
+atom_spawn  O  1058
+atom_spawn  O  1059
+atom_spawn  O  1060
+atom_die  H  5
+water_made
+atom_die  H  4
+bond  O  1007
+atom_die  O  1006
+atom_spawn  O  1061
+atom_spawn  O  1064
+atom_spawn  O  1066
+atom_spawn  O  1067
+atom_spawn  O  1062
+bond  H  16
+atom_spawn  O  1068
+bond  H  11
+atom_spawn  O  1063
+atom_spawn  O  1065
+atom_spawn  O  1069
+atom_spawn  O  1070
+atom_spawn  O  1071
+atom_spawn  O  1072
+atom_spawn  O  1073
+atom_spawn  O  1074
+atom_spawn  O  1075
+atom_spawn  O  1076
+atom_spawn  O  1077
+atom_spawn  O  1078
+atom_spawn  O  1079
+atom_spawn  O  1080
+atom_spawn  O  1081
+atom_spawn  O  1082
+atom_spawn  O  1083
+atom_spawn  O  1084
+atom_spawn  O  1085
+atom_spawn  O  1086
+atom_spawn  O  1087
+atom_spawn  O  1089
+atom_spawn  O  1088
+atom_die  H  11
+atom_spawn  O  1090
+atom_spawn  O  1091
+atom_spawn  O  1092
+atom_die  H  16
+atom_spawn  O  1093
+atom_spawn  O  1094
+atom_spawn  O  1095
+atom_spawn  O  1096
+atom_spawn  O  1097
+atom_spawn  O  1098
+atom_spawn  O  1099
+atom_spawn  O  1101
+atom_spawn  O  1100
+atom_spawn  O  1102
+atom_spawn  O  1103
+atom_spawn  O  1104
+atom_spawn  O  1105
+water_made
+atom_spawn  O  1106
+atom_die  O  1007
+bond  O  1010
+bond  H  21
+atom_spawn  O  1108
+atom_spawn  O  1109
+bond  H  8
+atom_spawn  O  1110
+atom_spawn  O  1107
+atom_spawn  O  1111
+atom_spawn  O  1114
+atom_spawn  O  1112
+atom_spawn  O  1113
+atom_spawn  O  1117
+water_made
+atom_spawn  O  1115
+atom_die  O  1010
+atom_spawn  O  1116
+bond  H  9
+bond  O  1022
+atom_spawn  O  1118
+bond  H  17
+atom_spawn  O  1120
+atom_spawn  O  1121
+atom_die  H  8
+atom_spawn  O  1119
+atom_spawn  O  1123
+atom_spawn  O  1122
+atom_spawn  O  1124
+atom_spawn  O  1125
+atom_spawn  O  1126
+atom_spawn  O  1127
+atom_spawn  O  1128
+atom_spawn  O  1129
+atom_spawn  O  1130
+atom_spawn  O  1131
+atom_spawn  O  1132
+atom_spawn  O  1133
+atom_spawn  O  1134
+atom_spawn  O  1136
+atom_spawn  O  1135
+atom_spawn  O  1137
+atom_spawn  O  1138
+atom_spawn  O  1139
+atom_spawn  O  1140
+atom_spawn  O  1142
+atom_spawn  O  1141
+atom_spawn  O  1143
+atom_spawn  O  1144
+atom_spawn  O  1145
+atom_spawn  O  1146
+atom_spawn  O  1147
+water_made
+atom_spawn  O  1149
+atom_die  O  1022
+atom_spawn  O  1148
+bond  O  1095
+bond  H  35
+bond  H  20
+atom_spawn  O  1150
+atom_die  H  9
+atom_spawn  O  1151
+atom_spawn  O  1155
+atom_die  H  21
+atom_spawn  O  1153
+atom_spawn  O  1156
+atom_spawn  O  1152
+atom_die  H  35
+atom_spawn  O  1154
+atom_spawn  O  1158
+atom_die  H  17
+atom_spawn  O  1159
+atom_spawn  O  1157
+atom_spawn  O  1160
+atom_spawn  O  1162
+atom_spawn  O  1161
+atom_spawn  O  1163
+atom_spawn  O  1164
+atom_spawn  O  1165
+atom_spawn  O  1166
+water_made
+atom_spawn  O  1167
+atom_die  O  1095
+bond  O  1020
+bond  H  44
+atom_spawn  O  1168
+bond  H  31
+atom_spawn  O  1169
+atom_spawn  O  1170
+atom_spawn  O  1171
+atom_spawn  O  1172
+atom_die  H  44
+atom_spawn  O  1173
+atom_spawn  O  1174
+water_made
+atom_spawn  O  1175
+atom_spawn  O  1177
+bond  O  1011
+bond  H  23
+bond  H  12
+atom_die  O  1020
+atom_spawn  O  1176
+atom_spawn  O  1178
+atom_spawn  O  1179
+atom_spawn  O  1180
+atom_spawn  O  1181
+atom_spawn  O  1182
+atom_die  H  20
+atom_spawn  O  1183
+atom_spawn  O  1184
+atom_spawn  O  1185
+atom_spawn  O  1186
+atom_spawn  O  1188
+atom_spawn  O  1187
+atom_spawn  O  1189
+atom_spawn  O  1190
+atom_spawn  O  1191
+atom_spawn  O  1192
+atom_die  H  31
+atom_spawn  O  1193
+atom_spawn  O  1194
+atom_spawn  O  1195
+atom_spawn  O  1196
+atom_spawn  O  1197
+atom_spawn  O  1198
+atom_die  H  12
+atom_spawn  O  1200
+atom_spawn  O  1199
+atom_spawn  O  1201
+atom_spawn  O  1202
+atom_spawn  O  1203
+atom_spawn  O  1204
+atom_spawn  O  1205
+atom_spawn  O  1206
+atom_spawn  O  1207
+atom_spawn  O  1208
+atom_spawn  O  1210
+atom_spawn  O  1209
+atom_spawn  O  1211
+atom_spawn  O  1212
+atom_spawn  O  1213
+atom_spawn  O  1214
+atom_spawn  O  1215
+atom_spawn  O  1217
+atom_spawn  O  1216
+atom_spawn  O  1218
+atom_spawn  O  1219
+atom_spawn  O  1221
+atom_spawn  O  1220
+atom_spawn  O  1222
+atom_spawn  O  1223
+atom_spawn  O  1224
+atom_spawn  O  1225
+atom_spawn  O  1226
+atom_spawn  O  1227
+water_made
+atom_spawn  O  1229
+atom_spawn  O  1228
+atom_die  O  1011
+atom_spawn  O  1230
+bond  H  22
+bond  O  1196
+bond  H  40
+atom_die  H  23
+atom_spawn  O  1231
+atom_spawn  O  1233
+atom_spawn  O  1232
+atom_spawn  O  1234
+atom_spawn  O  1235
+atom_spawn  O  1236
+atom_die  H  22
+atom_spawn  O  1237
+atom_spawn  O  1238
+atom_spawn  O  1239
+atom_spawn  O  1240
+atom_spawn  O  1241
+atom_spawn  O  1242
+atom_spawn  O  1243
+atom_spawn  O  1244
+atom_spawn  O  1245
+atom_spawn  O  1247
+atom_spawn  O  1246
+atom_spawn  O  1248
+atom_spawn  O  1249
+atom_spawn  O  1250
+atom_spawn  O  1251
+atom_spawn  O  1252
+atom_spawn  O  1253
+atom_spawn  O  1254
+atom_spawn  O  1255
+atom_spawn  O  1256
+atom_spawn  O  1257
+atom_die  H  40
+atom_spawn  O  1259
+atom_spawn  O  1258
+atom_spawn  O  1260
+atom_spawn  O  1261
+atom_spawn  O  1263
+water_made
+atom_spawn  O  1262
+bond  O  1257
+atom_die  O  1196
+bond  H  10
+bond  H  13
+atom_spawn  O  1264
+atom_spawn  O  1265
+atom_spawn  O  1266
+atom_spawn  O  1268
+atom_spawn  O  1269
+atom_spawn  O  1267
+atom_spawn  O  1270
+atom_spawn  O  1271
+atom_spawn  O  1273
+atom_spawn  O  1272
+atom_spawn  O  1274
+atom_spawn  O  1275
+atom_spawn  O  1277
+atom_spawn  O  1278
+atom_spawn  O  1276
+atom_spawn  O  1279
+atom_spawn  O  1280
+atom_spawn  O  1282
+atom_die  H  10
+atom_spawn  O  1281
+atom_spawn  O  1283
+atom_spawn  O  1284
+atom_spawn  O  1285
+atom_spawn  O  1286
+atom_spawn  O  1287
+atom_spawn  O  1288
+atom_spawn  O  1289
+atom_spawn  O  1290
+water_made
+atom_spawn  O  1292
+bond  O  1023
+atom_die  O  1257
+bond  H  1
+bond  H  51
+atom_spawn  O  1291
+atom_spawn  O  1293
+atom_spawn  O  1294
+atom_spawn  O  1295
+atom_spawn  O  1296
+atom_spawn  O  1297
+atom_die  H  13
+atom_spawn  O  1299
+atom_spawn  O  1298
+atom_spawn  O  1300
+atom_spawn  O  1301
+atom_spawn  O  1303
+atom_spawn  O  1302
+atom_die  H  51
+atom_spawn  O  1305
+atom_spawn  O  1304
+atom_spawn  O  1306
+atom_spawn  O  1307
+atom_spawn  O  1308
+atom_spawn  O  1309
+atom_spawn  O  1310
+atom_spawn  O  1311
+atom_spawn  O  1312
+atom_spawn  O  1313
+atom_spawn  O  1314
+atom_spawn  O  1316
+atom_spawn  O  1315
+atom_spawn  O  1317
+atom_spawn  O  1318
+atom_spawn  O  1319
+atom_spawn  O  1320
+atom_spawn  O  1321
+atom_spawn  O  1323
+atom_spawn  O  1322
+atom_spawn  O  1324
+atom_spawn  O  1325
+atom_spawn  O  1326
+atom_spawn  O  1327
+atom_spawn  O  1328
+atom_spawn  O  1329
+atom_spawn  O  1330
+atom_spawn  O  1331
+atom_spawn  O  1332
+atom_spawn  O  1333
+atom_spawn  O  1334
+atom_spawn  O  1335
+water_made
+atom_die  H  1
+atom_die  O  1023
+atom_spawn  O  1336
+bond  H  7
+atom_spawn  O  1338
+bond  O  1295
+bond  H  2
+atom_spawn  O  1337
+atom_spawn  O  1339
+atom_spawn  O  1340
+atom_spawn  O  1341
+atom_spawn  O  1342
+atom_spawn  O  1343
+atom_spawn  O  1344
+atom_spawn  O  1345
+atom_spawn  O  1346
+atom_spawn  O  1347
+atom_spawn  O  1348
+atom_spawn  O  1349
+atom_spawn  O  1351
+atom_die  H  7
+atom_spawn  O  1350
+atom_spawn  O  1353
+atom_spawn  O  1352
+atom_spawn  O  1354
+atom_spawn  O  1356
+atom_spawn  O  1355
+atom_spawn  O  1358
+atom_spawn  O  1357
+atom_spawn  O  1359
+atom_spawn  O  1360
+atom_spawn  O  1361
+atom_die  H  2
+atom_spawn  O  1363
+atom_spawn  O  1362
+atom_spawn  O  1365
+atom_spawn  O  1364
+atom_spawn  O  1367
+atom_spawn  O  1366
+atom_spawn  O  1368
+atom_spawn  O  1369
+atom_spawn  O  1370
+atom_spawn  O  1372
+atom_spawn  O  1371
+atom_spawn  O  1374
+atom_spawn  O  1373
+atom_spawn  O  1375
+atom_spawn  O  1376
+atom_spawn  O  1377
+atom_spawn  O  1378
+atom_spawn  O  1379
+atom_spawn  O  1380
+atom_spawn  O  1381
+atom_spawn  O  1384
+atom_spawn  O  1382
+atom_spawn  O  1383
+atom_spawn  O  1385
+atom_spawn  O  1386
+atom_spawn  O  1387
+water_made
+atom_spawn  O  1389
+atom_spawn  O  1390
+atom_die  O  1295
+bond  H  29
+atom_spawn  O  1391
+bond  H  3
+bond  O  1009
+atom_spawn  O  1388
+atom_spawn  O  1392
+atom_spawn  O  1393
+atom_spawn  O  1395
+atom_spawn  O  1394
+atom_spawn  O  1396
+water_made
+atom_die  O  1009
+bond  O  1004
+bond  H  39
+bond  H  30
+atom_spawn  O  1397
+atom_spawn  O  1399
+atom_spawn  O  1398
+atom_spawn  O  1400
+atom_spawn  O  1401
+atom_spawn  O  1402
+atom_spawn  O  1403
+atom_spawn  O  1404
+atom_spawn  O  1405
+atom_spawn  O  1406
+atom_spawn  O  1407
+atom_spawn  O  1408
+atom_spawn  O  1409
+atom_spawn  O  1412
+atom_spawn  O  1410
+atom_spawn  O  1411
+atom_spawn  O  1413
+atom_die  H  30
+atom_spawn  O  1415
+atom_spawn  O  1414
+atom_die  H  3
+atom_spawn  O  1416
+atom_spawn  O  1417
+atom_spawn  O  1418
+atom_spawn  O  1419
+atom_spawn  O  1421
+atom_die  H  39
+atom_spawn  O  1424
+atom_spawn  O  1420
+atom_spawn  O  1425
+atom_spawn  O  1423
+atom_spawn  O  1422
+atom_spawn  O  1426
+atom_spawn  O  1427
+atom_spawn  O  1428
+atom_spawn  O  1429
+atom_spawn  O  1430
+atom_spawn  O  1432
+atom_die  H  29
+atom_spawn  O  1431
+atom_spawn  O  1433
+atom_spawn  O  1434
+atom_spawn  O  1435
+atom_spawn  O  1436
+atom_spawn  O  1437
+atom_spawn  O  1438
+atom_spawn  O  1440
+atom_spawn  O  1439
+atom_spawn  O  1441
+atom_spawn  O  1442
+atom_spawn  O  1443
+atom_spawn  O  1444
+atom_spawn  O  1445
+water_made
+atom_spawn  O  1447
+bond  H  62
+bond  H  19
+atom_spawn  O  1446
+atom_die  O  1004
+bond  O  1024
+atom_spawn  O  1448
+atom_spawn  O  1449
+atom_spawn  O  1450
+atom_die  H  62
+atom_spawn  O  1451
+atom_spawn  O  1453
+atom_spawn  O  1452
+atom_spawn  O  1454
+atom_spawn  O  1456
+atom_spawn  O  1455
+atom_spawn  O  1457
+atom_spawn  O  1458
+atom_spawn  O  1461
+atom_spawn  O  1459
+atom_spawn  O  1460
+atom_spawn  O  1462
+atom_spawn  O  1463
+atom_spawn  O  1465
+atom_spawn  O  1464
+atom_spawn  O  1467
+water_made
+atom_spawn  O  1466
+atom_die  O  1024
+bond  O  1013
+bond  H  32
+bond  H  69
+atom_spawn  O  1468
+atom_spawn  O  1469
+atom_spawn  O  1470
+atom_spawn  O  1471
+atom_spawn  O  1472
+atom_die  H  32
+atom_spawn  O  1474
+atom_spawn  O  1473
+atom_spawn  O  1475
+atom_spawn  O  1477
+atom_die  H  19
+atom_spawn  O  1476
+atom_spawn  O  1479
+atom_spawn  O  1478
+atom_spawn  O  1481
+atom_spawn  O  1480
+atom_spawn  O  1482
+atom_spawn  O  1483
+atom_spawn  O  1484
+atom_spawn  O  1486
+atom_spawn  O  1485
+atom_spawn  O  1488
+atom_spawn  O  1487
+atom_spawn  O  1489
+atom_spawn  O  1491
+water_made
+atom_spawn  O  1490
+atom_spawn  O  1492
+atom_die  O  1013
+bond  O  1040
+bond  H  6
+atom_spawn  O  1493
+bond  H  43
+atom_spawn  O  1494
+atom_spawn  O  1495
+atom_spawn  O  1496
+atom_spawn  O  1497
+atom_spawn  O  1499
+atom_spawn  O  1498
+atom_spawn  O  1500
+water_made
+atom_die  O  1040
+bond  H  71
+bond  H  70
+atom_die  H  69
+bond  O  1034
+atom_die  H  6
+atom_die  H  70
+atom_die  H  71
+atom_die  H  43
+water_made
+atom_die  O  1034
+bond  O  1016
+bond  H  52
+bond  H  18
+atom_die  H  52
+atom_die  H  18
+water_made
+atom_die  O  1016
+bond  O  1031
+bond  H  60
+bond  H  41
+water_made
+atom_die  O  1031
+bond  H  26
+bond  O  1001
+bond  H  25
+atom_die  H  41
+atom_die  H  60
+atom_die  H  25
+water_made
+atom_die  O  1001
+bond  O  1039
+bond  H  28
+bond  H  59
+atom_die  H  26
+atom_die  H  28
+atom_die  H  59
+water_made
+atom_die  O  1039
+bond  O  1025
+bond  H  48
+bond  H  34
+atom_die  H  34
+atom_die  H  48
+water_made
+atom_die  O  1025
+bond  H  24
+bond  H  14
+bond  O  1033
+water_made
+atom_die  O  1033
+bond  O  1003
+bond  H  58
+bond  H  15
+water_made
+atom_die  H  24
+atom_die  O  1003
+bond  H  86
+bond  H  87
+bond  O  1035
+atom_die  H  14
+atom_die  H  86
+atom_die  H  58
+atom_die  H  87
+water_made
+bond  O  1018
+bond  H  64
+bond  H  54
+atom_die  O  1035
+atom_die  H  54
+water_made
+atom_die  H  15
+bond  H  83
+bond  O  1026
+bond  H  27
+atom_die  O  1018
+atom_die  H  83
+atom_die  H  64
+water_made
+atom_die  O  1026
+bond  O  1032
+bond  H  38
+bond  H  66
+atom_die  H  27
+water_made
+atom_die  O  1032
+bond  O  1002
+bond  H  77
+atom_die  H  66
+bond  H  45
+atom_die  H  38
+water_made
+atom_die  H  77
+bond  H  101
+bond  O  1017
+atom_die  O  1002
+bond  H  97
+atom_die  H  45
+atom_die  H  97
+water_made
+atom_die  O  1017
+bond  O  1005
+bond  H  88
+bond  H  89
+atom_die  H  101
+water_made
+atom_die  O  1005
+bond  H  37
+bond  O  1036
+bond  H  50
+atom_die  H  89
+atom_die  H  88
+atom_die  H  50
+atom_die  H  37
+water_made
+bond  O  1044
+atom_die  O  1036
+bond  H  85
+bond  H  33
+atom_die  H  85
+water_made
+atom_die  O  1044
+bond  O  1029
+bond  H  100
+bond  H  36
+atom_die  H  33
+atom_die  H  36
+atom_die  H  100
+water_made
+atom_die  O  1029
+bond  O  1019
+bond  H  96
+bond  H  49
+atom_die  H  96
+water_made
+atom_die  O  1019
+bond  H  78
+bond  H  80
+bond  O  1045
+water_made
+atom_die  H  49
+atom_die  O  1045
+bond  O  1008
+bond  H  42
+bond  H  92
+atom_die  H  78
+atom_die  H  42
+atom_die  H  80
+water_made
+atom_die  O  1008
+bond  H  82
+bond  H  76
+bond  O  1014
+atom_die  H  92
+atom_die  H  76
+water_made
+bond  O  1050
+atom_die  O  1014
+bond  H  53
+bond  H  91
+atom_die  H  91
+atom_die  H  82
+water_made
+bond  O  1021
+bond  H  47
+atom_die  O  1050
+bond  H  46
+atom_die  H  53
+atom_die  H  47
+atom_die  H  46
+water_made
+atom_die  O  1021
+bond  O  1015
+bond  H  68
+bond  H  55
+atom_die  H  68
+water_made
+atom_die  H  55
+bond  O  1012
+atom_die  O  1015
+bond  H  56
+bond  H  102
+water_made
+atom_die  O  1012
+bond  O  1056
+bond  H  84
+bond  H  65
+atom_die  H  56
+atom_die  H  102
+atom_die  H  84
+water_made
+atom_die  O  1056
+bond  O  1053
+bond  H  72
+bond  H  57
+atom_die  H  65
+atom_die  H  57
+atom_die  H  72
+water_made
+atom_die  O  1053
+bond  O  1047
+bond  H  111
+bond  H  93
+water_made
+atom_die  O  1047
+bond  O  1028
+bond  H  81
+bond  H  119
+atom_die  H  81
+atom_die  H  119
+atom_die  H  93
+atom_die  H  111
+water_made
+atom_die  O  1028
+bond  O  1041
+bond  H  104
+bond  H  103
+atom_die  H  103
+atom_die  H  104
+water_made
+bond  H  112
+bond  O  1069
+atom_die  O  1041
+bond  H  117
+atom_die  H  112
+water_made
+atom_die  O  1069
+bond  H  67
+bond  O  1068
+atom_die  H  117
+bond  H  61
+water_made
+atom_die  O  1068
+bond  O  1072
+bond  H  109
+bond  H  63
+atom_die  H  67
+atom_die  H  109
+water_made
+atom_die  O  1072
+bond  O  1066
+bond  H  99
+bond  H  106
+atom_die  H  61
+atom_die  H  106
+atom_die  H  63
+water_made
+bond  O  1063
+atom_die  O  1066
+bond  H  79
+bond  H  113
+atom_die  H  99
+water_made
+atom_die  O  1063
+bond  O  1043
+bond  H  131
+bond  H  116
+atom_die  H  113
+atom_die  H  79
+water_made
+atom_die  H  116
+atom_die  O  1043
+bond  O  1027
+bond  H  73
+bond  H  90
+atom_die  H  131
+water_made
+atom_die  O  1027
+bond  H  75
+bond  O  1059
+bond  H  74
+atom_die  H  90
+water_made
+atom_die  O  1059
+bond  H  110
+bond  O  1062
+bond  H  107
+atom_die  H  73
+atom_die  H  107
+atom_die  H  110
+atom_die  H  75
+water_made
+atom_die  H  74
+atom_die  O  1062
+bond  O  1030
+bond  H  128
+bond  H  124
+water_made
+atom_die  O  1030
+bond  O  1054
+bond  H  120
+bond  H  147
+atom_die  H  124
+atom_die  H  128
+atom_die  H  147
+water_made
+atom_die  H  120
+atom_die  O  1054
+bond  O  1055
+bond  H  114
+bond  H  108
+atom_die  H  108
+atom_die  H  114
+water_made
+atom_die  O  1055
+bond  O  1078
+bond  H  98
+bond  H  115
+atom_die  H  98
+atom_die  H  115
+water_made
+atom_die  O  1078
+bond  O  1076
+bond  H  94
+bond  H  151
+atom_die  H  94
+water_made
+atom_die  H  151
+atom_die  O  1076
+bond  O  1042
+bond  H  95
+bond  H  118
+water_made
+atom_die  O  1042
+bond  O  1071
+bond  H  137
+bond  H  132
+atom_die  H  137
+atom_die  H  118
+atom_die  H  95
+water_made
+atom_die  O  1071
+bond  O  1049
+bond  H  123
+bond  H  162
+atom_die  H  132
+atom_die  H  123
+atom_die  H  162
+water_made
+bond  O  1067
+atom_die  O  1049
+bond  H  154
+bond  H  161
+water_made
+bond  H  144
+atom_die  O  1067
+bond  O  1061
+bond  H  129
+atom_die  H  129
+atom_die  H  161
+atom_die  H  154
+atom_die  H  144
+water_made
+atom_die  O  1061
+bond  O  1037
+bond  H  141
+bond  H  146
+atom_die  H  141
+atom_die  H  146
+water_made
+atom_die  O  1037
+bond  O  1038
+bond  H  173
+bond  H  105
+atom_die  H  173
+water_made
+atom_die  O  1038
+bond  H  121
+bond  O  1079
+bond  H  149
+atom_die  H  149
+water_made
+atom_die  O  1079
+bond  O  1051
+bond  H  136
+bond  H  158
+atom_die  H  105
+atom_die  H  121
+atom_die  H  136
+water_made
+atom_die  H  158
+atom_die  O  1051
+bond  O  1064
+bond  H  125
+bond  H  182
+atom_die  H  125
+water_made
+bond  O  1093
+bond  H  134
+bond  H  140
+atom_die  O  1064
+atom_die  H  182
+atom_die  H  134
+water_made
+atom_die  O  1093
+bond  O  1052
+bond  H  183
+bond  H  122
+atom_die  H  140
+water_made
+atom_die  O  1052
+bond  O  1087
+bond  H  171
+bond  H  160
+atom_die  H  183
+atom_die  H  122
+atom_die  H  171
+water_made
+atom_die  O  1087
+bond  O  1091
+atom_die  H  160
+bond  H  174
+bond  H  180
+atom_die  H  180
+water_made
+atom_die  O  1091
+bond  H  127
+bond  O  1046
+bond  H  175
+atom_die  H  174
+atom_die  H  175
+atom_die  H  127
+water_made
+atom_die  O  1046
+bond  H  150
+bond  O  1058
+bond  H  139
+atom_die  H  150
+atom_die  H  139
+water_made
+bond  O  1048
+bond  H  187
+bond  H  126
+atom_die  O  1058
+atom_die  H  187
+atom_die  H  126
+water_made
+atom_die  O  1048
+bond  H  143
+bond  O  1057
+bond  H  133
+atom_die  H  133
+water_made
+atom_die  O  1057
+bond  H  155
+bond  H  168
+bond  O  1073
+atom_die  H  143
+atom_die  H  168
+atom_die  H  155
+water_made
+atom_die  O  1073
+bond  O  1083
+bond  H  142
+bond  H  145
+atom_die  H  145
+atom_die  H  142
+water_made
+atom_die  O  1083
+bond  O  1098
+bond  H  190
+bond  H  195
+atom_die  H  190
+water_made
+atom_die  O  1098
+bond  O  1070
+bond  H  138
+bond  H  130
+atom_die  H  195
+atom_die  H  138
+atom_die  H  130
+water_made
+atom_die  O  1070
+bond  O  1060
+bond  H  148
+bond  H  157
+atom_die  H  157
+atom_die  H  148
+water_made
+bond  O  1081
+atom_die  O  1060
+bond  H  165
+bond  H  152
+atom_die  H  152
+atom_die  H  165
+water_made
+atom_die  O  1081
+bond  O  1089
+bond  H  201
+bond  H  202
+water_made
+atom_die  O  1089
+bond  O  1088
+bond  H  196
+bond  H  135
+atom_die  H  202
+atom_die  H  201
+water_made
+atom_die  O  1088
+bond  H  199
+bond  H  178
+bond  O  1075
+atom_die  H  196
+atom_die  H  135
+atom_die  H  199
+atom_die  H  178
+water_made
+atom_die  O  1075
+bond  H  205
+bond  H  210
+bond  O  1092
+atom_die  H  210
+water_made
+atom_die  H  205
+bond  H  176
+atom_die  O  1092
+bond  O  1080
+bond  H  163
+atom_die  H  163
+atom_die  H  176
+water_made
+bond  O  1105
+atom_die  O  1080
+bond  H  170
+bond  H  153
+water_made
+atom_die  O  1105
+bond  H  179
+bond  H  206
+bond  O  1097
+atom_die  H  170
+atom_die  H  179
+atom_die  H  153
+water_made
+atom_die  O  1097
+bond  O  1065
+bond  H  191
+bond  H  185
+atom_die  H  206
+atom_die  H  185
+atom_die  H  191
+water_made
+atom_die  O  1065
+bond  O  1074
+bond  H  177
+bond  H  221
+atom_die  H  177
+atom_die  H  221
+water_made
+atom_die  O  1074
+bond  O  1104
+bond  H  156
+bond  H  159
+water_made
+atom_die  O  1104
+bond  O  1086
+bond  H  166
+bond  H  227
+atom_die  H  159
+atom_die  H  156
+water_made
+atom_die  O  1086
+bond  O  1102
+bond  H  188
+bond  H  184
+atom_die  H  166
+atom_die  H  184
+atom_die  H  188
+atom_die  H  227
+water_made
+atom_die  O  1102
+bond  O  1077
+bond  H  164
+bond  H  200
+atom_die  H  164
+water_made
+atom_die  O  1077
+bond  O  1115
+bond  H  203
+bond  H  167
+atom_die  H  200
+atom_die  H  167
+water_made
+atom_die  O  1115
+bond  H  172
+bond  O  1109
+bond  H  194
+atom_die  H  203
+atom_die  H  194
+atom_die  H  172
+water_made
+atom_die  O  1109
+bond  O  1084
+bond  H  204
+bond  H  169
+atom_die  H  169
+water_made
+atom_die  O  1084
+bond  O  1103
+bond  H  213
+bond  H  189
+atom_die  H  204
+atom_die  H  189
+water_made
+atom_die  H  213
+atom_die  O  1103
+bond  O  1099
+bond  H  186
+bond  H  192
+atom_die  H  186
+water_made
+atom_die  O  1099
+bond  H  181
+bond  O  1090
+bond  H  212
+atom_die  H  192
+water_made
+atom_die  O  1090
+bond  O  1111
+bond  H  197
+bond  H  234
+atom_die  H  212
+atom_die  H  181
+atom_die  H  234
+water_made
+atom_die  H  197
+atom_die  O  1111
+bond  O  1094
+bond  H  198
+bond  H  235
+atom_die  H  235
+water_made
+bond  O  1122
+bond  H  237
+bond  H  242
+atom_die  H  198
+atom_die  O  1094
+atom_die  H  237
+water_made
+bond  O  1082
+bond  H  217
+bond  H  248
+atom_die  H  242
+atom_die  O  1122
+atom_die  H  217
+water_made
+atom_die  O  1082
+bond  H  215
+bond  H  209
+bond  O  1101
+atom_die  H  248
+water_made
+atom_die  O  1101
+bond  O  1100
+atom_die  H  209
+bond  H  232
+bond  H  211
+atom_die  H  215
+atom_die  H  211
+water_made
+atom_die  O  1100
+bond  H  207
+bond  O  1085
+bond  H  214
+atom_die  H  232
+atom_die  H  207
+water_made
+bond  H  228
+atom_die  O  1085
+bond  O  1096
+bond  H  193
+atom_die  H  214
+atom_die  H  193
+water_made
+atom_die  H  228
+atom_die  O  1096
+bond  O  1132
+bond  H  253
+bond  H  216
+atom_die  H  216
+atom_die  H  253
+water_made
+bond  H  229
+bond  O  1139
+bond  H  222
+atom_die  O  1132
+water_made
+bond  O  1112
+bond  H  239
+bond  H  218
+atom_die  O  1139
+atom_die  H  229
+atom_die  H  222
+atom_die  H  239
+atom_die  H  218
+water_made
+atom_die  O  1112
+bond  O  1108
+bond  H  220
+bond  H  226
+atom_die  H  226
+atom_die  H  220
+water_made
+atom_die  O  1108
+bond  O  1123
+bond  H  268
+bond  H  208
+water_made
+atom_die  H  208
+atom_die  O  1123
+bond  O  1137
+bond  H  259
+bond  H  246
+atom_die  H  268
+atom_die  H  259
+atom_die  H  246
+water_made
+atom_die  O  1137
+bond  O  1142
+bond  H  225
+bond  H  261
+atom_die  H  225
+water_made
+atom_die  H  261
+atom_die  O  1142
+bond  O  1106
+bond  H  256
+bond  H  238
+atom_die  H  256
+water_made
+atom_die  O  1106
+bond  H  223
+bond  O  1129
+bond  H  272
+water_made
+atom_die  O  1129
+bond  H  231
+bond  O  1140
+atom_die  H  272
+bond  H  252
+atom_die  H  238
+atom_die  H  223
+atom_die  H  231
+atom_die  H  252
+water_made
+atom_die  O  1140
+bond  H  219
+bond  O  1144
+bond  H  250
+water_made
+atom_die  O  1144
+bond  O  1148
+bond  H  283
+bond  H  224
+atom_die  H  219
+atom_die  H  250
+atom_die  H  283
+water_made
+atom_die  O  1148
+bond  O  1145
+bond  H  241
+bond  H  284
+atom_die  H  224
+water_made
+atom_die  H  241
+atom_die  O  1145
+bond  O  1141
+atom_die  H  284
+bond  H  245
+bond  H  267
+atom_die  H  245
+atom_die  H  267
+water_made
+atom_die  O  1141
+bond  H  269
+bond  H  230
+bond  O  1131
+atom_die  H  269
+water_made
+atom_die  H  230
+atom_die  O  1131
+bond  H  290
+bond  H  273
+bond  O  1116
+atom_die  H  290
+water_made
+atom_die  O  1116
+bond  H  236
+bond  O  1117
+bond  H  277
+atom_die  H  273
+atom_die  H  277
+atom_die  H  236
+water_made
+atom_die  O  1117
+bond  O  1110
+bond  H  297
+bond  H  233
+water_made
+atom_die  O  1110
+bond  O  1135
+bond  H  282
+bond  H  240
+atom_die  H  233
+atom_die  H  297
+atom_die  H  240
+water_made
+atom_die  O  1135
+bond  O  1120
+bond  H  295
+bond  H  289
+atom_die  H  282
+atom_die  H  289
+atom_die  H  295
+water_made
+atom_die  O  1120
+bond  O  1107
+bond  H  279
+bond  H  243
+atom_die  H  279
+water_made
+atom_die  O  1107
+bond  H  255
+bond  O  1124
+bond  H  249
+atom_die  H  243
+atom_die  H  249
+atom_die  H  255
+water_made
+atom_die  O  1124
+bond  O  1143
+bond  H  247
+bond  H  257
+atom_die  H  247
+water_made
+atom_die  O  1143
+bond  O  1155
+bond  H  303
+bond  H  304
+atom_die  H  257
+atom_die  H  304
+atom_die  H  303
+water_made
+atom_die  O  1155
+bond  O  1127
+bond  H  271
+bond  H  299
+atom_die  H  271
+water_made
+atom_die  H  299
+atom_die  O  1127
+bond  O  1146
+bond  H  266
+bond  H  254
+atom_die  H  254
+water_made
+bond  O  1113
+bond  H  302
+atom_die  O  1146
+bond  H  244
+atom_die  H  266
+atom_die  H  302
+atom_die  H  244
+water_made
+atom_die  O  1113
+bond  H  251
+bond  H  298
+bond  O  1114
+atom_die  H  298
+water_made
+atom_die  O  1114
+bond  O  1126
+bond  H  301
+bond  H  265
+atom_die  H  251
+atom_die  H  301
+atom_die  H  265
+water_made
+atom_die  O  1126
+bond  O  1125
+bond  H  280
+bond  H  258
+atom_die  H  258
+water_made
+atom_die  H  280
+atom_die  O  1125
+bond  O  1133
+bond  H  296
+bond  H  260
+atom_die  H  260
+atom_die  H  296
+water_made
+atom_die  O  1133
+bond  O  1157
+bond  H  300
+bond  H  291
+atom_die  H  300
+water_made
+bond  O  1147
+bond  H  262
+atom_die  O  1157
+bond  H  293
+atom_die  H  291
+atom_die  H  262
+atom_die  H  293
+water_made
+atom_die  O  1147
+bond  H  309
+bond  O  1138
+bond  H  270
+atom_die  H  309
+water_made
+atom_die  H  270
+atom_die  O  1138
+bond  O  1118
+bond  H  278
+bond  H  264
+atom_die  H  264
+atom_die  H  278
+water_made
+atom_die  O  1118
+bond  O  1159
+bond  H  263
+bond  H  323
+water_made
+atom_die  H  323
+atom_die  O  1159
+bond  O  1156
+bond  H  274
+bond  H  310
+atom_die  H  263
+atom_die  H  310
+water_made
+atom_die  O  1156
+bond  O  1152
+bond  H  276
+bond  H  292
+atom_die  H  274
+atom_die  H  292
+water_made
+atom_die  H  276
+atom_die  O  1152
+bond  O  1166
+bond  H  308
+bond  H  288
+atom_die  H  288
+water_made
+atom_die  O  1166
+bond  O  1128
+bond  H  315
+bond  H  320
+atom_die  H  320
+atom_die  H  308
+atom_die  H  315
+water_made
+atom_die  O  1128
+bond  H  316
+bond  O  1134
+bond  H  285
+water_made
+bond  O  1160
+bond  H  329
+atom_die  O  1134
+bond  H  311
+atom_die  H  316
+atom_die  H  285
+atom_die  H  329
+atom_die  H  311
+water_made
+atom_die  O  1160
+bond  O  1168
+bond  H  281
+bond  H  275
+atom_die  H  281
+water_made
+atom_die  O  1168
+bond  O  1121
+bond  H  305
+bond  H  312
+atom_die  H  275
+atom_die  H  305
+water_made
+atom_die  H  312
+atom_die  O  1121
+bond  O  1119
+bond  H  336
+bond  H  286
+water_made
+atom_die  O  1119
+bond  H  294
+bond  H  314
+bond  O  1153
+atom_die  H  336
+atom_die  H  286
+atom_die  H  294
+atom_die  H  314
+water_made
+atom_die  O  1153
+bond  O  1163
+bond  H  313
+bond  H  287
+atom_die  H  313
+atom_die  H  287
+water_made
+bond  O  1165
+atom_die  O  1163
+bond  H  337
+bond  H  330
+water_made
+atom_die  O  1165
+bond  O  1136
+bond  H  327
+bond  H  343
+atom_die  H  337
+atom_die  H  330
+water_made
+atom_die  O  1136
+bond  O  1150
+bond  H  307
+bond  H  317
+atom_die  H  343
+atom_die  H  307
+atom_die  H  327
+water_made
+atom_die  O  1150
+bond  H  345
+bond  H  347
+bond  O  1130
+atom_die  H  317
+atom_die  H  347
+water_made
+atom_die  H  345
+atom_die  O  1130
+bond  H  339
+bond  O  1161
+bond  H  350
+atom_die  H  350
+atom_die  H  339
+water_made
+atom_die  O  1161
+bond  H  322
+bond  H  351
+bond  O  1171
+atom_die  H  351
+water_made
+atom_die  O  1171
+bond  H  349
+bond  H  338
+bond  O  1178
+atom_die  H  322
+atom_die  H  338
+water_made
+atom_die  H  349
+atom_die  O  1178
+bond  O  1183
+bond  H  324
+bond  H  360
+atom_die  H  360
+atom_die  H  324
+water_made
+atom_die  O  1183
+bond  H  354
+bond  H  306
+bond  O  1172
+atom_die  H  354
+water_made
+atom_die  H  306
+atom_die  O  1172
+bond  O  1173
+bond  H  318
+bond  H  319
+water_made
+atom_die  H  319
+atom_die  O  1173
+bond  H  342
+bond  O  1151
+bond  H  348
+atom_die  H  318
+water_made
+atom_die  H  348
+atom_die  O  1151
+bond  O  1174
+bond  H  346
+bond  H  341
+water_made
+atom_die  H  342
+atom_die  O  1174
+bond  O  1180
+bond  H  358
+bond  H  328
+atom_die  H  328
+atom_die  H  341
+atom_die  H  358
+atom_die  H  346
+water_made
+atom_die  O  1180
+bond  O  1149
+bond  H  334
+bond  H  325
+atom_die  H  325
+atom_die  H  334
+water_made
+atom_die  O  1149
+bond  H  326
+bond  H  332
+bond  O  1179
+atom_die  H  332
+water_made
+atom_die  O  1179
+bond  O  1195
+bond  H  344
+bond  H  321
+atom_die  H  326
+atom_die  H  321
+water_made
+atom_die  H  344
+atom_die  O  1195
+bond  O  1158
+bond  H  331
+bond  H  361
+atom_die  H  361
+atom_die  H  331
+water_made
+atom_die  O  1158
+bond  O  1192
+bond  H  333
+bond  H  378
+water_made
+atom_die  H  333
+atom_die  H  378
+atom_die  O  1192
+bond  O  1176
+bond  H  355
+bond  H  379
+atom_die  H  379
+water_made
+atom_die  H  355
+bond  O  1188
+bond  H  356
+atom_die  O  1176
+bond  H  357
+atom_die  H  357
+atom_die  H  356
+water_made
+atom_die  O  1188
+bond  H  370
+bond  O  1154
+bond  H  353
+water_made
+bond  O  1162
+bond  H  388
+atom_die  O  1154
+bond  H  362
+atom_die  H  388
+atom_die  H  362
+atom_die  H  370
+atom_die  H  353
+water_made
+atom_die  O  1162
+bond  O  1169
+bond  H  369
+bond  H  335
+atom_die  H  335
+atom_die  H  369
+water_made
+atom_die  O  1169
+bond  O  1175
+bond  H  389
+bond  H  394
+atom_die  H  394
+water_made
+atom_die  O  1175
+bond  O  1167
+bond  H  402
+bond  H  340
+atom_die  H  340
+atom_die  H  389
+water_made
+atom_die  O  1167
+bond  H  399
+bond  O  1164
+bond  H  374
+atom_die  H  402
+atom_die  H  399
+water_made
+atom_die  O  1164
+bond  H  386
+bond  O  1170
+bond  H  367
+atom_die  H  374
+atom_die  H  367
+water_made
+atom_die  O  1170
+bond  O  1215
+bond  H  377
+bond  H  375
+atom_die  H  386
+atom_die  H  375
+atom_die  H  377
+water_made
+atom_die  O  1215
+bond  O  1209
+bond  H  364
+bond  H  359
+atom_die  H  364
+atom_die  H  359
+water_made
+atom_die  O  1209
+bond  O  1205
+bond  H  382
+bond  H  352
+atom_die  H  382
+water_made
+atom_die  O  1205
+bond  H  363
+bond  O  1177
+bond  H  396
+water_made
+bond  O  1181
+atom_die  O  1177
+bond  H  371
+bond  H  408
+atom_die  H  363
+atom_die  H  352
+atom_die  H  408
+atom_die  H  396
+atom_die  H  371
+water_made
+atom_die  O  1181
+bond  O  1208
+bond  H  393
+bond  H  387
+water_made
+atom_die  O  1208
+bond  O  1187
+bond  H  412
+bond  H  403
+atom_die  H  393
+atom_die  H  412
+atom_die  H  403
+atom_die  H  387
+water_made
+atom_die  O  1187
+bond  O  1190
+bond  H  390
+bond  H  373
+water_made
+atom_die  H  390
+atom_die  O  1190
+bond  O  1199
+bond  H  416
+bond  H  376
+atom_die  H  373
+atom_die  H  376
+atom_die  H  416
+water_made
+atom_die  O  1199
+bond  O  1184
+bond  H  426
+bond  H  384
+atom_die  H  426
+atom_die  H  384
+water_made
+atom_die  O  1184
+bond  O  1203
+bond  H  365
+bond  H  397
+water_made
+bond  O  1202
+atom_die  O  1203
+bond  H  366
+bond  H  428
+atom_die  H  397
+atom_die  H  366
+water_made
+atom_die  H  365
+atom_die  H  428
+bond  H  404
+atom_die  O  1202
+bond  O  1210
+bond  H  368
+water_made
+atom_die  O  1210
+bond  O  1229
+bond  H  425
+bond  H  400
+water_made
+atom_die  H  404
+atom_die  O  1229
+bond  O  1189
+bond  H  372
+bond  H  391
+atom_die  H  368
+atom_die  H  372
+atom_die  H  400
+atom_die  H  425
+water_made
+atom_die  O  1189
+bond  O  1186
+bond  H  422
+bond  H  432
+atom_die  H  391
+atom_die  H  432
+water_made
+atom_die  O  1186
+bond  O  1214
+bond  H  409
+bond  H  429
+atom_die  H  422
+atom_die  H  409
+atom_die  H  429
+water_made
+atom_die  O  1214
+bond  O  1191
+bond  H  381
+bond  H  423
+water_made
+atom_die  O  1191
+bond  O  1182
+bond  H  383
+bond  H  385
+atom_die  H  385
+atom_die  H  381
+atom_die  H  423
+water_made
+atom_die  O  1182
+bond  O  1222
+bond  H  392
+bond  H  380
+atom_die  H  383
+atom_die  H  380
+atom_die  H  392
+water_made
+atom_die  O  1222
+bond  O  1226
+bond  H  411
+bond  H  405
+water_made
+atom_die  O  1226
+bond  O  1185
+bond  H  401
+bond  H  413
+atom_die  H  413
+atom_die  H  401
+atom_die  H  405
+atom_die  H  411
+water_made
+atom_die  O  1185
+bond  O  1201
+bond  H  455
+bond  H  407
+atom_die  H  455
+atom_die  H  407
+water_made
+atom_die  O  1201
+bond  O  1197
+bond  H  406
+bond  H  451
+water_made
+atom_die  O  1197
+bond  O  1204
+bond  H  440
+bond  H  398
+atom_die  H  451
+atom_die  H  398
+water_made
+atom_die  O  1204
+bond  O  1206
+bond  H  431
+bond  H  395
+atom_die  H  406
+atom_die  H  431
+atom_die  H  440
+water_made
+bond  H  420
+bond  H  444
+bond  O  1227
+atom_die  O  1206
+atom_die  H  395
+atom_die  H  444
+atom_die  H  420
+water_made
+atom_die  O  1227
+bond  O  1224
+bond  H  415
+bond  H  421
+atom_die  H  421
+water_made
+atom_die  H  415
+atom_die  O  1224
+bond  O  1221
+bond  H  439
+bond  H  414
+atom_die  H  439
+atom_die  H  414
+water_made
+atom_die  O  1221
+bond  O  1198
+bond  H  419
+bond  H  442
+atom_die  H  419
+atom_die  H  442
+water_made
+atom_die  O  1198
+bond  H  434
+bond  O  1193
+bond  H  472
+atom_die  H  434
+water_made
+atom_die  H  472
+bond  O  1223
+bond  H  435
+bond  H  467
+atom_die  O  1193
+atom_die  H  467
+atom_die  H  435
+water_made
+bond  O  1234
+bond  H  417
+atom_die  O  1223
+bond  H  410
+atom_die  H  410
+water_made
+atom_die  H  417
+bond  H  433
+atom_die  O  1234
+bond  H  461
+bond  O  1211
+atom_die  H  461
+water_made
+atom_die  O  1211
+bond  H  469
+bond  O  1238
+bond  H  418
+atom_die  H  433
+atom_die  H  418
+water_made
+atom_die  H  469
+bond  O  1243
+bond  H  443
+atom_die  O  1238
+bond  H  466
+atom_die  H  466
+atom_die  H  443
+water_made
+atom_die  O  1243
+bond  O  1194
+bond  H  448
+bond  H  436
+atom_die  H  436
+water_made
+atom_die  O  1194
+bond  O  1239
+bond  H  437
+bond  H  427
+atom_die  H  448
+water_made
+bond  H  450
+atom_die  O  1239
+bond  O  1213
+bond  H  453
+atom_die  H  427
+atom_die  H  450
+water_made
+atom_die  H  437
+atom_die  O  1213
+bond  O  1218
+bond  H  424
+bond  H  476
+atom_die  H  453
+atom_die  H  424
+water_made
+atom_die  O  1218
+bond  O  1241
+bond  H  462
+bond  H  438
+atom_die  H  462
+atom_die  H  476
+water_made
+atom_die  H  438
+atom_die  O  1241
+bond  O  1200
+bond  H  470
+bond  H  459
+atom_die  H  459
+atom_die  H  470
+water_made
+atom_die  O  1200
+bond  H  441
+bond  O  1253
+bond  H  447
+water_made
+atom_die  O  1253
+atom_die  H  441
+bond  O  1207
+bond  H  452
+bond  H  430
+atom_die  H  447
+atom_die  H  452
+atom_die  H  430
+water_made
+atom_die  O  1207
+bond  O  1236
+bond  H  473
+bond  H  464
+atom_die  H  473
+atom_die  H  464
+water_made
+atom_die  O  1236
+bond  O  1235
+bond  H  468
+bond  H  504
+atom_die  H  504
+atom_die  H  468
+water_made
+atom_die  O  1235
+bond  H  465
+bond  O  1263
+bond  H  460
+atom_die  H  460
+atom_die  H  465
+water_made
+bond  O  1252
+bond  H  488
+bond  H  500
+atom_die  O  1263
+atom_die  H  500
+water_made
+atom_die  H  488
+bond  O  1216
+bond  H  483
+bond  H  457
+atom_die  O  1252
+atom_die  H  457
+atom_die  H  483
+water_made
+bond  H  491
+bond  O  1217
+atom_die  O  1216
+bond  H  505
+atom_die  H  491
+water_made
+bond  O  1212
+bond  H  477
+bond  H  492
+atom_die  O  1217
+water_made
+atom_die  H  505
+atom_die  H  477
+atom_die  H  492
+bond  O  1247
+bond  H  446
+bond  H  487
+atom_die  O  1212
+atom_die  H  487
+water_made
+bond  H  456
+bond  O  1237
+atom_die  O  1247
+bond  H  479
+atom_die  H  446
+atom_die  H  456
+water_made
+atom_die  O  1237
+bond  O  1225
+bond  H  480
+bond  H  449
+atom_die  H  479
+water_made
+atom_die  H  449
+atom_die  O  1225
+bond  O  1231
+bond  H  515
+bond  H  490
+atom_die  H  480
+atom_die  H  490
+water_made
+atom_die  H  515
+bond  O  1220
+atom_die  O  1231
+bond  H  445
+bond  H  514
+water_made
+atom_die  O  1220
+bond  O  1244
+bond  H  463
+bond  H  509
+atom_die  H  514
+water_made
+atom_die  O  1244
+bond  O  1219
+atom_die  H  463
+bond  H  458
+bond  H  510
+atom_die  H  445
+atom_die  H  458
+atom_die  H  509
+water_made
+bond  O  1230
+atom_die  O  1219
+bond  H  484
+bond  H  454
+atom_die  H  510
+water_made
+atom_die  O  1230
+bond  H  518
+bond  O  1249
+bond  H  519
+atom_die  H  454
+water_made
+atom_die  O  1249
+bond  O  1248
+bond  H  486
+bond  H  503
+atom_die  H  519
+atom_die  H  503
+water_made
+atom_die  H  518
+bond  O  1250
+atom_die  H  484
+bond  H  528
+bond  H  524
+atom_die  O  1248
+atom_die  H  486
+atom_die  H  528
+atom_die  H  524
+water_made
+atom_die  O  1250
+bond  O  1233
+bond  H  508
+bond  H  527
+atom_die  H  508
+atom_die  H  527
+water_made
+atom_die  O  1233
+bond  H  520
+bond  H  485
+bond  O  1232
+atom_die  H  485
+atom_die  H  520
+water_made
+atom_die  O  1232
+bond  H  493
+bond  H  521
+bond  O  1265
+atom_die  H  521
+water_made
+atom_die  O  1265
+bond  O  1267
+bond  H  489
+bond  H  496
+atom_die  H  493
+water_made
+atom_die  O  1267
+bond  O  1228
+bond  H  498
+bond  H  475
+water_made
+atom_die  H  489
+atom_die  H  496
+atom_die  O  1228
+bond  H  478
+bond  O  1256
+bond  H  471
+atom_die  H  475
+atom_die  H  471
+atom_die  H  498
+atom_die  H  478
+water_made
+atom_die  O  1256
+bond  O  1258
+bond  H  474
+bond  H  495
+atom_die  H  474
+atom_die  H  495
+water_made
+atom_die  O  1258
+bond  O  1273
+bond  H  506
+bond  H  543
+atom_die  H  543
+atom_die  H  506
+water_made
+atom_die  O  1273
+bond  O  1240
+bond  H  501
+bond  H  494
+water_made
+atom_die  O  1240
+bond  H  481
+bond  O  1251
+bond  H  482
+atom_die  H  501
+water_made
+atom_die  H  482
+bond  O  1242
+atom_die  O  1251
+bond  H  545
+atom_die  H  494
+bond  H  523
+atom_die  H  481
+water_made
+bond  O  1261
+bond  H  548
+atom_die  H  545
+bond  H  533
+atom_die  H  523
+atom_die  O  1242
+water_made
+atom_die  H  548
+bond  H  542
+bond  O  1245
+bond  H  507
+atom_die  O  1261
+atom_die  H  533
+water_made
+atom_die  H  507
+bond  O  1282
+bond  H  535
+bond  H  540
+atom_die  H  542
+atom_die  O  1245
+water_made
+bond  H  497
+bond  O  1255
+bond  H  538
+atom_die  O  1282
+atom_die  H  538
+atom_die  H  540
+atom_die  H  535
+water_made
+atom_die  H  497
+bond  H  517
+bond  H  516
+bond  O  1271
+atom_die  O  1255
+atom_die  H  517
+water_made
+atom_die  O  1271
+bond  H  513
+bond  O  1279
+bond  H  541
+atom_die  H  516
+atom_die  H  541
+atom_die  H  513
+water_made
+bond  O  1272
+bond  H  556
+bond  H  499
+atom_die  O  1279
+atom_die  H  556
+atom_die  H  499
+water_made
+bond  O  1246
+atom_die  O  1272
+bond  H  502
+bond  H  530
+atom_die  H  530
+water_made
+atom_die  H  502
+bond  O  1281
+bond  H  549
+bond  H  560
+atom_die  O  1246
+water_made
+bond  O  1269
+atom_die  O  1281
+bond  H  534
+bond  H  563
+atom_die  H  560
+water_made
+bond  O  1290
+bond  H  557
+bond  H  536
+atom_die  H  534
+atom_die  O  1269
+atom_die  H  549
+atom_die  H  563
+atom_die  H  536
+atom_die  H  557
+water_made
+atom_die  O  1290
+bond  O  1291
+bond  H  537
+bond  H  522
+atom_die  H  522
+water_made
+atom_die  H  537
+atom_die  O  1291
+bond  H  512
+bond  H  511
+bond  O  1254
+water_made
+bond  O  1264
+atom_die  O  1254
+bond  H  574
+bond  H  547
+atom_die  H  512
+atom_die  H  574
+water_made
+atom_die  O  1264
+bond  H  579
+bond  O  1276
+bond  H  570
+atom_die  H  511
+atom_die  H  579
+atom_die  H  547
+atom_die  H  570
+water_made
+atom_die  O  1276
+bond  O  1280
+bond  H  531
+bond  H  551
+water_made
+atom_die  O  1280
+bond  O  1259
+bond  H  584
+bond  H  525
+atom_die  H  531
+atom_die  H  584
+atom_die  H  551
+water_made
+atom_die  O  1259
+bond  H  568
+bond  H  581
+bond  O  1260
+atom_die  H  525
+atom_die  H  568
+atom_die  H  581
+water_made
+atom_die  O  1260
+bond  O  1268
+bond  H  532
+bond  H  575
+atom_die  H  575
+water_made
+bond  H  544
+bond  O  1300
+bond  H  591
+atom_die  H  532
+atom_die  O  1268
+atom_die  H  591
+atom_die  H  544
+water_made
+atom_die  O  1300
+bond  O  1302
+bond  H  526
+bond  H  539
+atom_die  H  526
+water_made
+atom_die  O  1302
+bond  O  1298
+bond  H  569
+bond  H  529
+atom_die  H  539
+atom_die  H  529
+water_made
+bond  O  1274
+atom_die  O  1298
+bond  H  585
+bond  H  554
+atom_die  H  569
+atom_die  H  554
+atom_die  H  585
+water_made
+bond  O  1286
+atom_die  O  1274
+bond  H  559
+bond  H  566
+water_made
+atom_die  H  566
+atom_die  O  1286
+bond  O  1266
+bond  H  552
+bond  H  562
+atom_die  H  552
+water_made
+atom_die  O  1266
+bond  O  1296
+bond  H  605
+bond  H  546
+atom_die  H  562
+atom_die  H  546
+atom_die  H  559
+atom_die  H  605
+water_made
+atom_die  O  1296
+bond  H  558
+bond  H  601
+bond  O  1270
+water_made
+atom_die  O  1270
+bond  O  1294
+bond  H  578
+bond  H  565
+atom_die  H  558
+atom_die  H  601
+atom_die  H  578
+atom_die  H  565
+water_made
+atom_die  O  1294
+bond  H  580
+bond  O  1262
+bond  H  550
+atom_die  H  550
+atom_die  H  580
+water_made
+atom_die  O  1262
+bond  O  1305
+bond  H  617
+bond  H  588
+atom_die  H  588
+water_made
+atom_die  O  1305
+bond  H  553
+bond  O  1304
+bond  H  582
+atom_die  H  553
+atom_die  H  617
+atom_die  H  582
+water_made
+atom_die  O  1304
+bond  H  555
+bond  O  1277
+bond  H  573
+water_made
+atom_die  O  1277
+bond  O  1293
+atom_die  H  573
+atom_die  H  555
+bond  H  602
+bond  H  615
+water_made
+atom_die  H  602
+atom_die  O  1293
+bond  H  622
+bond  O  1299
+bond  H  587
+atom_die  H  615
+water_made
+atom_die  O  1299
+bond  O  1275
+bond  H  595
+bond  H  619
+atom_die  H  622
+atom_die  H  587
+atom_die  H  619
+atom_die  H  595
+water_made
+atom_die  O  1275
+bond  O  1287
+bond  H  594
+bond  H  597
+atom_die  H  597
+water_made
+atom_die  O  1287
+bond  O  1314
+bond  H  572
+bond  H  596
+atom_die  H  594
+atom_die  H  572
+water_made
+atom_die  O  1314
+bond  O  1278
+bond  H  567
+bond  H  561
+atom_die  H  596
+atom_die  H  561
+water_made
+atom_die  H  567
+bond  H  604
+bond  O  1307
+atom_die  O  1278
+bond  H  603
+water_made
+atom_die  O  1307
+bond  H  564
+bond  O  1308
+bond  H  606
+water_made
+atom_die  H  604
+atom_die  H  603
+atom_die  O  1308
+bond  O  1285
+bond  H  607
+bond  H  612
+atom_die  H  564
+water_made
+atom_die  H  606
+atom_die  O  1285
+bond  H  589
+bond  O  1292
+bond  H  583
+atom_die  H  607
+atom_die  H  583
+atom_die  H  612
+atom_die  H  589
+water_made
+atom_die  O  1292
+bond  O  1284
+bond  H  598
+bond  H  621
+water_made
+atom_die  H  621
+bond  H  571
+bond  O  1283
+bond  H  611
+atom_die  O  1284
+atom_die  H  611
+atom_die  H  598
+atom_die  H  571
+water_made
+atom_die  O  1283
+bond  O  1322
+bond  H  592
+bond  H  623
+water_made
+bond  O  1318
+bond  H  631
+atom_die  O  1322
+bond  H  577
+atom_die  H  631
+atom_die  H  577
+atom_die  H  592
+atom_die  H  623
+water_made
+atom_die  O  1318
+bond  O  1289
+bond  H  616
+bond  H  625
+atom_die  H  625
+water_made
+atom_die  O  1289
+bond  O  1288
+bond  H  593
+bond  H  610
+atom_die  H  610
+water_made
+atom_die  O  1288
+bond  O  1303
+bond  H  576
+bond  H  638
+atom_die  H  616
+atom_die  H  593
+atom_die  H  638
+water_made
+atom_die  O  1303
+bond  H  590
+bond  H  620
+bond  O  1309
+atom_die  H  576
+atom_die  H  590
+atom_die  H  620
+water_made
+atom_die  O  1309
+bond  H  586
+bond  H  609
+bond  O  1334
+atom_die  H  609
+water_made
+atom_die  O  1334
+bond  O  1315
+bond  H  624
+bond  H  646
+atom_die  H  586
+water_made
+atom_die  H  646
+bond  H  650
+bond  H  613
+bond  O  1329
+atom_die  O  1315
+atom_die  H  624
+atom_die  H  650
+atom_die  H  613
+water_made
+atom_die  O  1329
+bond  H  644
+bond  O  1313
+bond  H  600
+atom_die  H  600
+water_made
+atom_die  O  1313
+bond  H  655
+bond  O  1301
+bond  H  630
+atom_die  H  644
+atom_die  H  655
+atom_die  H  630
+water_made
+atom_die  O  1301
+bond  H  599
+bond  O  1325
+bond  H  626
+atom_die  H  599
+water_made
+atom_die  O  1325
+bond  H  627
+bond  O  1311
+bond  H  634
+atom_die  H  626
+water_made
+atom_die  O  1311
+bond  H  618
+bond  O  1306
+bond  H  661
+atom_die  H  627
+atom_die  H  634
+water_made
+atom_die  O  1306
+bond  O  1336
+bond  H  608
+bond  H  652
+atom_die  H  661
+atom_die  H  608
+atom_die  H  618
+atom_die  H  652
+water_made
+atom_die  O  1336
+bond  O  1333
+bond  H  670
+bond  H  662
+atom_die  H  662
+atom_die  H  670
+water_made
+bond  H  641
+atom_die  O  1333
+bond  O  1330
+bond  H  639
+atom_die  H  639
+atom_die  H  641
+water_made
+bond  H  635
+atom_die  O  1330
+bond  O  1342
+bond  H  614
+atom_die  H  635
+atom_die  H  614
+water_made
+atom_die  O  1342
+bond  O  1297
+bond  H  663
+bond  H  649
+water_made
+bond  O  1339
+atom_die  O  1297
+bond  H  674
+bond  H  657
+water_made
+atom_die  H  649
+atom_die  O  1339
+bond  O  1341
+bond  H  636
+bond  H  642
+atom_die  H  663
+water_made
+atom_die  O  1341
+bond  O  1324
+bond  H  628
+bond  H  677
+atom_die  H  657
+atom_die  H  636
+atom_die  H  674
+atom_die  H  628
+atom_die  H  677
+atom_die  H  642
+water_made
+atom_die  O  1324
+bond  H  679
+bond  H  671
+bond  O  1326
+atom_die  H  671
+atom_die  H  679
+water_made
+bond  O  1312
+bond  H  665
+atom_die  O  1326
+bond  H  676
+water_made
+atom_die  O  1312
+bond  H  643
+bond  H  632
+bond  O  1320
+atom_die  H  676
+water_made
+atom_die  O  1320
+bond  O  1328
+bond  H  645
+bond  H  629
+atom_die  H  665
+atom_die  H  643
+atom_die  H  645
+water_made
+atom_die  H  632
+atom_die  O  1328
+bond  H  672
+bond  O  1317
+bond  H  685
+atom_die  H  629
+atom_die  H  672
+water_made
+atom_die  O  1317
+bond  O  1350
+bond  H  680
+bond  H  633
+atom_die  H  685
+atom_die  H  633
+water_made
+atom_die  O  1350
+bond  O  1343
+bond  H  637
+bond  H  695
+atom_die  H  680
+atom_die  H  637
+water_made
+bond  O  1316
+atom_die  H  695
+bond  H  703
+atom_die  O  1343
+bond  H  692
+atom_die  H  692
+atom_die  H  703
+water_made
+atom_die  O  1316
+bond  O  1332
+bond  H  698
+bond  H  664
+atom_die  H  698
+atom_die  H  664
+water_made
+atom_die  O  1332
+bond  H  667
+bond  H  647
+bond  O  1355
+water_made
+atom_die  O  1355
+bond  H  660
+bond  O  1327
+bond  H  648
+atom_die  H  647
+atom_die  H  648
+atom_die  H  660
+atom_die  H  667
+water_made
+atom_die  O  1327
+bond  H  684
+bond  O  1357
+bond  H  681
+water_made
+atom_die  O  1357
+bond  O  1310
+bond  H  640
+bond  H  651
+atom_die  H  681
+atom_die  H  640
+water_made
+atom_die  O  1310
+bond  H  653
+bond  O  1321
+bond  H  686
+atom_die  H  684
+atom_die  H  651
+atom_die  H  686
+atom_die  H  653
+water_made
+atom_die  O  1321
+bond  H  668
+bond  O  1369
+bond  H  696
+atom_die  H  696
+atom_die  H  668
+water_made
+atom_die  O  1369
+bond  O  1370
+bond  H  705
+bond  H  691
+atom_die  H  691
+atom_die  H  705
+water_made
+atom_die  O  1370
+bond  O  1323
+bond  H  673
+bond  H  716
+water_made
+atom_die  O  1323
+bond  H  690
+bond  O  1353
+bond  H  656
+atom_die  H  716
+atom_die  H  673
+atom_die  H  656
+atom_die  H  690
+water_made
+atom_die  O  1353
+bond  O  1338
+bond  H  658
+bond  H  710
+atom_die  H  658
+water_made
+atom_die  O  1338
+bond  O  1347
+bond  H  688
+bond  H  666
+atom_die  H  710
+water_made
+atom_die  O  1347
+bond  O  1319
+bond  H  718
+bond  H  654
+atom_die  H  718
+atom_die  H  666
+atom_die  H  688
+atom_die  H  654
+water_made
+atom_die  O  1319
+bond  O  1356
+bond  H  683
+bond  H  659
+water_made
+atom_die  O  1356
+bond  O  1363
+bond  H  693
+bond  H  711
+atom_die  H  693
+water_made
+atom_die  O  1363
+bond  H  723
+bond  O  1348
+bond  H  708
+atom_die  H  659
+atom_die  H  683
+atom_die  H  723
+atom_die  H  711
+water_made
+bond  O  1359
+atom_die  O  1348
+bond  H  731
+bond  H  682
+atom_die  H  708
+water_made
+atom_die  O  1359
+bond  H  687
+bond  O  1361
+bond  H  675
+atom_die  H  731
+atom_die  H  682
+atom_die  H  687
+atom_die  H  675
+water_made
+atom_die  O  1361
+bond  O  1352
+bond  H  713
+bond  H  669
+atom_die  H  669
+atom_die  H  713
+water_made
+atom_die  O  1352
+bond  O  1331
+bond  H  734
+bond  H  702
+atom_die  H  702
+atom_die  H  734
+water_made
+atom_die  O  1331
+bond  O  1344
+bond  H  717
+bond  H  704
+atom_die  H  717
+atom_die  H  704
+water_made
+atom_die  O  1344
+bond  O  1387
+bond  H  715
+bond  H  732
+atom_die  H  715
+water_made
+atom_die  O  1387
+bond  O  1360
+bond  H  678
+bond  H  706
+atom_die  H  732
+atom_die  H  678
+water_made
+atom_die  O  1360
+bond  O  1377
+bond  H  740
+bond  H  697
+atom_die  H  706
+water_made
+bond  O  1384
+bond  H  738
+bond  H  725
+atom_die  H  740
+atom_die  O  1377
+atom_die  H  738
+atom_die  H  697
+water_made
+atom_die  H  725
+bond  O  1371
+atom_die  O  1384
+bond  H  719
+bond  H  714
+water_made
+bond  O  1337
+atom_die  O  1371
+bond  H  742
+bond  H  699
+atom_die  H  714
+atom_die  H  742
+atom_die  H  719
+water_made
+atom_die  O  1337
+bond  O  1335
+bond  H  701
+bond  H  694
+atom_die  H  699
+water_made
+atom_die  O  1335
+bond  H  700
+bond  O  1345
+bond  H  741
+atom_die  H  701
+atom_die  H  741
+water_made
+atom_die  H  700
+atom_die  H  694
+atom_die  O  1345
+bond  H  748
+bond  H  689
+bond  O  1372
+atom_die  H  748
+atom_die  H  689
+water_made
+atom_die  O  1372
+bond  H  747
+bond  O  1351
+bond  H  755
+atom_die  H  755
+water_made
+atom_die  O  1351
+bond  O  1349
+bond  H  712
+bond  H  707
+atom_die  H  747
+atom_die  H  712
+water_made
+atom_die  O  1349
+bond  O  1364
+bond  H  757
+bond  H  722
+atom_die  H  722
+atom_die  H  707
+atom_die  H  757
+water_made
+atom_die  O  1364
+bond  O  1389
+bond  H  765
+bond  H  709
+water_made
+atom_die  O  1389
+bond  H  754
+bond  O  1367
+bond  H  726
+atom_die  H  754
+atom_die  H  765
+atom_die  H  726
+atom_die  H  709
+water_made
+atom_die  O  1367
+bond  H  758
+bond  O  1340
+bond  H  752
+water_made
+atom_die  O  1340
+bond  H  720
+bond  H  768
+bond  O  1385
+atom_die  H  752
+atom_die  H  768
+atom_die  H  758
+atom_die  H  720
+water_made
+atom_die  O  1385
+bond  O  1354
+bond  H  728
+bond  H  721
+atom_die  H  721
+atom_die  H  728
+water_made
+atom_die  O  1354
+bond  O  1362
+bond  H  775
+bond  H  756
+water_made
+atom_die  O  1362
+bond  O  1368
+bond  H  745
+bond  H  781
+atom_die  H  775
+atom_die  H  756
+atom_die  H  745
+water_made
+atom_die  O  1368
+bond  O  1346
+bond  H  727
+bond  H  762
+atom_die  H  727
+atom_die  H  781
+water_made
+atom_die  O  1346
+bond  O  1378
+bond  H  724
+bond  H  729
+atom_die  H  762
+atom_die  H  729
+atom_die  H  724
+water_made
+atom_die  O  1378
+bond  O  1395
+bond  H  766
+bond  H  753
+water_made
+atom_die  O  1395
+bond  O  1365
+bond  H  744
+bond  H  733
+atom_die  H  753
+atom_die  H  733
+atom_die  H  766
+atom_die  H  744
+water_made
+atom_die  O  1365
+bond  O  1391
+bond  H  746
+bond  H  782
+water_made
+atom_die  O  1391
+bond  O  1366
+bond  H  730
+bond  H  788
+atom_die  H  746
+atom_die  H  782
+atom_die  H  788
+atom_die  H  730
+water_made
+atom_die  O  1366
+bond  O  1358
+bond  H  790
+bond  H  759
+water_made
+atom_die  O  1358
+bond  O  1400
+bond  H  773
+bond  H  739
+atom_die  H  790
+atom_die  H  759
+water_made
+atom_die  H  739
+bond  O  1375
+atom_die  O  1400
+bond  H  791
+bond  H  751
+atom_die  H  773
+water_made
+atom_die  O  1375
+bond  O  1409
+bond  H  736
+bond  H  735
+water_made
+atom_die  H  791
+bond  H  802
+bond  O  1374
+atom_die  O  1409
+bond  H  743
+atom_die  H  751
+atom_die  H  735
+atom_die  H  743
+water_made
+atom_die  H  736
+atom_die  O  1374
+bond  H  737
+bond  O  1396
+bond  H  786
+atom_die  H  802
+atom_die  H  737
+atom_die  H  786
+water_made
+bond  O  1401
+bond  H  793
+bond  H  761
+atom_die  O  1396
+atom_die  H  761
+atom_die  H  793
+water_made
+bond  O  1382
+bond  H  760
+bond  H  799
+atom_die  O  1401
+water_made
+atom_die  O  1382
+bond  O  1399
+bond  H  805
+bond  H  794
+atom_die  H  799
+atom_die  H  760
+atom_die  H  805
+atom_die  H  794
+water_made
+bond  O  1379
+bond  H  807
+bond  H  783
+atom_die  O  1399
+water_made
+atom_die  O  1379
+bond  O  1373
+bond  H  778
+bond  H  771
+atom_die  H  807
+atom_die  H  783
+atom_die  H  778
+atom_die  H  771
+water_made
+atom_die  O  1373
+bond  H  804
+bond  H  749
+bond  O  1376
+atom_die  H  804
+water_made
+atom_die  O  1376
+bond  H  750
+bond  O  1386
+bond  H  770
+atom_die  H  749
+water_made
+atom_die  O  1386
+bond  O  1397
+bond  H  795
+bond  H  785
+atom_die  H  750
+water_made
+atom_die  H  770
+bond  H  780
+bond  H  774
+bond  O  1398
+atom_die  H  795
+atom_die  O  1397
+atom_die  H  785
+water_made
+atom_die  O  1398
+bond  H  763
+bond  O  1390
+bond  H  814
+atom_die  H  763
+atom_die  H  780
+water_made
+atom_die  O  1390
+bond  O  1380
+bond  H  820
+bond  H  779
+atom_die  H  814
+water_made
+atom_die  H  774
+bond  O  1381
+bond  H  798
+bond  H  787
+atom_die  O  1380
+water_made
+atom_die  O  1381
+bond  O  1393
+bond  H  812
+bond  H  764
+atom_die  H  820
+atom_die  H  779
+atom_die  H  798
+atom_die  H  812
+atom_die  H  787
+atom_die  H  764
+water_made
+bond  H  767
+atom_die  O  1393
+bond  H  772
+bond  O  1419
+water_made
+atom_die  H  767
+bond  H  826
+atom_die  O  1419
+bond  O  1420
+bond  H  816
+atom_die  H  816
+water_made
+atom_die  O  1420
+bond  H  810
+bond  O  1416
+bond  H  769
+atom_die  H  772
+atom_die  H  769
+atom_die  H  826
+atom_die  H  810
+water_made
+atom_die  O  1416
+bond  O  1383
+bond  H  809
+bond  H  777
+atom_die  H  777
+atom_die  H  809
+water_made
+atom_die  O  1383
+bond  O  1406
+bond  H  833
+bond  H  831
+atom_die  H  831
+atom_die  H  833
+water_made
+atom_die  O  1406
+bond  O  1403
+bond  H  808
+bond  H  825
+atom_die  H  825
+atom_die  H  808
+water_made
+bond  O  1392
+bond  H  821
+bond  H  828
+atom_die  O  1403
+water_made
+bond  O  1410
+bond  H  776
+bond  H  792
+atom_die  O  1392
+atom_die  H  828
+atom_die  H  821
+water_made
+atom_die  H  776
+bond  O  1414
+atom_die  H  792
+bond  H  840
+bond  H  784
+atom_die  O  1410
+atom_die  H  840
+water_made
+atom_die  H  784
+bond  H  800
+bond  O  1426
+bond  H  797
+atom_die  O  1414
+atom_die  H  800
+water_made
+atom_die  H  797
+bond  O  1417
+bond  H  837
+bond  H  838
+atom_die  O  1426
+atom_die  H  838
+water_made
+bond  O  1434
+bond  H  801
+bond  H  789
+atom_die  O  1417
+atom_die  H  801
+atom_die  H  837
+water_made
+bond  O  1411
+bond  H  803
+atom_die  O  1434
+bond  H  806
+atom_die  H  789
+water_made
+atom_die  H  806
+atom_die  O  1411
+bond  H  854
+bond  O  1388
+bond  H  823
+atom_die  H  803
+water_made
+atom_die  O  1388
+bond  O  1413
+bond  H  835
+bond  H  824
+atom_die  H  835
+atom_die  H  854
+atom_die  H  823
+water_made
+bond  O  1443
+bond  H  796
+atom_die  H  824
+bond  H  856
+atom_die  O  1413
+water_made
+bond  O  1394
+bond  H  834
+bond  H  865
+atom_die  O  1443
+atom_die  H  796
+atom_die  H  856
+atom_die  H  865
+atom_die  H  834
+water_made
+bond  O  1438
+atom_die  O  1394
+bond  H  850
+bond  H  859
+water_made
+atom_die  H  850
+atom_die  O  1438
+bond  O  1437
+bond  H  811
+bond  H  818
+atom_die  H  859
+atom_die  H  811
+water_made
+atom_die  O  1437
+bond  O  1418
+bond  H  829
+bond  H  846
+atom_die  H  818
+atom_die  H  829
+atom_die  H  846
+water_made
+atom_die  O  1418
+bond  O  1405
+bond  H  815
+bond  H  819
+water_made
+atom_die  H  815
+atom_die  O  1405
+bond  O  1402
+bond  H  822
+bond  H  827
+atom_die  H  819
+atom_die  H  827
+water_made
+atom_die  H  822
+atom_die  O  1402
+bond  H  876
+bond  O  1435
+bond  H  817
+atom_die  H  817
+atom_die  H  876
+water_made
+atom_die  O  1435
+bond  H  813
+bond  O  1446
+bond  H  870
+atom_die  H  870
+atom_die  H  813
+water_made
+atom_die  O  1446
+bond  O  1432
+bond  H  845
+bond  H  855
+atom_die  H  855
+atom_die  H  845
+water_made
+atom_die  O  1432
+bond  H  839
+bond  O  1427
+bond  H  864
+water_made
+atom_die  O  1427
+bond  O  1404
+bond  H  880
+bond  H  842
+atom_die  H  864
+atom_die  H  839
+atom_die  H  880
+water_made
+atom_die  O  1404
+bond  H  874
+atom_die  H  842
+bond  O  1425
+bond  H  871
+water_made
+bond  O  1407
+bond  H  885
+bond  H  841
+atom_die  O  1425
+atom_die  H  874
+atom_die  H  871
+atom_die  H  885
+atom_die  H  841
+water_made
+bond  O  1422
+atom_die  O  1407
+bond  H  843
+bond  H  830
+water_made
+atom_die  H  843
+bond  H  857
+bond  O  1408
+bond  H  858
+atom_die  O  1422
+atom_die  H  830
+water_made
+atom_die  H  858
+bond  O  1428
+bond  H  832
+atom_die  O  1408
+bond  H  890
+atom_die  H  832
+atom_die  H  857
+water_made
+bond  O  1423
+bond  H  836
+bond  H  853
+atom_die  H  890
+atom_die  O  1428
+atom_die  H  836
+water_made
+atom_die  O  1423
+bond  O  1412
+bond  H  863
+bond  H  900
+atom_die  H  853
+water_made
+bond  H  888
+atom_die  O  1412
+bond  H  852
+bond  O  1439
+water_made
+bond  O  1436
+atom_die  H  863
+atom_die  H  900
+bond  H  896
+bond  H  873
+atom_die  H  852
+atom_die  O  1439
+atom_die  H  888
+water_made
+bond  O  1415
+bond  H  861
+bond  H  908
+atom_die  O  1436
+atom_die  H  873
+atom_die  H  896
+atom_die  H  908
+water_made
+atom_die  H  861
+bond  O  1457
+bond  H  877
+bond  H  848
+atom_die  O  1415
+atom_die  H  877
+atom_die  H  848
+water_made
+atom_die  O  1457
+bond  O  1447
+bond  H  886
+bond  H  844
+atom_die  H  844
+water_made
+atom_die  H  886
+atom_die  O  1447
+bond  H  889
+bond  O  1431
+bond  H  902
+atom_die  H  902
+water_made
+atom_die  O  1431
+bond  O  1430
+bond  H  847
+bond  H  914
+atom_die  H  889
+atom_die  H  847
+water_made
+bond  H  904
+bond  O  1454
+bond  H  892
+atom_die  O  1430
+atom_die  H  914
+atom_die  H  892
+atom_die  H  904
+water_made
+atom_die  O  1454
+bond  H  862
+bond  H  916
+bond  O  1421
+water_made
+atom_die  O  1421
+bond  O  1440
+bond  H  875
+bond  H  849
+water_made
+atom_die  H  862
+atom_die  H  916
+atom_die  H  849
+atom_die  O  1440
+bond  H  907
+bond  O  1433
+bond  H  851
+atom_die  H  875
+atom_die  H  907
+atom_die  H  851
+water_made
+bond  O  1462
+bond  H  883
+bond  H  884
+atom_die  O  1433
+atom_die  H  884
+water_made
+atom_die  H  883
+atom_die  O  1462
+bond  O  1429
+bond  H  898
+bond  H  878
+atom_die  H  898
+water_made
+atom_die  O  1429
+bond  O  1450
+bond  H  868
+atom_die  H  878
+bond  H  860
+atom_die  H  860
+water_made
+atom_die  O  1450
+bond  O  1442
+bond  H  909
+bond  H  867
+atom_die  H  868
+atom_die  H  867
+atom_die  H  909
+water_made
+atom_die  O  1442
+bond  H  879
+bond  H  922
+bond  O  1424
+water_made
+atom_die  O  1424
+bond  O  1469
+bond  H  881
+atom_die  H  922
+bond  H  869
+atom_die  H  869
+water_made
+bond  O  1448
+atom_die  O  1469
+bond  H  866
+bond  H  927
+atom_die  H  881
+water_made
+atom_die  O  1448
+bond  O  1452
+bond  H  872
+bond  H  933
+atom_die  H  879
+atom_die  H  933
+atom_die  H  866
+atom_die  H  927
+atom_die  H  872
+water_made
+bond  O  1458
+bond  H  928
+bond  H  906
+atom_die  O  1452
+atom_die  H  906
+water_made
+atom_die  O  1458
+bond  O  1473
+bond  H  887
+bond  H  893
+atom_die  H  887
+atom_die  H  928
+water_made
+atom_die  H  893
+atom_die  O  1473
+bond  O  1477
+bond  H  938
+bond  H  882
+water_made
+atom_die  H  882
+bond  O  1444
+atom_die  O  1477
+bond  H  934
+bond  H  895
+atom_die  H  934
+atom_die  H  938
+water_made
+atom_die  O  1444
+bond  O  1461
+bond  H  894
+bond  H  935
+water_made
+atom_die  H  894
+atom_die  H  935
+bond  O  1476
+bond  H  924
+bond  H  891
+atom_die  H  895
+atom_die  O  1461
+atom_die  H  891
+water_made
+atom_die  H  924
+atom_die  O  1476
+bond  O  1474
+bond  H  897
+bond  H  903
+atom_die  H  897
+water_made
+atom_die  O  1474
+bond  H  942
+bond  H  911
+bond  O  1455
+atom_die  H  903
+water_made
+atom_die  O  1455
+bond  O  1482
+bond  H  919
+bond  H  931
+atom_die  H  942
+atom_die  H  911
+atom_die  H  931
+atom_die  H  919
+water_made
+atom_die  O  1482
+bond  O  1445
+bond  H  901
+bond  H  958
+atom_die  H  958
+water_made
+atom_die  O  1445
+bond  H  941
+bond  H  899
+bond  O  1463
+atom_die  H  901
+water_made
+atom_die  O  1463
+bond  O  1465
+bond  H  917
+bond  H  905
+water_made
+atom_die  O  1465
+bond  O  1441
+bond  H  925
+bond  H  912
+atom_die  H  941
+atom_die  H  905
+atom_die  H  925
+atom_die  H  899
+atom_die  H  917
+atom_die  H  912
+water_made
+atom_die  O  1441
+bond  H  913
+bond  O  1460
+bond  H  920
+atom_die  H  920
+atom_die  H  913
+water_made
+atom_die  O  1460
+bond  O  1449
+bond  H  921
+bond  H  910
+water_made
+atom_die  O  1449
+bond  O  1484
+bond  H  956
+bond  H  959
+atom_die  H  910
+atom_die  H  959
+water_made
+atom_die  O  1484
+bond  O  1491
+bond  H  940
+bond  H  953
+atom_die  H  921
+atom_die  H  956
+atom_die  H  953
+atom_die  H  940
+water_made
+atom_die  O  1491
+bond  O  1451
+bond  H  961
+bond  H  955
+atom_die  H  961
+water_made
+atom_die  O  1451
+bond  O  1483
+bond  H  937
+bond  H  954
+water_made
+atom_die  O  1483
+bond  H  915
+bond  O  1453
+bond  H  972
+atom_die  H  955
+water_made
+atom_die  O  1453
+bond  O  1464
+bond  H  923
+bond  H  965
+atom_die  H  972
+atom_die  H  937
+atom_die  H  954
+atom_die  H  965
+atom_die  H  915
+atom_die  H  923
+water_made
+atom_die  O  1464
+bond  H  944
+bond  H  926
+bond  O  1456
+water_made
+atom_die  O  1456
+bond  O  1480
+bond  H  943
+bond  H  984
+atom_die  H  944
+atom_die  H  926
+atom_die  H  984
+atom_die  H  943
+water_made
+bond  O  1468
+atom_die  O  1480
+bond  H  918
+bond  H  951
+atom_die  H  918
+atom_die  H  951
+water_made
+atom_die  O  1468
+bond  H  929
+bond  O  1459
+bond  H  930
+water_made
+atom_die  O  1459
+bond  O  1493
+bond  H  949
+bond  H  950
+atom_die  H  949
+atom_die  H  930
+atom_die  H  929
+water_made
+atom_die  H  950
+atom_die  O  1493
+bond  H  960
+bond  O  1472
+bond  H  963
+atom_die  H  960
+water_made
+atom_die  O  1472
+bond  O  1492
+bond  H  983
+bond  H  986
+atom_die  H  963
+water_made
+bond  O  1485
+bond  H  936
+bond  H  994
+atom_die  O  1492
+atom_die  H  983
+atom_die  H  986
+atom_die  H  994
+atom_die  H  936
+water_made
+atom_die  O  1485
+bond  O  1490
+bond  H  974
+bond  H  946
+atom_die  H  974
+atom_die  H  946
+water_made
+bond  H  964
+atom_die  O  1490
+bond  O  1471
+bond  H  952
+atom_die  H  964
+atom_die  H  952
+water_made
+atom_die  O  1471
+bond  O  1466
+bond  H  979
+bond  H  947
+water_made
+atom_die  O  1466
+bond  H  948
+bond  H  932
+bond  O  1478
+atom_die  H  947
+water_made
+atom_die  H  979
+bond  H  978
+bond  O  1475
+bond  H  962
+atom_die  O  1478
+atom_die  H  948
+atom_die  H  978
+atom_die  H  932
+atom_die  H  962
+water_made
+atom_die  O  1475
+bond  O  1467
+bond  H  999
+bond  H  981
+atom_die  H  981
+water_made
+atom_die  O  1467
+bond  H  976
+bond  O  1497
+bond  H  939
+atom_die  H  999
+atom_die  H  976
+water_made
+atom_die  O  1497
+bond  O  1470
+bond  H  945
+bond  H  982
+atom_die  H  939
+atom_die  H  982
+atom_die  H  945
+water_made
+atom_die  O  1470
+bond  O  1488
+bond  H  970
+bond  H  992
+water_made
+atom_die  O  1488
+bond  H  967
+bond  H  973
+atom_die  H  970
+bond  O  1479
+atom_die  H  967
+atom_die  H  992
+water_made
+atom_die  O  1479
+bond  O  1486
+bond  H  985
+bond  H  968
+water_made
+atom_die  O  1486
+bond  H  977
+bond  H  957
+bond  O  1500
+atom_die  H  985
+atom_die  H  977
+atom_die  H  973
+atom_die  H  968
+atom_die  H  957
+water_made
+atom_die  O  1500
+bond  O  1481
+bond  H  966
+bond  H  975
+atom_die  H  966
+atom_die  H  975
+water_made
+bond  O  1489
+bond  H  969
+atom_die  O  1481
+bond  H  990
+atom_die  H  969
+water_made
+atom_die  H  990
+bond  O  1494
+bond  H  995
+bond  H  997
+atom_die  O  1489
+water_made
+bond  H  989
+atom_die  O  1494
+bond  O  1495
+bond  H  996
+atom_die  H  997
+atom_die  H  995
+atom_die  H  989
+water_made
+atom_die  H  996
+atom_die  O  1495
+bond  O  1487
+bond  H  998
+bond  H  1000
+atom_die  H  998
+atom_die  H  1000
+water_made
+bond  O  1499
+atom_die  O  1487
+bond  H  991
+bond  H  993
+atom_die  H  993
+water_made
+atom_die  H  991
+bond  O  1496
+bond  H  971
+bond  H  987
+atom_die  O  1499
+atom_die  H  987
+water_made
+atom_die  O  1496
+bond  H  988
+bond  O  1498
+bond  H  980
+atom_die  H  971
+atom_die  H  980
+water_made
+atom_die  H  988
+atom_die  O  1498

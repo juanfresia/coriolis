@@ -1,0 +1,76 @@
+agent_sleep
+smoker_sleep  0
+smoker_sleep  1
+smoker_sleep  2
+agent_wake
+agent_produce  0
+agent_produce  1
+agent_sleep
+smoker_take_element   2  0
+smoker_take_element   2  1
+smoker_smoke  2
+smoker_sleep  2
+agent_wake
+agent_produce  0
+agent_produce  1
+agent_sleep
+smoker_take_element   2  0
+smoker_take_element   2  1
+smoker_smoke  2
+smoker_sleep  2
+agent_wake
+agent_produce  2
+agent_produce  0
+smoker_take_element   1  2
+agent_sleep
+smoker_take_element   1  0
+smoker_smoke  1
+smoker_sleep  1
+agent_wake
+agent_produce  0
+agent_produce  1
+agent_sleep
+smoker_take_element   2  0
+smoker_take_element   2  1
+smoker_smoke  2
+smoker_sleep  2
+agent_wake
+agent_produce  0
+agent_produce  1
+agent_sleep
+smoker_take_element   2  0
+smoker_take_element   2  1
+smoker_smoke  2
+smoker_sleep  2
+agent_wake
+agent_produce  0
+agent_produce  1
+agent_sleep
+smoker_take_element   2  0
+smoker_take_element   2  1
+smoker_smoke  2
+smoker_sleep  2
+agent_wake
+agent_produce  2
+agent_produce  0
+agent_sleep
+smoker_take_element   1  2
+smoker_take_element   1  0
+smoker_smoke  1
+smoker_sleep  1
+agent_wake
+agent_produce  0
+agent_produce  1
+agent_sleep
+smoker_take_element   2  0
+smoker_take_element   2  1
+smoker_smoke  2
+smoker_sleep  2
+agent_wake
+agent_produce  0
+agent_produce  1
+agent_sleep
+smoker_take_element   2  0
+smoker_take_element   2  1
+smoker_smoke  2
+smoker_sleep  2

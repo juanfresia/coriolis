@@ -1,0 +1,32 @@
+# Lines starting with '#' and empty lines are ignored
+# Format is:
+#   <breakpoint-name> [<param-name>:<param-type> ...]
+#
+# Valid param-types are: int, float, string, char
+
+resident_spawn                person_name:string    document:int        gender:string
+resident_queued               person_name:string
+resident_die                  person_name:string    document:int        gender:string
+resident_show_document        person_name:string    document:int        gender:string
+
+tourist_spawn                 person_name:string    passport:int        traits:string
+tourist_queued                person_name:string
+tourist_die                   person_name:string    passport:int        traits:string
+tourist_show_passport         person_name:string    passport:int        traits:string
+
+employee_spawn                employee_name:string
+employee_die                  employee_name:string
+employee_ready                employee_name:string
+employee_serve                employee_name:string  person_name:string  type:string
+employee_request_document     employee_name:string
+employee_request_passport     employee_name:string
+employee_allow_resident       employee_name:string  document:int
+employee_deny_resident        employee_name:string  document:int
+employee_allow_tourist        employee_name:string  passport:int
+employee_deny_tourist         employee_name:string  passport:int
+employee_take_seal            employee_name:string
+employee_seal_passport        employee_name:string  passport:int
+employee_return_seal          employee_name:string
+
+start_everything
+

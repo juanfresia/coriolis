@@ -1,0 +1,131 @@
+start_everything
+employee_spawn  1
+employee_spawn  0
+employee_ready  1
+employee_ready  0
+employee_spawn  2
+employee_spawn  3
+employee_ready  2
+employee_ready  3
+employee_spawn  4
+employee_ready  4
+tourist_spawn  2433  118441  eyes:green-hair:red-skin:middle-element:blonde-gender:female-
+tourist_queued  2433
+employee_serve  1  2433  tourist
+employee_request_passport  1
+employee_take_seal  1
+employee_seal_passport  1  118441
+tourist_show_passport  2433  118441  eyes:green-hair:red-skin:middle-element:blonde-gender:female-
+resident_spawn  2434  32243  male
+resident_queued  2434
+employee_serve  0  2434  resident
+employee_request_document  0
+resident_show_document  2434  32243  male
+employee_allow_resident  0  32243
+employee_ready  0
+resident_die  2434  32243  male
+resident_die  2434  32243  male
+employee_return_seal  1
+employee_allow_tourist  1  118441
+employee_ready  1
+tourist_die  2433  118441  eyes:green-hair:red-skin:middle-element:blonde-gender:female-
+tourist_die  2433  118441  eyes:green-hair:red-skin:middle-element:blonde-gender:female-
+resident_spawn  2435  84539  female
+resident_queued  2435
+employee_serve  2  2435  resident
+employee_request_document  2
+resident_show_document  2435  84539  female
+employee_allow_resident  2  84539
+employee_ready  2
+resident_die  2435  84539  female
+resident_die  2435  84539  female
+resident_spawn  2436  94457  male
+resident_queued  2436
+employee_serve  0  2436  resident
+employee_request_document  0
+employee_allow_resident  0  94457
+employee_ready  0
+resident_show_document  2436  94457  male
+resident_die  2436  94457  male
+resident_die  2436  94457  male
+resident_spawn  2437  36414  male
+resident_queued  2437
+employee_serve  4  2437  resident
+employee_request_document  4
+employee_allow_resident  4  36414
+employee_ready  4
+resident_show_document  2437  36414  male
+resident_die  2437  36414  male
+resident_die  2437  36414  male
+tourist_spawn  2438  253913  eyes:gray-hair:darkbrown-skin:light-element:black-gender:female-
+tourist_queued  2438
+employee_serve  3  2438  tourist
+employee_request_passport  3
+tourist_show_passport  2438  253913  eyes:gray-hair:darkbrown-skin:light-element:black-gender:female-
+employee_deny_tourist  3  253913
+employee_ready  3
+tourist_die  2438  253913  eyes:gray-hair:darkbrown-skin:light-element:black-gender:female-
+tourist_die  2438  253913  eyes:gray-hair:darkbrown-skin:light-element:black-gender:female-
+tourist_spawn  2439  166398  eyes:blue-hair:violet-skin:light-element:blonde-gender:male-
+tourist_queued  2439
+employee_serve  0  2439  tourist
+employee_request_passport  0
+employee_take_seal  0
+employee_seal_passport  0  166398
+tourist_show_passport  2439  166398  eyes:blue-hair:violet-skin:light-element:blonde-gender:male-
+employee_return_seal  0
+employee_allow_tourist  0  166398
+employee_ready  0
+tourist_die  2439  166398  eyes:blue-hair:violet-skin:light-element:blonde-gender:male-
+tourist_die  2439  166398  eyes:blue-hair:violet-skin:light-element:blonde-gender:male-
+resident_spawn  2440  63731  female
+resident_queued  2440
+employee_serve  4  2440  resident
+employee_request_document  4
+employee_allow_resident  4  63731
+employee_ready  4
+resident_show_document  2440  63731  female
+resident_die  2440  63731  female
+resident_die  2440  63731  female
+resident_spawn  2441  21789  male
+resident_queued  2441
+employee_serve  3  2441  resident
+employee_request_document  3
+employee_allow_resident  3  21789
+employee_ready  3
+resident_show_document  2441  21789  male
+resident_die  2441  21789  male
+resident_die  2441  21789  male
+tourist_spawn  2442  695989  eyes:green-hair:pink-skin:middle-element:cap-gender:male-
+tourist_queued  2442
+employee_serve  0  2442  tourist
+employee_request_passport  0
+employee_take_seal  0
+employee_seal_passport  0  695989
+tourist_show_passport  2442  695989  eyes:green-hair:pink-skin:middle-element:cap-gender:male-
+employee_return_seal  0
+employee_allow_tourist  0  695989
+employee_ready  0
+tourist_die  2442  695989  eyes:green-hair:pink-skin:middle-element:cap-gender:male-
+tourist_die  2442  695989  eyes:green-hair:pink-skin:middle-element:cap-gender:male-
+tourist_spawn  2443  776125  eyes:green-hair:blue-skin:dark-element:hat-gender:male-
+tourist_queued  2443
+employee_serve  4  2443  tourist
+employee_request_passport  4
+employee_take_seal  4
+employee_seal_passport  4  776125
+tourist_show_passport  2443  776125  eyes:green-hair:blue-skin:dark-element:hat-gender:male-
+resident_spawn  2444  25257  male
+resident_queued  2444
+employee_serve  3  2444  resident
+employee_request_document  3
+employee_allow_resident  3  25257
+employee_ready  3
+resident_show_document  2444  25257  male
+resident_die  2444  25257  male
+resident_die  2444  25257  male
+employee_return_seal  4
+employee_allow_tourist  4  776125
+employee_ready  4
+tourist_die  2443  776125  eyes:green-hair:blue-skin:dark-element:hat-gender:male-
+tourist_die  2443  776125  eyes:green-hair:blue-skin:dark-element:hat-gender:male-

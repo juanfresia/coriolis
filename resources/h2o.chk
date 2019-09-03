@@ -1,0 +1,10 @@
+# Lines starting with '#' and empty lines are ignored
+# Format is:
+#   <breakpoint-name> [<param-name>:<param-type> ...]
+#
+# Valid param-types are: int, float, string, char
+
+atom_spawn     atom_type:string   atom_id:int
+atom_die       atom_type:string   atom_id:int
+bond           atom_type:string   atom_id:int
+water_made
