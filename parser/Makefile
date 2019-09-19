@@ -18,7 +18,7 @@ run:
 	@python3 -m JarlParserCLI $(RULE_FILE)
 
 test: build
-	@$(grun) $(GRAMMAR) $(GRAMMAR_LOWER) -tokens -tree
+	@$(grun) $(GRAMMAR) $(GRAMMAR_LOWER) -tree
 
 clean:
 	rm *.java *.interp *.tokens *.class
