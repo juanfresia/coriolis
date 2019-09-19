@@ -2,3 +2,7 @@ JarlLexer.py
 JarlListener.py
 JarlParser.py
 __pycache__/
+*.java
+*.interp
+*.tokens
+*.class

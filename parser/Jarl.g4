@@ -4,17 +4,17 @@ grammar Jarl;
  * Parser Rules
  */
 
-jarl                : line EOF ;
+jarl                : line+ EOF ;
 
-line                : selector | filter ;
+line                : selector | filter1 ;
 
-condition           : (IDENTIFIER COMPARATOR IDENTIFIER) ;
-filter_argument     : (IDENTIFIER | condition) ;
+condition            : (IDENTIFIER COMPARATOR IDENTIFIER) ;
+filter_argument      : (IDENTIFIER | condition) ;
 filter_argument_list : (filter_argument (',' filter_argument)*)? ;
 
 identifier_list     : (IDENTIFIER (',' IDENTIFIER)*)? ;
 
-filter              : after_clause ;
+filter1              : after_clause ;
 
 selector            : FOR QUANTIFIER identifier_list (AND QUANTIFIER identifier_list)* COLON NEWLINE ;
 
@@ -53,7 +53,7 @@ AFTER : 'after' ;
 
 QUANTIFIER : (ANY | EVERY) ;
 
-IDENTIFIER          : (LOWERCASE | UPPERCASE | '_') (DIGIT | LOWERCASE | UPPERCASE | '_')+ ;
+IDENTIFIER          : (LOWERCASE | UPPERCASE | '_') (DIGIT | LOWERCASE | UPPERCASE | '_')* ;
 
 COLON               : ':' ;
 
