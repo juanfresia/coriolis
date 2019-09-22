@@ -33,7 +33,9 @@ class JarlListener(ParseTreeListener):
 
     # Enter a parse tree produced by JarlParser#jarl_rule.
     def enterJarl_rule(self, ctx:JarlParser.Jarl_ruleContext):
-        text = ctx.getText()
+        start = ctx.start.start
+        stop = ctx.stop.stop
+        text = ctx.start.getInputStream().getText(start, stop)
         self.rules.append(JarlRule(text))
 
     # Exit a parse tree produced by JarlParser#jarl_rule.
