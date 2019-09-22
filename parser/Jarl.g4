@@ -93,3 +93,6 @@ LITERAL     : '\'' (~'\'')* '\'' ;
 WHITESPACE  : (' ' | '\t')+ -> skip ;
 NEWLINE     : ('\r'? '\n' | '\r')+ ;
 
+/* Ignore comments */
+COMMENT     : '#' ~[\r\n]* ('\r'? '\n' | '\r') -> skip ;
+
