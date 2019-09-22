@@ -91,6 +91,8 @@ class JarlListener(ParseTreeListener):
 
     # Exit a parse tree produced by JarlParser#selector_expr.
     def exitSelector_expr(self, ctx:JarlParser.Selector_exprContext):
+        print(self.stack)
+        self.scopes[-1].selector = self.stack.pop()
         pass
 
 
@@ -149,7 +151,13 @@ class JarlListener(ParseTreeListener):
 
     # Enter a parse tree produced by JarlParser#after_clause.
     def enterAfter_clause(self, ctx:JarlParser.After_clauseContext):
-        pass
+        chk_name = ctx.checkpoint().IDENTIFIER()
+        chk_args_list = ctx.checkpoint().arguments().identifier_list().IDENTIFIER()
+        chk_args = [arg.getText() for arg in chk_args_list]
+        start = JarlCheckpoint(chk_name, chk_args)
+
+        sel_expr = JarlSelectorExpr("after", start, None)
+        self.stack.append(sel_expr)
 
     # Exit a parse tree produced by JarlParser#after_clause.
     def exitAfter_clause(self, ctx:JarlParser.After_clauseContext):
@@ -158,7 +166,13 @@ class JarlListener(ParseTreeListener):
 
     # Enter a parse tree produced by JarlParser#before_clause.
     def enterBefore_clause(self, ctx:JarlParser.Before_clauseContext):
-        pass
+        chk_name = ctx.checkpoint().IDENTIFIER()
+        chk_args_list = ctx.checkpoint().arguments().identifier_list().IDENTIFIER()
+        chk_args = [arg.getText() for arg in chk_args_list]
+        end = JarlCheckpoint(chk_name, chk_args)
+
+        sel_expr = JarlSelectorExpr("before", None, end)
+        self.stack.append(sel_expr)
 
     # Exit a parse tree produced by JarlParser#before_clause.
     def exitBefore_clause(self, ctx:JarlParser.Before_clauseContext):
@@ -167,7 +181,25 @@ class JarlListener(ParseTreeListener):
 
     # Enter a parse tree produced by JarlParser#between_clause.
     def enterBetween_clause(self, ctx:JarlParser.Between_clauseContext):
-        pass
+        chk1_name = ctx.checkpoint()[0].IDENTIFIER()
+        chk1_args_list = ctx.checkpoint()[0].arguments().identifier_list().IDENTIFIER()
+        chk1_args = [arg.getText() for arg in chk1_args_list]
+        chk1 = JarlCheckpoint(chk1_name, chk1_args)
+
+        chk2_name = ctx.checkpoint()[1].IDENTIFIER()
+        chk2_args_list = ctx.checkpoint()[1].arguments().identifier_list().IDENTIFIER()
+        chk2_args = [arg.getText() for arg in chk2_args_list]
+        chk2 = JarlCheckpoint(chk2_name, chk2_args)
+
+        start = chk1
+        end = chk2
+        # If between has a previous, we need to reverse the order
+        if ctx.PREVIOUS():
+            start = chk2
+            end = chk1
+
+        sel_expr = JarlSelectorExpr("between", start, end)
+        self.stack.append(sel_expr)
 
     # Exit a parse tree produced by JarlParser#between_clause.
     def exitBetween_clause(self, ctx:JarlParser.Between_clauseContext):

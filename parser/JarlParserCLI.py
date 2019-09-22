@@ -18,7 +18,7 @@ def main(argv):
     for rule in Jarl.rules:
         print(rule.text)
         print(rule)
-        print("Is last condition litaral? ->", rule.scope.filter.conditions[-1].is_literal)
+        # print("Is last condition litaral? ->", rule.scope.filter.conditions[0].is_literal)
         print()
         print()
 

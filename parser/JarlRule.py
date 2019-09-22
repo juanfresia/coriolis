@@ -74,3 +74,21 @@ class JarlWithCondition():
     def __repr__(self):
         return "{} {} {}".format(self.l, self.c, self.r)
 
+class JarlSelectorExpr():
+    def __init__(self, type, start, end):
+        self.start = start
+        self.end = end
+        self.type = type
+
+    def __repr__(self):
+        return "{} {} {}".format(self.type, self.start, self.end)
+
+class JarlCheckpoint():
+    def __init__(self, name, arguments=None):
+        self.name = name
+        if arguments is None:
+            arguments = []
+        self.arguments = arguments
+
+    def __repr__(self):
+        return "{}({})".format(self.name, self.arguments)
