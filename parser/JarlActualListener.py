@@ -5,7 +5,7 @@ if __name__ is not None and "." in __name__:
 else:
     from JarlParser import JarlParser
 
-from JarlRule import *
+from .JarlRule import *
 
 # This class defines a complete listener for a parse tree produced by JarlParser.
 class JarlListener(ParseTreeListener):
@@ -151,7 +151,7 @@ class JarlListener(ParseTreeListener):
 
     # Enter a parse tree produced by JarlParser#after_clause.
     def enterAfter_clause(self, ctx:JarlParser.After_clauseContext):
-        chk_name = ctx.checkpoint().IDENTIFIER()
+        chk_name = ctx.checkpoint().IDENTIFIER().getText()
         chk_args_list = ctx.checkpoint().arguments().identifier_list().IDENTIFIER()
         chk_args = [arg.getText() for arg in chk_args_list]
         start = JarlCheckpoint(chk_name, chk_args)
@@ -166,7 +166,7 @@ class JarlListener(ParseTreeListener):
 
     # Enter a parse tree produced by JarlParser#before_clause.
     def enterBefore_clause(self, ctx:JarlParser.Before_clauseContext):
-        chk_name = ctx.checkpoint().IDENTIFIER()
+        chk_name = ctx.checkpoint().IDENTIFIER().getText()
         chk_args_list = ctx.checkpoint().arguments().identifier_list().IDENTIFIER()
         chk_args = [arg.getText() for arg in chk_args_list]
         end = JarlCheckpoint(chk_name, chk_args)
@@ -181,12 +181,12 @@ class JarlListener(ParseTreeListener):
 
     # Enter a parse tree produced by JarlParser#between_clause.
     def enterBetween_clause(self, ctx:JarlParser.Between_clauseContext):
-        chk1_name = ctx.checkpoint()[0].IDENTIFIER()
+        chk1_name = ctx.checkpoint()[0].IDENTIFIER().getText()
         chk1_args_list = ctx.checkpoint()[0].arguments().identifier_list().IDENTIFIER()
         chk1_args = [arg.getText() for arg in chk1_args_list]
         chk1 = JarlCheckpoint(chk1_name, chk1_args)
 
-        chk2_name = ctx.checkpoint()[1].IDENTIFIER()
+        chk2_name = ctx.checkpoint()[1].IDENTIFIER().getText()
         chk2_args_list = ctx.checkpoint()[1].arguments().identifier_list().IDENTIFIER()
         chk2_args = [arg.getText() for arg in chk2_args_list]
         chk2 = JarlCheckpoint(chk2_name, chk2_args)

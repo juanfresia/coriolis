@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+from common.aggregation_steps import *
+from common.jarl_rule import *
+
 class JarlRule():
     def __init__(self, text):
         self.text = text
@@ -15,6 +18,32 @@ class JarlRuleScope():
         self.text = text
         self.filter = None
         self.selector = None
+
+    def toSteps(self):
+        checkpoints = self.selector.getCheckpoints()
+
+        ## TODO: check validity of checkpoint arguments
+
+        chk_names = {chk.name for chk in checkpoints}
+        # 1)
+        print("MatchCheckpoints({})".format([c for c in chk_names]))
+
+        # 2) and 3)
+        names = []
+        args = []
+        for chk in checkpoints:
+            names.append(chk.name)
+            args.append(chk.arguments)
+        print("RenameArgs({}, {})".format(names, args))
+        print("CrossAndGroupByArgs({}, {})".format(names, args))
+
+        # 4)
+        for cond in self.filter.conditions:
+            print("ImposeIteratorCondition({}, {}, {})".format(cond.l, cond.c, cond.r))
+
+        # 5)
+        print(self.selector.toSteps())
+
 
     def __repr__(self):
         return "( filter: {} selector: {} )".format(self.filter, self.selector)
@@ -79,6 +108,24 @@ class JarlSelectorExpr():
         self.start = start
         self.end = end
         self.type = type
+
+    def getCheckpoints(self):
+        checkpoints = []
+        if self.start:
+            checkpoints.append(self.start)
+        if self.end:
+            checkpoints.append(self.end)
+
+        return checkpoints
+
+    def toSteps(self):
+        if self.type == "after":
+            return "ScopeAfter({})".format(self.start.name)
+        if self.type == "before":
+            return "ScopeBefore({})".format(self.end.name)
+        if self.type == "between":
+            return "ScopeBetween({}, {})".format(self.start.name, self.end.name)
+        raise Exception("Invalid type of selector expression")
 
     def __repr__(self):
         return "{} {} {}".format(self.type, self.start, self.end)

@@ -1,8 +1,8 @@
 import sys
 from antlr4 import *
-from JarlLexer import JarlLexer
-from JarlParser import JarlParser
-from JarlActualListener import JarlListener
+from .JarlLexer import JarlLexer
+from .JarlParser import JarlParser
+from .JarlActualListener import JarlListener
 
 def main(argv):
     input = FileStream(argv[1])
@@ -16,9 +16,13 @@ def main(argv):
     walker.walk(Jarl, tree)
 
     for rule in Jarl.rules:
-        print(rule.text)
-        print(rule)
+        lines = [line for line in rule.text.splitlines() if line]
+        for line in lines:
+            print(line)
+        # print(rule)
         # print("Is last condition litaral? ->", rule.scope.filter.conditions[0].is_literal)
+        print()
+        rule.scope.toSteps()
         print()
         print()
 
