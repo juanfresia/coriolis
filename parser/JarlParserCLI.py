@@ -2,7 +2,7 @@ import sys
 from antlr4 import *
 from JarlLexer import JarlLexer
 from JarlParser import JarlParser
-from JarlActualListener import JarlActualListener
+from JarlActualListener import JarlListener
 
 def main(argv):
     input = FileStream(argv[1])
@@ -11,9 +11,12 @@ def main(argv):
     parser = JarlParser(stream)
     tree = parser.jarl()
     
-    Jarl = JarlActualListener()
+    Jarl = JarlListener()
     walker = ParseTreeWalker()
     walker.walk(Jarl, tree)
+
+    for rule in Jarl.rules:
+        print(rule)
         
 if __name__ == '__main__':
     main(sys.argv)
