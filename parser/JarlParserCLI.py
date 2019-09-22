@@ -19,6 +19,8 @@ def main(argv):
         print(rule.text)
         print(rule)
         print("Is last condition litaral? ->", rule.scope.filter.conditions[-1].is_literal)
+        print()
+        print()
 
         
 if __name__ == '__main__':

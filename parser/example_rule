@@ -5,8 +5,6 @@ between employee_serve(e1, person_name, t) and next employee_ready(e2) :
 for every employee_id, pn and any passport, traits with employee_id=e1, pn=person_name:
 tourist_show_passport(pn, passport, traits) must follow employee_request_passport(employee_id)
 
-# Here we have another
-
 rule some_other_rule
 for every e1, e2 with e2=e1 :
 between employee_ready(e1) and next employee_ready(e2) :
