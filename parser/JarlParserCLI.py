@@ -16,7 +16,10 @@ def main(argv):
     walker.walk(Jarl, tree)
 
     for rule in Jarl.rules:
+        print(rule.text)
         print(rule)
+        print("Is last condition litaral? ->", rule.scope.filter.conditions[-1].is_literal)
+
         
 if __name__ == '__main__':
     main(sys.argv)

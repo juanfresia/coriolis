@@ -31,6 +31,7 @@ class JarlFilterExpr():
         self.text = text
         self.every = []
         self.any = []
+        self.conditions = []
 
     def add(self, elem):
         # print("Attemting to add {} to a filter {}".format(elem, self.text))
@@ -38,11 +39,13 @@ class JarlFilterExpr():
             self.any += elem.identifiers
         elif elem.type == "every":
             self.every += elem.identifiers
+        elif elem.type == "with":
+            self.conditions += elem.conditions
         else:
             raise Exception("Jarl Filter Exception received an unknown sub-element type {}".format(elem.type))
 
     def __repr__(self):
-        return "( any: {} every: {} condition: {} )".format(self.any, self.every, [])
+        return "( any: {} every: {} condition: {} )".format(self.any, self.every, self.conditions)
 
 class JarlQuantifierClause():
     def __init__(self, type, identifiers):
@@ -51,3 +54,23 @@ class JarlQuantifierClause():
 
     def __repr__(self):
         return "{} {}".format(self.type, self.identifiers)
+
+class JarlWithClause():
+    def __init__(self, text, conditions):
+        self.text = text
+        self.type = "with"
+        self.conditions = conditions
+
+    def __repr__(self):
+        return "{}".self.conditions
+
+class JarlWithCondition():
+    def __init__(self, l, c, r, is_literal=False):
+        self.l = l
+        self.c = c
+        self.r = r
+        self.is_literal = is_literal
+
+    def __repr__(self):
+        return "{} {} {}".format(self.l, self.c, self.r)
+

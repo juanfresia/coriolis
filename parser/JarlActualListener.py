@@ -33,7 +33,8 @@ class JarlListener(ParseTreeListener):
 
     # Enter a parse tree produced by JarlParser#jarl_rule.
     def enterJarl_rule(self, ctx:JarlParser.Jarl_ruleContext):
-        self.rules.append(JarlRule(ctx.getText()))
+        text = ctx.getText()
+        self.rules.append(JarlRule(text))
 
     # Exit a parse tree produced by JarlParser#jarl_rule.
     def exitJarl_rule(self, ctx:JarlParser.Jarl_ruleContext):
@@ -42,7 +43,6 @@ class JarlListener(ParseTreeListener):
 
     # Enter a parse tree produced by JarlParser#rule_header.
     def enterRule_header(self, ctx:JarlParser.Rule_headerContext):
-        # print(dir(ctx.header_expr().IDENTIFIER().getText()))
         ruleName = ctx.header_expr().IDENTIFIER().getText()
         self.rules[-1].name = ruleName
 
@@ -118,7 +118,6 @@ class JarlListener(ParseTreeListener):
         type = ctx.quantifier().getText()
         identifiers = [i.getText() for i in ctx.identifier_list().IDENTIFIER()]
         self.stack.append(JarlQuantifierClause(type, identifiers))
-        pass
 
     # Exit a parse tree produced by JarlParser#quantifier_clause.
     def exitQuantifier_clause(self, ctx:JarlParser.Quantifier_clauseContext):
@@ -127,7 +126,19 @@ class JarlListener(ParseTreeListener):
 
     # Enter a parse tree produced by JarlParser#with_clause.
     def enterWith_clause(self, ctx:JarlParser.With_clauseContext):
-        pass
+        conditions = []
+        for i in ctx.condition_list().condition():
+            l = i.IDENTIFIER()[0]
+            c = i.COMPARATOR()
+            if i.LITERAL():
+                r = i.LITERAL()
+                literal = True
+            else:
+                r = i.IDENTIFIER()[1]
+                literal = False
+            conditions.append(JarlWithCondition(l, c, r, literal))
+
+        self.stack.append(JarlWithClause(ctx.getText(), conditions))
 
     # Exit a parse tree produced by JarlParser#with_clause.
     def exitWith_clause(self, ctx:JarlParser.With_clauseContext):
