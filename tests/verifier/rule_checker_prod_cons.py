@@ -14,7 +14,7 @@ class TestProducersConsumers(unittest.TestCase):
     )
     rule_1_fact = RuleFact([
         MatchCheckpoints(["produce"]),
-        RenameArgs(["produce"], [ ["p", "i"] ]),
+        RenameArgs([ ["produce", "p", "i"] ]),
         CrossAndGroupByArgs(["produce"], [ ["i"] ]),
         CompareResultsQuantity("=", 1),
         ReduceResult()
@@ -28,7 +28,7 @@ class TestProducersConsumers(unittest.TestCase):
     )
     rule_2_fact = RuleFact([
         MatchCheckpoints(["consume"]),
-        RenameArgs(["consume"], [ ["c", "i"] ]),
+        RenameArgs([ ["consume", "c", "i"] ]),
         CrossAndGroupByArgs(["consume"], [ ["i"] ]),
         CompareResultsQuantity("=", 1),
         ReduceResult()
@@ -42,7 +42,7 @@ class TestProducersConsumers(unittest.TestCase):
     )
     rule_3_fact = RuleFact([
         MatchCheckpoints(["produce"]),
-        RenameArgs(["produce"], [ ["p", "i"] ]),
+        RenameArgs([ ["produce", "p", "i"] ]),
         CrossAndGroupByArgs(["produce"], [ ["null"] ]),
         CompareResultsQuantity("=", 10),
         ReduceResult()
@@ -56,7 +56,7 @@ class TestProducersConsumers(unittest.TestCase):
     )
     rule_4_fact = RuleFact([
         MatchCheckpoints(["consume"]),
-        RenameArgs(["consume"], [ ["c", "i"] ]),
+        RenameArgs([ ["consume", "c", "i"] ]),
         CrossAndGroupByArgs(["consume"], [ ["null"] ]),
         CompareResultsQuantity("=", 10),
         ReduceResult()
@@ -72,13 +72,13 @@ class TestProducersConsumers(unittest.TestCase):
     )
     rule_5_scope = RuleScope([
         MatchCheckpoints(["consume"]),
-        RenameArgs(["consume"], [ ["c", "iid"] ]),
+        RenameArgs([ ["consume", "c", "iid"] ]),
         CrossAndGroupByArgs(["consume"], [ ["iid"] ]),
         ScopeBefore("consume1")
     ])
     rule_5_fact = RuleFact([
         MatchCheckpoints(["produce"]),
-        RenameArgs(["produce"], [ ["p", "i"] ]),
+        RenameArgs([ ["produce", "p", "i"] ]),
         CrossAndGroupByArgs(["produce"], [ ["i"] ]),
         ImposeIteratorCondition("i", "=", "#iid", True),
         CompareResultsQuantity("=", 1),
@@ -89,12 +89,12 @@ class TestProducersConsumers(unittest.TestCase):
 
     rule_6_statement = (
         "# Items are produced in order\n"
-        "for every i, j>i and any p:\n"
-        "produce(p, i) must precede produce(p, j)\n"
+        "for every i, j>i and any p, q:\n"
+        "produce(p, i) must precede produce(q, j)\n"
     )
     rule_6_fact = RuleFact([
         MatchCheckpoints(["produce"]),
-        RenameArgs(["produce", "produce"], [ ["p", "i"], ["p", "j"] ]),
+        RenameArgs([ ["produce", "p", "i"], ["produce", "q", "j"] ]),
         CrossAndGroupByArgs(["produce", "produce"], [ ["i"], ["j"] ]),
         ImposeIteratorCondition("j", ">", "i"),
         CompareResultsPrecedence("produce1", "produce2"),
@@ -109,7 +109,7 @@ class TestProducersConsumers(unittest.TestCase):
     )
     rule_7_fact = RuleFact([
         MatchCheckpoints(["consume"]),
-        RenameArgs(["consume", "consume"], [ ["c", "i"], ["c", "j"] ]),
+        RenameArgs([ ["consume", "c", "i"], ["consume", "c", "j"] ]),
         CrossAndGroupByArgs(["consume", "consume"], [ ["i"], ["j"] ]),
         ImposeIteratorCondition("j", ">", "i"),
         CompareResultsPrecedence("consume1", "consume2"),
@@ -126,13 +126,13 @@ class TestProducersConsumers(unittest.TestCase):
     )
     rule_8_scope = RuleScope([
         MatchCheckpoints(["produce", "consume"]),
-        RenameArgs(["produce", "consume"], [ ["pid", "i1"], ["cid", "i2"] ]),
+        RenameArgs([ ["produce", "pid", "i1"], ["consume", "cid", "i2"] ]),
         CrossAndGroupByArgs(["produce", "consume"], [ ["null"], ["null"] ]),
         ScopeBetween("produce1", "consume2")
     ])
     rule_8_fact = RuleFact([
         MatchCheckpoints(["produce"]),
-        RenameArgs(["produce"], [ ["p", "i"] ]),
+        RenameArgs([ ["produce", "p", "i"] ]),
         CrossAndGroupByArgs(["produce"], [ ["null"] ]),
         CompareResultsQuantity("<=", 5),
         ReduceResult()
@@ -148,13 +148,13 @@ class TestProducersConsumers(unittest.TestCase):
     )
     rule_9_scope = RuleScope([
         MatchCheckpoints(["consume"]),
-        RenameArgs(["consume"], [ ["cid", "iid"] ]),
+        RenameArgs([ ["consume", "cid", "iid"] ]),
         CrossAndGroupByArgs(["consume"], [ ["null"] ]),
         ScopeAfter("consume1")
     ])
     rule_9_fact = RuleFact([
         MatchCheckpoints(["consume"]),
-        RenameArgs(["consume"], [ ["c", "i"] ]),
+        RenameArgs([ ["consume", "c", "i"] ]),
         CrossAndGroupByArgs(["consume"], [ ["i"] ]),
         CompareResultsQuantity("=", 1),
         ReduceResult()
@@ -170,13 +170,13 @@ class TestProducersConsumers(unittest.TestCase):
     )
     rule_10_scope = RuleScope([
         MatchCheckpoints(["produce"]),
-        RenameArgs(["produce"], [ ["pid", "iid"] ]),
+        RenameArgs([ ["produce", "pid", "iid"] ]),
         CrossAndGroupByArgs(["produce"], [ ["null"] ]),
         ScopeBefore("produce1")
     ])
     rule_10_fact = RuleFact([
         MatchCheckpoints(["produce"]),
-        RenameArgs(["produce"], [ ["p", "i"] ]),
+        RenameArgs([ ["produce", "p", "i"] ]),
         CrossAndGroupByArgs(["produce"], [ ["i"] ]),
         CompareResultsQuantity("=", 1),
         ReduceResult()
@@ -190,7 +190,7 @@ class TestProducersConsumers(unittest.TestCase):
     )
     rule_11_fact = RuleFact([
         MatchCheckpoints(["consume"]),
-        RenameArgs(["consume"], [ ["c", "i"] ]),
+        RenameArgs([ ["consume", "c", "i"] ]),
         CrossAndGroupByArgs(["consume"], [ ["c", "i"] ]),
         ImposeIteratorCondition("i", "<", "c"),
         CompareResultsQuantity("=", 0),

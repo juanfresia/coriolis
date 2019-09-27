@@ -76,7 +76,7 @@ class MatchCheckpoints(AggregationStep):
         checkpoint_names = [{"checkpoint": cn} for cn in self.checkpoint_names]
         return [ {"$match": {"$or": checkpoint_names }} ]
 
-# USAGE EXAMPLE: RenameArgs( ["f", "g"], [ ["i", "j"], ["a1", "a2"] ] )
+# USAGE EXAMPLE: RenameArgs( [ ["f", "i", "j"], ["g", "a1", "a2"] ] )
 # Input:
 #   {'log_line': 1, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'f'}
 #   {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g'}
@@ -86,10 +86,10 @@ class MatchCheckpoints(AggregationStep):
 #   {'log_line': 2, 'checkpoint': 'g', 'arg_a1': 1, 'arg_a2': 1}
 #   {'log_line': 3, 'checkpoint': 'f', 'arg_i': 2, 'arg_j': 2}
 class RenameArgs(AggregationStep):
-    def  __init__(self, checkpoint_names, arg_names_list):
+    def  __init__(self, checkpoints_and_args_list):
         super().__init__()
-        self.checkpoint_names = checkpoint_names
-        self.arg_names_list = arg_names_list
+        self.checkpoint_names = [ c[0] for c in checkpoints_and_args_list ]
+        self.arg_names_list = [ a[1:] for a in checkpoints_and_args_list ]
 
     def _mongofy(self):
         steps = []

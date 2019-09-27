@@ -8,7 +8,7 @@ rule_1_statement = (
 )
 rule_1_fact = RuleFact([
     MatchCheckpoints(["atom_spawn"]),
-    RenameArgs(["atom_spawn"], [["atom_type", "atom_id"]]),
+    RenameArgs([ ["atom_spawn", "atom_type", "atom_id"] ]),
     CrossAndGroupByArgs(["atom_spawn"], [["null"]]),
     CompareResultsQuantity("=", 60),
     ReduceResult()
@@ -22,7 +22,7 @@ rule_2_statement = (
 )
 rule_2_fact = RuleFact([
     MatchCheckpoints(["atom_die"]),
-    RenameArgs(["atom_die"], [["atom_type", "atom_id"]]),
+    RenameArgs([ ["atom_die", "atom_type", "atom_id"] ]),
     CrossAndGroupByArgs(["atom_die"], [["null"]]),
     CompareResultsQuantity("=", 60),
     ReduceResult()
@@ -38,13 +38,13 @@ rule_3_statement = (
 )
 rule_3_scope = RuleScope([
     MatchCheckpoints(["atom_spawn"]),
-    RenameArgs(["atom_spawn"], [["atom_type", "atom_id"]]),
+    RenameArgs([ ["atom_spawn", "atom_type", "atom_id"] ]),
     CrossAndGroupByArgs(["atom_spawn"], [["atom_id"]]),
     ScopeAfter("atom_spawn1")
 ])
 rule_3_fact = RuleFact([
     MatchCheckpoints(["atom_die"]),
-    RenameArgs(["atom_die"], [["at", "aid"]]),
+    RenameArgs([ ["atom_die", "at", "aid"] ]),
     CrossAndGroupByArgs(["atom_die"], [["aid"]]),
     ImposeIteratorCondition("aid", "=", "#atom_id", True),
     ImposeWildcardCondition("at", "=", "#atom_type", True),
@@ -62,7 +62,7 @@ rule_4_statement = (
 )
 rule_4_fact = RuleFact([
     MatchCheckpoints(["bond"]),
-    RenameArgs(["bond"], [["atom_type", "atom_id"]]),
+    RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
     CrossAndGroupByArgs(["bond"], [["null"]]),
     CompareResultsQuantity("=", 60),
     ReduceResult()
@@ -78,14 +78,14 @@ rule_5_statement = (
 )
 rule_5_scope = RuleScope([
     MatchCheckpoints(["atom_spawn", "atom_die"]),
-    RenameArgs(["atom_spawn", "atom_die"], [["at1", "aid1"], ["at2", "aid2"]]),
+    RenameArgs([ ["atom_spawn", "at1", "aid1"], ["atom_die", "at2", "aid2"] ]),
     CrossAndGroupByArgs(["atom_spawn", "atom_die"], [["aid1"], ["aid2"]]),
     ImposeIteratorCondition("aid1", "=", "aid2"),
     ScopeBetween("atom_spawn1", "atom_die2")
 ])
 rule_5_fact = RuleFact([
     MatchCheckpoints(["bond"]),
-    RenameArgs(["bond"], [ ["atom_type", "atom_id"] ]),
+    RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
     CrossAndGroupByArgs(["bond"], [["atom_id"]]),
     ImposeIteratorCondition("atom_id", "=", "#aid1", True),
     ImposeWildcardCondition("atom_type", "=", "#at1", True),
@@ -102,7 +102,7 @@ rule_6_statement = (
 )
 rule_6_fact = RuleFact([
     MatchCheckpoints(["water_made"]),
-    RenameArgs(["water_made"], [["null"]]),
+    RenameArgs([ ["water_made", "null"] ]),
     CrossAndGroupByArgs(["water_made"], [["null"]]),
     CompareResultsQuantity("=", 20),
     ReduceResult()
@@ -117,13 +117,13 @@ rule_7_statement = (
 )
 rule_7_scope = RuleScope([
     MatchCheckpoints(["water_made"]),
-    RenameArgs(["water_made"], [["null"]]),
+    RenameArgs([ ["water_made", "null"] ]),
     CrossAndGroupByArgs(["water_made", "water_made"], [["null"], ["null"]]),
     ScopeBetween("water_made1", "water_made2")
 ])
 rule_7_fact = RuleFact([
     MatchCheckpoints(["bond"]),
-    RenameArgs(["bond"], [ ["atom_type", "atom_id"] ]),
+    RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
     CrossAndGroupByArgs(["bond"], [["atom_type"]]),
     ImposeIteratorCondition("atom_type", "=", "H", True),
     CompareResultsQuantity("=", 2),
@@ -139,13 +139,13 @@ rule_8_statement = (
 )
 rule_8_scope = RuleScope([
     MatchCheckpoints(["water_made"]),
-    RenameArgs(["water_made"], [["null"]]),
+    RenameArgs([ ["water_made", "null"] ]),
     CrossAndGroupByArgs(["water_made", "water_made"], [["null"], ["null"]]),
     ScopeBetween("water_made1", "water_made2")
 ])
 rule_8_fact = RuleFact([
     MatchCheckpoints(["bond"]),
-    RenameArgs(["bond"], [ ["atom_type", "atom_id"] ]),
+    RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
     CrossAndGroupByArgs(["bond"], [["atom_type"]]),
     ImposeIteratorCondition("atom_type", "=", "O", True),
     CompareResultsQuantity("=", 1),
@@ -161,13 +161,13 @@ rule_9_statement = (
 )
 rule_9_scope = RuleScope([
     MatchCheckpoints(["water_made"]),
-    RenameArgs(["water_made"], [["null"]]),
+    RenameArgs([ ["water_made", "null"] ]),
     CrossAndGroupByArgs(["water_made", "water_made"], [["null"], ["null"]]),
     ScopeBetween("water_made1", "water_made2")
 ])
 rule_9_fact = RuleFact([
     MatchCheckpoints(["bond"]),
-    RenameArgs(["bond"], [ ["atom_type", "atom_id"] ]),
+    RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
     CrossAndGroupByArgs(["bond"], [["null"]]),
     CompareResultsQuantity("=", 3),
     ReduceResult()
@@ -183,7 +183,7 @@ rule_10_statement = (
 )
 rule_10_scope = RuleScope([
     MatchCheckpoints(["bond"]),
-    RenameArgs(["bond", "bond"], [["at1", "aid1"], ["at2", "aid2"]]),
+    RenameArgs([ ["bond", "at1", "aid1"], ["bond", "at2", "aid2"] ]),
     CrossAndGroupByArgs(["bond", "bond"], [["at1"], ["at2"]]),
     ImposeIteratorCondition("at1", "=", "H", True),
     ImposeIteratorCondition("at2", "=", "H", True),
@@ -191,7 +191,7 @@ rule_10_scope = RuleScope([
 ])
 rule_10_fact = RuleFact([
     MatchCheckpoints(["bond"]),
-    RenameArgs(["bond"], [ ["atom_type", "atom_id"] ]),
+    RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
     CrossAndGroupByArgs(["bond"], [["null"]]),
     ImposeWildcardCondition("atom_type", "!=", "H", True),
     CompareResultsQuantity("<=", 2),
@@ -208,7 +208,7 @@ rule_11_statement = (
 )
 rule_11_scope = RuleScope([
     MatchCheckpoints(["bond"]),
-    RenameArgs(["bond", "bond"], [["at1", "aid1"], ["at2", "aid2"]]),
+    RenameArgs([ ["bond", "at1", "aid1"], ["bond", "at2", "aid2"] ]),
     CrossAndGroupByArgs(["bond", "bond"], [["at1"], ["at2"]]),
     ImposeIteratorCondition("at1", "=", "O", True),
     ImposeIteratorCondition("at2", "=", "O", True),
@@ -216,7 +216,7 @@ rule_11_scope = RuleScope([
 ])
 rule_11_fact = RuleFact([
     MatchCheckpoints(["bond"]),
-    RenameArgs(["bond"], [ ["atom_type", "atom_id"] ]),
+    RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
     CrossAndGroupByArgs(["bond"], [["null"]]),
     ImposeWildcardCondition("atom_type", "!=", "O", True),
     CompareResultsQuantity("<=", 4),

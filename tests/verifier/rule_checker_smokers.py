@@ -20,7 +20,7 @@ class TestSmokers(unittest.TestCase):
     ])
     rule_1_fact = RuleFact([
         MatchCheckpoints(["smoker_smoke"]),
-        RenameArgs(["smoker_smoke"], [ ["s"] ]),
+        RenameArgs([ ["smoker_smoke", "s"] ]),
         CrossAndGroupByArgs(["smoker_smoke"], [ ["null"] ]),
         CompareResultsQuantity("=", 1),
         ReduceResult()
@@ -36,13 +36,13 @@ class TestSmokers(unittest.TestCase):
     )
     rule_2_scope = RuleScope([
         MatchCheckpoints(["agent_wake", "smoker_smoke"]),
-        RenameArgs(["smoker_smoke"], [ ["s"] ]),
+        RenameArgs([ ["smoker_smoke", "s"] ]),
         CrossAndGroupByArgs(["agent_wake", "smoker_smoke"], [ ["null"], ["null"] ]),
         ScopeBetween("agent_wake1", "smoker_smoke2")
     ])
     rule_2_fact = RuleFact([
         MatchCheckpoints(["smoker_take_element"]),
-        RenameArgs(["smoker_take_element"], [ ["sid", "e"] ]),
+        RenameArgs([ ["smoker_take_element", "sid", "e"] ]),
         CrossAndGroupByArgs(["smoker_take_element"], [ ["null"] ]),
         ImposeWildcardCondition("sid", "=", "#s", True),
         CompareResultsQuantity("=", 2),
@@ -60,13 +60,13 @@ class TestSmokers(unittest.TestCase):
     )
     rule_3_scope = RuleScope([
         MatchCheckpoints(["agent_wake", "smoker_smoke"]),
-        RenameArgs(["smoker_smoke"], [ ["s"] ]),
+        RenameArgs([ ["smoker_smoke", "s"] ]),
         CrossAndGroupByArgs(["agent_wake", "smoker_smoke"], [ ["null"], ["null"] ]),
         ScopeBetween("agent_wake1", "smoker_smoke2")
     ])
     rule_3_fact = RuleFact([
         MatchCheckpoints(["smoker_take_element"]),
-        RenameArgs(["smoker_take_element"], [ ["sid", "e"] ]),
+        RenameArgs([ ["smoker_take_element", "sid", "e"] ]),
         CrossAndGroupByArgs(["smoker_take_element"], [ ["e"] ]),
         ImposeWildcardCondition("sid", "=", "#s", True),
         CompareResultsQuantity("=", 1),
@@ -84,13 +84,13 @@ class TestSmokers(unittest.TestCase):
     )
     rule_4_scope = RuleScope([
         MatchCheckpoints(["smoker_smoke", "agent_wake"]),
-        RenameArgs(["smoker_smoke"], [ ["s"] ]),
+        RenameArgs([ ["smoker_smoke", "s"] ]),
         CrossAndGroupByArgs(["smoker_smoke", "agent_wake"], [ ["null"], ["null"] ]),
         ScopeBetween("smoker_smoke1", "agent_wake2")
     ])
     rule_4_fact = RuleFact([
         MatchCheckpoints(["smoker_take_element"]),
-        RenameArgs(["smoker_take_element"], [ ["sid", "e"] ]),
+        RenameArgs([ ["smoker_take_element", "sid", "e"] ]),
         CrossAndGroupByArgs(["smoker_take_element"], [ ["null"] ]),
         CompareResultsQuantity("=", 0),
         ReduceResult()
@@ -110,7 +110,7 @@ class TestSmokers(unittest.TestCase):
     ])
     rule_5_fact = RuleFact([
         MatchCheckpoints(["agent_produce"]),
-        RenameArgs(["agent_produce"], [ ["e"] ]),
+        RenameArgs([ ["agent_produce", "e"] ]),
         CrossAndGroupByArgs(["agent_produce"], [ ["null"] ]),
         CompareResultsQuantity("=", 2),
         ReduceResult()
@@ -130,7 +130,7 @@ class TestSmokers(unittest.TestCase):
     ])
     rule_6_fact = RuleFact([
         MatchCheckpoints(["agent_produce"]),
-        RenameArgs(["agent_produce"], [ ["e"] ]),
+        RenameArgs([ ["agent_produce", "e"] ]),
         CrossAndGroupByArgs(["agent_produce"], [ ["null"] ]),
         CompareResultsQuantity("=", 0),
         ReduceResult()
@@ -144,7 +144,7 @@ class TestSmokers(unittest.TestCase):
     )
     rule_7_fact = RuleFact([
         MatchCheckpoints(["smoker_take_element"]),
-        RenameArgs(["smoker_take_element"], [ ["s", "e"] ]),
+        RenameArgs([ ["smoker_take_element", "s", "e"] ]),
         CrossAndGroupByArgs(["smoker_take_element"], [ ["s", "e"] ]),
         ImposeIteratorCondition("s", "=", "e"),
         CompareResultsQuantity("=", 0),
@@ -161,14 +161,14 @@ class TestSmokers(unittest.TestCase):
     )
     rule_8_scope = RuleScope([
         MatchCheckpoints(["smoker_sleep"]),
-        RenameArgs(["smoker_sleep", "smoker_sleep"], [ ["s1"], ["s2"] ]),
+        RenameArgs([ ["smoker_sleep", "s1"], ["smoker_sleep", "s2"] ]),
         CrossAndGroupByArgs(["smoker_sleep", "smoker_sleep"], [ ["s1"], ["s2"] ]),
         ImposeIteratorCondition("s1", "=", "s2"),
         ScopeBetween("smoker_sleep1", "smoker_sleep2")
     ])
     rule_8_fact = RuleFact([
         MatchCheckpoints(["smoker_smoke"]),
-        RenameArgs(["smoker_smoke"], [ ["s"] ]),
+        RenameArgs([ ["smoker_smoke", "s"] ]),
         CrossAndGroupByArgs(["smoker_smoke"], [ ["null"] ]),
         ImposeWildcardCondition("s", "=", "#s1", True),
         CompareResultsQuantity("=", 1),
@@ -184,7 +184,7 @@ class TestSmokers(unittest.TestCase):
     )
     rule_9_fact = RuleFact([
         MatchCheckpoints(["agent_produce"]),
-        RenameArgs(["agent_produce"], [ ["e"] ]),
+        RenameArgs([ ["agent_produce", "e"] ]),
         CrossAndGroupByArgs(["agent_produce"], [ ["null"] ]),
         CompareResultsQuantity("=", 40),
         ReduceResult()
@@ -198,7 +198,7 @@ class TestSmokers(unittest.TestCase):
     )
     rule_10_fact = RuleFact([
         MatchCheckpoints(["smoker_take_element"]),
-        RenameArgs(["smoker_take_element"], [ ["s", "e"] ]),
+        RenameArgs([ ["smoker_take_element", "s", "e"] ]),
         CrossAndGroupByArgs(["smoker_take_element"], [ ["null"] ]),
         CompareResultsQuantity("=", 40),
         ReduceResult()
@@ -212,7 +212,7 @@ class TestSmokers(unittest.TestCase):
     )
     rule_11_fact = RuleFact([
         MatchCheckpoints(["smoker_smoke"]),
-        RenameArgs(["smoker_smoke"], [ ["s"] ]),
+        RenameArgs([ ["smoker_smoke", "s"] ]),
         CrossAndGroupByArgs(["smoker_smoke"], [ ["null"] ]),
         CompareResultsQuantity("=", 20),
         ReduceResult()

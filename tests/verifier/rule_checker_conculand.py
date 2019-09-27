@@ -16,20 +16,20 @@ class TestConculand(unittest.TestCase):
     )
     rule_1_scope = RuleScope([
         MatchCheckpoints(["employee_ready"]),
-        RenameArgs(["employee_ready", "employee_ready"], [["e1"], ["e2"]]),
+        RenameArgs([["employee_ready", "e1"], ["employee_ready", "e2"]]),
         CrossAndGroupByArgs(["employee_ready", "employee_ready"], [["e1"], ["e2"]]),
         ImposeIteratorCondition("e1", "=", "e2"),
         ScopeBetween("employee_ready1", "employee_ready2")
     ])
     rule_1_fact = RuleFact([
         MatchCheckpoints(["employee_serve"]),
-        RenameArgs(["employee_serve"], [["employee_id", "person_name", "type"]]),
+        RenameArgs([["employee_serve", "employee_id", "person_name", "type"]]),
         CrossAndGroupByArgs(["employee_serve"], [["null"]]),
         ImposeWildcardCondition("employee_id", "=", "#e1", True),
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_1 = JARLRule(rule_1_statement, rule_1_fact, rule_1_scope, passed_by_default=False)
+    rule_1 = JARLRule(rule_1_statement, rule_1_fact, rule_1_scope)
     rule_1.set_dynamic_scope_arg("e1", True)
 
     rule_2_statement = (
@@ -41,20 +41,20 @@ class TestConculand(unittest.TestCase):
     )
     rule_2_scope = RuleScope([
         MatchCheckpoints(["employee_serve"]),
-        RenameArgs(["employee_serve"], [["e", "person_name", "t"]]),
+        RenameArgs([["employee_serve", "e", "person_name", "t"]]),
         CrossAndGroupByArgs(["employee_serve"], [["e", "person_name", "t"]]),
         ImposeIteratorCondition("t", "=", "tourist", True),
         ScopeBefore("employee_serve1")
     ])
     rule_2_fact = RuleFact([
         MatchCheckpoints(["tourist_queued"]),
-        RenameArgs(["tourist_queued"], [["pn"]]),
+        RenameArgs([["tourist_queued", "pn"]]),
         CrossAndGroupByArgs(["tourist_queued"], [["null"]]),
         ImposeWildcardCondition("pn", "=", "#person_name", True),
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_2 = JARLRule(rule_2_statement, rule_2_fact, rule_2_scope, passed_by_default=False)
+    rule_2 = JARLRule(rule_2_statement, rule_2_fact, rule_2_scope)
     rule_2.set_dynamic_scope_arg("person_name", False)
 
     rule_3_statement = (
@@ -66,20 +66,20 @@ class TestConculand(unittest.TestCase):
     )
     rule_3_scope = RuleScope([
         MatchCheckpoints(["employee_serve"]),
-        RenameArgs(["employee_serve"], [["e", "person_name", "t"]]),
+        RenameArgs([["employee_serve", "e", "person_name", "t"]]),
         CrossAndGroupByArgs(["employee_serve"], [["e", "person_name", "t"]]),
         ImposeIteratorCondition("t", "=", "resident", True),
         ScopeBefore("employee_serve1")
     ])
     rule_3_fact = RuleFact([
         MatchCheckpoints(["resident_queued"]),
-        RenameArgs(["resident_queued"], [["pn"]]),
+        RenameArgs([["resident_queued", "pn"]]),
         CrossAndGroupByArgs(["resident_queued"], [["null"]]),
         ImposeWildcardCondition("pn", "=", "#person_name", True),
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_3 = JARLRule(rule_3_statement, rule_3_fact, rule_3_scope, passed_by_default=False)
+    rule_3 = JARLRule(rule_3_statement, rule_3_fact, rule_3_scope)
     rule_3.set_dynamic_scope_arg("person_name", False)
 
     rule_4_statement = (
@@ -91,15 +91,16 @@ class TestConculand(unittest.TestCase):
     )
     rule_4_scope = RuleScope([
         MatchCheckpoints(["employee_serve", "employee_ready"]),
-        RenameArgs(["employee_serve", "employee_ready"], [["e1", "person_name", "t"], ["e2"]]),
+        RenameArgs([["employee_serve", "e1", "person_name", "t"], ["employee_ready", "e2"]]),
         CrossAndGroupByArgs(["employee_serve", "employee_ready"], [["e1", "person_name", "t"], ["e2"]]),
         ImposeIteratorCondition("e1", "=", "e2"),
         ImposeIteratorCondition("t", "=", "tourist", True),
         ScopeBetween("employee_serve1", "employee_ready2")
     ])
     rule_4_fact = RuleFact([
-        MatchCheckpoints(["employee_request_passport", "tourist_show_passport"]),
-        RenameArgs(["employee_request_passport", "tourist_show_passport"], [["employee_id"], ["pn", "passport", "traits"]]),
+        MatchCheckpoints(["tourist_show_passport", "employee_request_passport"]),
+        RenameArgs(
+            [["tourist_show_passport", "pn", "passport", "traits"], ["employee_request_passport", "employee_id"]]),
         CrossAndGroupByArgs(["employee_request_passport", "tourist_show_passport"], [["employee_id"], ["pn"]]),
         ImposeIteratorCondition("pn", "=", "#person_name", True),
         ImposeIteratorCondition("employee_id", "=", "#e1", True),
@@ -119,16 +120,17 @@ class TestConculand(unittest.TestCase):
     )
     rule_5_scope = RuleScope([
         MatchCheckpoints(["employee_serve", "employee_ready"]),
-        RenameArgs(["employee_serve", "employee_ready"], [["e1", "person_name", "t"], ["e2"]]),
+        RenameArgs([["employee_serve", "e1", "person_name", "t"], ["employee_ready", "e2"]]),
         CrossAndGroupByArgs(["employee_serve", "employee_ready"], [["e1", "person_name", "t"], ["e2"]]),
         ImposeIteratorCondition("e1", "=", "e2"),
         ImposeIteratorCondition("t", "=", "resident", True),
         ScopeBetween("employee_serve1", "employee_ready2")
     ])
     rule_5_fact = RuleFact([
-        MatchCheckpoints(["employee_request_document", "resident_show_document"]),
-        RenameArgs(["employee_request_document", "resident_show_document"],[["employee_id"], ["pn", "document", "gender"]]),
-        CrossAndGroupByArgs(["employee_request_document", "resident_show_document"], [["employee_id"], ["pn"]]),
+        MatchCheckpoints(["resident_show_document", "employee_request_document"]),
+        RenameArgs(
+            [["resident_show_document", "pn", "document", "gender"], ["employee_request_document", "employee_id"]]),
+        CrossAndGroupByArgs(["employee_request_document", "resident_show_document", ], [["employee_id"], ["pn"]]),
         ImposeIteratorCondition("pn", "=", "#person_name", True),
         ImposeIteratorCondition("employee_id", "=", "#e1", True),
         CompareResultsPrecedence("employee_request_document1", "resident_show_document2"),
@@ -147,7 +149,7 @@ class TestConculand(unittest.TestCase):
     )
     rule_6_scope = RuleScope([
         MatchCheckpoints(["tourist_spawn", "tourist_die"]),
-        RenameArgs(["tourist_spawn", "tourist_die"], [["pn1", "p1", "t1"], ["pn2", "p2", "t2"]]),
+        RenameArgs([["tourist_spawn", "pn1", "p1", "t1"], ["tourist_die", "pn2", "p2", "t2"]]),
         CrossAndGroupByArgs(["tourist_spawn", "tourist_die"], [["pn1", "p1", "t1"], ["pn2", "p2", "t2"]]),
         ImposeIteratorCondition("pn1", "=", "pn2"),
         ImposeIteratorCondition("p1", "=", "p2"),
@@ -156,7 +158,7 @@ class TestConculand(unittest.TestCase):
     ])
     rule_6_fact = RuleFact([
         MatchCheckpoints(["tourist_show_passport"]),
-        RenameArgs(["tourist_show_passport"], [["person_name", "passport", "traits"]]),
+        RenameArgs([["tourist_show_passport", "person_name", "passport", "traits"]]),
         CrossAndGroupByArgs(["tourist_show_passport"], [["null"]]),
         ImposeWildcardCondition("person_name", "=", "#pn1", True),
         ImposeWildcardCondition("passport", "=", "#p1", True),
@@ -164,7 +166,7 @@ class TestConculand(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_6 = JARLRule(rule_6_statement, rule_6_fact, rule_6_scope, passed_by_default=False)
+    rule_6 = JARLRule(rule_6_statement, rule_6_fact, rule_6_scope)
     rule_6.set_dynamic_scope_arg("pn1", True)
     rule_6.set_dynamic_scope_arg("p1", True)
     rule_6.set_dynamic_scope_arg("t1", True)
@@ -178,7 +180,7 @@ class TestConculand(unittest.TestCase):
     )
     rule_7_scope = RuleScope([
         MatchCheckpoints(["resident_spawn", "resident_die"]),
-        RenameArgs(["resident_spawn", "resident_die"], [["pn1", "d1", "g1"], ["pn2", "d2", "g2"]]),
+        RenameArgs([["resident_spawn", "pn1", "d1", "g1"], ["resident_die", "pn2", "d2", "g2"]]),
         CrossAndGroupByArgs(["resident_spawn", "resident_die"], [["pn1", "d1", "g1"], ["pn2", "d2", "g2"]]),
         ImposeIteratorCondition("pn1", "=", "pn2"),
         ImposeIteratorCondition("d1", "=", "d2"),
@@ -187,7 +189,7 @@ class TestConculand(unittest.TestCase):
     ])
     rule_7_fact = RuleFact([
         MatchCheckpoints(["resident_show_document"]),
-        RenameArgs(["resident_show_document"], [["person_name", "document", "gender"]]),
+        RenameArgs([["resident_show_document", "person_name", "document", "gender"]]),
         CrossAndGroupByArgs(["resident_show_document"], [["null"]]),
         ImposeWildcardCondition("person_name", "=", "#pn1", True),
         ImposeWildcardCondition("document", "=", "#d1", True),
@@ -195,7 +197,7 @@ class TestConculand(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_7 = JARLRule(rule_7_statement, rule_7_fact, rule_7_scope, passed_by_default=False)
+    rule_7 = JARLRule(rule_7_statement, rule_7_fact, rule_7_scope)
     rule_7.set_dynamic_scope_arg("pn1", True)
     rule_7.set_dynamic_scope_arg("d1", True)
     rule_7.set_dynamic_scope_arg("g1", True)
@@ -209,20 +211,20 @@ class TestConculand(unittest.TestCase):
     )
     rule_8_scope = RuleScope([
         MatchCheckpoints(["employee_allow_tourist"]),
-        RenameArgs(["employee_allow_tourist"], [["employee_id", "passport"]]),
+        RenameArgs([["employee_allow_tourist", "employee_id", "passport"]]),
         CrossAndGroupByArgs(["employee_allow_tourist"], [["employee_id", "passport"]]),
         ScopeBefore("employee_allow_tourist1")
     ])
     rule_8_fact = RuleFact([
         MatchCheckpoints(["employee_seal_passport"]),
-        RenameArgs(["employee_seal_passport"], [["e", "p"]]),
+        RenameArgs([["employee_seal_passport", "e", "p"]]),
         CrossAndGroupByArgs(["employee_seal_passport"], [["null"]]),
         ImposeWildcardCondition("e", "=", "#employee_id", True),
         ImposeWildcardCondition("p", "=", "#passport", True),
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_8 = JARLRule(rule_8_statement, rule_8_fact, rule_8_scope, passed_by_default=False)
+    rule_8 = JARLRule(rule_8_statement, rule_8_fact, rule_8_scope)
     rule_8.set_dynamic_scope_arg("employee_id", False)
     rule_8.set_dynamic_scope_arg("passport", False)
 
@@ -235,7 +237,7 @@ class TestConculand(unittest.TestCase):
     )
     rule_9_scope = RuleScope([
         MatchCheckpoints(["employee_serve", "employee_allow_tourist"]),
-        RenameArgs(["employee_serve", "employee_allow_tourist"], [["e1", "person_name", "t"], ["e2", "passport"]]),
+        RenameArgs([["employee_serve", "e1", "person_name", "t"], ["employee_allow_tourist", "e2", "passport"]]),
         CrossAndGroupByArgs(["employee_serve", "employee_allow_tourist"],
                             [["e1", "person_name", "t"], ["e2", "passport"]]),
         ImposeIteratorCondition("e1", "=", "e2"),
@@ -244,7 +246,7 @@ class TestConculand(unittest.TestCase):
     ])
     rule_9_fact = RuleFact([
         MatchCheckpoints(["employee_take_seal", "employee_seal_passport"]),
-        RenameArgs(["employee_take_seal", "employee_seal_passport"], [["eid1"], ["eid2", "p"]]),
+        RenameArgs([["employee_take_seal", "eid1"], ["employee_seal_passport", "eid2", "p"]]),
         CrossAndGroupByArgs(["employee_take_seal", "employee_seal_passport"], [["eid1"], ["eid2", "p"]]),
         ImposeIteratorCondition("eid1", "=", "#e1", True),
         ImposeIteratorCondition("eid2", "=", "#e1", True),
@@ -265,18 +267,18 @@ class TestConculand(unittest.TestCase):
     )
     rule_10_scope = RuleScope([
         MatchCheckpoints(["employee_take_seal", "employee_return_seal"]),
-        RenameArgs(["employee_take_seal", "employee_return_seal"], [["e1"], ["e2"]]),
+        RenameArgs([["employee_take_seal", "e1"], ["employee_return_seal", "e2"]]),
         CrossAndGroupByArgs(["employee_take_seal", "employee_return_seal"], [["null"], ["null"]]),
         ScopeBetween("employee_take_seal1", "employee_return_seal2")
     ])
     rule_10_fact = RuleFact([
         MatchCheckpoints(["employee_take_seal"]),
-        RenameArgs(["employee_take_seal"], [["e"]]),
+        RenameArgs([["employee_take_seal", "e"]]),
         CrossAndGroupByArgs(["employee_take_seal"], [["null"]]),
         CompareResultsQuantity("<=", 3),
         ReduceResult()
     ])
-    rule_10 = JARLRule(rule_10_statement, rule_10_fact, rule_10_scope, passed_by_default=True)
+    rule_10 = JARLRule(rule_10_statement, rule_10_fact, rule_10_scope)
 
     rule_11_statement = (
         "# 12 people are served\n"
@@ -285,12 +287,12 @@ class TestConculand(unittest.TestCase):
     )
     rule_11_fact = RuleFact([
         MatchCheckpoints(["employee_serve"]),
-        RenameArgs(["employee_serve"], [["e", "p", "t"]]),
+        RenameArgs([["employee_serve", "e", "p", "t"]]),
         CrossAndGroupByArgs(["employee_serve"], [["null"]]),
         CompareResultsQuantity("=", 12),
         ReduceResult()
     ])
-    rule_11 = JARLRule(rule_11_statement, rule_11_fact, passed_by_default=False)
+    rule_11 = JARLRule(rule_11_statement, rule_11_fact)
 
     rule_12_statement = (
         "# All taken seals are later returned\n"
@@ -301,19 +303,19 @@ class TestConculand(unittest.TestCase):
     )
     rule_12_scope = RuleScope([
         MatchCheckpoints(["employee_take_seal"]),
-        RenameArgs(["employee_take_seal"], [["employee_id"]]),
+        RenameArgs([["employee_take_seal", "employee_id"]]),
         CrossAndGroupByArgs(["employee_take_seal"], [["employee_id"]]),
         ScopeAfter("employee_take_seal1")
     ])
     rule_12_fact = RuleFact([
         MatchCheckpoints(["employee_return_seal"]),
-        RenameArgs(["employee_return_seal"], [["e"]]),
+        RenameArgs([["employee_return_seal", "e"]]),
         CrossAndGroupByArgs(["employee_return_seal"], [["null"]]),
         ImposeWildcardCondition("e", "=", "#employee_id", True),
         CompareResultsQuantity(">=", 1),
         ReduceResult()
     ])
-    rule_12 = JARLRule(rule_12_statement, rule_12_fact, rule_12_scope, passed_by_default=False)
+    rule_12 = JARLRule(rule_12_statement, rule_12_fact, rule_12_scope)
     rule_12.set_dynamic_scope_arg("employee_id", True)
 
     def check_one_rule(self, rule):

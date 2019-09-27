@@ -59,7 +59,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output)
 
     def test_rename_one_arg(self):
-        step = RenameArgs( ["f"], [ ["x"] ] )
+        step = RenameArgs([ ["f", "x"] ])
         input = [
             {'log_line': 1, 'arg_1': 8, 'checkpoint': 'f'}
         ]
@@ -69,7 +69,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output)
 
     def test_rename_same_arg_twice(self):
-        step = RenameArgs( ["f", "f"], [ ["x"], ["y"] ] )
+        step = RenameArgs([ ["f", "x"], ["f", "y"] ])
         input = [
             {'log_line': 1, 'arg_1': 8, 'checkpoint': 'f'},
             {'log_line': 2, 'arg_1': 6, 'checkpoint': 'f'}
@@ -81,7 +81,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output)
 
     def test_rename_args(self):
-        step = RenameArgs( ["f", "g"], [ ["i", "j"], ["a1", "a2"] ] )
+        step = RenameArgs([ ["f", "i", "j"], ["g", "a1", "a2"] ])
         input = [
             {'log_line': 1, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'f'},
             {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g'},
