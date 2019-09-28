@@ -101,10 +101,10 @@ class JarlWithCondition():
         self.is_literal = is_literal
 
     def __repr__(self):
-        return "{} {} {}".format(self.l, self.c, self.r)
+        return "[{} {} {}]".format(self.l, self.c, self.r)
 
 class JarlSelectorExpr():
-    def __init__(self, type, start, end):
+    def __init__(self, type, start=None, end=None):
         self.start = start
         self.end = end
         self.type = type
@@ -127,8 +127,19 @@ class JarlSelectorExpr():
             return "ScopeBetween({}, {})".format(self.start.name, self.end.name)
         raise Exception("Invalid type of selector expression")
 
+    def __eq__(self, other):
+        if not isinstance(other, JarlSelectorExpr):
+            return False
+        if self.type != other.type:
+            return False
+        if self.start != other.start:
+            return False
+        if self.end != other.end:
+            return False
+        return True
+
     def __repr__(self):
-        return "{} {} {}".format(self.type, self.start, self.end)
+        return "[{} {} {}]".format(self.type, self.start, self.end)
 
 class JarlCheckpoint():
     def __init__(self, name, arguments=None):
@@ -136,6 +147,15 @@ class JarlCheckpoint():
         if arguments is None:
             arguments = []
         self.arguments = arguments
+
+    def __eq__(self, other):
+        if not isinstance(other, JarlCheckpoint):
+            return False
+        if self.name != other.name:
+            return False
+        if self.arguments != other.arguments:
+            return False
+        return True
 
     def __repr__(self):
         return "{}({})".format(self.name, self.arguments)
