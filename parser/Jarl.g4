@@ -9,7 +9,7 @@ grammar Jarl;
  */
 
 jarl                 : jarl_rule* EOF ;
-jarl_rule            : NEWLINE* rule_header rule_scope rule_fact NEWLINE*;
+jarl_rule            : NEWLINE* rule_header rule_scope? rule_fact NEWLINE*;
 
 /* Rule parts */
 rule_header     : header_expr ;
@@ -18,8 +18,8 @@ rule_fact       : filter_expr? fact_expr ;
 
 /* Rule expresions */
 header_expr          : RULE IDENTIFIER NEWLINE ? ;
-selector_expr        : ( after_clause | before_clause | between_clause )  COLON NEWLINE ?;
-filter_expr          : FOR quantifier_clause (AND quantifier_clause)* (with_clause)? COLON NEWLINE? ;
+selector_expr        : ( after_clause | before_clause | between_clause ) COLON? NEWLINE?;
+filter_expr          : FOR quantifier_clause (AND quantifier_clause)* (with_clause)? COLON? NEWLINE? ;
 fact_expr            : fact_clause (NEWLINE? fact_clause)* ;
 
 /* Clauses */
