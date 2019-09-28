@@ -4,7 +4,6 @@ from parser.JarlParserCLI import parse_str
 
 class TestParserCLI(unittest.TestCase):
     def test_parse_rule_name(self):
-
         rule = """
         rule test_parse_rule_name
         after foo():
@@ -15,6 +14,15 @@ class TestParserCLI(unittest.TestCase):
 
         self.assertEqual(len(rules), 1)
         self.assertEqual(rules[0].name, "test_parse_rule_name")
+
+    def test_parse_empty_str(self):
+        rules = parse_str("")
+        self.assertFalse(rules)
+
+    def test_parse_garbage(self):
+        rules = parse_str("this is a garbage rule, it should not mean anything")
+        self.assertFalse(rules)
+        self.assertListEqual([], rules)
 
 if __name__ == '__main__':
     unittest.main()
