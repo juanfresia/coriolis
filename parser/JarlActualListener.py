@@ -10,8 +10,15 @@ from .JarlRule import *
 # This class defines a complete listener for a parse tree produced by JarlParser.
 class JarlListener(ParseTreeListener):
     def __init__(self):
+        # This will contains all the rules found.
+        # At any point in the parsing, rules[-1] refers to the rule being parsed
         self.rules = []
+
+        # This variable will contain the current scope and fact being parsed
+        # TODO(juanfresia): using lists may be an overkill. Maybe use simple variables?
         self.scopes = []
+        self.facts = []
+
         self.filters = []
 
         # This stack will contain any unprocessed items, which are waiting for a
@@ -40,7 +47,9 @@ class JarlListener(ParseTreeListener):
 
     # Exit a parse tree produced by JarlParser#jarl_rule.
     def exitJarl_rule(self, ctx:JarlParser.Jarl_ruleContext):
-        self.rules[-1].scope = self.scopes.pop()
+        if self.scopes:
+            self.rules[-1].scope = self.scopes.pop()
+        self.rules[-1].fact = self.facts.pop()
 
 
     # Enter a parse tree produced by JarlParser#rule_header.
@@ -55,13 +64,12 @@ class JarlListener(ParseTreeListener):
 
     # Enter a parse tree produced by JarlParser#rule_scope.
     def enterRule_scope(self, ctx:JarlParser.Rule_scopeContext):
-        self.scopes.append(JarlRuleScope(ctx.getText()))
+        self.scopes.append(JarlRuleScope())
 
     # Exit a parse tree produced by JarlParser#rule_scope.
     def exitRule_scope(self, ctx:JarlParser.Rule_scopeContext):
-        # TODO: implement this... when all rules are working
-        # if len(self.filters) > 1:
-        #    raise Exception("Scope should only have one filter")
+        if len(self.filters) > 1:
+            raise Exception("Scope should only have one filter")
 
         if self.filters:
             self.scopes[-1].filter = self.filters.pop()
@@ -69,11 +77,14 @@ class JarlListener(ParseTreeListener):
 
     # Enter a parse tree produced by JarlParser#rule_fact.
     def enterRule_fact(self, ctx:JarlParser.Rule_factContext):
-        pass
+        self.facts.append(JarlRuleFact())
 
     # Exit a parse tree produced by JarlParser#rule_fact.
     def exitRule_fact(self, ctx:JarlParser.Rule_factContext):
-        pass
+        if len(self.filters) > 1:
+            raise Exception("Scope should only have one filter")
+        if self.filters:
+            self.facts[-1].filter = self.filters.pop()
 
 
     # Enter a parse tree produced by JarlParser#header_expr.
@@ -91,14 +102,13 @@ class JarlListener(ParseTreeListener):
 
     # Exit a parse tree produced by JarlParser#selector_expr.
     def exitSelector_expr(self, ctx:JarlParser.Selector_exprContext):
-        print(self.stack)
         self.scopes[-1].selector = self.stack.pop()
         pass
 
 
     # Enter a parse tree produced by JarlParser#filter_expr.
     def enterFilter_expr(self, ctx:JarlParser.Filter_exprContext):
-        self.filters.append(JarlFilterExpr(ctx.getText()))
+        self.filters.append(JarlFilterExpr())
         pass
 
     # Exit a parse tree produced by JarlParser#filter_expr.
@@ -142,7 +152,7 @@ class JarlListener(ParseTreeListener):
                 literal = False
             conditions.append(JarlWithCondition(l, c, r, literal))
 
-        self.stack.append(JarlWithClause(ctx.getText(), conditions))
+        self.stack.append(JarlWithClause(conditions))
 
     # Exit a parse tree produced by JarlParser#with_clause.
     def exitWith_clause(self, ctx:JarlParser.With_clauseContext):

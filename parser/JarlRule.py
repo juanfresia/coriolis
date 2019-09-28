@@ -20,8 +20,7 @@ class JarlRule():
         return "<name: {} scope: {} fact: {}>".format(self.name, self.scope, self.fact)
 
 class JarlRuleScope():
-    def __init__(self, text):
-        self.text = text
+    def __init__(self):
         self.filter = None
         self.selector = None
 
@@ -66,8 +65,7 @@ class JarlFilterExpr():
         - A list of identifiers from the every clause
         - A list of comparations from the with clause
     """
-    def __init__(self, text):
-        self.text = text
+    def __init__(self):
         self.every = []
         self.any = []
         self.conditions = []
@@ -106,8 +104,7 @@ class JarlQuantifierClause():
         return "<{} {}>".format(self.type, self.identifiers)
 
 class JarlWithClause():
-    def __init__(self, text, conditions):
-        self.text = text
+    def __init__(self, conditions):
         self.type = "with"
         self.conditions = conditions
 
@@ -183,3 +180,38 @@ class JarlCheckpoint():
 
     def __repr__(self):
         return "<{} {}>".format(self.name, self.arguments)
+
+class JarlRuleFact():
+    def __init__(self):
+        self.filter = None
+        self.facts = None
+
+    def __eq__(self, other):
+        return isinstance(other, JarlRuleScope) and \
+                self.filter == other.filter and \
+                self.facts == other.facts
+
+    def __repr__(self):
+        return "<filter: {} facts: {}>".format(self.filter, self.facts)
+
+class JarlRuleFactClause():
+    def __init__(self, checkpoint, requirement):
+        self.checkpoint = checkpoint
+        self.requirement = requirement
+
+    def __eq__(self, other):
+        return isinstance(other, JarlRuleScope) and \
+                self.checkpoint == other.checkpoint and \
+                self.requirement == other.requirement
+
+    def __repr__(self):
+        return "<{} {}>".format(self.checkpoint, self.requirement)
+
+class JarlRuleFactRequirement():
+    def __init__(self):
+        self.TODO = "TODO"
+
+    def __repr__(self):
+        return "<{}>".format(self.TODO)
+
+
