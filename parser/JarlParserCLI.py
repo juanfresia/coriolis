@@ -30,14 +30,14 @@ def parse_str(s):
 
 def main(argv):
     rules = parse_file(argv[1])
-    for rule in Jarl.rules:
+    for rule in rules:
         lines = [line for line in rule.text.splitlines() if line]
         for line in lines:
             print(line)
         # print(rule)
         # print("Is last condition litaral? ->", rule.scope.filter.conditions[0].is_literal)
         print()
-        rule.scope.toSteps()
+        print(rule)
         print()
         print()
 

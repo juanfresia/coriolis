@@ -41,7 +41,7 @@ class TestParserCLI(unittest.TestCase):
         rule_scope = rules[0].scope
         expected_selector =  JarlSelectorExpr("after", JarlCheckpoint("foo"))
         self.assertIsNone(rule_scope.filter)
-        self.assertEquals(expected_selector, rule_scope.selector)
+        self.assertEqual(expected_selector, rule_scope.selector)
 
 if __name__ == '__main__':
     unittest.main()

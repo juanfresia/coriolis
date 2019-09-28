@@ -10,8 +10,14 @@ class JarlRule():
         self.scope = None
         self.fact = None
 
+    def __eq__(self, other):
+        return isinstance(other, JarlRuleScope) and \
+                self.name == other.name and \
+                self.scope == other.scope and \
+                self.fact == other.fact
+
     def __repr__(self):
-        return "( name: {} scope: {} fact: {} )".format(self.name, self.scope, self.fact)
+        return "<name: {} scope: {} fact: {}>".format(self.name, self.scope, self.fact)
 
 class JarlRuleScope():
     def __init__(self, text):
@@ -44,9 +50,13 @@ class JarlRuleScope():
         # 5)
         print(self.selector.toSteps())
 
+    def __eq__(self, other):
+        return isinstance(other, JarlRuleScope) and \
+                self.filter == other.filter and \
+                self.selector == other.selector
 
     def __repr__(self):
-        return "( filter: {} selector: {} )".format(self.filter, self.selector)
+        return "<filter: {} selector: {}>".format(self.filter, self.selector)
 
 class JarlFilterExpr():
     """
@@ -73,16 +83,27 @@ class JarlFilterExpr():
         else:
             raise Exception("Jarl Filter Exception received an unknown sub-element type {}".format(elem.type))
 
+    def __eq__(self, other):
+        return isinstance(other, JarlFilterExpr) and \
+                self.any == other.any and \
+                self.every == other.every and \
+                self.conditions == other.conditions
+
     def __repr__(self):
-        return "( any: {} every: {} condition: {} )".format(self.any, self.every, self.conditions)
+        return "<any: {} every: {} condition: {}>".format(self.any, self.every, self.conditions)
 
 class JarlQuantifierClause():
     def __init__(self, type, identifiers):
         self.type = type
         self.identifiers = identifiers
 
+    def __eq__(self, other):
+        return isinstance(other, JarlQuantifierClause) and \
+                self.type == other.type and \
+                self.identifiers == other.identifiers
+
     def __repr__(self):
-        return "{} {}".format(self.type, self.identifiers)
+        return "<{} {}>".format(self.type, self.identifiers)
 
 class JarlWithClause():
     def __init__(self, text, conditions):
@@ -90,8 +111,13 @@ class JarlWithClause():
         self.type = "with"
         self.conditions = conditions
 
+    def __eq__(self, other):
+        return isinstance(other, JarlWithClause) and \
+                self.type == other.type and \
+                self.conditions == other.conditions
+
     def __repr__(self):
-        return "{}".self.conditions
+        return "<{}>".self.conditions
 
 class JarlWithCondition():
     def __init__(self, l, c, r, is_literal=False):
@@ -100,8 +126,15 @@ class JarlWithCondition():
         self.r = r
         self.is_literal = is_literal
 
+    def __eq__(self, other):
+        return isinstance(other, JarlWithCondition) and \
+                self.l == self.l and \
+                self.c == self.c and \
+                self.r == self.r and \
+                self.is_literal == other.is_literal
+
     def __repr__(self):
-        return "[{} {} {}]".format(self.l, self.c, self.r)
+        return "<{} {} {}>".format(self.l, self.c, self.r)
 
 class JarlSelectorExpr():
     def __init__(self, type, start=None, end=None):
@@ -128,18 +161,13 @@ class JarlSelectorExpr():
         raise Exception("Invalid type of selector expression")
 
     def __eq__(self, other):
-        if not isinstance(other, JarlSelectorExpr):
-            return False
-        if self.type != other.type:
-            return False
-        if self.start != other.start:
-            return False
-        if self.end != other.end:
-            return False
-        return True
+        return isinstance(other, JarlSelectorExpr) and \
+                self.type == other.type and \
+                self.start == other.start and \
+                self.end == other.end
 
     def __repr__(self):
-        return "[{} {} {}]".format(self.type, self.start, self.end)
+        return "<{} {} {}>".format(self.type, self.start, self.end)
 
 class JarlCheckpoint():
     def __init__(self, name, arguments=None):
@@ -149,13 +177,9 @@ class JarlCheckpoint():
         self.arguments = arguments
 
     def __eq__(self, other):
-        if not isinstance(other, JarlCheckpoint):
-            return False
-        if self.name != other.name:
-            return False
-        if self.arguments != other.arguments:
-            return False
-        return True
+        return isinstance(other, JarlCheckpoint) and \
+                self.name == other.name and \
+                self.arguments == other.arguments
 
     def __repr__(self):
-        return "{}({})".format(self.name, self.arguments)
+        return "<{} {}>".format(self.name, self.arguments)
