@@ -295,11 +295,13 @@ class CompareResultsQuantity(AggregationStep):
 #   {'result': True, 'info': 'Some info message', '_id': {'i1': 2, 'i2': 2}}
 #   {'result': True, 'info': 'Some info message', '_id': {'i1': 1, 'i2': 1}}
 #   {'result': False, 'info': 'Some info message', '_id': {'i1': 3, 'i2': 3}}
+#
+# NOTE: A number is appended to the checkpoint names to match the CrossAndGroupByArgs format (i.e. from "f","g" to "f1","g2")
 class CompareResultsPrecedence(AggregationStep):
     def __init__(self, checkpoint_first, checkpoint_second):
         super().__init__()
-        self.checkpoint_first = checkpoint_first
-        self.checkpoint_second = checkpoint_second
+        self.checkpoint_first = "{}1".format(checkpoint_first)
+        self.checkpoint_second = "{}2".format(checkpoint_second)
 
     def _make_info_message(self):
         msg = "Checkpoint {} did not precede {} (involved lines on log: ".format(self.checkpoint_first[:-1], self.checkpoint_second[:-1])
@@ -389,10 +391,12 @@ class SortByLogLine(AggregationStep):
 #   {'_id': {'null': None}, 'c1': {'log_line': 8, 'checkpoint': 'f1', 'arg_x': 2}, 'c2': {'log_line': 'MAX'}}
 #   {'_id': {'null': None}, 'c1': {'log_line': 9, 'checkpoint': 'f1', 'arg_x': 3}, 'c2': {'log_line': 'MAX'}}
 #   {'_id': {'null': None}, 'c1': {'log_line': 10, 'checkpoint': 'f1', 'arg_x': 3}, 'c2': {'log_line': 'MAX'}}
+#
+# NOTE: A number is appended to the checkpoint name to match the CrossAndGroupByArgs format (i.e. from "f" to "f1")
 class ScopeAfter(AggregationStep):
     def __init__(self, checkpoint_name):
         super().__init__()
-        self.checkpoint_name = checkpoint_name
+        self.checkpoint_name = "{}1".format(checkpoint_name)
 
     def _mongofy(self):
         steps = []
@@ -415,10 +419,12 @@ class ScopeAfter(AggregationStep):
 #   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 8, 'checkpoint': 'f1', 'arg_x': 2}},
 #   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 9, 'checkpoint': 'f1', 'arg_x': 3}},
 #   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 10, 'checkpoint': 'f1', 'arg_x': 3}}
+#
+# NOTE: A number is appended to the checkpoint name to match the CrossAndGroupByArgs format (i.e. from "f" to "f1")
 class ScopeBefore(AggregationStep):
     def __init__(self, checkpoint_name):
         super().__init__()
-        self.checkpoint_name = checkpoint_name
+        self.checkpoint_name = "{}1".format(checkpoint_name)
 
     def _mongofy(self):
         steps = []
@@ -439,11 +445,13 @@ class ScopeBefore(AggregationStep):
 #   {'c2': {'log_line': 6, 'checkpoint': 'g2', 'arg_i2': 2}, 'c1': {'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, '_id': {'i1': 1, 'i2': 2}}
 #   {'c2': {'log_line': 6, 'checkpoint': 'g2', 'arg_i2': 2}, 'c1': {'log_line': 3, 'checkpoint': 'f1', 'arg_i1': 2}, '_id': {'i1': 2, 'i2': 2}}
 #   {'c2': {'log_line': 6, 'checkpoint': 'g2', 'arg_i2': 2}, 'c1': {'log_line': 4, 'checkpoint': 'f1', 'arg_i1': 3}, '_id': {'i1': 3, 'i2': 2}}
+#
+# NOTE: A number is appended to the checkpoint names to match the CrossAndGroupByArgs format (i.e. from "f","g" to "f1","g2")
 class ScopeBetween(AggregationStep):
     def __init__(self, checkpoint_first, checkpoint_second, using_next=True, using_beyond=False):
         super().__init__()
-        self.checkpoint_first = checkpoint_first
-        self.checkpoint_second = checkpoint_second
+        self.checkpoint_first = "{}1".format(checkpoint_first)
+        self.checkpoint_second = "{}2".format(checkpoint_second)
         self.using_next = using_next
         self.using_beyond = using_beyond
 

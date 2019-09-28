@@ -14,7 +14,7 @@ rule_1_scope = RuleScope([
     CrossAndGroupByArgs([ ["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"] ]),
     ImposeIteratorCondition("w1", "=", "w2"),
     ImposeIteratorCondition("room1", "=", "room2"),
-    ScopeBetween("writer_enter1", "writer_exit2")
+    ScopeBetween("writer_enter", "writer_exit")
 ])
 rule_1_fact = RuleFact([
     MatchCheckpoints(["reader_enter"]),
@@ -40,7 +40,7 @@ rule_2_scope = RuleScope([
     CrossAndGroupByArgs([ ["reader_enter", "r1", "room1"], ["reader_exit", "r2", "room2"] ]),
     ImposeIteratorCondition("r1", "=", "r2"),
     ImposeIteratorCondition("room1", "=", "room2"),
-    ScopeBetween("reader_enter1", "reader_exit2")
+    ScopeBetween("reader_enter", "reader_exit")
 ])
 rule_2_fact = RuleFact([
     MatchCheckpoints(["writer_enter"]),
@@ -94,7 +94,7 @@ rule_5_scope = RuleScope([
     CrossAndGroupByArgs([ ["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"] ]),
     ImposeIteratorCondition("w1", "=", "w2"),
     ImposeIteratorCondition("room1", "=", "room2"),
-    ScopeBetween("writer_enter1", "writer_exit2")
+    ScopeBetween("writer_enter", "writer_exit")
 ])
 rule_5_fact = RuleFact([
     MatchCheckpoints(["writer_enter"]),
@@ -122,7 +122,7 @@ rule_6_scope = RuleScope([
     CrossAndGroupByArgs([ ["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"] ]),
     ImposeIteratorCondition("w1", "=", "w2"),
     ImposeIteratorCondition("room1", "=", "room2"),
-    ScopeBetween("writer_enter1", "writer_exit2")
+    ScopeBetween("writer_enter", "writer_exit")
 ])
 rule_6_fact = RuleFact([
     MatchCheckpoints(["write_room"]),
@@ -150,7 +150,7 @@ rule_7_scope = RuleScope([
     CrossAndGroupByArgs([ ["reader_enter", "r1", "room1"], ["reader_exit", "r2", "room2"] ]),
     ImposeIteratorCondition("r1", "=", "r2"),
     ImposeIteratorCondition("room1", "=", "room2"),
-    ScopeBetween("reader_enter1", "reader_exit2")
+    ScopeBetween("reader_enter", "reader_exit")
 ])
 rule_7_fact = RuleFact([
     MatchCheckpoints(["read_room"]),
@@ -177,7 +177,7 @@ rule_8_scope = RuleScope([
     RenameArgs([ ["writer_exit", "w1", "room1"], ["writer_enter", "w2", "room2"] ]),
     CrossAndGroupByArgs([ ["writer_exit", "w1"], ["writer_enter", "w2"] ]),
     ImposeIteratorCondition("w1", "=", "w2"),
-    ScopeBetween("writer_exit1", "writer_enter2")
+    ScopeBetween("writer_exit", "writer_enter")
 ])
 rule_8_fact = RuleFact([
     MatchCheckpoints(["write_room"]),
@@ -202,7 +202,7 @@ rule_9_scope = RuleScope([
     RenameArgs([ ["reader_exit", "r1", "room1"], ["reader_enter", "r2", "room2"] ]),
     CrossAndGroupByArgs([ ["reader_exit", "r1"], ["reader_enter", "r2"] ]),
     ImposeIteratorCondition("r1", "=", "r2"),
-    ScopeBetween("reader_exit1", "reader_enter2")
+    ScopeBetween("reader_exit", "reader_enter")
 ])
 rule_9_fact = RuleFact([
     MatchCheckpoints(["read_room"]),
@@ -256,7 +256,7 @@ rule_11_scope = RuleScope([
     ImposeIteratorCondition("m1", "!=", "NULL", True),
     ImposeIteratorCondition("m1", "=", "m2"),
     ImposeIteratorCondition("r1", "=", "r2"),
-    ScopeBetween("read_room1", "write_room2", False)
+    ScopeBetween("read_room", "write_room", False)
 ])
 rule_11_fact = RuleFact([
     MatchCheckpoints(["write_room"]),

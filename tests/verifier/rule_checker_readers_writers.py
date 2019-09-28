@@ -16,16 +16,16 @@ class TestReadersWriters(unittest.TestCase):
     )
     rule_1_scope = RuleScope([
         MatchCheckpoints(["writer_enter", "writer_exit"]),
-        RenameArgs([ ["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"] ]),
-        CrossAndGroupByArgs([ ["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"] ]),
+        RenameArgs([["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"]]),
+        CrossAndGroupByArgs([["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"]]),
         ImposeIteratorCondition("w1", "=", "w2"),
         ImposeIteratorCondition("room1", "=", "room2"),
-        ScopeBetween("writer_enter1", "writer_exit2")
+        ScopeBetween("writer_enter", "writer_exit")
     ])
     rule_1_fact = RuleFact([
         MatchCheckpoints(["reader_enter"]),
-        RenameArgs([ ["reader_enter", "r", "room"] ]),
-        CrossAndGroupByArgs([ ["reader_enter", "room"] ]),
+        RenameArgs([["reader_enter", "r", "room"]]),
+        CrossAndGroupByArgs([["reader_enter", "room"]]),
         ImposeIteratorCondition("room", "=", "#room1", True),
         CompareResultsQuantity("=", 0),
         ReduceResult()
@@ -42,16 +42,16 @@ class TestReadersWriters(unittest.TestCase):
     )
     rule_2_scope = RuleScope([
         MatchCheckpoints(["reader_enter", "reader_exit"]),
-        RenameArgs([ ["reader_enter", "r1", "room1"], ["reader_exit", "r2", "room2"] ]),
-        CrossAndGroupByArgs([ ["reader_enter", "r1", "room1"], ["reader_exit", "r2", "room2"] ]),
+        RenameArgs([["reader_enter", "r1", "room1"], ["reader_exit", "r2", "room2"]]),
+        CrossAndGroupByArgs([["reader_enter", "r1", "room1"], ["reader_exit", "r2", "room2"]]),
         ImposeIteratorCondition("r1", "=", "r2"),
         ImposeIteratorCondition("room1", "=", "room2"),
-        ScopeBetween("reader_enter1", "reader_exit2")
+        ScopeBetween("reader_enter", "reader_exit")
     ])
     rule_2_fact = RuleFact([
         MatchCheckpoints(["writer_enter"]),
-        RenameArgs([ ["writer_enter", "w", "room"] ]),
-        CrossAndGroupByArgs([ ["writer_enter", "room"] ]),
+        RenameArgs([["writer_enter", "w", "room"]]),
+        CrossAndGroupByArgs([["writer_enter", "room"]]),
         ImposeIteratorCondition("room", "=", "#room1", True),
         CompareResultsQuantity("=", 0),
         ReduceResult()
@@ -66,8 +66,8 @@ class TestReadersWriters(unittest.TestCase):
     )
     rule_3_fact = RuleFact([
         MatchCheckpoints(["read_room"]),
-        RenameArgs([ ["read_room", "r", "room", "msg"] ]),
-        CrossAndGroupByArgs([ ["read_room", "r"] ]),
+        RenameArgs([["read_room", "r", "room", "msg"]]),
+        CrossAndGroupByArgs([["read_room", "r"]]),
         CompareResultsQuantity("=", 2),
         ReduceResult()
     ])
@@ -80,8 +80,8 @@ class TestReadersWriters(unittest.TestCase):
     )
     rule_4_fact = RuleFact([
         MatchCheckpoints(["write_room"]),
-        RenameArgs([ ["write_room", "w", "room", "msg"] ]),
-        CrossAndGroupByArgs([ ["write_room", "w"] ]),
+        RenameArgs([["write_room", "w", "room", "msg"]]),
+        CrossAndGroupByArgs([["write_room", "w"]]),
         CompareResultsQuantity("=", 4),
         ReduceResult()
     ])
@@ -96,16 +96,16 @@ class TestReadersWriters(unittest.TestCase):
     )
     rule_5_scope = RuleScope([
         MatchCheckpoints(["writer_enter", "writer_exit"]),
-        RenameArgs([ ["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"] ]),
-        CrossAndGroupByArgs([ ["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"] ]),
+        RenameArgs([["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"]]),
+        CrossAndGroupByArgs([["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"]]),
         ImposeIteratorCondition("w1", "=", "w2"),
         ImposeIteratorCondition("room1", "=", "room2"),
-        ScopeBetween("writer_enter1", "writer_exit2")
+        ScopeBetween("writer_enter", "writer_exit")
     ])
     rule_5_fact = RuleFact([
         MatchCheckpoints(["writer_enter"]),
-        RenameArgs([ ["writer_enter", "w", "room"] ]),
-        CrossAndGroupByArgs([ ["writer_enter", "room"] ]),
+        RenameArgs([["writer_enter", "w", "room"]]),
+        CrossAndGroupByArgs([["writer_enter", "room"]]),
         ImposeIteratorCondition("room", "=", "#room1", True),
         ImposeWildcardCondition("w", "!=", "#w1", True),
         CompareResultsQuantity("=", 0),
@@ -124,16 +124,16 @@ class TestReadersWriters(unittest.TestCase):
     )
     rule_6_scope = RuleScope([
         MatchCheckpoints(["writer_enter", "writer_exit"]),
-        RenameArgs([ ["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"] ]),
-        CrossAndGroupByArgs([ ["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"] ]),
+        RenameArgs([["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"]]),
+        CrossAndGroupByArgs([["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"]]),
         ImposeIteratorCondition("w1", "=", "w2"),
         ImposeIteratorCondition("room1", "=", "room2"),
-        ScopeBetween("writer_enter1", "writer_exit2")
+        ScopeBetween("writer_enter", "writer_exit")
     ])
     rule_6_fact = RuleFact([
         MatchCheckpoints(["write_room"]),
-        RenameArgs([ ["write_room", "w", "room", "msg"] ]),
-        CrossAndGroupByArgs([ ["write_room", "room", "w"] ]),
+        RenameArgs([["write_room", "w", "room", "msg"]]),
+        CrossAndGroupByArgs([["write_room", "room", "w"]]),
         ImposeIteratorCondition("room", "=", "#room1", True),
         ImposeIteratorCondition("w", "=", "#w1", True),
         CompareResultsQuantity("=", 1),
@@ -152,16 +152,16 @@ class TestReadersWriters(unittest.TestCase):
     )
     rule_7_scope = RuleScope([
         MatchCheckpoints(["reader_enter", "reader_exit"]),
-        RenameArgs([ ["reader_enter", "r1", "room1"], ["reader_exit", "r2", "room2"] ]),
-        CrossAndGroupByArgs([ ["reader_enter", "r1", "room1"], ["reader_exit", "r2", "room2"] ]),
+        RenameArgs([["reader_enter", "r1", "room1"], ["reader_exit", "r2", "room2"]]),
+        CrossAndGroupByArgs([["reader_enter", "r1", "room1"], ["reader_exit", "r2", "room2"]]),
         ImposeIteratorCondition("r1", "=", "r2"),
         ImposeIteratorCondition("room1", "=", "room2"),
-        ScopeBetween("reader_enter1", "reader_exit2")
+        ScopeBetween("reader_enter", "reader_exit")
     ])
     rule_7_fact = RuleFact([
         MatchCheckpoints(["read_room"]),
-        RenameArgs([ ["read_room", "r", "room", "msg"] ]),
-        CrossAndGroupByArgs([ ["read_room", "room", "r"] ]),
+        RenameArgs([["read_room", "r", "room", "msg"]]),
+        CrossAndGroupByArgs([["read_room", "room", "r"]]),
         ImposeIteratorCondition("room", "=", "#room1", True),
         ImposeIteratorCondition("r", "=", "#r1", True),
         CompareResultsQuantity("=", 1),
@@ -180,15 +180,15 @@ class TestReadersWriters(unittest.TestCase):
     )
     rule_8_scope = RuleScope([
         MatchCheckpoints(["writer_exit", "writer_enter"]),
-        RenameArgs([ ["writer_exit", "w1", "room1"], ["writer_enter", "w2", "room2"] ]),
-        CrossAndGroupByArgs([ ["writer_exit", "w1"], ["writer_enter", "w2"] ]),
+        RenameArgs([["writer_exit", "w1", "room1"], ["writer_enter", "w2", "room2"]]),
+        CrossAndGroupByArgs([["writer_exit", "w1"], ["writer_enter", "w2"]]),
         ImposeIteratorCondition("w1", "=", "w2"),
-        ScopeBetween("writer_exit1", "writer_enter2")
+        ScopeBetween("writer_exit", "writer_enter")
     ])
     rule_8_fact = RuleFact([
         MatchCheckpoints(["write_room"]),
-        RenameArgs([ ["write_room", "w", "room", "msg"] ]),
-        CrossAndGroupByArgs([ ["write_room", "w"] ]),
+        RenameArgs([["write_room", "w", "room", "msg"]]),
+        CrossAndGroupByArgs([["write_room", "w"]]),
         ImposeIteratorCondition("w", "=", "#w1", True),
         CompareResultsQuantity("=", 0),
         ReduceResult()
@@ -205,15 +205,15 @@ class TestReadersWriters(unittest.TestCase):
     )
     rule_9_scope = RuleScope([
         MatchCheckpoints(["reader_exit", "reader_enter"]),
-        RenameArgs([ ["reader_exit", "r1", "room1"], ["reader_enter", "r2", "room2"] ]),
-        CrossAndGroupByArgs([ ["reader_exit", "r1"], ["reader_enter", "r2"] ]),
+        RenameArgs([["reader_exit", "r1", "room1"], ["reader_enter", "r2", "room2"]]),
+        CrossAndGroupByArgs([["reader_exit", "r1"], ["reader_enter", "r2"]]),
         ImposeIteratorCondition("r1", "=", "r2"),
-        ScopeBetween("reader_exit1", "reader_enter2")
+        ScopeBetween("reader_exit", "reader_enter")
     ])
     rule_9_fact = RuleFact([
         MatchCheckpoints(["read_room"]),
-        RenameArgs([ ["read_room", "r", "room", "msg"] ]),
-        CrossAndGroupByArgs([ ["read_room", "r"] ]),
+        RenameArgs([["read_room", "r", "room", "msg"]]),
+        CrossAndGroupByArgs([["read_room", "r"]]),
         ImposeIteratorCondition("r", "=", "#r1", True),
         CompareResultsQuantity("=", 0),
         ReduceResult()
@@ -230,15 +230,15 @@ class TestReadersWriters(unittest.TestCase):
     )
     rule_10_scope = RuleScope([
         MatchCheckpoints(["read_room"]),
-        RenameArgs([ ["read_room", "r", "room", "msg"] ]),
-        CrossAndGroupByArgs([ ["read_room", "r", "room", "msg"] ]),
+        RenameArgs([["read_room", "r", "room", "msg"]]),
+        CrossAndGroupByArgs([["read_room", "r", "room", "msg"]]),
         ImposeIteratorCondition("msg", "!=", "NULL", True),
         ScopeBefore("read_room")
     ])
     rule_10_fact = RuleFact([
         MatchCheckpoints(["write_room"]),
-        RenameArgs([ ["write_room", "w", "roomid", "m"] ]),
-        CrossAndGroupByArgs([ ["write_room"] ]),
+        RenameArgs([["write_room", "w", "roomid", "m"]]),
+        CrossAndGroupByArgs([["write_room"]]),
         ImposeWildcardCondition("roomid", "=", "#room", True),
         ImposeWildcardCondition("m", "=", "#msg", True),
         CompareResultsQuantity(">=", 1),
@@ -257,17 +257,17 @@ class TestReadersWriters(unittest.TestCase):
     )
     rule_11_scope = RuleScope([
         MatchCheckpoints(["read_room", "write_room"]),
-        RenameArgs([ ["read_room", "r", "r1", "m1"], ["write_room", "w", "r2", "m2"] ]),
-        CrossAndGroupByArgs([ ["read_room", "r1", "m1"], ["write_room", "r2", "m2"] ]),
+        RenameArgs([["read_room", "r", "r1", "m1"], ["write_room", "w", "r2", "m2"]]),
+        CrossAndGroupByArgs([["read_room", "r1", "m1"], ["write_room", "r2", "m2"]]),
         ImposeIteratorCondition("m1", "!=", "NULL", True),
         ImposeIteratorCondition("m1", "=", "m2"),
         ImposeIteratorCondition("r1", "=", "r2"),
-        ScopeBetween("read_room1", "write_room2", False)
+        ScopeBetween("read_room", "write_room", False)
     ])
     rule_11_fact = RuleFact([
         MatchCheckpoints(["write_room"]),
-        RenameArgs([ ["write_room", "wid", "roomid", "m"] ]),
-        CrossAndGroupByArgs([ ["write_room"] ]),
+        RenameArgs([["write_room", "wid", "roomid", "m"]]),
+        CrossAndGroupByArgs([["write_room"]]),
         ImposeWildcardCondition("roomid", "=", "#r2", True),
         ImposeWildcardCondition("m", "!=", "#m2", True),
         CompareResultsQuantity("=", 0),
@@ -286,15 +286,15 @@ class TestReadersWriters(unittest.TestCase):
     )
     rule_12_scope = RuleScope([
         MatchCheckpoints(["read_room"]),
-        RenameArgs([ ["read_room", "r", "room", "msg"] ]),
-        CrossAndGroupByArgs([ ["read_room", "r", "room", "msg"] ]),
+        RenameArgs([["read_room", "r", "room", "msg"]]),
+        CrossAndGroupByArgs([["read_room", "r", "room", "msg"]]),
         ImposeIteratorCondition("msg", "=", "NULL", True),
         ScopeBefore("read_room")
     ])
     rule_12_fact = RuleFact([
         MatchCheckpoints(["write_room"]),
-        RenameArgs([ ["write_room", "w", "roomid", "m"] ]),
-        CrossAndGroupByArgs([ ["write_room"] ]),
+        RenameArgs([["write_room", "w", "roomid", "m"]]),
+        CrossAndGroupByArgs([["write_room"]]),
         ImposeWildcardCondition("roomid", "=", "#room", True),
         CompareResultsQuantity("=", 0),
         ReduceResult()

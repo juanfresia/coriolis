@@ -3,13 +3,13 @@ from common.jarl_rule import *
 
 rule_1_statement = (
     "# Santa prepares his sleigh at most once when awake\n"
-    "between santa_wake and next santa_sleep:\n"
+    "between santa_wake() and next santa_sleep():\n"
     "  prepare_sleigh() must happen at most 1 times\n"
 )
 rule_1_scope = RuleScope([
     MatchCheckpoints(["santa_wake", "santa_sleep"]),
     CrossAndGroupByArgs([ ["santa_wake"], ["santa_sleep"] ]),
-    ScopeBetween("santa_wake1", "santa_sleep2")
+    ScopeBetween("santa_wake", "santa_sleep")
 ])
 rule_1_fact = RuleFact([
     MatchCheckpoints(["prepare_sleigh"]),
@@ -21,13 +21,13 @@ rule_1 = JARLRule(rule_1_statement, rule_1_fact, rule_1_scope, passed_by_default
 
 rule_2_statement = (
     "# Santa helps the elves at most once when awake\n"
-    "between santa_wake and next santa_sleep:\n"
+    "between santa_wake() and next santa_sleep():\n"
     "  help_elves() must happen at most 1 times\n"
 )
 rule_2_scope = RuleScope([
     MatchCheckpoints(["santa_wake", "santa_sleep"]),
     CrossAndGroupByArgs([ ["santa_wake"], ["santa_sleep"] ]),
-    ScopeBetween("santa_wake1", "santa_sleep2")
+    ScopeBetween("santa_wake", "santa_sleep")
 ])
 rule_2_fact = RuleFact([
     MatchCheckpoints(["help_elves"]),
@@ -39,13 +39,13 @@ rule_2 = JARLRule(rule_2_statement, rule_2_fact, rule_2_scope, passed_by_default
 
 rule_3_statement = (
     "# Santa cant prepare his sleigh if asleep\n"
-    "between santa_sleep and next santa_wake:\n"
+    "between santa_sleep() and next santa_wake():\n"
     "  prepare_sleigh() must happen 0 times\n"
 )
 rule_3_scope = RuleScope([
     MatchCheckpoints(["santa_sleep", "santa_wake"]),
     CrossAndGroupByArgs([ ["santa_sleep"], ["santa_wake"] ]),
-    ScopeBetween("santa_sleep1", "santa_wake2")
+    ScopeBetween("santa_sleep", "santa_wake")
 ])
 rule_3_fact = RuleFact([
     MatchCheckpoints(["prepare_sleigh"]),
@@ -57,13 +57,13 @@ rule_3 = JARLRule(rule_3_statement, rule_3_fact, rule_3_scope, passed_by_default
 
 rule_4_statement = (
     "# Santa cant help the elves if asleep\n"
-    "between santa_sleep and next santa_wake:\n"
+    "between santa_sleep() and next santa_wake():\n"
     "  help_elves() must happen 0 times\n"
 )
 rule_4_scope = RuleScope([
     MatchCheckpoints(["santa_sleep", "santa_wake"]),
     CrossAndGroupByArgs([ ["santa_sleep"], ["santa_wake"] ]),
-    ScopeBetween("santa_sleep1", "santa_wake2")
+    ScopeBetween("santa_sleep", "santa_wake")
 ])
 rule_4_fact = RuleFact([
     MatchCheckpoints(["help_elves"]),
@@ -85,7 +85,7 @@ rule_5_scope = RuleScope([
     RenameArgs([ ["elf_arrive", "e1"], ["elf_leave", "e2"] ]),
     CrossAndGroupByArgs([ ["elf_arrive", "e1"], ["elf_leave", "e2"] ]),
     ImposeIteratorCondition("e1", "=", "e2"),
-    ScopeBetween("elf_arrive1", "elf_leave2")
+    ScopeBetween("elf_arrive", "elf_leave")
 ])
 rule_5_fact = RuleFact([
     MatchCheckpoints(["get_help"]),
@@ -110,7 +110,7 @@ rule_6_scope = RuleScope([
     RenameArgs([ ["reindeer_arrive", "r1"], ["reindeer_leave", "r2"] ]),
     CrossAndGroupByArgs([ ["reindeer_arrive", "r1"], ["reindeer_leave", "r2"] ]),
     ImposeIteratorCondition("r1", "=", "r2"),
-    ScopeBetween("reindeer_arrive1", "reindeer_leave2")
+    ScopeBetween("reindeer_arrive", "reindeer_leave")
 ])
 rule_6_fact = RuleFact([
     MatchCheckpoints(["get_hitched"]),
@@ -134,7 +134,7 @@ rule_7_scope = RuleScope([
     MatchCheckpoints(["get_help", "help_elves"]),
     RenameArgs([ ["get_help", "e"], ["help_elves"] ]),
     CrossAndGroupByArgs([ ["get_help", "e"], ["help_elves"] ]),
-    ScopeBetween("get_help1", "help_elves2", False)
+    ScopeBetween("get_help", "help_elves", False)
 ])
 rule_7_fact = RuleFact([
     MatchCheckpoints(["get_help"]),
@@ -156,7 +156,7 @@ rule_8_scope = RuleScope([
     MatchCheckpoints(["get_hitched", "prepare_sleigh"]),
     RenameArgs([ ["get_hitched", "r"], ["prepare_sleigh"] ]),
     CrossAndGroupByArgs([ ["get_hitched", "r"], ["prepare_sleigh"] ]),
-    ScopeBetween("get_hitched1", "prepare_sleigh2", False)
+    ScopeBetween("get_hitched", "prepare_sleigh", False)
 ])
 rule_8_fact = RuleFact([
     MatchCheckpoints(["get_hitched"]),
@@ -179,7 +179,7 @@ rule_9_scope = RuleScope([
     RenameArgs([ ["elf_leave", "e1"], ["elf_arrive", "e2"] ]),
     CrossAndGroupByArgs([ ["elf_leave", "e1"], ["elf_arrive", "e2"] ]),
     ImposeIteratorCondition("e1", "=", "e2"),
-    ScopeBetween("elf_leave1", "elf_arrive2")
+    ScopeBetween("elf_leave", "elf_arrive")
 ])
 rule_9_fact = RuleFact([
     MatchCheckpoints(["get_help"]),
@@ -204,7 +204,7 @@ rule_10_scope = RuleScope([
     RenameArgs([ ["reindeer_leave", "r1"], ["reindeer_arrive", "r2"] ]),
     CrossAndGroupByArgs([ ["reindeer_leave", "r1"], ["reindeer_arrive", "r2"] ]),
     ImposeIteratorCondition("r1", "=", "r2"),
-    ScopeBetween("reindeer_leave1", "reindeer_arrive2")
+    ScopeBetween("reindeer_leave", "reindeer_arrive")
 ])
 rule_10_fact = RuleFact([
     MatchCheckpoints(["get_hitched"]),
@@ -229,14 +229,14 @@ rule_11_scope = RuleScope([
     RenameArgs([ ["reindeer_arrive", "r1"], ["reindeer_leave", "r2"] ]),
     CrossAndGroupByArgs([ ["reindeer_arrive", "r1"], ["reindeer_leave", "r2"] ]),
     ImposeIteratorCondition("r1", "=", "r2"),
-    ScopeBetween("reindeer_arrive1", "reindeer_leave2")
+    ScopeBetween("reindeer_arrive", "reindeer_leave")
 ])
 rule_11_fact = RuleFact([
     MatchCheckpoints(["prepare_sleigh", "get_hitched"]),
     RenameArgs([ ["prepare_sleigh"], ["get_hitched", "r"] ]),
     CrossAndGroupByArgs([ ["prepare_sleigh"], ["get_hitched", "r"] ]),
     ImposeIteratorCondition("r", "=", "#r1", True),
-    CompareResultsPrecedence("prepare_sleigh1", "get_hitched2"),
+    CompareResultsPrecedence("prepare_sleigh", "get_hitched"),
     ReduceResult()
 ])
 rule_11 = JARLRule(rule_11_statement, rule_11_fact, rule_11_scope)

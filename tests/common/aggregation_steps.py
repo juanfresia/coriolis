@@ -222,7 +222,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output)
 
     def test_compare_results_precedence(self):
-        step = CompareResultsPrecedence("f1", "g2")
+        step = CompareResultsPrecedence("f", "g")
         input = [
             {'results': [{'log_line': 3, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 7, 'checkpoint': 'g2', 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 2}},
             {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'checkpoint': 'g2', 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 1}},
@@ -322,7 +322,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output)
 
     def test_scope_between(self):
-        step = ScopeBetween("f1", "g2")
+        step = ScopeBetween("f", "g")
         input = [
             {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'checkpoint': 'g2', 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 1}},
             {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 6, 'checkpoint': 'g2', 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 1}},
@@ -340,7 +340,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output, remove_id=False)
 
     def test_scope_after(self):
-        step = ScopeAfter("f1")
+        step = ScopeAfter("f")
         input = [
             {'_id': {'null': None}, 'results': [
                 {'log_line': 2, 'checkpoint': 'f1', 'arg_x': 1},
@@ -360,7 +360,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output, remove_id=False)
 
     def test_scope_before(self):
-        step = ScopeBefore("f1")
+        step = ScopeBefore("f")
         input = [
             {'_id': {'null': None}, 'results': [
                 {'log_line': 2, 'checkpoint': 'f1', 'arg_x': 1},

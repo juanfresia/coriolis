@@ -74,7 +74,7 @@ class TestProducersConsumers(unittest.TestCase):
         MatchCheckpoints(["consume"]),
         RenameArgs([ ["consume", "c", "iid"] ]),
         CrossAndGroupByArgs([ ["consume", "iid"] ]),
-        ScopeBefore("consume1")
+        ScopeBefore("consume")
     ])
     rule_5_fact = RuleFact([
         MatchCheckpoints(["produce"]),
@@ -97,7 +97,7 @@ class TestProducersConsumers(unittest.TestCase):
         RenameArgs([ ["produce", "p", "i"], ["produce", "q", "j"] ]),
         CrossAndGroupByArgs([ ["produce", "i"], ["produce", "j"] ]),
         ImposeIteratorCondition("j", ">", "i"),
-        CompareResultsPrecedence("produce1", "produce2"),
+        CompareResultsPrecedence("produce", "produce"),
         ReduceResult()
     ])
     rule_6 = JARLRule(rule_6_statement, rule_6_fact)
@@ -112,7 +112,7 @@ class TestProducersConsumers(unittest.TestCase):
         RenameArgs([ ["consume", "c", "i"], ["consume", "d", "j"] ]),
         CrossAndGroupByArgs([ ["consume", "i"], ["consume", "j"] ]),
         ImposeIteratorCondition("j", ">", "i"),
-        CompareResultsPrecedence("consume1", "consume2"),
+        CompareResultsPrecedence("consume", "consume"),
         ReduceResult()
     ])
     rule_7 = JARLRule(rule_7_statement, rule_7_fact)
@@ -128,7 +128,7 @@ class TestProducersConsumers(unittest.TestCase):
         MatchCheckpoints(["produce", "consume"]),
         RenameArgs([ ["produce", "pid", "i1"], ["consume", "cid", "i2"] ]),
         CrossAndGroupByArgs([ ["produce"], ["consume"] ]),
-        ScopeBetween("produce1", "consume2")
+        ScopeBetween("produce", "consume")
     ])
     rule_8_fact = RuleFact([
         MatchCheckpoints(["produce"]),
@@ -150,7 +150,7 @@ class TestProducersConsumers(unittest.TestCase):
         MatchCheckpoints(["consume"]),
         RenameArgs([ ["consume", "cid", "iid"] ]),
         CrossAndGroupByArgs([ ["consume"] ]),
-        ScopeAfter("consume1")
+        ScopeAfter("consume")
     ])
     rule_9_fact = RuleFact([
         MatchCheckpoints(["consume"]),
@@ -172,7 +172,7 @@ class TestProducersConsumers(unittest.TestCase):
         MatchCheckpoints(["produce"]),
         RenameArgs([ ["produce", "pid", "iid"] ]),
         CrossAndGroupByArgs([ ["produce"] ]),
-        ScopeBefore("produce1")
+        ScopeBefore("produce")
     ])
     rule_10_fact = RuleFact([
         MatchCheckpoints(["produce"]),

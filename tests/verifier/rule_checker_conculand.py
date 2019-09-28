@@ -19,7 +19,7 @@ class TestConculand(unittest.TestCase):
         RenameArgs([ ["employee_ready", "e1"], ["employee_ready", "e2"] ]),
         CrossAndGroupByArgs([ ["employee_ready", "e1"], ["employee_ready", "e2"] ]),
         ImposeIteratorCondition("e1", "=", "e2"),
-        ScopeBetween("employee_ready1", "employee_ready2")
+        ScopeBetween("employee_ready", "employee_ready")
     ])
     rule_1_fact = RuleFact([
         MatchCheckpoints(["employee_serve"]),
@@ -44,7 +44,7 @@ class TestConculand(unittest.TestCase):
         RenameArgs([ ["employee_serve", "e", "person_name", "t"] ]),
         CrossAndGroupByArgs([ ["employee_serve", "e", "person_name", "t"] ]),
         ImposeIteratorCondition("t", "=", "tourist", True),
-        ScopeBefore("employee_serve1")
+        ScopeBefore("employee_serve")
     ])
     rule_2_fact = RuleFact([
         MatchCheckpoints(["tourist_queued"]),
@@ -69,7 +69,7 @@ class TestConculand(unittest.TestCase):
         RenameArgs([ ["employee_serve", "e", "person_name", "t"] ]),
         CrossAndGroupByArgs([ ["employee_serve", "e", "person_name", "t"] ]),
         ImposeIteratorCondition("t", "=", "resident", True),
-        ScopeBefore("employee_serve1")
+        ScopeBefore("employee_serve")
     ])
     rule_3_fact = RuleFact([
         MatchCheckpoints(["resident_queued"]),
@@ -95,7 +95,7 @@ class TestConculand(unittest.TestCase):
         CrossAndGroupByArgs([ ["employee_serve", "e1", "person_name", "t"], ["employee_ready", "e2"] ]),
         ImposeIteratorCondition("e1", "=", "e2"),
         ImposeIteratorCondition("t", "=", "tourist", True),
-        ScopeBetween("employee_serve1", "employee_ready2")
+        ScopeBetween("employee_serve", "employee_ready")
     ])
     rule_4_fact = RuleFact([
         MatchCheckpoints(["tourist_show_passport", "employee_request_passport"]),
@@ -103,7 +103,7 @@ class TestConculand(unittest.TestCase):
         CrossAndGroupByArgs([ ["employee_request_passport", "employee_id"], ["tourist_show_passport", "pn"] ]),
         ImposeIteratorCondition("pn", "=", "#person_name", True),
         ImposeIteratorCondition("employee_id", "=", "#e1", True),
-        CompareResultsPrecedence("employee_request_passport1", "tourist_show_passport2"),
+        CompareResultsPrecedence("employee_request_passport", "tourist_show_passport"),
         ReduceResult()
     ])
     rule_4 = JARLRule(rule_4_statement, rule_4_fact, rule_4_scope)
@@ -123,7 +123,7 @@ class TestConculand(unittest.TestCase):
         CrossAndGroupByArgs([ ["employee_serve", "e1", "person_name", "t"], ["employee_ready", "e2"] ]),
         ImposeIteratorCondition("e1", "=", "e2"),
         ImposeIteratorCondition("t", "=", "resident", True),
-        ScopeBetween("employee_serve1", "employee_ready2")
+        ScopeBetween("employee_serve", "employee_ready")
     ])
     rule_5_fact = RuleFact([
         MatchCheckpoints(["resident_show_document", "employee_request_document"]),
@@ -131,7 +131,7 @@ class TestConculand(unittest.TestCase):
         CrossAndGroupByArgs([ ["employee_request_document", "employee_id"], ["resident_show_document", "pn"] ]),
         ImposeIteratorCondition("pn", "=", "#person_name", True),
         ImposeIteratorCondition("employee_id", "=", "#e1", True),
-        CompareResultsPrecedence("employee_request_document1", "resident_show_document2"),
+        CompareResultsPrecedence("employee_request_document", "resident_show_document"),
         ReduceResult()
     ])
     rule_5 = JARLRule(rule_5_statement, rule_5_fact, rule_5_scope)
@@ -152,7 +152,7 @@ class TestConculand(unittest.TestCase):
         ImposeIteratorCondition("pn1", "=", "pn2"),
         ImposeIteratorCondition("p1", "=", "p2"),
         ImposeIteratorCondition("t1", "=", "t2"),
-        ScopeBetween("tourist_spawn1", "tourist_die2")
+        ScopeBetween("tourist_spawn", "tourist_die")
     ])
     rule_6_fact = RuleFact([
         MatchCheckpoints(["tourist_show_passport"]),
@@ -183,7 +183,7 @@ class TestConculand(unittest.TestCase):
         ImposeIteratorCondition("pn1", "=", "pn2"),
         ImposeIteratorCondition("d1", "=", "d2"),
         ImposeIteratorCondition("g1", "=", "g2"),
-        ScopeBetween("resident_spawn1", "resident_die2")
+        ScopeBetween("resident_spawn", "resident_die")
     ])
     rule_7_fact = RuleFact([
         MatchCheckpoints(["resident_show_document"]),
@@ -211,7 +211,7 @@ class TestConculand(unittest.TestCase):
         MatchCheckpoints(["employee_allow_tourist"]),
         RenameArgs([ ["employee_allow_tourist", "employee_id", "passport"] ]),
         CrossAndGroupByArgs([ ["employee_allow_tourist", "employee_id", "passport"] ]),
-        ScopeBefore("employee_allow_tourist1")
+        ScopeBefore("employee_allow_tourist")
     ])
     rule_8_fact = RuleFact([
         MatchCheckpoints(["employee_seal_passport"]),
@@ -239,7 +239,7 @@ class TestConculand(unittest.TestCase):
         CrossAndGroupByArgs([ ["employee_serve", "e1", "person_name", "t"], ["employee_allow_tourist", "e2", "passport"] ]),
         ImposeIteratorCondition("e1", "=", "e2"),
         ImposeIteratorCondition("t", "=", "tourist", True),
-        ScopeBetween("employee_serve1", "employee_allow_tourist2")
+        ScopeBetween("employee_serve", "employee_allow_tourist")
     ])
     rule_9_fact = RuleFact([
         MatchCheckpoints(["employee_take_seal", "employee_seal_passport"]),
@@ -248,7 +248,7 @@ class TestConculand(unittest.TestCase):
         ImposeIteratorCondition("eid1", "=", "#e1", True),
         ImposeIteratorCondition("eid2", "=", "#e1", True),
         ImposeIteratorCondition("p", "=", "#passport", True),
-        CompareResultsPrecedence("employee_take_seal1", "employee_seal_passport2"),
+        CompareResultsPrecedence("employee_take_seal", "employee_seal_passport"),
         ReduceResult()
     ])
     rule_9 = JARLRule(rule_9_statement, rule_9_fact, rule_9_scope)
@@ -266,7 +266,7 @@ class TestConculand(unittest.TestCase):
         MatchCheckpoints(["employee_take_seal", "employee_return_seal"]),
         RenameArgs([ ["employee_take_seal", "e1"], ["employee_return_seal", "e2"] ]),
         CrossAndGroupByArgs([ ["employee_take_seal"], ["employee_return_seal"] ]),
-        ScopeBetween("employee_take_seal1", "employee_return_seal2")
+        ScopeBetween("employee_take_seal", "employee_return_seal")
     ])
     rule_10_fact = RuleFact([
         MatchCheckpoints(["employee_take_seal"]),
@@ -302,7 +302,7 @@ class TestConculand(unittest.TestCase):
         MatchCheckpoints(["employee_take_seal"]),
         RenameArgs([ ["employee_take_seal", "employee_id"] ]),
         CrossAndGroupByArgs([ ["employee_take_seal", "employee_id"] ]),
-        ScopeAfter("employee_take_seal1")
+        ScopeAfter("employee_take_seal")
     ])
     rule_12_fact = RuleFact([
         MatchCheckpoints(["employee_return_seal"]),

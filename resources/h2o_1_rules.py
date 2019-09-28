@@ -40,7 +40,7 @@ rule_3_scope = RuleScope([
     MatchCheckpoints(["atom_spawn"]),
     RenameArgs([["atom_spawn", "atom_type", "atom_id"]]),
     CrossAndGroupByArgs([ ["atom_spawn", "atom_id"] ]),
-    ScopeAfter("atom_spawn1")
+    ScopeAfter("atom_spawn")
 ])
 rule_3_fact = RuleFact([
     MatchCheckpoints(["atom_die"]),
@@ -81,7 +81,7 @@ rule_5_scope = RuleScope([
     RenameArgs([["atom_spawn", "at1", "aid1"], ["atom_die", "at2", "aid2"]]),
     CrossAndGroupByArgs([ ["atom_spawn", "aid1"], ["atom_die", "aid2"] ]),
     ImposeIteratorCondition("aid1", "=", "aid2"),
-    ScopeBetween("atom_spawn1", "atom_die2")
+    ScopeBetween("atom_spawn", "atom_die")
 ])
 rule_5_fact = RuleFact([
     MatchCheckpoints(["bond"]),
@@ -110,14 +110,14 @@ rule_6 = JARLRule(rule_6_statement, rule_6_fact)
 
 rule_7_statement = (
     "# 2 hydrogen atoms must bond to make a new water molecule\n"
-    "between water_made and next water_made:\n"
+    "between water_made() and next water_made():\n"
     "  for every atom_type='H' and any atom_id:\n"
     "  bond(atom_type, atom_id) must happen 2 times\n"
 )
 rule_7_scope = RuleScope([
     MatchCheckpoints(["water_made"]),
     CrossAndGroupByArgs([ ["water_made"], ["water_made"] ]),
-    ScopeBetween("water_made1", "water_made2")
+    ScopeBetween("water_made", "water_made")
 ])
 rule_7_fact = RuleFact([
     MatchCheckpoints(["bond"]),
@@ -138,7 +138,7 @@ rule_8_statement = (
 rule_8_scope = RuleScope([
     MatchCheckpoints(["water_made"]),
     CrossAndGroupByArgs([ ["water_made"], ["water_made"] ]),
-    ScopeBetween("water_made1", "water_made2")
+    ScopeBetween("water_made", "water_made")
 ])
 rule_8_fact = RuleFact([
     MatchCheckpoints(["bond"]),
@@ -159,7 +159,7 @@ rule_9_statement = (
 rule_9_scope = RuleScope([
     MatchCheckpoints(["water_made"]),
     CrossAndGroupByArgs([ ["water_made"], ["water_made"] ]),
-    ScopeBetween("water_made1", "water_made2")
+    ScopeBetween("water_made", "water_made")
 ])
 rule_9_fact = RuleFact([
     MatchCheckpoints(["bond"]),
@@ -183,7 +183,7 @@ rule_10_scope = RuleScope([
     CrossAndGroupByArgs([ ["bond", "at1"], ["bond", "at2"] ]),
     ImposeIteratorCondition("at1", "=", "H", True),
     ImposeIteratorCondition("at2", "=", "H", True),
-    ScopeBetween("bond1", "bond2")
+    ScopeBetween("bond", "bond")
 ])
 rule_10_fact = RuleFact([
     MatchCheckpoints(["bond"]),
@@ -208,7 +208,7 @@ rule_11_scope = RuleScope([
     CrossAndGroupByArgs([ ["bond", "at1"], ["bond", "at2"] ]),
     ImposeIteratorCondition("at1", "=", "O", True),
     ImposeIteratorCondition("at2", "=", "O", True),
-    ScopeBetween("bond1", "bond2")
+    ScopeBetween("bond", "bond")
 ])
 rule_11_fact = RuleFact([
     MatchCheckpoints(["bond"]),
