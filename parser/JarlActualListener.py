@@ -89,7 +89,10 @@ class JarlListener(ParseTreeListener):
 
     # Enter a parse tree produced by JarlParser#quantifier_clause.
     def enterQuantifier_clause(self, ctx:JarlParser.Quantifier_clauseContext):
-        type = ctx.quantifier().getText()
+        if ctx.quantifier().ANY():
+            type = JarlFilterClauseType.ANY
+        else:
+            type = JarlFilterClauseType.EVERY
         identifiers = [i.getText() for i in ctx.identifier_list().IDENTIFIER()]
         self.stack.append(JarlQuantifierClause(type, identifiers))
 
@@ -116,7 +119,7 @@ class JarlListener(ParseTreeListener):
         chk_args = [arg.getText() for arg in chk_args_list]
         start = JarlCheckpoint(chk_name, chk_args)
 
-        sel_expr = JarlSelectorExpr("after", start, None)
+        sel_expr = JarlSelectorExpr(JarlSelectorClauseType.AFTER, start=start)
         self.stack.append(sel_expr)
 
     # Enter a parse tree produced by JarlParser#before_clause.
@@ -126,7 +129,7 @@ class JarlListener(ParseTreeListener):
         chk_args = [arg.getText() for arg in chk_args_list]
         end = JarlCheckpoint(chk_name, chk_args)
 
-        sel_expr = JarlSelectorExpr("before", None, end)
+        sel_expr = JarlSelectorExpr(JarlSelectorClauseType.BEFORE, end=end)
         self.stack.append(sel_expr)
 
     # Enter a parse tree produced by JarlParser#between_clause.
@@ -148,7 +151,7 @@ class JarlListener(ParseTreeListener):
             start = chk2
             end = chk1
 
-        sel_expr = JarlSelectorExpr("between", start, end)
+        sel_expr = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN, start, end)
         self.stack.append(sel_expr)
 
     # Exit a parse tree produced by JarlParser#fact_clause.

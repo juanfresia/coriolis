@@ -2,6 +2,7 @@
 
 from common.aggregation_steps import *
 from common.jarl_rule import *
+from enum import Enum
 
 class JarlRule():
     def __init__(self, text):
@@ -57,6 +58,11 @@ class JarlRuleScope():
     def __repr__(self):
         return "<filter: {} selector: {}>".format(self.filter, self.selector)
 
+class JarlFilterClauseType(Enum):
+    ANY = 0
+    EVERY = 1
+    WITH = 2
+
 class JarlFilterExpr():
     """
     Represents a Filter expression in the JARL rule language.
@@ -72,14 +78,14 @@ class JarlFilterExpr():
 
     def add(self, elem):
         # print("Attemting to add {} to a filter {}".format(elem, self.text))
-        if elem.type == "any":
+        if elem.type == JarlFilterClauseType.ANY:
             self.any += elem.identifiers
-        elif elem.type == "every":
+        elif elem.type == JarlFilterClauseType.EVERY:
             self.every += elem.identifiers
-        elif elem.type == "with":
+        elif elem.type == JarlFilterClauseType.WITH:
             self.conditions += elem.conditions
         else:
-            raise Exception("Jarl Filter Exception received an unknown sub-element type {}".format(elem.type))
+            raise Exception("Jarl Filter Exception received an unknown sub-element type {}".format(elem.type.name))
 
     def __eq__(self, other):
         return isinstance(other, JarlFilterExpr) and \
@@ -105,7 +111,7 @@ class JarlQuantifierClause():
 
 class JarlWithClause():
     def __init__(self, conditions):
-        self.type = "with"
+        self.type = JarlFilterClauseType.WITH
         self.conditions = conditions
 
     def __eq__(self, other):
@@ -133,6 +139,11 @@ class JarlWithCondition():
     def __repr__(self):
         return "<{} {} {}>".format(self.l, self.c, self.r)
 
+class JarlSelectorClauseType(Enum):
+    AFTER = 0
+    BEFORE = 1
+    BETWEEN = 2
+
 class JarlSelectorExpr():
     def __init__(self, type, start=None, end=None):
         self.start = start
@@ -149,11 +160,11 @@ class JarlSelectorExpr():
         return checkpoints
 
     def toSteps(self):
-        if self.type == "after":
+        if self.type == JarlSelectorClauseType.AFTER:
             return "ScopeAfter({})".format(self.start.name)
-        if self.type == "before":
+        if self.type == JarlSelectorClauseType.BEFORE:
             return "ScopeBefore({})".format(self.end.name)
-        if self.type == "between":
+        if self.type == JarlSelectorClauseType.BETWEEN:
             return "ScopeBetween({}, {})".format(self.start.name, self.end.name)
         raise Exception("Invalid type of selector expression")
 
@@ -201,7 +212,7 @@ class JarlRuleFactClause():
         self.requirement = requirement
 
     def __eq__(self, other):
-        return isinstance(other, JarlRuleScope) and \
+        return isinstance(other, JarlRuleFactClause) and \
                 self.checkpoint == other.checkpoint and \
                 self.requirement == other.requirement
 
