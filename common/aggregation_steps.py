@@ -89,7 +89,8 @@ class RenameArgs(AggregationStep):
     def  __init__(self, checkpoints_and_args_list):
         super().__init__()
         self.checkpoint_names = [ c[0] for c in checkpoints_and_args_list ]
-        self.arg_names_list = [ a[1:] for a in checkpoints_and_args_list ]
+        # If no args are present for a checkpoint, a ["null"] list is assigned
+        self.arg_names_list = [ a[1:] if len(a[1:]) > 0 else ["null"] for a in checkpoints_and_args_list ]
 
     def _mongofy(self):
         steps = []
@@ -181,7 +182,8 @@ class CrossAndGroupByArgs(AggregationStep):
     def __init__(self, checkpoints_and_args_list):
         super().__init__()
         self.checkpoint_names = [ c[0] for c in checkpoints_and_args_list ]
-        self.arg_names = [ a[1:] for a in checkpoints_and_args_list ]
+        # If no args are present for a checkpoint, a ["null"] list is assigned
+        self.arg_names = [ a[1:] if len(a[1:]) > 0 else ["null"] for a in checkpoints_and_args_list ]
 
     def _mongofy(self):
         # Step 1: We cross join all checkpoints according their names

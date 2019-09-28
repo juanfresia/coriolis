@@ -24,7 +24,7 @@ class TestConculand(unittest.TestCase):
     rule_1_fact = RuleFact([
         MatchCheckpoints(["employee_serve"]),
         RenameArgs([ ["employee_serve", "employee_id", "person_name", "type"] ]),
-        CrossAndGroupByArgs([ ["employee_serve", "null"] ]),
+        CrossAndGroupByArgs([ ["employee_serve"] ]),
         ImposeWildcardCondition("employee_id", "=", "#e1", True),
         CompareResultsQuantity("=", 1),
         ReduceResult()
@@ -49,7 +49,7 @@ class TestConculand(unittest.TestCase):
     rule_2_fact = RuleFact([
         MatchCheckpoints(["tourist_queued"]),
         RenameArgs([ ["tourist_queued", "pn"] ]),
-        CrossAndGroupByArgs([ ["tourist_queued", "null"] ]),
+        CrossAndGroupByArgs([ ["tourist_queued"] ]),
         ImposeWildcardCondition("pn", "=", "#person_name", True),
         CompareResultsQuantity("=", 1),
         ReduceResult()
@@ -74,7 +74,7 @@ class TestConculand(unittest.TestCase):
     rule_3_fact = RuleFact([
         MatchCheckpoints(["resident_queued"]),
         RenameArgs([ ["resident_queued", "pn"] ]),
-        CrossAndGroupByArgs([ ["resident_queued", "null"] ]),
+        CrossAndGroupByArgs([ ["resident_queued"] ]),
         ImposeWildcardCondition("pn", "=", "#person_name", True),
         CompareResultsQuantity("=", 1),
         ReduceResult()
@@ -157,7 +157,7 @@ class TestConculand(unittest.TestCase):
     rule_6_fact = RuleFact([
         MatchCheckpoints(["tourist_show_passport"]),
         RenameArgs([ ["tourist_show_passport", "person_name", "passport", "traits"] ]),
-        CrossAndGroupByArgs([ ["tourist_show_passport", "null"] ]),
+        CrossAndGroupByArgs([ ["tourist_show_passport"] ]),
         ImposeWildcardCondition("person_name", "=", "#pn1", True),
         ImposeWildcardCondition("passport", "=", "#p1", True),
         ImposeWildcardCondition("traits", "=", "#t1", True),
@@ -188,7 +188,7 @@ class TestConculand(unittest.TestCase):
     rule_7_fact = RuleFact([
         MatchCheckpoints(["resident_show_document"]),
         RenameArgs([ ["resident_show_document", "person_name", "document", "gender"] ]),
-        CrossAndGroupByArgs([ ["resident_show_document", "null"] ]),
+        CrossAndGroupByArgs([ ["resident_show_document"] ]),
         ImposeWildcardCondition("person_name", "=", "#pn1", True),
         ImposeWildcardCondition("document", "=", "#d1", True),
         ImposeWildcardCondition("gender", "=", "#g1", True),
@@ -216,7 +216,7 @@ class TestConculand(unittest.TestCase):
     rule_8_fact = RuleFact([
         MatchCheckpoints(["employee_seal_passport"]),
         RenameArgs([ ["employee_seal_passport", "e", "p"] ]),
-        CrossAndGroupByArgs([ ["employee_seal_passport", "null"] ]),
+        CrossAndGroupByArgs([ ["employee_seal_passport"] ]),
         ImposeWildcardCondition("e", "=", "#employee_id", True),
         ImposeWildcardCondition("p", "=", "#passport", True),
         CompareResultsQuantity("=", 1),
@@ -265,13 +265,13 @@ class TestConculand(unittest.TestCase):
     rule_10_scope = RuleScope([
         MatchCheckpoints(["employee_take_seal", "employee_return_seal"]),
         RenameArgs([ ["employee_take_seal", "e1"], ["employee_return_seal", "e2"] ]),
-        CrossAndGroupByArgs([ ["employee_take_seal", "null"], ["employee_return_seal", "null"] ]),
+        CrossAndGroupByArgs([ ["employee_take_seal"], ["employee_return_seal"] ]),
         ScopeBetween("employee_take_seal1", "employee_return_seal2")
     ])
     rule_10_fact = RuleFact([
         MatchCheckpoints(["employee_take_seal"]),
         RenameArgs([ ["employee_take_seal", "e"] ]),
-        CrossAndGroupByArgs([ ["employee_take_seal", "null"] ]),
+        CrossAndGroupByArgs([ ["employee_take_seal"] ]),
         CompareResultsQuantity("<=", 3),
         ReduceResult()
     ])
@@ -285,7 +285,7 @@ class TestConculand(unittest.TestCase):
     rule_11_fact = RuleFact([
         MatchCheckpoints(["employee_serve"]),
         RenameArgs([ ["employee_serve", "e", "p", "t"] ]),
-        CrossAndGroupByArgs([ ["employee_serve", "null"] ]),
+        CrossAndGroupByArgs([ ["employee_serve"] ]),
         CompareResultsQuantity("=", 12),
         ReduceResult()
     ])
@@ -307,7 +307,7 @@ class TestConculand(unittest.TestCase):
     rule_12_fact = RuleFact([
         MatchCheckpoints(["employee_return_seal"]),
         RenameArgs([ ["employee_return_seal", "e"] ]),
-        CrossAndGroupByArgs([ ["employee_return_seal", "null"] ]),
+        CrossAndGroupByArgs([ ["employee_return_seal"] ]),
         ImposeWildcardCondition("e", "=", "#employee_id", True),
         CompareResultsQuantity(">=", 1),
         ReduceResult()

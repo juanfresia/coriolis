@@ -9,7 +9,7 @@ rule_1_statement = (
 rule_1_fact = RuleFact([
     MatchCheckpoints(["atom_spawn"]),
     RenameArgs([["atom_spawn", "atom_type", "atom_id"]]),
-    CrossAndGroupByArgs([ ["atom_spawn", "null"] ]),
+    CrossAndGroupByArgs([ ["atom_spawn"] ]),
     CompareResultsQuantity("=", 60),
     ReduceResult()
 ])
@@ -23,7 +23,7 @@ rule_2_statement = (
 rule_2_fact = RuleFact([
     MatchCheckpoints(["atom_die"]),
     RenameArgs([ ["atom_die", "atom_type", "atom_id"] ]),
-    CrossAndGroupByArgs([ ["atom_die", "null"] ]),
+    CrossAndGroupByArgs([ ["atom_die"] ]),
     CompareResultsQuantity("=", 60),
     ReduceResult()
 ])
@@ -63,7 +63,7 @@ rule_4_statement = (
 rule_4_fact = RuleFact([
     MatchCheckpoints(["bond"]),
     RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
-    CrossAndGroupByArgs([ ["bond", "null"] ]),
+    CrossAndGroupByArgs([ ["bond"] ]),
     CompareResultsQuantity("=", 60),
     ReduceResult()
 ])
@@ -102,8 +102,7 @@ rule_6_statement = (
 )
 rule_6_fact = RuleFact([
     MatchCheckpoints(["water_made"]),
-    RenameArgs([ ["water_made", "null"] ]),
-    CrossAndGroupByArgs([ ["water_made", "null"] ]),
+    CrossAndGroupByArgs([ ["water_made"] ]),
     CompareResultsQuantity("=", 20),
     ReduceResult()
 ])
@@ -117,8 +116,7 @@ rule_7_statement = (
 )
 rule_7_scope = RuleScope([
     MatchCheckpoints(["water_made"]),
-    RenameArgs([ ["water_made", "null"] ]),
-    CrossAndGroupByArgs([ ["water_made", "null"], ["water_made", "null"] ]),
+    CrossAndGroupByArgs([ ["water_made"], ["water_made"] ]),
     ScopeBetween("water_made1", "water_made2")
 ])
 rule_7_fact = RuleFact([
@@ -139,8 +137,7 @@ rule_8_statement = (
 )
 rule_8_scope = RuleScope([
     MatchCheckpoints(["water_made"]),
-    RenameArgs([["water_made", "null"]]),
-    CrossAndGroupByArgs([ ["water_made", "null"], ["water_made", "null"] ]),
+    CrossAndGroupByArgs([ ["water_made"], ["water_made"] ]),
     ScopeBetween("water_made1", "water_made2")
 ])
 rule_8_fact = RuleFact([
@@ -161,14 +158,13 @@ rule_9_statement = (
 )
 rule_9_scope = RuleScope([
     MatchCheckpoints(["water_made"]),
-    RenameArgs([["water_made", "null"]]),
-    CrossAndGroupByArgs([ ["water_made", "null"], ["water_made", "null"] ]),
+    CrossAndGroupByArgs([ ["water_made"], ["water_made"] ]),
     ScopeBetween("water_made1", "water_made2")
 ])
 rule_9_fact = RuleFact([
     MatchCheckpoints(["bond"]),
     RenameArgs([["bond", "atom_type", "atom_id"]]),
-    CrossAndGroupByArgs([ ["bond", "null"] ]),
+    CrossAndGroupByArgs([ ["bond"] ]),
     CompareResultsQuantity("=", 3),
     ReduceResult()
 ])
@@ -192,7 +188,7 @@ rule_10_scope = RuleScope([
 rule_10_fact = RuleFact([
     MatchCheckpoints(["bond"]),
     RenameArgs([["bond", "atom_type", "atom_id"]]),
-    CrossAndGroupByArgs([ ["bond", "null"] ]),
+    CrossAndGroupByArgs([ ["bond"] ]),
     ImposeWildcardCondition("atom_type", "!=", "H", True),
     CompareResultsQuantity("<=", 2),
     ReduceResult()
@@ -217,7 +213,7 @@ rule_11_scope = RuleScope([
 rule_11_fact = RuleFact([
     MatchCheckpoints(["bond"]),
     RenameArgs([["bond", "atom_type", "atom_id"]]),
-    CrossAndGroupByArgs([ ["bond", "null"] ]),
+    CrossAndGroupByArgs([ ["bond"] ]),
     ImposeWildcardCondition("atom_type", "!=", "O", True),
     CompareResultsQuantity("<=", 4),
     ReduceResult()

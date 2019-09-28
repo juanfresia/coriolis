@@ -1,8 +1,0 @@
-# Lines starting with '#' and empty lines are ignored
-# Format is:
-#   <breakpoint-name> [<param-name>:<param-type> ...]
-#
-# Valid param-types are: int, float, string, char
-
-m    i:int   j:int
-

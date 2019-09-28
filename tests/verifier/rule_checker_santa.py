@@ -9,19 +9,17 @@ class TestSanta(unittest.TestCase):
 
     rule_1_statement = (
         "# Santa prepares his sleigh at most once when awake\n"
-        "between santa_wake and next santa_sleep:\n"
+        "between santa_wake() and next santa_sleep():\n"
         "  prepare_sleigh() must happen at most 1 times\n"
     )
     rule_1_scope = RuleScope([
         MatchCheckpoints(["santa_wake", "santa_sleep"]),
-        RenameArgs([ ["santa_wake", "null"], ["santa_sleep", "null"] ]),
-        CrossAndGroupByArgs([ ["santa_wake", "null"], ["santa_sleep", "null"] ]),
+        CrossAndGroupByArgs([ ["santa_wake"], ["santa_sleep"] ]),
         ScopeBetween("santa_wake1", "santa_sleep2")
     ])
     rule_1_fact = RuleFact([
         MatchCheckpoints(["prepare_sleigh"]),
-        RenameArgs([ ["prepare_sleigh", "null"] ]),
-        CrossAndGroupByArgs([ ["prepare_sleigh", "null"] ]),
+        CrossAndGroupByArgs([ ["prepare_sleigh"] ]),
         CompareResultsQuantity("<=", 1),
         ReduceResult()
     ])
@@ -29,19 +27,17 @@ class TestSanta(unittest.TestCase):
 
     rule_2_statement = (
         "# Santa helps the elves at most once when awake\n"
-        "between santa_wake and next santa_sleep:\n"
+        "between santa_wake() and next santa_sleep():\n"
         "  help_elves() must happen at most 1 times\n"
     )
     rule_2_scope = RuleScope([
         MatchCheckpoints(["santa_wake", "santa_sleep"]),
-        RenameArgs([ ["santa_wake", "null"], ["santa_sleep", "null"] ]),
-        CrossAndGroupByArgs([ ["santa_wake", "null"], ["santa_sleep", "null"] ]),
+        CrossAndGroupByArgs([ ["santa_wake"], ["santa_sleep"] ]),
         ScopeBetween("santa_wake1", "santa_sleep2")
     ])
     rule_2_fact = RuleFact([
         MatchCheckpoints(["help_elves"]),
-        RenameArgs([ ["help_elves", "null"] ]),
-        CrossAndGroupByArgs([ ["help_elves", "null"] ]),
+        CrossAndGroupByArgs([ ["help_elves"] ]),
         CompareResultsQuantity("<=", 1),
         ReduceResult()
     ])
@@ -49,19 +45,17 @@ class TestSanta(unittest.TestCase):
 
     rule_3_statement = (
         "# Santa cant prepare his sleigh if asleep\n"
-        "between santa_sleep and next santa_wake:\n"
+        "between santa_sleep() and next santa_wake():\n"
         "  prepare_sleigh() must happen 0 times\n"
     )
     rule_3_scope = RuleScope([
         MatchCheckpoints(["santa_sleep", "santa_wake"]),
-        RenameArgs([ ["santa_sleep", "null"], ["santa_wake", "null"] ]),
-        CrossAndGroupByArgs([ ["santa_sleep", "null"], ["santa_wake", "null"] ]),
+        CrossAndGroupByArgs([ ["santa_sleep"], ["santa_wake"] ]),
         ScopeBetween("santa_sleep1", "santa_wake2")
     ])
     rule_3_fact = RuleFact([
         MatchCheckpoints(["prepare_sleigh"]),
-        RenameArgs([ ["prepare_sleigh", "null"] ]),
-        CrossAndGroupByArgs([ ["prepare_sleigh", "null"] ]),
+        CrossAndGroupByArgs([ ["prepare_sleigh"] ]),
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
@@ -69,19 +63,17 @@ class TestSanta(unittest.TestCase):
 
     rule_4_statement = (
         "# Santa cant help the elves if asleep\n"
-        "between santa_sleep and next santa_wake:\n"
+        "between santa_sleep() and next santa_wake():\n"
         "  help_elves() must happen 0 times\n"
     )
     rule_4_scope = RuleScope([
         MatchCheckpoints(["santa_sleep", "santa_wake"]),
-        RenameArgs([ ["santa_sleep", "null"], ["santa_wake", "null"] ]),
-        CrossAndGroupByArgs([ ["santa_sleep", "null"], ["santa_wake", "null"] ]),
+        CrossAndGroupByArgs([ ["santa_sleep"], ["santa_wake"] ]),
         ScopeBetween("santa_sleep1", "santa_wake2")
     ])
     rule_4_fact = RuleFact([
         MatchCheckpoints(["help_elves"]),
-        RenameArgs([ ["help_elves", "null"] ]),
-        CrossAndGroupByArgs([ ["help_elves", "null"] ]),
+        CrossAndGroupByArgs([ ["help_elves"] ]),
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
@@ -146,14 +138,14 @@ class TestSanta(unittest.TestCase):
     )
     rule_7_scope = RuleScope([
         MatchCheckpoints(["get_help", "help_elves"]),
-        RenameArgs([ ["get_help", "e"], ["help_elves", "null"] ]),
-        CrossAndGroupByArgs([ ["get_help", "e"], ["help_elves", "null"] ]),
+        RenameArgs([ ["get_help", "e"], ["help_elves"] ]),
+        CrossAndGroupByArgs([ ["get_help", "e"], ["help_elves"] ]),
         ScopeBetween("get_help1", "help_elves2", False)
     ])
     rule_7_fact = RuleFact([
         MatchCheckpoints(["get_help"]),
         RenameArgs([ ["get_help", "elf"] ]),
-        CrossAndGroupByArgs([ ["get_help", "null"] ]),
+        CrossAndGroupByArgs([ ["get_help"] ]),
         CompareResultsQuantity("<=", 3),
         ReduceResult()
     ])
@@ -168,14 +160,14 @@ class TestSanta(unittest.TestCase):
     )
     rule_8_scope = RuleScope([
         MatchCheckpoints(["get_hitched", "prepare_sleigh"]),
-        RenameArgs([ ["get_hitched", "r"], ["prepare_sleigh", "null"] ]),
-        CrossAndGroupByArgs([ ["get_hitched", "r"], ["prepare_sleigh", "null"] ]),
+        RenameArgs([ ["get_hitched", "r"], ["prepare_sleigh"] ]),
+        CrossAndGroupByArgs([ ["get_hitched", "r"], ["prepare_sleigh"] ]),
         ScopeBetween("get_hitched1", "prepare_sleigh2", False)
     ])
     rule_8_fact = RuleFact([
         MatchCheckpoints(["get_hitched"]),
         RenameArgs([ ["get_hitched", "reindeer"] ]),
-        CrossAndGroupByArgs([ ["get_hitched", "null"] ]),
+        CrossAndGroupByArgs([ ["get_hitched"] ]),
         CompareResultsQuantity("<=", 9),
         ReduceResult()
     ])
@@ -247,8 +239,8 @@ class TestSanta(unittest.TestCase):
     ])
     rule_11_fact = RuleFact([
         MatchCheckpoints(["prepare_sleigh", "get_hitched"]),
-        RenameArgs([ ["prepare_sleigh", "null"], ["get_hitched", "r"] ]),
-        CrossAndGroupByArgs([ ["prepare_sleigh", "null"], ["get_hitched", "r"] ]),
+        RenameArgs([ ["prepare_sleigh"], ["get_hitched", "r"] ]),
+        CrossAndGroupByArgs([ ["prepare_sleigh"], ["get_hitched", "r"] ]),
         ImposeIteratorCondition("r", "=", "#r1", True),
         CompareResultsPrecedence("prepare_sleigh1", "get_hitched2"),
         ReduceResult()
@@ -330,14 +322,12 @@ class TestHighLoadSanta(unittest.TestCase):
     )
     rule_1_scope = RuleScope([
         MatchCheckpoints(["santa_wake", "santa_sleep"]),
-        RenameArgs([["santa_wake", "null"], ["santa_sleep", "null"]]),
-        CrossAndGroupByArgs([ ["santa_wake", "null"], ["santa_sleep", "null"] ]),
+        CrossAndGroupByArgs([ ["santa_wake"], ["santa_sleep"] ]),
         ScopeBetween("santa_wake1", "santa_sleep2")
     ])
     rule_1_fact = RuleFact([
         MatchCheckpoints(["prepare_sleigh"]),
-        RenameArgs([["prepare_sleigh", "null"]]),
-        CrossAndGroupByArgs([ ["prepare_sleigh", "null"] ]),
+        CrossAndGroupByArgs([ ["prepare_sleigh"] ]),
         CompareResultsQuantity("<=", 1),
         ReduceResult()
     ])
@@ -350,14 +340,12 @@ class TestHighLoadSanta(unittest.TestCase):
     )
     rule_2_scope = RuleScope([
         MatchCheckpoints(["santa_wake", "santa_sleep"]),
-        RenameArgs([["santa_wake", "null"], ["santa_sleep", "null"]]),
-        CrossAndGroupByArgs([ ["santa_wake", "null"], ["santa_sleep", "null"] ]),
+        CrossAndGroupByArgs([ ["santa_wake"], ["santa_sleep"] ]),
         ScopeBetween("santa_wake1", "santa_sleep2")
     ])
     rule_2_fact = RuleFact([
         MatchCheckpoints(["help_elves"]),
-        RenameArgs([["help_elves", "null"]]),
-        CrossAndGroupByArgs([ ["help_elves", "null"] ]),
+        CrossAndGroupByArgs([ ["help_elves"] ]),
         CompareResultsQuantity("<=", 1),
         ReduceResult()
     ])
@@ -370,14 +358,12 @@ class TestHighLoadSanta(unittest.TestCase):
     )
     rule_3_scope = RuleScope([
         MatchCheckpoints(["santa_sleep", "santa_wake"]),
-        RenameArgs([["santa_sleep", "null"], ["santa_wake", "null"]]),
-        CrossAndGroupByArgs([ ["santa_sleep", "null"], ["santa_wake", "null"] ]),
+        CrossAndGroupByArgs([ ["santa_sleep"], ["santa_wake"] ]),
         ScopeBetween("santa_sleep1", "santa_wake2")
     ])
     rule_3_fact = RuleFact([
         MatchCheckpoints(["prepare_sleigh"]),
-        RenameArgs([["prepare_sleigh", "null"]]),
-        CrossAndGroupByArgs([ ["prepare_sleigh", "null"] ]),
+        CrossAndGroupByArgs([ ["prepare_sleigh"] ]),
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
@@ -390,14 +376,12 @@ class TestHighLoadSanta(unittest.TestCase):
     )
     rule_4_scope = RuleScope([
         MatchCheckpoints(["santa_sleep", "santa_wake"]),
-        RenameArgs([["santa_sleep", "null"], ["santa_wake", "null"]]),
-        CrossAndGroupByArgs([ ["santa_sleep", "null"], ["santa_wake", "null"] ]),
+        CrossAndGroupByArgs([ ["santa_sleep"], ["santa_wake"] ]),
         ScopeBetween("santa_sleep1", "santa_wake2")
     ])
     rule_4_fact = RuleFact([
         MatchCheckpoints(["help_elves"]),
-        RenameArgs([["help_elves", "null"]]),
-        CrossAndGroupByArgs([ ["help_elves", "null"] ]),
+        CrossAndGroupByArgs([ ["help_elves"] ]),
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
@@ -462,14 +446,14 @@ class TestHighLoadSanta(unittest.TestCase):
     )
     rule_7_scope = RuleScope([
         MatchCheckpoints(["get_help", "help_elves"]),
-        RenameArgs([["get_help", "e"], ["help_elves", "null"]]),
-        CrossAndGroupByArgs([ ["get_help", "e"], ["help_elves", "null"] ]),
+        RenameArgs([["get_help", "e"], ["help_elves"]]),
+        CrossAndGroupByArgs([ ["get_help", "e"], ["help_elves"] ]),
         ScopeBetween("get_help1", "help_elves2", False)
     ])
     rule_7_fact = RuleFact([
         MatchCheckpoints(["get_help"]),
         RenameArgs([["get_help", "elf"]]),
-        CrossAndGroupByArgs([ ["get_help", "null"] ]),
+        CrossAndGroupByArgs([ ["get_help"] ]),
         CompareResultsQuantity("<=", 8),
         ReduceResult()
     ])
@@ -484,14 +468,14 @@ class TestHighLoadSanta(unittest.TestCase):
     )
     rule_8_scope = RuleScope([
         MatchCheckpoints(["get_hitched", "prepare_sleigh"]),
-        RenameArgs([["get_hitched", "r"], ["prepare_sleigh", "null"]]),
-        CrossAndGroupByArgs([ ["get_hitched", "r"], ["prepare_sleigh", "null"] ]),
+        RenameArgs([["get_hitched", "r"], ["prepare_sleigh"]]),
+        CrossAndGroupByArgs([ ["get_hitched", "r"], ["prepare_sleigh"] ]),
         ScopeBetween("get_hitched1", "prepare_sleigh2", False)
     ])
     rule_8_fact = RuleFact([
         MatchCheckpoints(["get_hitched"]),
         RenameArgs([["get_hitched", "reindeer"]]),
-        CrossAndGroupByArgs([ ["get_hitched", "null"] ]),
+        CrossAndGroupByArgs([ ["get_hitched"] ]),
         CompareResultsQuantity("<=", 15),
         ReduceResult()
     ])
@@ -563,8 +547,8 @@ class TestHighLoadSanta(unittest.TestCase):
     ])
     rule_11_fact = RuleFact([
         MatchCheckpoints(["prepare_sleigh", "get_hitched"]),
-        RenameArgs([["prepare_sleigh", "null"], ["get_hitched", "r"]]),
-        CrossAndGroupByArgs([ ["prepare_sleigh", "null"], ["get_hitched", "r"] ]),
+        RenameArgs([["prepare_sleigh"], ["get_hitched", "r"]]),
+        CrossAndGroupByArgs([ ["prepare_sleigh"], ["get_hitched", "r"] ]),
         ImposeIteratorCondition("r", "=", "#r1", True),
         CompareResultsPrecedence("prepare_sleigh1", "get_hitched2"),
         ReduceResult()

@@ -43,7 +43,7 @@ class TestProducersConsumers(unittest.TestCase):
     rule_3_fact = RuleFact([
         MatchCheckpoints(["produce"]),
         RenameArgs([ ["produce", "p", "i"] ]),
-        CrossAndGroupByArgs([ ["produce", "null"] ]),
+        CrossAndGroupByArgs([ ["produce"] ]),
         CompareResultsQuantity("=", 10),
         ReduceResult()
     ])
@@ -57,7 +57,7 @@ class TestProducersConsumers(unittest.TestCase):
     rule_4_fact = RuleFact([
         MatchCheckpoints(["consume"]),
         RenameArgs([ ["consume", "c", "i"] ]),
-        CrossAndGroupByArgs([ ["consume", "null"] ]),
+        CrossAndGroupByArgs([ ["consume"] ]),
         CompareResultsQuantity("=", 10),
         ReduceResult()
     ])
@@ -127,13 +127,13 @@ class TestProducersConsumers(unittest.TestCase):
     rule_8_scope = RuleScope([
         MatchCheckpoints(["produce", "consume"]),
         RenameArgs([ ["produce", "pid", "i1"], ["consume", "cid", "i2"] ]),
-        CrossAndGroupByArgs([ ["produce", "null"], ["consume", "null"] ]),
+        CrossAndGroupByArgs([ ["produce"], ["consume"] ]),
         ScopeBetween("produce1", "consume2")
     ])
     rule_8_fact = RuleFact([
         MatchCheckpoints(["produce"]),
         RenameArgs([ ["produce", "p", "i"] ]),
-        CrossAndGroupByArgs([ ["produce", "null"] ]),
+        CrossAndGroupByArgs([ ["produce"] ]),
         CompareResultsQuantity("<=", 5),
         ReduceResult()
     ])
@@ -149,7 +149,7 @@ class TestProducersConsumers(unittest.TestCase):
     rule_9_scope = RuleScope([
         MatchCheckpoints(["consume"]),
         RenameArgs([ ["consume", "cid", "iid"] ]),
-        CrossAndGroupByArgs([ ["consume", "null"] ]),
+        CrossAndGroupByArgs([ ["consume"] ]),
         ScopeAfter("consume1")
     ])
     rule_9_fact = RuleFact([
@@ -171,7 +171,7 @@ class TestProducersConsumers(unittest.TestCase):
     rule_10_scope = RuleScope([
         MatchCheckpoints(["produce"]),
         RenameArgs([ ["produce", "pid", "iid"] ]),
-        CrossAndGroupByArgs([ ["produce", "null"] ]),
+        CrossAndGroupByArgs([ ["produce"] ]),
         ScopeBefore("produce1")
     ])
     rule_10_fact = RuleFact([

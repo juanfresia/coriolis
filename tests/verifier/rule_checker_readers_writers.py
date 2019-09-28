@@ -238,7 +238,7 @@ class TestReadersWriters(unittest.TestCase):
     rule_10_fact = RuleFact([
         MatchCheckpoints(["write_room"]),
         RenameArgs([ ["write_room", "w", "roomid", "m"] ]),
-        CrossAndGroupByArgs([ ["write_room", "null"] ]),
+        CrossAndGroupByArgs([ ["write_room"] ]),
         ImposeWildcardCondition("roomid", "=", "#room", True),
         ImposeWildcardCondition("m", "=", "#msg", True),
         CompareResultsQuantity(">=", 1),
@@ -267,7 +267,7 @@ class TestReadersWriters(unittest.TestCase):
     rule_11_fact = RuleFact([
         MatchCheckpoints(["write_room"]),
         RenameArgs([ ["write_room", "wid", "roomid", "m"] ]),
-        CrossAndGroupByArgs([ ["write_room", "null"] ]),
+        CrossAndGroupByArgs([ ["write_room"] ]),
         ImposeWildcardCondition("roomid", "=", "#r2", True),
         ImposeWildcardCondition("m", "!=", "#m2", True),
         CompareResultsQuantity("=", 0),
@@ -294,7 +294,7 @@ class TestReadersWriters(unittest.TestCase):
     rule_12_fact = RuleFact([
         MatchCheckpoints(["write_room"]),
         RenameArgs([ ["write_room", "w", "roomid", "m"] ]),
-        CrossAndGroupByArgs([ ["write_room", "null"] ]),
+        CrossAndGroupByArgs([ ["write_room"] ]),
         ImposeWildcardCondition("roomid", "=", "#room", True),
         CompareResultsQuantity("=", 0),
         ReduceResult()
