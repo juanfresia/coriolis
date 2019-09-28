@@ -161,7 +161,7 @@ class CrossJoinCheckpoints(AggregationStep):
 
         return steps
 
-# USAGE EXAMPLE: CrossAndGroupByArgs( ["f", "g"], [ ["i1"], ["i2"] ] )
+# USAGE EXAMPLE: CrossAndGroupByArgs( [ ["f", "i1"], ["g", "i2"] ] )
 # Input:
 #   {'log_line': 1, 'checkpoint': 'f', 'arg_i1': 1}
 #   {'log_line': 2, 'checkpoint': 'g', 'arg_c': 1, 'arg_i2': 1}
@@ -178,10 +178,10 @@ class CrossJoinCheckpoints(AggregationStep):
 #
 # NOTE: The checkpoint names are modified by adding a number sufix (i.e. from "f","g" to "f1","g2")
 class CrossAndGroupByArgs(AggregationStep):
-    def __init__(self, checkpoint_names, arg_names):
+    def __init__(self, checkpoints_and_args_list):
         super().__init__()
-        self.checkpoint_names = checkpoint_names
-        self.arg_names = arg_names
+        self.checkpoint_names = [ c[0] for c in checkpoints_and_args_list ]
+        self.arg_names = [ a[1:] for a in checkpoints_and_args_list ]
 
     def _mongofy(self):
         # Step 1: We cross join all checkpoints according their names

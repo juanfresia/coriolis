@@ -15,7 +15,7 @@ class TestH2O(unittest.TestCase):
     rule_1_fact = RuleFact([
         MatchCheckpoints(["atom_spawn"]),
         RenameArgs([["atom_spawn", "atom_type", "atom_id"]]),
-        CrossAndGroupByArgs(["atom_spawn"], [["null"]]),
+        CrossAndGroupByArgs([ ["atom_spawn", "null"] ]),
         CompareResultsQuantity("=", 60),
         ReduceResult()
     ])
@@ -28,8 +28,8 @@ class TestH2O(unittest.TestCase):
     )
     rule_2_fact = RuleFact([
         MatchCheckpoints(["atom_die"]),
-        RenameArgs([["atom_die", "atom_type", "atom_id"]]),
-        CrossAndGroupByArgs(["atom_die"], [["null"]]),
+        RenameArgs([ ["atom_die", "atom_type", "atom_id"] ]),
+        CrossAndGroupByArgs([ ["atom_die", "null"] ]),
         CompareResultsQuantity("=", 60),
         ReduceResult()
     ])
@@ -45,13 +45,13 @@ class TestH2O(unittest.TestCase):
     rule_3_scope = RuleScope([
         MatchCheckpoints(["atom_spawn"]),
         RenameArgs([["atom_spawn", "atom_type", "atom_id"]]),
-        CrossAndGroupByArgs(["atom_spawn"], [["atom_id"]]),
+        CrossAndGroupByArgs([ ["atom_spawn", "atom_id"] ]),
         ScopeAfter("atom_spawn1")
     ])
     rule_3_fact = RuleFact([
         MatchCheckpoints(["atom_die"]),
-        RenameArgs([["atom_die", "at", "aid"]]),
-        CrossAndGroupByArgs(["atom_die"], [["aid"]]),
+        RenameArgs([ ["atom_die", "at", "aid"] ]),
+        CrossAndGroupByArgs([ ["atom_die", "aid"] ]),
         ImposeIteratorCondition("aid", "=", "#atom_id", True),
         ImposeWildcardCondition("at", "=", "#atom_type", True),
         CompareResultsQuantity("=", 1),
@@ -68,8 +68,8 @@ class TestH2O(unittest.TestCase):
     )
     rule_4_fact = RuleFact([
         MatchCheckpoints(["bond"]),
-        RenameArgs([["bond", "atom_type", "atom_id"]]),
-        CrossAndGroupByArgs(["bond"], [["null"]]),
+        RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
+        CrossAndGroupByArgs([ ["bond", "null"] ]),
         CompareResultsQuantity("=", 60),
         ReduceResult()
     ])
@@ -85,14 +85,14 @@ class TestH2O(unittest.TestCase):
     rule_5_scope = RuleScope([
         MatchCheckpoints(["atom_spawn", "atom_die"]),
         RenameArgs([["atom_spawn", "at1", "aid1"], ["atom_die", "at2", "aid2"]]),
-        CrossAndGroupByArgs(["atom_spawn", "atom_die"], [["aid1"], ["aid2"]]),
+        CrossAndGroupByArgs([ ["atom_spawn", "aid1"], ["atom_die", "aid2"] ]),
         ImposeIteratorCondition("aid1", "=", "aid2"),
         ScopeBetween("atom_spawn1", "atom_die2")
     ])
     rule_5_fact = RuleFact([
         MatchCheckpoints(["bond"]),
-        RenameArgs([["bond", "atom_type", "atom_id"]]),
-        CrossAndGroupByArgs(["bond"], [["atom_id"]]),
+        RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
+        CrossAndGroupByArgs([ ["bond", "atom_id"] ]),
         ImposeIteratorCondition("atom_id", "=", "#aid1", True),
         ImposeWildcardCondition("atom_type", "=", "#at1", True),
         CompareResultsQuantity("=", 1),
@@ -108,8 +108,8 @@ class TestH2O(unittest.TestCase):
     )
     rule_6_fact = RuleFact([
         MatchCheckpoints(["water_made"]),
-        RenameArgs([["water_made", "null"]]),
-        CrossAndGroupByArgs(["water_made"], [["null"]]),
+        RenameArgs([ ["water_made", "null"] ]),
+        CrossAndGroupByArgs([ ["water_made", "null"] ]),
         CompareResultsQuantity("=", 20),
         ReduceResult()
     ])
@@ -123,14 +123,14 @@ class TestH2O(unittest.TestCase):
     )
     rule_7_scope = RuleScope([
         MatchCheckpoints(["water_made"]),
-        RenameArgs([["water_made", "null"]]),
-        CrossAndGroupByArgs(["water_made", "water_made"], [["null"], ["null"]]),
+        RenameArgs([ ["water_made", "null"] ]),
+        CrossAndGroupByArgs([ ["water_made", "null"], ["water_made", "null"] ]),
         ScopeBetween("water_made1", "water_made2")
     ])
     rule_7_fact = RuleFact([
         MatchCheckpoints(["bond"]),
-        RenameArgs([["bond", "atom_type", "atom_id"]]),
-        CrossAndGroupByArgs(["bond"], [["atom_type"]]),
+        RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
+        CrossAndGroupByArgs([ ["bond", "atom_type"] ]),
         ImposeIteratorCondition("atom_type", "=", "H", True),
         CompareResultsQuantity("=", 2),
         ReduceResult()
@@ -146,13 +146,13 @@ class TestH2O(unittest.TestCase):
     rule_8_scope = RuleScope([
         MatchCheckpoints(["water_made"]),
         RenameArgs([["water_made", "null"]]),
-        CrossAndGroupByArgs(["water_made", "water_made"], [["null"], ["null"]]),
+        CrossAndGroupByArgs([ ["water_made", "null"], ["water_made", "null"] ]),
         ScopeBetween("water_made1", "water_made2")
     ])
     rule_8_fact = RuleFact([
         MatchCheckpoints(["bond"]),
         RenameArgs([["bond", "atom_type", "atom_id"]]),
-        CrossAndGroupByArgs(["bond"], [["atom_type"]]),
+        CrossAndGroupByArgs([ ["bond", "atom_type"] ]),
         ImposeIteratorCondition("atom_type", "=", "O", True),
         CompareResultsQuantity("=", 1),
         ReduceResult()
@@ -168,13 +168,13 @@ class TestH2O(unittest.TestCase):
     rule_9_scope = RuleScope([
         MatchCheckpoints(["water_made"]),
         RenameArgs([["water_made", "null"]]),
-        CrossAndGroupByArgs(["water_made", "water_made"], [["null"], ["null"]]),
+        CrossAndGroupByArgs([ ["water_made", "null"], ["water_made", "null"] ]),
         ScopeBetween("water_made1", "water_made2")
     ])
     rule_9_fact = RuleFact([
         MatchCheckpoints(["bond"]),
         RenameArgs([["bond", "atom_type", "atom_id"]]),
-        CrossAndGroupByArgs(["bond"], [["null"]]),
+        CrossAndGroupByArgs([ ["bond", "null"] ]),
         CompareResultsQuantity("=", 3),
         ReduceResult()
     ])
@@ -190,7 +190,7 @@ class TestH2O(unittest.TestCase):
     rule_10_scope = RuleScope([
         MatchCheckpoints(["bond"]),
         RenameArgs([["bond", "at1", "aid1"], ["bond", "at2", "aid2"]]),
-        CrossAndGroupByArgs(["bond", "bond"], [["at1"], ["at2"]]),
+        CrossAndGroupByArgs([ ["bond", "at1"], ["bond", "at2"] ]),
         ImposeIteratorCondition("at1", "=", "H", True),
         ImposeIteratorCondition("at2", "=", "H", True),
         ScopeBetween("bond1", "bond2")
@@ -198,7 +198,7 @@ class TestH2O(unittest.TestCase):
     rule_10_fact = RuleFact([
         MatchCheckpoints(["bond"]),
         RenameArgs([["bond", "atom_type", "atom_id"]]),
-        CrossAndGroupByArgs(["bond"], [["null"]]),
+        CrossAndGroupByArgs([ ["bond", "null"] ]),
         ImposeWildcardCondition("atom_type", "!=", "H", True),
         CompareResultsQuantity("<=", 2),
         ReduceResult()
@@ -215,7 +215,7 @@ class TestH2O(unittest.TestCase):
     rule_11_scope = RuleScope([
         MatchCheckpoints(["bond"]),
         RenameArgs([["bond", "at1", "aid1"], ["bond", "at2", "aid2"]]),
-        CrossAndGroupByArgs(["bond", "bond"], [["at1"], ["at2"]]),
+        CrossAndGroupByArgs([ ["bond", "at1"], ["bond", "at2"] ]),
         ImposeIteratorCondition("at1", "=", "O", True),
         ImposeIteratorCondition("at2", "=", "O", True),
         ScopeBetween("bond1", "bond2")
@@ -223,7 +223,7 @@ class TestH2O(unittest.TestCase):
     rule_11_fact = RuleFact([
         MatchCheckpoints(["bond"]),
         RenameArgs([["bond", "atom_type", "atom_id"]]),
-        CrossAndGroupByArgs(["bond"], [["null"]]),
+        CrossAndGroupByArgs([ ["bond", "null"] ]),
         ImposeWildcardCondition("atom_type", "!=", "O", True),
         CompareResultsQuantity("<=", 4),
         ReduceResult()
@@ -306,7 +306,7 @@ class TestHighLoadH2O(unittest.TestCase):
     rule_1_fact = RuleFact([
         MatchCheckpoints(["atom_spawn"]),
         RenameArgs([ ["atom_spawn", "atom_type", "atom_id"] ]),
-        CrossAndGroupByArgs(["atom_spawn"], [["null"]]),
+        CrossAndGroupByArgs([ ["atom_spawn", "null"] ]),
         CompareResultsQuantity("=", 1500),
         ReduceResult()
     ])
@@ -320,7 +320,7 @@ class TestHighLoadH2O(unittest.TestCase):
     rule_2_fact = RuleFact([
         MatchCheckpoints(["atom_die"]),
         RenameArgs([ ["atom_die", "atom_type", "atom_id"] ]),
-        CrossAndGroupByArgs(["atom_die"], [["null"]]),
+        CrossAndGroupByArgs([ ["atom_die", "null"] ]),
         CompareResultsQuantity("=", 1500),
         ReduceResult()
     ])
@@ -336,13 +336,13 @@ class TestHighLoadH2O(unittest.TestCase):
     rule_3_scope = RuleScope([
         MatchCheckpoints(["atom_spawn"]),
         RenameArgs([ ["atom_spawn", "atom_type", "atom_id"] ]),
-        CrossAndGroupByArgs(["atom_spawn"], [["atom_id"]]),
+        CrossAndGroupByArgs([ ["atom_spawn", "atom_id"] ]),
         ScopeAfter("atom_spawn1")
     ])
     rule_3_fact = RuleFact([
         MatchCheckpoints(["atom_die"]),
         RenameArgs([ ["atom_die", "at", "aid"] ]),
-        CrossAndGroupByArgs(["atom_die"], [["aid"]]),
+        CrossAndGroupByArgs([ ["atom_die", "aid"] ]),
         ImposeIteratorCondition("aid", "=", "#atom_id", True),
         ImposeWildcardCondition("at", "=", "#atom_type", True),
         CompareResultsQuantity("=", 1),
@@ -360,7 +360,7 @@ class TestHighLoadH2O(unittest.TestCase):
     rule_4_fact = RuleFact([
         MatchCheckpoints(["bond"]),
         RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
-        CrossAndGroupByArgs(["bond"], [["null"]]),
+        CrossAndGroupByArgs([ ["bond", "null"] ]),
         CompareResultsQuantity("=", 1500),
         ReduceResult()
     ])
@@ -376,14 +376,14 @@ class TestHighLoadH2O(unittest.TestCase):
     rule_5_scope = RuleScope([
         MatchCheckpoints(["atom_spawn", "atom_die"]),
         RenameArgs([ ["atom_spawn", "at1", "aid1"], ["atom_die", "at2", "aid2"] ]),
-        CrossAndGroupByArgs(["atom_spawn", "atom_die"], [["aid1"], ["aid2"]]),
+        CrossAndGroupByArgs([ ["atom_spawn", "aid1"], ["atom_die", "aid2"] ]),
         ImposeIteratorCondition("aid1", "=", "aid2"),
         ScopeBetween("atom_spawn1", "atom_die2")
     ])
     rule_5_fact = RuleFact([
         MatchCheckpoints(["bond"]),
         RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
-        CrossAndGroupByArgs(["bond"], [["atom_id"]]),
+        CrossAndGroupByArgs([ ["bond", "atom_id"] ]),
         ImposeIteratorCondition("atom_id", "=", "#aid1", True),
         ImposeWildcardCondition("atom_type", "=", "#at1", True),
         CompareResultsQuantity("=", 1),
@@ -400,7 +400,7 @@ class TestHighLoadH2O(unittest.TestCase):
     rule_6_fact = RuleFact([
         MatchCheckpoints(["water_made"]),
         RenameArgs([ ["water_made", "null"] ]),
-        CrossAndGroupByArgs(["water_made"], [["null"]]),
+        CrossAndGroupByArgs([ ["water_made", "null"] ]),
         CompareResultsQuantity("=", 500),
         ReduceResult()
     ])
@@ -415,13 +415,13 @@ class TestHighLoadH2O(unittest.TestCase):
     rule_7_scope = RuleScope([
         MatchCheckpoints(["water_made"]),
         RenameArgs([ ["water_made", "null"] ]),
-        CrossAndGroupByArgs(["water_made", "water_made"], [["null"], ["null"]]),
+        CrossAndGroupByArgs([ ["water_made", "null"], ["water_made", "null"] ]),
         ScopeBetween("water_made1", "water_made2")
     ])
     rule_7_fact = RuleFact([
         MatchCheckpoints(["bond"]),
         RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
-        CrossAndGroupByArgs(["bond"], [["atom_type"]]),
+        CrossAndGroupByArgs([ ["bond", "atom_type"] ]),
         ImposeIteratorCondition("atom_type", "=", "H", True),
         CompareResultsQuantity("=", 2),
         ReduceResult()
@@ -437,13 +437,13 @@ class TestHighLoadH2O(unittest.TestCase):
     rule_8_scope = RuleScope([
         MatchCheckpoints(["water_made"]),
         RenameArgs([ ["water_made", "null"] ]),
-        CrossAndGroupByArgs(["water_made", "water_made"], [["null"], ["null"]]),
+        CrossAndGroupByArgs([ ["water_made", "null"], ["water_made", "null"] ]),
         ScopeBetween("water_made1", "water_made2")
     ])
     rule_8_fact = RuleFact([
         MatchCheckpoints(["bond"]),
         RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
-        CrossAndGroupByArgs(["bond"], [["atom_type"]]),
+        CrossAndGroupByArgs([ ["bond", "atom_type"] ]),
         ImposeIteratorCondition("atom_type", "=", "O", True),
         CompareResultsQuantity("=", 1),
         ReduceResult()
@@ -459,13 +459,13 @@ class TestHighLoadH2O(unittest.TestCase):
     rule_9_scope = RuleScope([
         MatchCheckpoints(["water_made"]),
         RenameArgs([ ["water_made", "null"] ]),
-        CrossAndGroupByArgs(["water_made", "water_made"], [["null"], ["null"]]),
+        CrossAndGroupByArgs([ ["water_made", "null"], ["water_made", "null"] ]),
         ScopeBetween("water_made1", "water_made2")
     ])
     rule_9_fact = RuleFact([
         MatchCheckpoints(["bond"]),
         RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
-        CrossAndGroupByArgs(["bond"], [["null"]]),
+        CrossAndGroupByArgs([ ["bond", "null"] ]),
         CompareResultsQuantity("=", 3),
         ReduceResult()
     ])
@@ -481,7 +481,7 @@ class TestHighLoadH2O(unittest.TestCase):
     rule_10_scope = RuleScope([
         MatchCheckpoints(["bond"]),
         RenameArgs([ ["bond", "at1", "aid1"], ["bond", "at2", "aid2"] ]),
-        CrossAndGroupByArgs(["bond", "bond"], [["at1"], ["at2"]]),
+        CrossAndGroupByArgs([ ["bond", "at1"], ["bond", "at2"] ]),
         ImposeIteratorCondition("at1", "=", "H", True),
         ImposeIteratorCondition("at2", "=", "H", True),
         ScopeBetween("bond1", "bond2")
@@ -489,7 +489,7 @@ class TestHighLoadH2O(unittest.TestCase):
     rule_10_fact = RuleFact([
         MatchCheckpoints(["bond"]),
         RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
-        CrossAndGroupByArgs(["bond"], [["null"]]),
+        CrossAndGroupByArgs([ ["bond", "null"] ]),
         ImposeWildcardCondition("atom_type", "!=", "H", True),
         CompareResultsQuantity("<=", 2),
         ReduceResult()
@@ -506,7 +506,7 @@ class TestHighLoadH2O(unittest.TestCase):
     rule_11_scope = RuleScope([
         MatchCheckpoints(["bond"]),
         RenameArgs([ ["bond", "at1", "aid1"], ["bond", "at2", "aid2"] ]),
-        CrossAndGroupByArgs(["bond", "bond"], [["at1"], ["at2"]]),
+        CrossAndGroupByArgs([ ["bond", "at1"], ["bond", "at2"] ]),
         ImposeIteratorCondition("at1", "=", "O", True),
         ImposeIteratorCondition("at2", "=", "O", True),
         ScopeBetween("bond1", "bond2")
@@ -514,7 +514,7 @@ class TestHighLoadH2O(unittest.TestCase):
     rule_11_fact = RuleFact([
         MatchCheckpoints(["bond"]),
         RenameArgs([ ["bond", "atom_type", "atom_id"] ]),
-        CrossAndGroupByArgs(["bond"], [["null"]]),
+        CrossAndGroupByArgs([ ["bond", "null"] ]),
         ImposeWildcardCondition("atom_type", "!=", "O", True),
         CompareResultsQuantity("<=", 4),
         ReduceResult()

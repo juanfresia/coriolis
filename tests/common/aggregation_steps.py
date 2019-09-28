@@ -114,7 +114,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output)
 
     def test_cross_group_by_args(self):
-        step = CrossAndGroupByArgs(["f", "g"], [["i1"], ["i2"]])
+        step = CrossAndGroupByArgs([ ["f", "i1"], ["g", "i2"] ])
         input= [
             {'log_line': 1, 'checkpoint': 'f', 'arg_i1': 1},
             {'log_line': 2, 'checkpoint': 'g', 'arg_c': 1, 'arg_i2': 1},
@@ -133,7 +133,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output)
 
     def test_cross_group_by_null(self):
-        step = CrossAndGroupByArgs(["f"], [["null"]])
+        step = CrossAndGroupByArgs([ ["f", "null"] ])
         input= [
             {'log_line': 1, 'checkpoint': 'f', 'arg_x': 1},
             {'log_line': 2, 'checkpoint': 'f', 'arg_x': 3},
