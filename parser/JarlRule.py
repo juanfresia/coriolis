@@ -182,9 +182,10 @@ class JarlCheckpoint():
         return "<{} {}>".format(self.name, self.arguments)
 
 class JarlRuleFact():
-    def __init__(self):
-        self.filter = None
-        self.facts = None
+    def __init__(self, filter=None, facts=None):
+        self.filter = filter
+        if not facts:
+            self.facts = []
 
     def __eq__(self, other):
         return isinstance(other, JarlRuleScope) and \
@@ -207,11 +208,33 @@ class JarlRuleFactClause():
     def __repr__(self):
         return "<{} {}>".format(self.checkpoint, self.requirement)
 
-class JarlRuleFactRequirement():
-    def __init__(self):
-        self.TODO = "TODO"
+class JarlRuleFactRequirementCount():
+    def __init__(self, type="eq", count=1, negated=False):
+        self.type = type
+        self.count = count
+        self.negated = negated
+
+    def __eq__(self, other):
+        return isinstance(other, JarlRuleFactRequirementCount) and \
+                self.count == other.count and \
+                self.negated == other.negated and \
+                self.type == other.type
 
     def __repr__(self):
-        return "<{}>".format(self.TODO)
+        return "<{} {} {}>".format("not" if self.negated else "", self.type, self.count)
 
+class JarlRuleFactRequirementOrder():
+    def __init__(self, checkpoint, type="after", negated=False):
+        self.checkpoint = checkpoint
+        self.type = type
+        self.negated = negated
+
+    def __eq__(self, other):
+        return isinstance(other, JarlRuleFactRequirementOrder) and \
+                self.checkpoint == other.checkpoint and \
+                self.negated == other.negated and \
+                self.type == other.type
+
+    def __repr__(self):
+        return "<{} {} {}>".format("not" if self.negated else "", self.type, self.checkpoint)
 
