@@ -4,8 +4,10 @@ from .JarlLexer import JarlLexer
 from .JarlParser import JarlParser
 from .JarlActualListener import JarlListener
 
-def main(argv):
-    input = FileStream(argv[1])
+def parse_stream(input):
+    """ Uses JarlLexer and JarlParser to parse an input stream.
+    Returns a list of JarlRues"""
+
     lexer = JarlLexer(input)
     stream = CommonTokenStream(lexer)
     parser = JarlParser(stream)
@@ -15,6 +17,19 @@ def main(argv):
     walker = ParseTreeWalker()
     walker.walk(Jarl, tree)
 
+    return Jarl.rules
+
+def parse_file(filepath):
+    input = FileStream(filepath)
+    return parse_stream(input)
+
+def parse_str(s):
+    input = InputStream(s)
+    return parse_stream(input)
+
+
+def main(argv):
+    rules = parse_file(argv[1])
     for rule in Jarl.rules:
         lines = [line for line in rule.text.splitlines() if line]
         for line in lines:
