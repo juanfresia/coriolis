@@ -9,10 +9,12 @@ class TestSmokers(unittest.TestCase):
 
     rule_1_statement = (
         "# Only one smoker smokes at a time\n"
-        "between agent_wake and next agent_wake:\n"
+        "rule one_smoke_per_round\n"
+        "between agent_wake() and next agent_wake():\n"
         "  for any s:\n"
         "  smoker_smoke(s) must happen 1 time\n"
     )
+    rule_1_header = "one_smoke_per_round"
     rule_1_scope = RuleScope([
         MatchCheckpoints(["agent_wake"]),
         CrossAndGroupByArgs([ ["agent_wake"], ["agent_wake"] ]),
@@ -25,15 +27,17 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_1 = JARLRule(rule_1_statement, rule_1_fact, rule_1_scope, passed_by_default=False)
+    rule_1 = JARLRule(rule_1_statement, rule_1_header, rule_1_fact, rule_1_scope, passed_by_default=False)
 
     rule_2_statement = (
         "# Smoker that smoked took two elements\n"
+        "rule smoker_took_two_elements\n"
         "for any s:\n"
-        "between agent_wake and next smoker_smoke(s):\n"
-        "  for any sid=s, e:\n"
+        "between agent_wake() and next smoker_smoke(s):\n"
+        "  for any sid, e with sid=s:\n"
         "  smoker_take_element(sid, e) must happen 2 times\n"
     )
+    rule_2_header = "smoker_took_two_elements"
     rule_2_scope = RuleScope([
         MatchCheckpoints(["agent_wake", "smoker_smoke"]),
         RenameArgs([ ["smoker_smoke", "s"] ]),
@@ -48,16 +52,18 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 2),
         ReduceResult()
     ])
-    rule_2 = JARLRule(rule_2_statement, rule_2_fact, rule_2_scope, passed_by_default=False)
+    rule_2 = JARLRule(rule_2_statement, rule_2_header, rule_2_fact, rule_2_scope, passed_by_default=False)
     rule_2.set_dynamic_scope_arg("s", False)
 
     rule_3_statement = (
         "# Every element can only be taken once\n"
+        "rule elements_taken_once\n"
         "for any s:\n"
-        "between agent_wake and next smoker_smoke(s):\n"
-        "  for every e and any sid=s:\n"
+        "between agent_wake() and next smoker_smoke(s):\n"
+        "  for every e and any sid with sid=s:\n"
         "  smoker_take_element(sid, e) must happen 1 times\n"
     )
+    rule_3_header = "elements_taken_once"
     rule_3_scope = RuleScope([
         MatchCheckpoints(["agent_wake", "smoker_smoke"]),
         RenameArgs([ ["smoker_smoke", "s"] ]),
@@ -72,16 +78,18 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_3 = JARLRule(rule_3_statement, rule_3_fact, rule_3_scope, passed_by_default=False)
+    rule_3 = JARLRule(rule_3_statement, rule_3_header, rule_3_fact, rule_3_scope, passed_by_default=False)
     rule_3.set_dynamic_scope_arg("s", False)
 
     rule_4_statement = (
         "# Elements cant be taken after smoking if agent doesnt wake again\n"
+        "rule elements_cant_be_taken_after_smoking\n"
         "for any s:\n"
-        "between smoker_smoke(s) and next agent_wake:\n"
+        "between smoker_smoke(s) and next agent_wake():\n"
         "  for any sid, e:\n"
         "  smoker_take_element(sid, e) must happen 0 times\n"
     )
+    rule_4_header = "elements_cant_be_taken_after_smoking"
     rule_4_scope = RuleScope([
         MatchCheckpoints(["smoker_smoke", "agent_wake"]),
         RenameArgs([ ["smoker_smoke", "s"] ]),
@@ -95,14 +103,16 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_4 = JARLRule(rule_4_statement, rule_4_fact, rule_4_scope, passed_by_default=True)
+    rule_4 = JARLRule(rule_4_statement, rule_4_header, rule_4_fact, rule_4_scope, passed_by_default=True)
 
     rule_5_statement = (
         "# Agent produces 2 items per round\n"
-        "between agent_wake and next agent_sleep:\n"
+        "rule two_produce_per_round\n"
+        "between agent_wake() and next agent_sleep():\n"
         "  for any e:\n"
         "  agent_produce(e) must happen 2 times\n"
     )
+    rule_5_header = "two_produce_per_round"
     rule_5_scope = RuleScope([
         MatchCheckpoints(["agent_wake", "agent_sleep"]),
         CrossAndGroupByArgs([ ["agent_wake"], ["agent_sleep"] ]),
@@ -115,14 +125,16 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 2),
         ReduceResult()
     ])
-    rule_5 = JARLRule(rule_5_statement, rule_5_fact, rule_5_scope, passed_by_default=False)
+    rule_5 = JARLRule(rule_5_statement, rule_5_header, rule_5_fact, rule_5_scope, passed_by_default=False)
 
     rule_6_statement = (
         "# Elements arent produced if agent is sleeping\n"
-        "between agent_sleep and next agent_wake:\n"
+        "rule agent_cant_produce_sleeping\n"
+        "between agent_sleep() and next agent_wake():\n"
         "  for any e:\n"
         "  agent_produce(e) must happen 0 times\n"
     )
+    rule_6_header = "agent_cant_produce_sleeping"
     rule_6_scope = RuleScope([
         MatchCheckpoints(["agent_sleep", "agent_wake"]),
         CrossAndGroupByArgs([ ["agent_sleep"], ["agent_wake"] ]),
@@ -135,13 +147,15 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_6 = JARLRule(rule_6_statement, rule_6_fact, rule_6_scope, passed_by_default=True)
+    rule_6 = JARLRule(rule_6_statement, rule_6_header, rule_6_fact, rule_6_scope, passed_by_default=True)
 
     rule_7_statement = (
         "# Smokers never take elements they already have\n"
-        "for every s, e=s:\n"
+        "rule smokers_dont_take_their_element\n"
+        "for every s, e with e=s:\n"
         "smoker_take_element(s, e) must happen 0 times\n"
     )
+    rule_7_header = "smokers_dont_take_their_element"
     rule_7_fact = RuleFact([
         MatchCheckpoints(["smoker_take_element"]),
         RenameArgs([ ["smoker_take_element", "s", "e"] ]),
@@ -150,15 +164,17 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
-    rule_7 = JARLRule(rule_7_statement, rule_7_fact, passed_by_default=True)
+    rule_7 = JARLRule(rule_7_statement, rule_7_header, rule_7_fact, passed_by_default=True)
 
     rule_8_statement = (
         "# Smoker smokes once between dreams\n"
-        "for every s1, s2=s1:\n"
+        "rule smokers_smoke_while_awake\n"
+        "for every s1, s2 with s2=s1:\n"
         "between smoker_sleep(s1) and next smoker_sleep(s2):\n"
-        "  for any s=s1:\n"
+        "  for any s with s=s1:\n"
         "  smoker_smoke(s) must happen 1 times\n"
     )
+    rule_8_header = "smokers_smoke_while_awake"
     rule_8_scope = RuleScope([
         MatchCheckpoints(["smoker_sleep"]),
         RenameArgs([ ["smoker_sleep", "s1"], ["smoker_sleep", "s2"] ]),
@@ -174,14 +190,16 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_8 = JARLRule(rule_8_statement, rule_8_fact, rule_8_scope, passed_by_default=False)
+    rule_8 = JARLRule(rule_8_statement, rule_8_header, rule_8_fact, rule_8_scope, passed_by_default=False)
     rule_8.set_dynamic_scope_arg("s1", False)
 
     rule_9_statement = (
         "# 40 elements are produced\n"
+        "rule forty_elements_produced\n"
         "for any e:\n"
         "agent_produce(e) must happen 40 times\n"
     )
+    rule_9_header = "forty_elements_produced"
     rule_9_fact = RuleFact([
         MatchCheckpoints(["agent_produce"]),
         RenameArgs([ ["agent_produce", "e"] ]),
@@ -189,13 +207,15 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 40),
         ReduceResult()
     ])
-    rule_9 = JARLRule(rule_9_statement, rule_9_fact, passed_by_default=False)
+    rule_9 = JARLRule(rule_9_statement, rule_9_header, rule_9_fact, passed_by_default=False)
 
     rule_10_statement = (
         "# All elements are taken\n"
+        "rule all_elements_taken\n"
         "for any s, e:\n"
         "smoker_take_element(s, e) must happen 40 times\n"
     )
+    rule_10_header = "all_elements_taken"
     rule_10_fact = RuleFact([
         MatchCheckpoints(["smoker_take_element"]),
         RenameArgs([ ["smoker_take_element", "s", "e"] ]),
@@ -203,13 +223,15 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 40),
         ReduceResult()
     ])
-    rule_10 = JARLRule(rule_10_statement, rule_10_fact, passed_by_default=False)
+    rule_10 = JARLRule(rule_10_statement, rule_10_header, rule_10_fact, passed_by_default=False)
 
     rule_11_statement = (
         "# 20 cigarettes can be smoked\n"
+        "rule twenty_cigarettes_smoked\n"
         "for any s:\n"
         "smoker_smoke(e) must happen 20 times\n"
     )
+    rule_11_header = "twenty_cigarettes_smoked"
     rule_11_fact = RuleFact([
         MatchCheckpoints(["smoker_smoke"]),
         RenameArgs([ ["smoker_smoke", "s"] ]),
@@ -217,7 +239,7 @@ class TestSmokers(unittest.TestCase):
         CompareResultsQuantity("=", 20),
         ReduceResult()
     ])
-    rule_11 = JARLRule(rule_11_statement, rule_11_fact, passed_by_default=False)
+    rule_11 = JARLRule(rule_11_statement, rule_11_header, rule_11_fact, passed_by_default=False)
 
     def check_one_rule(self, rule):
         rc = RuleChecker([ rule ], self.log_file, self.checkpoint_file)
