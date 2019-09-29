@@ -373,7 +373,7 @@ for any b, m, writer_id with b=buffer, m=msg:
 write_buffer(writer_id, b, m) must happen at least 1 times
 ```
 
-## Rule statement
+## JARL rule files
 
 A JARL rule file contains all the rules to be validated by the underlying testing runtime. It should be stored with the `.jarl` extension. Since whitespaces, tabulation and newlines are all optional inside JARL syntax, rules shoud be distinguished from one another with the `rule` reserved word, according to the following syntax:
 
