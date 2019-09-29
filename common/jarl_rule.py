@@ -3,8 +3,9 @@ import copy
 from common.aggregation_steps import *
 
 class JARLRule:
-    def __init__(self, statement_text, fact, scope=None, passed_by_default=True):
+    def __init__(self, statement_text, rule_header, fact, scope=None, passed_by_default=True):
         self.text = statement_text
+        self.rule_header = rule_header
         self.fact = fact
         self.scope = scope
         self.status = "Pending"
