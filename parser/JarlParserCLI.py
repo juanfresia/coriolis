@@ -3,6 +3,7 @@ from antlr4 import *
 from .JarlLexer import JarlLexer
 from .JarlParser import JarlParser
 from .JarlActualListener import JarlListener
+from .JarlRuleValidator import validate_rule
 
 def parse_stream(input):
     """ Uses JarlLexer and JarlParser to parse an input stream.
@@ -17,6 +18,8 @@ def parse_stream(input):
     walker = ParseTreeWalker()
     walker.walk(Jarl, tree)
 
+    for rule in Jarl.rules:
+        validate_rule(rule)
     return Jarl.rules
 
 def parse_file(filepath):
@@ -26,7 +29,6 @@ def parse_file(filepath):
 def parse_str(s):
     input = InputStream(s)
     return parse_stream(input)
-
 
 def main(argv):
     rules = parse_file(argv[1])
@@ -40,7 +42,6 @@ def main(argv):
         print(rule)
         print()
         print()
-
         
 if __name__ == '__main__':
     main(sys.argv)

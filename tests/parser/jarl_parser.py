@@ -146,7 +146,6 @@ class TestParserCLI(unittest.TestCase):
         self.assertEqual(expected_filter_every, rule_scope.filter.every)
         self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
 
-    @unittest.skip
     def test_parse_filter_iteratior_duplicated_err(self):
         rule = """
         rule test_parse_filter_same_argument_in_both_err
@@ -157,7 +156,6 @@ class TestParserCLI(unittest.TestCase):
 
         self.assertRaises(JarlIteratorAlreadyDefined, parse_str, rule)
 
-    @unittest.skip
     def test_parse_filter_same_argument_in_both_err(self):
         rule = """
         rule test_parse_filter_same_argument_in_both_err

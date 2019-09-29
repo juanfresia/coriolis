@@ -43,7 +43,6 @@ class JarlListener(ParseTreeListener):
             self.rules[-1].scope = self.scopes.pop()
         self.rules[-1].fact = self.facts.pop()
 
-
     # Enter a parse tree produced by JarlParser#rule_header.
     def enterRule_header(self, ctx:JarlParser.Rule_headerContext):
         ruleName = ctx.header_expr().IDENTIFIER().getText()
