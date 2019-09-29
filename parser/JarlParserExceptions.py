@@ -4,3 +4,6 @@ class JarlRuleValidationError(Exception):
 
 class JarlIteratorAlreadyDefined(JarlRuleValidationError):
     pass
+
+class JarlIteratorUndefined(JarlRuleValidationError):
+    pass

@@ -187,7 +187,7 @@ class TestParserCLI(unittest.TestCase):
 
     def test_parse_filter_multiple_conditions(self):
         rule = """
-        rule test_parse_filter_conditions
+        rule test_parse_filter_multiple_conditions
         for every e1, e2, e3, e4 with e1=e2, e3>e4, e2<=e4
         after foo()
         bar() must happen
@@ -201,6 +201,36 @@ class TestParserCLI(unittest.TestCase):
         expected_cond_3 = JarlWithCondition("e2", JarlComparator.LE, "e4")
         expected_filter_condition = [expected_cond_1, expected_cond_2, expected_cond_3]
         self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
+
+    def test_parse_filter_condition_uses_undefined_iterator(self):
+        rule = """
+        rule test_parse_filter_condition_uses_undefined_iterator
+        for every e1, e2 with e1=e2, e3>e4
+        after foo()
+        bar() must happen
+        """
+
+        self.assertRaises(JarlIteratorUndefined, parse_str, rule)
+
+    def test_parse_filter_condition_uses_any(self):
+        rule = """
+        rule test_parse_filter_condition_uses_any
+        for any e1, e2 with e1=e2
+        after foo()
+        bar() must happen
+        """
+
+        self.assertRaises(JarlIteratorUndefined, parse_str, rule)
+
+    def test_parse_filter_condition_uses_any2(self):
+        rule = """
+        rule test_parse_filter_condition_uses_any2
+        for any e1 and every e2 with e1=e2
+        after foo()
+        bar() must happen
+        """
+
+        self.assertRaises(JarlIteratorUndefined, parse_str, rule)
 
 if __name__ == '__main__':
     unittest.main()
