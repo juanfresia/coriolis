@@ -135,8 +135,8 @@ class JarlComparator(Enum):
             "=": JarlComparator.EQ,
             "!=": JarlComparator.NE,
             "<": JarlComparator.LT,
-            "<=": JarlComparator.GE,
-            ">i": JarlComparator.GT,
+            "<=": JarlComparator.LE,
+            ">": JarlComparator.GT,
             ">=": JarlComparator.GE,
         }
         return _from_symbol[s]

@@ -169,23 +169,39 @@ class TestParserCLI(unittest.TestCase):
         self.assertRaises(JarlIteratorAlreadyDefined, parse_str, rule)
 
     # Tests involving conditions
-    def test_parse_filter_with_valid_condition(self):
+    def test_parse_filter_conditions(self):
+        operators = ["=", "!=", "<", "<=", ">", ">="]
+
         rule = """
-        rule test_parse_filter_same_argument_in_both_err
-        for every e1, e2 with e1=e2
+        rule test_parse_filter_conditions
+        for every e1, e2 with e1{}e2
         after foo()
         bar() must happen
         """
+
+        for op in operators:
+            rules = parse_str(rule.format(op))
+
+            rule_scope = rules[0].scope
+            expected_operator = JarlComparator.from_symbol(op)
+            expected_filter_condition = [JarlWithCondition("e1", expected_operator, "e2")]
+            self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
+
+    def test_parse_filter_multiple_conditions(self):
+        rule = """
+        rule test_parse_filter_conditions
+        for every e1, e2, e3, e4 with e1=e2, e3>e4, e2<=e4
+        after foo()
+        bar() must happen
+        """
+
         rules = parse_str(rule)
 
         rule_scope = rules[0].scope
-        expected_filter_any = []
-        expected_filter_every = ["e1", "e2"]
-        expected_filter_condition = [JarlWithCondition("e1", JarlComparator.EQ, "e2")]
-
-        self.assertIsNotNone(rule_scope.filter)
-        self.assertEqual(expected_filter_any, rule_scope.filter.any)
-        self.assertEqual(expected_filter_every, rule_scope.filter.every)
+        expected_cond_1 = JarlWithCondition("e1", JarlComparator.EQ, "e2")
+        expected_cond_2 = JarlWithCondition("e3", JarlComparator.GT, "e4")
+        expected_cond_3 = JarlWithCondition("e2", JarlComparator.LE, "e4")
+        expected_filter_condition = [expected_cond_1, expected_cond_2, expected_cond_3]
         self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
 
 if __name__ == '__main__':
