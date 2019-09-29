@@ -100,13 +100,13 @@ class JarlListener(ParseTreeListener):
     def enterWith_clause(self, ctx:JarlParser.With_clauseContext):
         conditions = []
         for i in ctx.condition_list().condition():
-            l = i.IDENTIFIER()[0]
-            c = i.COMPARATOR()
+            l = i.IDENTIFIER()[0].getText()
+            c = JarlComparator.from_symbol(i.COMPARATOR().getText())
             if i.LITERAL():
-                r = i.LITERAL()
+                r = i.LITERAL().getText()
                 literal = True
             else:
-                r = i.IDENTIFIER()[1]
+                r = i.IDENTIFIER()[1].getText()
                 literal = False
             conditions.append(JarlWithCondition(l, c, r, literal))
 

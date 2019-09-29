@@ -122,6 +122,26 @@ class JarlWithClause():
     def __repr__(self):
         return "<{}>".self.conditions
 
+class JarlComparator(Enum):
+    EQ = 0
+    NE = 1
+    LT = 2
+    LE = 3
+    GT = 4
+    GE = 5
+
+    def from_symbol(s):
+        _from_symbol = {
+            "=": JarlComparator.EQ,
+            "!=": JarlComparator.NE,
+            "<": JarlComparator.LT,
+            "<=": JarlComparator.GE,
+            ">i": JarlComparator.GT,
+            ">=": JarlComparator.GE,
+        }
+        return _from_symbol[s]
+
+
 class JarlWithCondition():
     def __init__(self, l, c, r, is_literal=False):
         self.l = l
@@ -131,9 +151,9 @@ class JarlWithCondition():
 
     def __eq__(self, other):
         return isinstance(other, JarlWithCondition) and \
-                self.l == self.l and \
-                self.c == self.c and \
-                self.r == self.r and \
+                self.l == other.l and \
+                self.c == other.c and \
+                self.r == other.r and \
                 self.is_literal == other.is_literal
 
     def __repr__(self):

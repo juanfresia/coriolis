@@ -126,6 +126,7 @@ class TestParserCLI(unittest.TestCase):
         self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
 
     # TODO: does order matter??
+    @unittest.skip
     def test_parse_filter_insane_iterator(self):
         rule = """
         rule test_parse_filter_insane_iterator
@@ -145,6 +146,7 @@ class TestParserCLI(unittest.TestCase):
         self.assertEqual(expected_filter_every, rule_scope.filter.every)
         self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
 
+    @unittest.skip
     def test_parse_filter_iteratior_duplicated_err(self):
         rule = """
         rule test_parse_filter_same_argument_in_both_err
@@ -155,6 +157,7 @@ class TestParserCLI(unittest.TestCase):
 
         self.assertRaises(JarlIteratorAlreadyDefined, parse_str, rule)
 
+    @unittest.skip
     def test_parse_filter_same_argument_in_both_err(self):
         rule = """
         rule test_parse_filter_same_argument_in_both_err
@@ -165,7 +168,25 @@ class TestParserCLI(unittest.TestCase):
 
         self.assertRaises(JarlIteratorAlreadyDefined, parse_str, rule)
 
+    # Tests involving conditions
+    def test_parse_filter_with_valid_condition(self):
+        rule = """
+        rule test_parse_filter_same_argument_in_both_err
+        for every e1, e2 with e1=e2
+        after foo()
+        bar() must happen
+        """
+        rules = parse_str(rule)
 
+        rule_scope = rules[0].scope
+        expected_filter_any = []
+        expected_filter_every = ["e1", "e2"]
+        expected_filter_condition = [JarlWithCondition("e1", JarlComparator.EQ, "e2")]
+
+        self.assertIsNotNone(rule_scope.filter)
+        self.assertEqual(expected_filter_any, rule_scope.filter.any)
+        self.assertEqual(expected_filter_every, rule_scope.filter.every)
+        self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
 
 if __name__ == '__main__':
     unittest.main()
