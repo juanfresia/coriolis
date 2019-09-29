@@ -66,6 +66,83 @@ class TestParserCLI(unittest.TestCase):
         self.assertIsNone(rule_fact.filter)
         self.assertEqual(expected_facts, rule_fact.facts)
 
+    # Tests for filter expressions
+    def test_parse_filter_any(self):
+        rule = """
+        rule test_parse_filter_any
+        for any e1, e2
+        after foo()
+        bar() must happen
+        """
+        rules = parse_str(rule)
+
+        rule_scope = rules[0].scope
+        expected_filter_any = ["e1", "e2"]
+        expected_filter_every = []
+        expected_filter_condition = []
+
+        self.assertIsNotNone(rule_scope.filter)
+        self.assertEqual(expected_filter_any, rule_scope.filter.any)
+        self.assertEqual(expected_filter_every, rule_scope.filter.every)
+        self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
+
+    def test_parse_filter_every(self):
+        rule = """
+        rule test_parse_filter_every
+        for every e1, e2
+        after foo()
+        bar() must happen
+        """
+        rules = parse_str(rule)
+
+        rule_scope = rules[0].scope
+        expected_filter_any = []
+        expected_filter_every = ["e1", "e2"]
+        expected_filter_condition = []
+
+        self.assertIsNotNone(rule_scope.filter)
+        self.assertEqual(expected_filter_any, rule_scope.filter.any)
+        self.assertEqual(expected_filter_every, rule_scope.filter.every)
+        self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
+
+    def test_parse_filter_mixed_any_every(self):
+        rule = """
+        rule test_parse_filter_mixed_any_every
+        for every e1, e2 and any e3, e4
+        after foo()
+        bar() must happen
+        """
+        rules = parse_str(rule)
+
+        rule_scope = rules[0].scope
+        expected_filter_any = ["e3", "e4"]
+        expected_filter_every = ["e1", "e2"]
+        expected_filter_condition = []
+
+        self.assertIsNotNone(rule_scope.filter)
+        self.assertEqual(expected_filter_any, rule_scope.filter.any)
+        self.assertEqual(expected_filter_every, rule_scope.filter.every)
+        self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
+
+    # TODO: does order matter??
+    def test_parse_filter_insane_iterator(self):
+        rule = """
+        rule test_parse_filter_insane_iterator
+        for every e1 and any e3, e4 and every e2
+        after foo()
+        bar() must happen
+        """
+        rules = parse_str(rule)
+
+        rule_scope = rules[0].scope
+        expected_filter_any = ["e3", "e4"]
+        expected_filter_every = ["e1", "e2"]
+        expected_filter_condition = []
+
+        self.assertIsNotNone(rule_scope.filter)
+        self.assertEqual(expected_filter_any, rule_scope.filter.any)
+        self.assertEqual(expected_filter_every, rule_scope.filter.every)
+        self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
 
 if __name__ == '__main__':
     unittest.main()
