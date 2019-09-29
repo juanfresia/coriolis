@@ -2,6 +2,7 @@ import unittest
 
 from parser.JarlParserCLI import parse_str
 from parser.JarlRule import *
+from parser.JarlParserExceptions import *
 
 class TestParserCLI(unittest.TestCase):
     def test_parse_rule_name(self):
@@ -143,6 +144,28 @@ class TestParserCLI(unittest.TestCase):
         self.assertEqual(expected_filter_any, rule_scope.filter.any)
         self.assertEqual(expected_filter_every, rule_scope.filter.every)
         self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
+
+    def test_parse_filter_iteratior_duplicated_err(self):
+        rule = """
+        rule test_parse_filter_same_argument_in_both_err
+        for every e1 and every e1
+        after foo()
+        bar() must happen
+        """
+
+        self.assertRaises(JarlIteratorAlreadyDefined, parse_str, rule)
+
+    def test_parse_filter_same_argument_in_both_err(self):
+        rule = """
+        rule test_parse_filter_same_argument_in_both_err
+        for every e1 and any e1
+        after foo()
+        bar() must happen
+        """
+
+        self.assertRaises(JarlIteratorAlreadyDefined, parse_str, rule)
+
+
 
 if __name__ == '__main__':
     unittest.main()
