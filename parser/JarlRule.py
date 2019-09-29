@@ -77,13 +77,14 @@ class JarlFilterExpr():
         self.conditions = []
 
     def add(self, elem):
-        # print("Attemting to add {} to a filter {}".format(elem, self.text))
+        # Since elements are traversed in a DFS fashion, we prepend
+        # them to the respective list to preserve the original order.
         if elem.type == JarlFilterClauseType.ANY:
-            self.any += elem.identifiers
+            self.any = elem.identifiers + self.any
         elif elem.type == JarlFilterClauseType.EVERY:
-            self.every += elem.identifiers
+            self.every = elem.identifiers + self.every
         elif elem.type == JarlFilterClauseType.WITH:
-            self.conditions += elem.conditions
+            self.conditions = elem.conditions + self.conditions
         else:
             raise Exception("Jarl Filter Exception received an unknown sub-element type {}".format(elem.type.name))
 

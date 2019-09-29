@@ -21,6 +21,7 @@ class TestParserCLI(unittest.TestCase):
         rules = parse_str("")
         self.assertFalse(rules)
 
+    # TODO make it raise error
     def test_parse_garbage(self):
         rules = parse_str("this is a garbage rule, it should not mean anything")
         self.assertFalse(rules)
@@ -125,8 +126,6 @@ class TestParserCLI(unittest.TestCase):
         self.assertEqual(expected_filter_every, rule_scope.filter.every)
         self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
 
-    # TODO: does order matter??
-    @unittest.skip
     def test_parse_filter_insane_iterator(self):
         rule = """
         rule test_parse_filter_insane_iterator
@@ -136,6 +135,7 @@ class TestParserCLI(unittest.TestCase):
         """
         rules = parse_str(rule)
 
+        # Note that parsing of the elements preserve order
         rule_scope = rules[0].scope
         expected_filter_any = ["e3", "e4"]
         expected_filter_every = ["e1", "e2"]
