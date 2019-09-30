@@ -154,7 +154,7 @@ class TestParserCLI(unittest.TestCase):
         bar() must happen
         """
 
-        self.assertRaises(JarlIteratorAlreadyDefined, parse_str, rule)
+        self.assertRaises(JarlArgumentAlreadyDeclared, parse_str, rule)
 
     def test_parse_filter_same_argument_in_both_err(self):
         rule = """
@@ -164,7 +164,7 @@ class TestParserCLI(unittest.TestCase):
         bar() must happen
         """
 
-        self.assertRaises(JarlIteratorAlreadyDefined, parse_str, rule)
+        self.assertRaises(JarlArgumentAlreadyDeclared, parse_str, rule)
 
     # Tests involving conditions
     def test_parse_filter_conditions(self):
@@ -210,17 +210,22 @@ class TestParserCLI(unittest.TestCase):
         bar() must happen
         """
 
-        self.assertRaises(JarlIteratorUndefined, parse_str, rule)
+        self.assertRaises(JarlArgumentNotDeclared, parse_str, rule)
 
     def test_parse_filter_condition_uses_wildcards(self):
         rule = """
         rule test_parse_filter_condition_uses_wildcards
-        for any e1, e2 with e1=e2
+        for any e1, e2 with e1<=e2
         after foo()
         bar() must happen
         """
 
-        self.assertRaises(JarlIteratorUndefined, parse_str, rule)
+        rules = parse_str(rule)
+
+        rule_scope = rules[0].scope
+        expected_cond = JarlWithCondition("e1", JarlComparator.LE, "e2")
+        expected_filter_condition = [expected_cond]
+        self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
 
     def test_parse_filter_condition_uses_wildcards2(self):
         rule = """
@@ -230,7 +235,7 @@ class TestParserCLI(unittest.TestCase):
         bar() must happen
         """
 
-        self.assertRaises(JarlIteratorUndefined, parse_str, rule)
+        self.assertRaises(JarlConditionMixesArguments, parse_str, rule)
 
 if __name__ == '__main__':
     unittest.main()
