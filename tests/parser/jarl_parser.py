@@ -69,9 +69,9 @@ class TestParserCLI(unittest.TestCase):
         self.assertEqual(expected_facts, rule_fact.facts)
 
     # Tests for filter expressions
-    def test_parse_filter_any(self):
+    def test_parse_filter_wildcards(self):
         rule = """
-        rule test_parse_filter_any
+        rule test_parse_filter_wildcards
         for any e1, e2
         after foo()
         bar() must happen
@@ -79,18 +79,18 @@ class TestParserCLI(unittest.TestCase):
         rules = parse_str(rule)
 
         rule_scope = rules[0].scope
-        expected_filter_any = ["e1", "e2"]
-        expected_filter_every = []
+        expected_filter_wildcards = ["e1", "e2"]
+        expected_filter_iterators = []
         expected_filter_condition = []
 
         self.assertIsNotNone(rule_scope.filter)
-        self.assertEqual(expected_filter_any, rule_scope.filter.any)
-        self.assertEqual(expected_filter_every, rule_scope.filter.every)
+        self.assertEqual(expected_filter_wildcards, rule_scope.filter.wildcards)
+        self.assertEqual(expected_filter_iterators, rule_scope.filter.iterators)
         self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
 
-    def test_parse_filter_every(self):
+    def test_parse_filter_iterators(self):
         rule = """
-        rule test_parse_filter_every
+        rule test_parse_filter_iterators
         for every e1, e2
         after foo()
         bar() must happen
@@ -98,18 +98,18 @@ class TestParserCLI(unittest.TestCase):
         rules = parse_str(rule)
 
         rule_scope = rules[0].scope
-        expected_filter_any = []
-        expected_filter_every = ["e1", "e2"]
+        expected_filter_wildcards = []
+        expected_filter_iterators = ["e1", "e2"]
         expected_filter_condition = []
 
         self.assertIsNotNone(rule_scope.filter)
-        self.assertEqual(expected_filter_any, rule_scope.filter.any)
-        self.assertEqual(expected_filter_every, rule_scope.filter.every)
+        self.assertEqual(expected_filter_wildcards, rule_scope.filter.wildcards)
+        self.assertEqual(expected_filter_iterators, rule_scope.filter.iterators)
         self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
 
-    def test_parse_filter_mixed_any_every(self):
+    def test_parse_filter_mixed_wildcards_iterators(self):
         rule = """
-        rule test_parse_filter_mixed_any_every
+        rule test_parse_filter_mixed_wildcards_iterators
         for every e1, e2 and any e3, e4
         after foo()
         bar() must happen
@@ -117,13 +117,13 @@ class TestParserCLI(unittest.TestCase):
         rules = parse_str(rule)
 
         rule_scope = rules[0].scope
-        expected_filter_any = ["e3", "e4"]
-        expected_filter_every = ["e1", "e2"]
+        expected_filter_wildcards = ["e3", "e4"]
+        expected_filter_iterators = ["e1", "e2"]
         expected_filter_condition = []
 
         self.assertIsNotNone(rule_scope.filter)
-        self.assertEqual(expected_filter_any, rule_scope.filter.any)
-        self.assertEqual(expected_filter_every, rule_scope.filter.every)
+        self.assertEqual(expected_filter_wildcards, rule_scope.filter.wildcards)
+        self.assertEqual(expected_filter_iterators, rule_scope.filter.iterators)
         self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
 
     def test_parse_filter_insane_iterator(self):
@@ -137,13 +137,13 @@ class TestParserCLI(unittest.TestCase):
 
         # Note that parsing of the elements preserve order
         rule_scope = rules[0].scope
-        expected_filter_any = ["e3", "e4"]
-        expected_filter_every = ["e1", "e2"]
+        expected_filter_wildcards = ["e3", "e4"]
+        expected_filter_iterators = ["e1", "e2"]
         expected_filter_condition = []
 
         self.assertIsNotNone(rule_scope.filter)
-        self.assertEqual(expected_filter_any, rule_scope.filter.any)
-        self.assertEqual(expected_filter_every, rule_scope.filter.every)
+        self.assertEqual(expected_filter_wildcards, rule_scope.filter.wildcards)
+        self.assertEqual(expected_filter_iterators, rule_scope.filter.iterators)
         self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
 
     def test_parse_filter_iteratior_duplicated_err(self):
@@ -212,9 +212,9 @@ class TestParserCLI(unittest.TestCase):
 
         self.assertRaises(JarlIteratorUndefined, parse_str, rule)
 
-    def test_parse_filter_condition_uses_any(self):
+    def test_parse_filter_condition_uses_wildcards(self):
         rule = """
-        rule test_parse_filter_condition_uses_any
+        rule test_parse_filter_condition_uses_wildcards
         for any e1, e2 with e1=e2
         after foo()
         bar() must happen
@@ -222,9 +222,9 @@ class TestParserCLI(unittest.TestCase):
 
         self.assertRaises(JarlIteratorUndefined, parse_str, rule)
 
-    def test_parse_filter_condition_uses_any2(self):
+    def test_parse_filter_condition_uses_wildcards2(self):
         rule = """
-        rule test_parse_filter_condition_uses_any2
+        rule test_parse_filter_condition_uses_wildcards2
         for any e1 and every e2 with e1=e2
         after foo()
         bar() must happen

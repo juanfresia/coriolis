@@ -67,22 +67,22 @@ class JarlFilterExpr():
     """
     Represents a Filter expression in the JARL rule language.
     It is composed for three things:
-        - A list of identifiers from the any clause
-        - A list of identifiers from the every clause
+        - A list of identifiers from the wildcards clause (any)
+        - A list of identifiers from the iterators clause
         - A list of comparations from the with clause
     """
     def __init__(self):
-        self.every = []
-        self.any = []
+        self.iterators = []
+        self.wildcards = []
         self.conditions = []
 
     def add(self, elem):
         # Since elements are traversed in a DFS fashion, we prepend
         # them to the respective list to preserve the original order.
         if elem.type == JarlFilterClauseType.ANY:
-            self.any = elem.identifiers + self.any
+            self.wildcards = elem.identifiers + self.wildcards
         elif elem.type == JarlFilterClauseType.EVERY:
-            self.every = elem.identifiers + self.every
+            self.iterators = elem.identifiers + self.iterators
         elif elem.type == JarlFilterClauseType.WITH:
             self.conditions = elem.conditions + self.conditions
         else:
@@ -90,12 +90,12 @@ class JarlFilterExpr():
 
     def __eq__(self, other):
         return isinstance(other, JarlFilterExpr) and \
-                self.any == other.any and \
-                self.every == other.every and \
+                self.wildcards == other.wildcards and \
+                self.iterators == other.iterators and \
                 self.conditions == other.conditions
 
     def __repr__(self):
-        return "<any: {} every: {} condition: {}>".format(self.any, self.every, self.conditions)
+        return "<wildcards: {} iterators: {} condition: {}>".format(self.wildcards, self.iterators, self.conditions)
 
 class JarlQuantifierClause():
     def __init__(self, type, identifiers):
