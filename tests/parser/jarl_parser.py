@@ -397,7 +397,7 @@ class TestParserCLI(unittest.TestCase):
 
     def test_parse_selector_with_arguments(self):
         rule = """
-        rule test_parse_selector_undefined_args
+        rule test_parse_selector_with_arguments
         for every e1
         after foo(e1)
         bar() must happen
@@ -408,6 +408,16 @@ class TestParserCLI(unittest.TestCase):
         rule_selector = rules[0].scope.selector
         expected_selector = JarlSelectorExpr(JarlSelectorClauseType.AFTER, start=JarlCheckpoint("foo", ["e1"]))
         self.assertEqual(expected_selector, rule_selector)
+
+    def test_parse_selector_argument_already_used(self):
+        rule = """
+        rule test_parse_selector_undefined_args
+        for every e1
+        after foo(e1, e1)
+        bar() must happen
+        """
+
+        self.assertRaises(JarlArgumentAlreadyUsed, parse_str, rule)
 
 if __name__ == '__main__':
     unittest.main()

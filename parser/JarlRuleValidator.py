@@ -66,6 +66,7 @@ def validate_selector(selector, filter=None):
     """Validates selector alone.
     Rules to apply:
     - Arguments in all checkpoints must have been previously declared.
+    - Arguments may appear only once among the arguments of all scope checkpoints
 
     The scope filter, if any, is needed to completely validate a selector.
     """
@@ -76,11 +77,15 @@ def validate_selector(selector, filter=None):
     else:
         filter_args = filter.arguments()
 
-    # Make sure every argument is defined
+    # Make sure every argument is defined and used at most only once
+    seen = set()
     for chk in selector.get_checkpoints():
         for arg in chk.arguments:
             if not arg in filter_args:
                 raise JarlArgumentNotDeclared(arg)
+            if arg in seen:
+                raise JarlArgumentAlreadyUsed(arg)
+            seen.add(arg)
 
 
 def validate_rule(rule):
