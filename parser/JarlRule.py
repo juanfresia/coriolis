@@ -218,6 +218,12 @@ class JarlRuleFactClause():
         self.checkpoint = checkpoint
         self.requirement = requirement
 
+    def get_checkpoints(self):
+        checkpoints = [self.checkpoint]
+        checkpoints += self.requirement.get_checkpoints()
+        return checkpoints
+
+
     def __eq__(self, other):
         return isinstance(other, JarlRuleFactClause) and \
                 self.checkpoint == other.checkpoint and \
@@ -232,6 +238,9 @@ class JarlRuleFactRequirementCount():
         self.count = count
         self.negated = negated
 
+    def get_checkpoints(self):
+        return []
+
     def __eq__(self, other):
         return isinstance(other, JarlRuleFactRequirementCount) and \
                 self.count == other.count and \
@@ -245,6 +254,9 @@ class JarlRuleFactRequirementOrder():
     def __init__(self, checkpoint, negated=False):
         self.checkpoint = checkpoint
         self.negated = negated
+
+    def get_checkpoints(self):
+        return [self.checkpoint]
 
     def __eq__(self, other):
         return isinstance(other, JarlRuleFactRequirementOrder) and \

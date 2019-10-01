@@ -72,9 +72,8 @@ def validate_selector(selector, filter=None):
     """
 
     # Get known arguments for checkpoints
-    if not filter:
-        filter_args = []
-    else:
+    filter_args = []
+    if filter:
         filter_args = filter.arguments()
 
     # Make sure every argument is defined and used at most only once
@@ -86,6 +85,34 @@ def validate_selector(selector, filter=None):
             if arg in seen:
                 raise JarlArgumentAlreadyUsed(arg)
             seen.add(arg)
+
+def validate_fact(fact, fact_filter=None, scope_filter=None):
+    """Validates selector alone.
+    Rules to apply:
+    - Arguments in all checkpoints must have been previously declared.
+    - Arguments may appear only once among the arguments of all scope checkpoints
+
+    The scope filter and the fact filter, if any, are needed to completely validate a fact.
+    """
+
+    # Get known arguments for checkpoints
+    known_args = []
+    if fact_filter:
+        known_args += fact_filter.arguments()
+    if scope_filter:
+        known_args += scope_filter.arguments()
+
+    # Make sure every argument is defined and used at most only once
+    seen = set()
+    for chk in fact.get_checkpoints():
+        for arg in chk.arguments:
+            if not arg in known_args:
+                raise JarlArgumentNotDeclared(arg)
+            if arg in seen:
+                raise JarlArgumentAlreadyUsed(arg)
+            seen.add(arg)
+    pass
+
 
 
 def validate_rule(rule):
@@ -100,7 +127,12 @@ def validate_rule(rule):
         validate_selector(rule.scope.selector, scope_filter)
 
     # Validate fact
+    fact_filter = None
     if rule.fact.filter:
-        validate_filter_arguments(rule.fact.filter, scope_filter=scope_filter)
-        validate_condition_arguments(rule.fact.filter, scope_filter=scope_filter)
+        fact_filter = rule.fact.filter
+        validate_filter_arguments(fact_filter, scope_filter=scope_filter)
+        validate_condition_arguments(fact_filter, scope_filter=scope_filter)
+
+    for fact in rule.fact.facts:
+        validate_fact(fact, fact_filter, scope_filter) 
 

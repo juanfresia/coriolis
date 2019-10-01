@@ -510,7 +510,7 @@ class TestParserCLI(unittest.TestCase):
         rule test_parse_fact_argument_already_used
         for every e1
         after foo()
-        bar(e1, e1) must happen
+        bar(e1) must precede foo(e1)
         """
 
         self.assertRaises(JarlArgumentAlreadyUsed, parse_str, rule)
