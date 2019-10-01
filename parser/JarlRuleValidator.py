@@ -40,13 +40,15 @@ def validate_selector(selector):
     pass
 
 def validate_rule(rule):
+    scope_filter = None
     if rule.scope:
         if rule.scope.filter:
-            validate_filter_arguments(rule.scope.filter)
-            validate_condition_arguments(rule.scope.filter)
+            scope_filter = rule.scope.filter
+            validate_filter_arguments(scope_filter)
+            validate_condition_arguments(scope_filter)
         validate_selector(rule.scope.selector)
 
     if rule.fact.filter:
-        validate_filter_arguments(rule.fact.filter, scope_filter=None)
-        validate_condition_arguments(rule.fact.filter, scope_filter=None)
+        validate_filter_arguments(rule.fact.filter, scope_filter=scope_filter)
+        validate_condition_arguments(rule.fact.filter, scope_filter=scope_filter)
 

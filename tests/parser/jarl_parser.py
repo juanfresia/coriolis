@@ -284,9 +284,27 @@ class TestParserCLI(unittest.TestCase):
         self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
 
     # Tests involving filter in rule fact
-    def test_parse_filter_condition_literal_number_as_string(self):
+    def test_parse_fact_filter(self):
         rule = """
-        rule test_parse_filter_condition_literal_number_as_string
+        rule test_parse_filter
+        for every e1, e2 with e2!=e1
+        bar() must happen
+        """
+
+        rules = parse_str(rule)
+
+        rule_fact = rules[0].fact
+        expected_cond = JarlWithCondition("e2", JarlComparator.NE, "e1")
+        expected_filter_wildcards = []
+        expected_filter_iterators = ["e1", "e2"]
+        expected_filter_condition = [expected_cond]
+        self.assertEqual(expected_filter_wildcards, rule_fact.filter.wildcards)
+        self.assertEqual(expected_filter_iterators, rule_fact.filter.iterators)
+        self.assertEqual(expected_filter_condition, rule_fact.filter.conditions)
+
+    def test_parse_fact_filter_with_scope_wildcard(self):
+        rule = """
+        rule test_parse_filter_with_scope_wildcard
         for any e1
         after foo()
         for every e2 with e2!=e1
