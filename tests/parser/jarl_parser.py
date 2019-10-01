@@ -333,5 +333,58 @@ class TestParserCLI(unittest.TestCase):
 
         self.assertRaises(JarlArgumentNotDeclared, parse_str, rule)
 
+    # Test involving selectors
+    def test_parse_selector_after(self):
+        rule = """
+        rule test_parse_selector_after
+        after foo()
+        bar() must happen
+        """
+
+        rules = parse_str(rule)
+
+        rule_selector = rules[0].scope.selector
+        expected_selector = JarlSelectorExpr(JarlSelectorClauseType.AFTER, JarlCheckpoint("foo"))
+        self.assertEqual(expected_selector, rule_selector)
+
+    def test_parse_selector_before(self):
+        rule = """
+        rule test_parse_selector_before
+        before foo()
+        bar() must happen
+        """
+
+        rules = parse_str(rule)
+
+        rule_selector = rules[0].scope.selector
+        expected_selector = JarlSelectorExpr(JarlSelectorClauseType.BEFORE, end=JarlCheckpoint("foo"))
+        self.assertEqual(expected_selector, rule_selector)
+
+    def test_parse_selector_between_next(self):
+        rule = """
+        rule test_parse_selector_between_next
+        between foo1() and next foo2()
+        bar() must happen
+        """
+
+        rules = parse_str(rule)
+
+        rule_selector = rules[0].scope.selector
+        expected_selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN, start=JarlCheckpoint("foo1"), end=JarlCheckpoint("foo2"))
+        self.assertEqual(expected_selector, rule_selector)
+
+    def test_parse_selector_between_previous(self):
+        rule = """
+        rule test_parse_selector_between_previous
+        between foo1() and previous foo2()
+        bar() must happen
+        """
+
+        rules = parse_str(rule)
+
+        rule_selector = rules[0].scope.selector
+        expected_selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN, start=JarlCheckpoint("foo2"), end=JarlCheckpoint("foo1"))
+        self.assertEqual(expected_selector, rule_selector)
+
 if __name__ == '__main__':
     unittest.main()

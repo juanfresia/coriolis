@@ -131,7 +131,6 @@ class JarlComparator(Enum):
     GT = ">"
     GE = ">="
 
-
 class JarlWithCondition():
     def __init__(self, l, c, r, is_literal=False):
         self.l = l
@@ -150,9 +149,9 @@ class JarlWithCondition():
         return "<{} {} {}>".format(self.l, self.c, self.r)
 
 class JarlSelectorClauseType(Enum):
-    AFTER = "After"
-    BEFORE = "Before"
-    BETWEEN = "Between"
+    AFTER = "after"
+    BEFORE = "before"
+    BETWEEN = "between"
 
 class JarlSelectorExpr():
     def __init__(self, type, start=None, end=None):
