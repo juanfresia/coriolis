@@ -283,8 +283,26 @@ class TestParserCLI(unittest.TestCase):
         expected_filter_condition = [expected_cond]
         self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
 
+    # Tests involving filter in rule fact
+    def test_parse_filter_condition_literal_number_as_string(self):
+        rule = """
+        rule test_parse_filter_condition_literal_number_as_string
+        for any e1
+        after foo()
+        for every e2 with e2!=e1
+        bar() must happen
+        """
 
+        rules = parse_str(rule)
 
+        rule_fact = rules[0].fact
+        expected_cond = JarlWithCondition("e2", JarlComparator.NE, "e1")
+        expected_filter_wildcards = []
+        expected_filter_iterators = ["e2"]
+        expected_filter_condition = [expected_cond]
+        self.assertEqual(expected_filter_wildcards, rule_fact.filter.wildcards)
+        self.assertEqual(expected_filter_iterators, rule_fact.filter.iterators)
+        self.assertEqual(expected_filter_condition, rule_fact.filter.conditions)
 
 if __name__ == '__main__':
     unittest.main()
