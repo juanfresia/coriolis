@@ -8,7 +8,7 @@ def validate_filter_arguments(filter):
             raise JarlArgumentAlreadyDeclared(arg)
         seen.add(arg)
 
-def validate_scope_condition_arguments(filter):
+def validate_condition_arguments(filter):
     iterators = filter.iterators
     wildcards = filter.wildcards
 
@@ -36,6 +36,6 @@ def validate_rule(rule):
     if rule.scope:
         if rule.scope.filter:
             validate_filter_arguments(rule.scope.filter)
-            validate_scope_condition_arguments(rule.scope.filter)
+            validate_condition_arguments(rule.scope.filter)
         validate_selector(rule.scope.selector)
 

@@ -237,5 +237,54 @@ class TestParserCLI(unittest.TestCase):
 
         self.assertRaises(JarlConditionMixesArguments, parse_str, rule)
 
+    # Conditions involving literals
+    def test_parse_filter_condition_literal_string(self):
+        rule = """
+        rule test_parse_filter_condition_literal_string
+        for any e1 with e1=\'literal\'
+        after foo()
+        bar() must happen
+        """
+
+        rules = parse_str(rule)
+
+        rule_scope = rules[0].scope
+        expected_cond = JarlWithCondition("e1", JarlComparator.EQ, "literal", is_literal=True)
+        expected_filter_condition = [expected_cond]
+        self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
+
+    def test_parse_filter_condition_literal_number(self):
+        rule = """
+        rule test_parse_filter_condition_literal_number
+        for any e1 with e1=10
+        after foo()
+        bar() must happen
+        """
+
+        rules = parse_str(rule)
+
+        rule_scope = rules[0].scope
+        expected_cond = JarlWithCondition("e1", JarlComparator.EQ, 10, is_literal=True)
+        expected_filter_condition = [expected_cond]
+        self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
+
+    def test_parse_filter_condition_literal_number_as_string(self):
+        rule = """
+        rule test_parse_filter_condition_literal_number_as_string
+        for any e1 with e1=\'10\'
+        after foo()
+        bar() must happen
+        """
+
+        rules = parse_str(rule)
+
+        rule_scope = rules[0].scope
+        expected_cond = JarlWithCondition("e1", JarlComparator.EQ, "10", is_literal=True)
+        expected_filter_condition = [expected_cond]
+        self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
+
+
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -101,9 +101,15 @@ class JarlListener(ParseTreeListener):
         for i in ctx.condition_list().condition():
             l = i.IDENTIFIER()[0].getText()
             c = JarlComparator.from_symbol(i.COMPARATOR().getText())
-            if i.LITERAL():
-                r = i.LITERAL().getText()
+            if i.literal():
                 literal = True
+                # If literal is a string, remove single quotes
+                if i.literal().LITERAL_STR():
+                    r = i.literal().LITERAL_STR().getText().strip("'")
+                else:
+                    # Literal is a number
+                    # TODO: support other type of numbers
+                    r = int(i.literal().NUMBER().getText())
             else:
                 r = i.IDENTIFIER()[1].getText()
                 literal = False

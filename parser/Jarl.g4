@@ -37,12 +37,13 @@ requirement_order    : MUST NOT? (FOLLOW | PRECEDE) checkpoint ;
 how_many             : ((AT MOST) | (AT LEAST))? NUMBER TIMES ;
 
 condition_list       : condition (',' condition)* ;
-condition            : (IDENTIFIER COMPARATOR (IDENTIFIER | LITERAL)) ;
+condition            : (IDENTIFIER COMPARATOR (IDENTIFIER | literal)) ;
 
 quantifier           : (ANY | EVERY) ;
 arguments            : '(' identifier_list ')' ;
 identifier_list      : (IDENTIFIER (',' IDENTIFIER)*)? ;
 checkpoint           : IDENTIFIER arguments ;
+literal              : LITERAL_STR | NUMBER ;
 
 
 /*
@@ -82,14 +83,15 @@ TIMES    : 'times' ;
 WITH     : 'with' ;
 
 /* Identifiers and special characters */
-fragment DIGIT      : [0-9] ;
-fragment LOWERCASE  : [a-z] ;
-fragment UPPERCASE  : [A-Z] ;
+fragment DIGIT        : [0-9] ;
+fragment LOWERCASE    : [a-z] ;
+fragment UPPERCASE    : [A-Z] ;
+fragment SINGLE_QUOTE : '\'' ;
 
 NUMBER      : DIGIT+ ;
 IDENTIFIER  : (LOWERCASE | UPPERCASE | '_') (DIGIT | LOWERCASE | UPPERCASE | '_')* ;
 COLON       : ':' ;
-LITERAL     : '\'' (~'\'')* '\'' ;
+LITERAL_STR : SINGLE_QUOTE (~'\'')* SINGLE_QUOTE ;
 WHITESPACE  : (' ' | '\t')+ -> skip ;
 NEWLINE     : ('\r'? '\n' | '\r')+ ;
 
