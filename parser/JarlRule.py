@@ -241,7 +241,7 @@ class JarlRuleFactClause():
         return "<{} {}>".format(self.checkpoint, self.requirement)
 
 class JarlRuleFactRequirementCount():
-    def __init__(self, type="eq", count=1, negated=False):
+    def __init__(self, type=JarlComparator.EQ, count=1, negated=False):
         self.type = type
         self.count = count
         self.negated = negated
