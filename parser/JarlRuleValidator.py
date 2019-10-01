@@ -36,8 +36,17 @@ def validate_condition_arguments(filter, scope_filter=None):
         if cond.l in wildcards and cond.r in iterators:
             raise JarlConditionMixesArguments(cond.l, cond.r)
 
-def validate_selector(selector):
-    pass
+def validate_selector(selector, filter=None):
+    if not filter:
+        filter_args = []
+    else:
+        filter_args = filter.arguments()
+
+    for chk in selector.get_checkpoints():
+        for arg in chk.arguments:
+            if not arg in filter_args:
+                raise JarlArgumentNotDeclared(arg)
+
 
 def validate_rule(rule):
     scope_filter = None
@@ -46,7 +55,7 @@ def validate_rule(rule):
             scope_filter = rule.scope.filter
             validate_filter_arguments(scope_filter)
             validate_condition_arguments(scope_filter)
-        validate_selector(rule.scope.selector)
+        validate_selector(rule.scope.selector, scope_filter)
 
     if rule.fact.filter:
         validate_filter_arguments(rule.fact.filter, scope_filter=scope_filter)

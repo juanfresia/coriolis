@@ -386,5 +386,28 @@ class TestParserCLI(unittest.TestCase):
         expected_selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN, start=JarlCheckpoint("foo2"), end=JarlCheckpoint("foo1"))
         self.assertEqual(expected_selector, rule_selector)
 
+    def test_parse_selector_undefined_args(self):
+        rule = """
+        rule test_parse_selector_undefined_args
+        after foo(e1)
+        bar() must happen
+        """
+
+        self.assertRaises(JarlArgumentNotDeclared, parse_str, rule)
+
+    def test_parse_selector_with_arguments(self):
+        rule = """
+        rule test_parse_selector_undefined_args
+        for every e1
+        after foo(e1)
+        bar() must happen
+        """
+
+        rules = parse_str(rule)
+
+        rule_selector = rules[0].scope.selector
+        expected_selector = JarlSelectorExpr(JarlSelectorClauseType.AFTER, start=JarlCheckpoint("foo", ["e1"]))
+        self.assertEqual(expected_selector, rule_selector)
+
 if __name__ == '__main__':
     unittest.main()

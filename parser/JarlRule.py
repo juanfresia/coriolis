@@ -26,7 +26,7 @@ class JarlRuleScope():
         self.selector = None
 
     def toSteps(self):
-        checkpoints = self.selector.getCheckpoints()
+        checkpoints = self.selector.get_checkpoints()
 
         ## TODO: check validity of checkpoint arguments
 
@@ -87,6 +87,9 @@ class JarlFilterExpr():
             self.conditions = elem.conditions + self.conditions
         else:
             raise Exception("Jarl Filter Exception received an unknown sub-element type {}".format(elem.type.name))
+
+    def arguments(self):
+        return self.wildcards + self.iterators
 
     def __eq__(self, other):
         return isinstance(other, JarlFilterExpr) and \
@@ -159,7 +162,7 @@ class JarlSelectorExpr():
         self.end = end
         self.type = type
 
-    def getCheckpoints(self):
+    def get_checkpoints(self):
         checkpoints = []
         if self.start:
             checkpoints.append(self.start)
