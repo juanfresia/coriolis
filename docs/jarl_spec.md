@@ -176,12 +176,6 @@ produce(pid, item_id) must precede consume(cid, item_id)
 ```
 
 ```
-# All acquired locks are released
-for every lock_id and any pid:
-lock_release(lock_id, pid) must follow lock_acquire(lock_id, pid)
-```
-
-```
 # 10 messages must be queued on every message queue
 for every msqid and any msg:
 msq_send(msqid, msg) must happen 10 times
