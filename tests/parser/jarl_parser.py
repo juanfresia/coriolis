@@ -435,5 +435,85 @@ class TestParserCLI(unittest.TestCase):
         expected_fact = JarlRuleFactClause(chk, req)
         self.assertEqual(expected_fact, rule_fact)
 
+    def test_parse_fact_basic_negated(self):
+        rule = """
+        rule test_parse_fact_basic_negated
+        after foo()
+        bar() must not happen
+        """
+
+        rules = parse_str(rule)
+
+        rule_fact = rules[0].fact.facts[0]
+        chk = JarlCheckpoint("bar")
+        req = JarlRuleFactRequirementCount(negated=True)
+        expected_fact = JarlRuleFactClause(chk, req)
+        self.assertEqual(expected_fact, rule_fact)
+
+    def test_parse_fact_count_at_least(self):
+        rule = """
+        rule test_parse_fact_count_at_least
+        after foo()
+        bar() must happen at least 10 times
+        """
+
+        rules = parse_str(rule)
+
+        rule_fact = rules[0].fact.facts[0]
+        chk = JarlCheckpoint("bar")
+        req = JarlRuleFactRequirementCount(count=10, type=JarlComparator.GE)
+        expected_fact = JarlRuleFactClause(chk, req)
+        self.assertEqual(expected_fact, rule_fact)
+
+    def test_parse_fact_count_at_most(self):
+        rule = """
+        rule test_parse_fact_basic_how_many
+        after foo()
+        bar() must not happen at most 2 times
+        """
+
+        rules = parse_str(rule)
+
+        rule_fact = rules[0].fact.facts[0]
+        chk = JarlCheckpoint("bar")
+        req = JarlRuleFactRequirementCount(count=2, type=JarlComparator.LE, negated=True)
+        expected_fact = JarlRuleFactClause(chk, req)
+        self.assertEqual(expected_fact, rule_fact)
+
+    def test_parse_fact_undefined_args(self):
+        rule = """
+        rule test_parse_fact_undefined_args
+        after foo()
+        bar(e1) must happen
+        """
+
+        self.assertRaises(JarlArgumentNotDeclared, parse_str, rule)
+
+    def test_parse_fact_with_arguments_scope(self):
+        rule = """
+        rule test_parse_fact_with_arguments
+        for every e1
+        after foo()
+        bar(e1) must happen
+        """
+
+        rules = parse_str(rule)
+
+        rule_fact = rules[0].fact.facts[0]
+        chk = JarlCheckpoint("bar", ["e1"])
+        req = JarlRuleFactRequirementCount()
+        expected_fact = JarlRuleFactClause(chk, req)
+        self.assertEqual(expected_fact, rule_fact)
+
+    def test_parse_fact_argument_already_used(self):
+        rule = """
+        rule test_parse_fact_argument_already_used
+        for every e1
+        after foo()
+        bar(e1, e1) must happen
+        """
+
+        self.assertRaises(JarlArgumentAlreadyUsed, parse_str, rule)
+
 if __name__ == '__main__':
     unittest.main()
