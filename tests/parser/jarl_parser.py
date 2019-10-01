@@ -411,13 +411,29 @@ class TestParserCLI(unittest.TestCase):
 
     def test_parse_selector_argument_already_used(self):
         rule = """
-        rule test_parse_selector_undefined_args
+        rule test_parse_selector_argument_already_used
         for every e1
         after foo(e1, e1)
         bar() must happen
         """
 
         self.assertRaises(JarlArgumentAlreadyUsed, parse_str, rule)
+
+    # Tests involving facts
+    def test_parse_fact_basic(self):
+        rule = """
+        rule test_parse_fact_basic
+        after foo()
+        bar() must happen
+        """
+
+        rules = parse_str(rule)
+
+        rule_fact = rules[0].fact.facts[0]
+        chk = JarlCheckpoint("bar")
+        req = JarlRuleFactRequirementCount()
+        expected_fact = JarlRuleFactClause(chk, req)
+        self.assertEqual(expected_fact, rule_fact)
 
 if __name__ == '__main__':
     unittest.main()
