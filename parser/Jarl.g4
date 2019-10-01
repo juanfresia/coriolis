@@ -33,7 +33,7 @@ fact_clause          : checkpoint requirement ;
 /* Auxiliar parser rules */
 requirement          : ( requirement_count | requirement_order ) ;
 requirement_count    : MUST NOT? HAPPEN (how_many)? ;
-requirement_order    : MUST NOT? (FOLLOW | PRECEDE) checkpoint ;
+requirement_order    : MUST NOT? PRECEDE checkpoint ;
 how_many             : ((AT MOST) | (AT LEAST))? NUMBER TIMES ;
 
 condition_list       : condition (',' condition)* ;
@@ -68,7 +68,6 @@ AT       : 'at' ;
 BEFORE   : 'before' ;
 BETWEEN  : 'between' ;
 EVERY    : 'every' ;
-FOLLOW   : 'follow' ;
 FOR      : 'for' ;
 HAPPEN   : 'happen' ;
 LEAST    : 'least' ;

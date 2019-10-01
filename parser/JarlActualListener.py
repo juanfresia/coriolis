@@ -205,10 +205,5 @@ class JarlListener(ParseTreeListener):
         if ctx.NOT():
             req.negated = True
 
-        if ctx.FOLLOW():
-            req.type = "after"
-        else: # ctx.PRECEDE() must be true
-            req.type = "before"
-
         self.stack.append(req)
 

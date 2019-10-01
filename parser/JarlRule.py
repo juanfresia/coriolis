@@ -256,17 +256,15 @@ class JarlRuleFactRequirementCount():
         return "<{} {} {}>".format("not" if self.negated else "", self.type, self.count)
 
 class JarlRuleFactRequirementOrder():
-    def __init__(self, checkpoint, type="after", negated=False):
+    def __init__(self, checkpoint, negated=False):
         self.checkpoint = checkpoint
-        self.type = type
         self.negated = negated
 
     def __eq__(self, other):
         return isinstance(other, JarlRuleFactRequirementOrder) and \
                 self.checkpoint == other.checkpoint and \
-                self.negated == other.negated and \
-                self.type == other.type
+                self.negated == other.negated
 
     def __repr__(self):
-        return "<{} {} {}>".format("not" if self.negated else "", self.type, self.checkpoint)
+        return "<{} precedes {}>".format("not" if self.negated else "", self.checkpoint)
 
