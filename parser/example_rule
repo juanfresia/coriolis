@@ -3,7 +3,7 @@ for every e1, e2, person_name, t with e2 = e1, t='tourist' :
 between employee_serve(e1, person_name, t) and next employee_ready(e2) :
 # Here is a comment
 for every employee_id, pn and any passport, traits with employee_id=e1, pn=person_name:
-tourist_show_passport(pn, passport, traits) must follow employee_request_passport(employee_id)
+tourist_show_passport(pn, passport, traits) must precede employee_request_passport(employee_id)
 
 rule some_other_rule
 for every e1, e2 with e2=e1 :

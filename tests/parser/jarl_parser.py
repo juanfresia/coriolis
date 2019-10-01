@@ -322,5 +322,16 @@ class TestParserCLI(unittest.TestCase):
         self.assertEqual(expected_filter_iterators, rule_fact.filter.iterators)
         self.assertEqual(expected_filter_condition, rule_fact.filter.conditions)
 
+    def test_parse_fact_filter_argument_not_declared_err(self):
+        rule = """
+        rule test_parse_filter_argument_not_declared_err
+        for any e1
+        after foo()
+        for every e2 with e2!=e3
+        bar() must happen
+        """
+
+        self.assertRaises(JarlArgumentNotDeclared, parse_str, rule)
+
 if __name__ == '__main__':
     unittest.main()
