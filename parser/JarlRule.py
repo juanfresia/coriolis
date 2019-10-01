@@ -5,11 +5,11 @@ from common.jarl_rule import *
 from enum import Enum
 
 class JarlRule():
-    def __init__(self, text):
+    def __init__(self, text="", scope=None, fact=None):
         self.text = text
         self.name = ""
-        self.scope = None
-        self.fact = None
+        self.scope = scope
+        self.fact = fact
 
     def __eq__(self, other):
         return isinstance(other, JarlRule) and \
@@ -21,9 +21,9 @@ class JarlRule():
         return "<name: {} scope: {} fact: {}>".format(self.name, self.scope, self.fact)
 
 class JarlRuleScope():
-    def __init__(self):
-        self.filter = None
-        self.selector = None
+    def __init__(self, filter=None, selector=None):
+        self.filter = filter
+        self.selector = selector
 
     def toSteps(self):
         checkpoints = self.selector.get_checkpoints()
@@ -71,10 +71,10 @@ class JarlFilterExpr():
         - A list of identifiers from the iterators clause
         - A list of comparations from the with clause
     """
-    def __init__(self):
-        self.iterators = []
-        self.wildcards = []
-        self.conditions = []
+    def __init__(self, iterators=None, wildcards=None, conditions=None):
+        self.iterators = iterators if iterators else []
+        self.wildcards = wildcards if wildcards else []
+        self.conditions = conditions if conditions else []
 
     def add(self, elem):
         # Since elements are traversed in a DFS fashion, we prepend

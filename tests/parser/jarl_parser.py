@@ -515,5 +515,52 @@ class TestParserCLI(unittest.TestCase):
 
         self.assertRaises(JarlArgumentAlreadyUsed, parse_str, rule)
 
+    # Integration tests
+    def test_parse_integration(self):
+        rule = """
+        rule test_parse_integration
+        for every e1, e2, person_name, t with e2 = e1, t='tourist' :
+        between employee_serve(e1, person_name, t) and next employee_ready(e2) :
+        # Here is a comment
+        for every employee_id, pn and any passport, traits with employee_id=e1, pn=person_name:
+        tourist_show_passport(pn, passport, traits) must precede employee_request_passport(employee_id)
+        """
+
+        rules = parse_str(rule)
+
+        rule_selector = rules[0].scope.selector
+        selector_chk1 = JarlCheckpoint("employee_serve", ["e1", "person_name", "t"])
+        selector_chk2 = JarlCheckpoint("employee_ready", ["e2"])
+        selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN, selector_chk1, selector_chk2)
+        self.assertEqual(selector, rule_selector)
+
+        rule_filter = rules[0].scope.filter
+        filter_cond1 = JarlWithCondition("e2", JarlComparator.EQ, "e1")
+        filter_cond2 = JarlWithCondition("t", JarlComparator.EQ, "tourist", is_literal=True)
+        filter_wildcards = []
+        filter_iterators = ["e1", "e2", "person_name", "t"]
+        filter_condition = [filter_cond1, filter_cond2]
+        self.assertEqual(filter_wildcards, rule_filter.wildcards)
+        self.assertEqual(filter_iterators, rule_filter.iterators)
+        self.assertEqual(filter_condition, rule_filter.conditions)
+
+        rule_fact_filter = rules[0].fact.filter
+        fact_filter_cond1 = JarlWithCondition("employee_id", JarlComparator.EQ, "e1")
+        fact_filter_cond2 = JarlWithCondition("pn", JarlComparator.EQ, "person_name")
+        fact_filter_wildcards = ["passport", "traits"]
+        fact_filter_iterators = ["employee_id", "pn"]
+        fact_filter_condition = [fact_filter_cond1, fact_filter_cond2]
+        self.assertEqual(fact_filter_wildcards, rule_fact_filter.wildcards)
+        self.assertEqual(fact_filter_iterators, rule_fact_filter.iterators)
+        self.assertEqual(fact_filter_condition, rule_fact_filter.conditions)
+
+        rule_fact = rules[0].fact.facts[0]
+        fact_chk1 = JarlCheckpoint("tourist_show_passport", ["pn", "passport", "traits"])
+        fact_chk2 = JarlCheckpoint("employee_request_passport", ["employee_id"])
+        fact_req = JarlRuleFactRequirementOrder(fact_chk2)
+        expected_fact_expr = JarlRuleFactClause(fact_chk1, fact_req)
+
+        self.assertEqual(expected_fact_expr, rule_fact)
+
 if __name__ == '__main__':
     unittest.main()
