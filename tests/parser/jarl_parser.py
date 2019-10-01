@@ -181,7 +181,7 @@ class TestParserCLI(unittest.TestCase):
             rules = parse_str(rule.format(op))
 
             rule_scope = rules[0].scope
-            expected_operator = JarlComparator.from_symbol(op)
+            expected_operator = JarlComparator(op)
             expected_filter_condition = [JarlWithCondition("e1", expected_operator, "e2")]
             self.assertEqual(expected_filter_condition, rule_scope.filter.conditions)
 

@@ -121,26 +121,15 @@ class JarlWithClause():
                 self.conditions == other.conditions
 
     def __repr__(self):
-        return "<{}>".self.conditions
+        return "<{}>".format(self.conditions)
 
 class JarlComparator(Enum):
-    EQ = 0
-    NE = 1
-    LT = 2
-    LE = 3
-    GT = 4
-    GE = 5
-
-    def from_symbol(s):
-        _from_symbol = {
-            "=": JarlComparator.EQ,
-            "!=": JarlComparator.NE,
-            "<": JarlComparator.LT,
-            "<=": JarlComparator.LE,
-            ">": JarlComparator.GT,
-            ">=": JarlComparator.GE,
-        }
-        return _from_symbol[s]
+    EQ = "="
+    NE = "!="
+    LT = "<"
+    LE = "<="
+    GT = ">"
+    GE = ">="
 
 
 class JarlWithCondition():
@@ -161,9 +150,9 @@ class JarlWithCondition():
         return "<{} {} {}>".format(self.l, self.c, self.r)
 
 class JarlSelectorClauseType(Enum):
-    AFTER = 0
-    BEFORE = 1
-    BETWEEN = 2
+    AFTER = "After"
+    BEFORE = "Before"
+    BETWEEN = "Between"
 
 class JarlSelectorExpr():
     def __init__(self, type, start=None, end=None):
@@ -181,13 +170,8 @@ class JarlSelectorExpr():
         return checkpoints
 
     def toSteps(self):
-        if self.type == JarlSelectorClauseType.AFTER:
-            return "ScopeAfter({})".format(self.start.name)
-        if self.type == JarlSelectorClauseType.BEFORE:
-            return "ScopeBefore({})".format(self.end.name)
-        if self.type == JarlSelectorClauseType.BETWEEN:
-            return "ScopeBetween({}, {})".format(self.start.name, self.end.name)
-        raise Exception("Invalid type of selector expression")
+        end_name = ", {}".format(self.end.name) if self.type == JarlSelectorClauseType.BETWEEN else ""
+        return "Scope{}({}{})".format(self.type, self.start.name, end_name)
 
     def __eq__(self, other):
         return isinstance(other, JarlSelectorExpr) and \

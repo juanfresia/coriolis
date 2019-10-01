@@ -100,7 +100,7 @@ class JarlListener(ParseTreeListener):
         conditions = []
         for i in ctx.condition_list().condition():
             l = i.IDENTIFIER()[0].getText()
-            c = JarlComparator.from_symbol(i.COMPARATOR().getText())
+            c = JarlComparator(i.COMPARATOR().getText())
             if i.literal():
                 literal = True
                 # If literal is a string, remove single quotes
