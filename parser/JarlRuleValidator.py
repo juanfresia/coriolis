@@ -111,9 +111,6 @@ def validate_fact(fact, fact_filter=None, scope_filter=None):
             if arg in seen:
                 raise JarlArgumentAlreadyUsed(arg)
             seen.add(arg)
-    pass
-
-
 
 def validate_rule(rule):
     scope_filter = None
