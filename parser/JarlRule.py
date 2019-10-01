@@ -12,7 +12,7 @@ class JarlRule():
         self.fact = None
 
     def __eq__(self, other):
-        return isinstance(other, JarlRuleScope) and \
+        return isinstance(other, JarlRule) and \
                 self.name == other.name and \
                 self.scope == other.scope and \
                 self.fact == other.fact
