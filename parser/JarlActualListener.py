@@ -151,12 +151,12 @@ class JarlListener(ParseTreeListener):
 
         start = chk1
         end = chk2
+        type = JarlSelectorClauseType.BETWEEN_NEXT
         # If between has a previous, we need to reverse the order
         if ctx.PREVIOUS():
-            start = chk2
-            end = chk1
+            type = JarlSelectorClauseType.BETWEEN_PREV
 
-        sel_expr = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN, start, end)
+        sel_expr = JarlSelectorExpr(type, start, end)
         self.stack.append(sel_expr)
 
     # Exit a parse tree produced by JarlParser#fact_clause.
