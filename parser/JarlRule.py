@@ -154,7 +154,8 @@ class JarlWithCondition():
 class JarlSelectorClauseType(Enum):
     AFTER = "after"
     BEFORE = "before"
-    BETWEEN = "between"
+    BETWEEN_NEXT = "between_next"
+    BETWEEN_PREV = "between_prev"
 
 class JarlSelectorExpr():
     def __init__(self, type, start=None, end=None):
@@ -172,7 +173,7 @@ class JarlSelectorExpr():
         return checkpoints
 
     def toSteps(self):
-        end_name = ", {}".format(self.end.name) if self.type == JarlSelectorClauseType.BETWEEN else ""
+        end_name = ", {}".format(self.end.name) if self.type == JarlSelectorClauseType.BETWEEN_NEXT or self.type == JarlSelectorClauseType.BETWEEN_PREV else ""
         return "Scope{}({}{})".format(self.type, self.start.name, end_name)
 
     def __eq__(self, other):

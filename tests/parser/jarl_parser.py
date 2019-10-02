@@ -370,7 +370,7 @@ class TestParserCLI(unittest.TestCase):
         rules = parse_str(rule)
 
         rule_selector = rules[0].scope.selector
-        expected_selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN, start=JarlCheckpoint("foo1"), end=JarlCheckpoint("foo2"))
+        expected_selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN_NEXT, start=JarlCheckpoint("foo1"), end=JarlCheckpoint("foo2"))
         self.assertEqual(expected_selector, rule_selector)
 
     def test_parse_selector_between_previous(self):
@@ -383,8 +383,7 @@ class TestParserCLI(unittest.TestCase):
         rules = parse_str(rule)
 
         rule_selector = rules[0].scope.selector
-        expected_selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN, start=JarlCheckpoint("change"), end=JarlCheckpoint("this"))
-        # expected_selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN, start=JarlCheckpoint("foo2"), end=JarlCheckpoint("foo1"))
+        expected_selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN_PREV, start=JarlCheckpoint("foo1"), end=JarlCheckpoint("foo2"))
         self.assertEqual(expected_selector, rule_selector)
 
     def test_parse_selector_between_with_args(self):
@@ -398,7 +397,7 @@ class TestParserCLI(unittest.TestCase):
         rules = parse_str(rule)
 
         rule_selector = rules[0].scope.selector
-        expected_selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN, start=JarlCheckpoint("foo1", ["e1"]), end=JarlCheckpoint("foo2", ["e2"]))
+        expected_selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN_NEXT, start=JarlCheckpoint("foo1", ["e1"]), end=JarlCheckpoint("foo2", ["e2"]))
         self.assertEqual(expected_selector, rule_selector)
 
     def test_parse_selector_undefined_args(self):
@@ -559,7 +558,7 @@ class TestParserCLI(unittest.TestCase):
         bar(e1) must precede foo(e1)
         """
 
-        self.assertRaises(JarlArgumentAlreadyUsed, parse_str, rule)
+        self.assertRaises(JarlArgumentNotDeclared, parse_str, rule)
 
 
     # Integration tests
@@ -578,7 +577,7 @@ class TestParserCLI(unittest.TestCase):
         rule_selector = rules[0].scope.selector
         selector_chk1 = JarlCheckpoint("employee_serve", ["e1", "person_name", "t"])
         selector_chk2 = JarlCheckpoint("employee_ready", ["e2"])
-        selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN, selector_chk1, selector_chk2)
+        selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN_NEXT, selector_chk1, selector_chk2)
         self.assertEqual(selector, rule_selector)
 
         rule_filter = rules[0].scope.filter

@@ -86,26 +86,35 @@ def validate_selector(selector, filter=None):
                 raise JarlArgumentAlreadyUsed(arg)
             seen.add(arg)
 
-def validate_fact(fact, fact_filter=None, scope_filter=None):
+def validate_fact(fact, fact_filter=None, scope_selector=None):
     """Validates selector alone.
     Rules to apply:
-    - Arguments in all checkpoints must have been previously declared.
-    - Arguments may appear only once among the arguments of all scope checkpoints
+    - Arguments in all checkpoints must have been previously declared in fact filter.
+    - Arguments may appear only once among the arguments of all fact _and_ scope checkpoints
 
-    The scope filter and the fact filter, if any, are needed to completely validate a fact.
+    The fact filter and scope selector, if any, are needed to completely validate a fact.
     """
 
     # Get known arguments for checkpoints
     known_args = []
     if fact_filter:
         known_args += fact_filter.arguments()
-    if scope_filter:
-        known_args += scope_filter.arguments()
+
+    scope_selector_chk = []
+    if scope_selector:
+        scope_selector_chk = scope_selector.get_checkpoints()
+
+    # Get arguments used in scope selector
+    used_args = []
+    for chk in scope_selector_chk:
+        used_args += chk.arguments
 
     # Make sure every argument is defined and used at most only once
     seen = set()
     for chk in fact.get_checkpoints():
         for arg in chk.arguments:
+            if arg in used_args:
+                raise JarlArgumentAlreadyUsed(arg)
             if not arg in known_args:
                 raise JarlArgumentNotDeclared(arg)
             if arg in seen:
@@ -114,14 +123,16 @@ def validate_fact(fact, fact_filter=None, scope_filter=None):
 
 def validate_rule(rule):
     scope_filter = None
+    scope_selector = None
 
     # Validate scope, if any
     if rule.scope:
+        scope_selector = rule.scope.selector
         if rule.scope.filter:
             scope_filter = rule.scope.filter
             validate_filter_arguments(scope_filter)
             validate_condition_arguments(scope_filter)
-        validate_selector(rule.scope.selector, scope_filter)
+        validate_selector(scope_selector, scope_filter)
 
     # Validate fact
     fact_filter = None
@@ -131,5 +142,5 @@ def validate_rule(rule):
         validate_condition_arguments(fact_filter, scope_filter=scope_filter)
 
     for fact in rule.fact.facts:
-        validate_fact(fact, fact_filter, scope_filter) 
+        validate_fact(fact, fact_filter, scope_selector)
 
