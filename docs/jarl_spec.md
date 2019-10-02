@@ -106,15 +106,15 @@ The list of iterators implies the enclosed rule fact should be valid for every v
 Examples:
 
 ```
-# Every message is written before read
+# Every message is written before reading everything
 for every msg:
-write(msg) must precede read(msg)
+write(msg) must precede read_everything()
 ```
 
 ```
 # Every shared resource must be released
 for every shmid:
-shm_destroy(shmid) must happen 1 time
+shm_destroy(shmid) must happen 1 times
 ```
 
 ```
@@ -170,9 +170,9 @@ for every [iterator ...] and any [wildcard ...]:
 Examples:
 
 ```
-# All items are must have been produced before consumed
-for every item_id and any cid, pid:
-produce(pid, item_id) must precede consume(cid, item_id)
+# All items must have been produced before consuming all
+for every item_id and any pid:
+produce(pid, item_id) must precede consume_all()
 ```
 
 ```
@@ -214,8 +214,8 @@ smoker_take_element(smoker_id, element_id) must happen 0 times
 
 ```
 # Items are produced in order
-for every i, j and any p with j>i:
-produce(p, i) must precede produce(p, j)
+for every i, j with j>i:
+produce(i) must precede produce(j)
 ```
 
 - Comparison against literal values:
@@ -283,7 +283,7 @@ lock_acquire(pid) must happen 0 times
 # At most 5 processes can wait on the semaphore
 before sem_signal():
 for any pid:
-sem_waig(pid) must happen at most 5 times
+sem_wait(pid) must happen at most 5 times
 ```
 
 In the case that the checkpoint inside the `before` scope is called more than once, the rule should be valid _before every call_ since the beginning of the execution.
@@ -302,13 +302,13 @@ Examples:
 ```
 # Lock should not be destroyed twice
 between lock_destroy() and previous lock_create():
-lock_destroy must happen 1 times
+lock_destroy() must happen 1 times
 ```
 
 ```
 # The items buffer size is 5
 between produce() and next consume():
-produce must happen at most 5 times
+produce() must happen at most 5 times
 ```
 
 **Note:** A `between` scope is necessarily defined by two checkpoint calls. Hence, if in the last example `consume` is not called after some `produce`, then those `produce` checkpoints will fall into no validation range and would be as if they did not exist for such rule.
@@ -328,7 +328,7 @@ Examples:
 ```
 # Elements cannot be taken after smoking if agent does not wake again
 for any smoker_id:
-between smoker_smoke(smoker_id) and next agent_wake:
+between smoker_smoke(smoker_id) and next agent_wake():
 for any sid, element_id:
 smoker_take_element(sid, element_id) must happen 0 times
 ```
@@ -336,7 +336,7 @@ smoker_take_element(sid, element_id) must happen 0 times
 ```
 # At most 10 elements can enter inside the buffer
 for any producer_id, consumer_id, i1, i2:
-between every produce(producer_id, i1) and next consume(consumer_id, i2):
+between produce(producer_id, i1) and next consume(consumer_id, i2):
 for any p, i:
 produce(p, i) must happen at most 10 times
 ```
@@ -353,10 +353,10 @@ lock_acquire(lid) must happen 0 times
 
 ```
 # On every queue, messages are sent before received
-for every msqid:
-between msq_create(msqid) and next msq_destroy(msqid):
-for every m and any msg_id with m=msqid:
-msq_send(m, msg_id) must precede msq_receive(m, msg_id)
+for every msqid1, msqid2 with msqid1=msqid2:
+between msq_create(msqid1) and next msq_destroy(msqid2):
+for every m1, m2 and any msg_id1, msg_id2 with m1=msqid1, m2=m1, msg_id1=msg_id2:
+msq_send(m1, msg_id1) must precede msq_receive(m2, msg_id2)
 ```
 
 ```
@@ -382,13 +382,13 @@ An example `producer_consumer.jarl` file (obviously addressing the producer-cons
 # Every item is produced only once
 rule produce_once
 for every i and any p:
-produce(p, i) must happen 1 time
+produce(p, i) must happen 1 times
 
 
 # Every item is consumed only once
 rule consume_once
 for every i and any c:
-consume(c, i) must happen 1 time
+consume(c, i) must happen 1 times
 
 
 # 10 items are produced
@@ -413,14 +413,14 @@ before consume(c, iid):
 
 # Items are produced in order
 rule ordered_produce
-for every i, j and any p with j>i:
-produce(p, i) must precede produce(p, j)
+for every i, j and any p1, p2 with j>i:
+produce(p1, i) must precede produce(p2, j)
 
 
 # Items are consumed in order
 rule ordered_consume
-for every i, j and any c with j>i:
-consume(c, i) must precede consume(c, j)
+for every i, j and any c1, c2 with j>i:
+consume(c1, i) must precede consume(c2, j)
 
 
 # The buffer size is 5
