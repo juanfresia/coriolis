@@ -325,9 +325,9 @@ class TestParserCLI(unittest.TestCase):
     def test_parse_fact_filter_argument_not_declared_err(self):
         rule = """
         rule test_parse_filter_argument_not_declared_err
-        for any e1
-        after foo()
-        for every e2 with e2!=e3
+        for any e1:
+        after foo():
+        for every e2 with e2!=e3:
         bar() must happen
         """
 
@@ -383,7 +383,22 @@ class TestParserCLI(unittest.TestCase):
         rules = parse_str(rule)
 
         rule_selector = rules[0].scope.selector
-        expected_selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN, start=JarlCheckpoint("foo2"), end=JarlCheckpoint("foo1"))
+        expected_selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN, start=JarlCheckpoint("change"), end=JarlCheckpoint("this"))
+        # expected_selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN, start=JarlCheckpoint("foo2"), end=JarlCheckpoint("foo1"))
+        self.assertEqual(expected_selector, rule_selector)
+
+    def test_parse_selector_between_with_args(self):
+        rule = """
+        rule test_parse_selector_between_with_args
+        for any e1 and every e2
+        between foo1(e1) and next foo2(e2)
+        bar() must happen
+        """
+
+        rules = parse_str(rule)
+
+        rule_selector = rules[0].scope.selector
+        expected_selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN, start=JarlCheckpoint("foo1", ["e1"]), end=JarlCheckpoint("foo2", ["e2"]))
         self.assertEqual(expected_selector, rule_selector)
 
     def test_parse_selector_undefined_args(self):
@@ -489,11 +504,31 @@ class TestParserCLI(unittest.TestCase):
 
         self.assertRaises(JarlArgumentNotDeclared, parse_str, rule)
 
-    def test_parse_fact_with_arguments_scope(self):
+    def test_parse_fact_with_argument_in_scope(self):
         rule = """
-        rule test_parse_fact_with_arguments
+        rule test_parse_fact_with_argument_in_scope
         for every e1
         after foo()
+        bar(e1) must happen
+        """
+
+        self.assertRaises(JarlArgumentNotDeclared, parse_str, rule)
+
+    def test_parse_argument_in_fact_and_scope(self):
+        rule = """
+        rule test_parse_argument_in_fact_and_scope
+        for every e1
+        after foo(e1)
+        bar(e1) must happen
+        """
+
+        self.assertRaises(JarlArgumentAlreadyUsed, parse_str, rule)
+
+    def test_parse_argument_in_fact_with_scope(self):
+        rule = """
+        rule test_parse_argument_in_fact_with_scope
+        after foo()
+        for every e1
         bar(e1) must happen
         """
 
@@ -505,6 +540,17 @@ class TestParserCLI(unittest.TestCase):
         expected_fact = JarlRuleFactClause(chk, req)
         self.assertEqual(expected_fact, rule_fact)
 
+    def test_define_argument_in_fact_and_scope(self):
+        rule = """
+        rule test_define_argument_in_fact_and_scope
+        for every e1
+        after foo(e1)
+        for any e1
+        bar(e1) must happen
+        """
+
+        self.assertRaises(JarlArgumentAlreadyDeclared, parse_str, rule)
+
     def test_parse_fact_argument_already_used(self):
         rule = """
         rule test_parse_fact_argument_already_used
@@ -514,6 +560,7 @@ class TestParserCLI(unittest.TestCase):
         """
 
         self.assertRaises(JarlArgumentAlreadyUsed, parse_str, rule)
+
 
     # Integration tests
     def test_parse_integration(self):
