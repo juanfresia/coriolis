@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 
-from common.aggregation_steps import *
-from common.jarl_rule import *
 from enum import Enum
 
 class JarlRule():
-    def __init__(self, text="", scope=None, fact=None):
+    def __init__(self, name="", scope=None, fact=None, text=""):
         self.text = text
-        self.name = ""
+        self.name = name
         self.scope = scope
         self.fact = fact
 
@@ -203,11 +201,12 @@ class JarlCheckpoint():
 class JarlRuleFact():
     def __init__(self, filter=None, facts=None):
         self.filter = filter
-        if not facts:
-            self.facts = []
+        self.facts = []
+        if facts:
+            self.facts = facts
 
     def __eq__(self, other):
-        return isinstance(other, JarlRuleScope) and \
+        return isinstance(other, JarlRuleFact) and \
                 self.filter == other.filter and \
                 self.facts == other.facts
 

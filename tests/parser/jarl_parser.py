@@ -574,38 +574,37 @@ class TestParserCLI(unittest.TestCase):
 
         rules = parse_str(rule)
 
-        rule_selector = rules[0].scope.selector
-        selector_chk1 = JarlCheckpoint("employee_serve", ["e1", "person_name", "t"])
-        selector_chk2 = JarlCheckpoint("employee_ready", ["e2"])
-        selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN_NEXT, selector_chk1, selector_chk2)
-        self.assertEqual(selector, rule_selector)
+        rule_name = "test_parse_integration"
 
-        rule_filter = rules[0].scope.filter
         filter_cond1 = JarlWithCondition("e2", JarlComparator.EQ, "e1")
         filter_cond2 = JarlWithCondition("t", JarlComparator.EQ, "tourist", is_literal=True)
         filter_wildcards = []
         filter_iterators = ["e1", "e2", "person_name", "t"]
         filter_condition = [filter_cond1, filter_cond2]
-        self.assertEqual(filter_wildcards, rule_filter.wildcards)
-        self.assertEqual(filter_iterators, rule_filter.iterators)
-        self.assertEqual(filter_condition, rule_filter.conditions)
+        filter = JarlFilterExpr(filter_iterators, filter_wildcards, filter_condition)
 
-        rule_fact_filter = rules[0].fact.filter
+        selector_chk1 = JarlCheckpoint("employee_serve", ["e1", "person_name", "t"])
+        selector_chk2 = JarlCheckpoint("employee_ready", ["e2"])
+        selector = JarlSelectorExpr(JarlSelectorClauseType.BETWEEN_NEXT, selector_chk1, selector_chk2)
+
+        scope = JarlRuleScope(filter, selector)
+
         fact_filter_cond1 = JarlWithCondition("employee_id", JarlComparator.EQ, "e1")
         fact_filter_cond2 = JarlWithCondition("pn", JarlComparator.EQ, "person_name")
         fact_filter_wildcards = ["passport", "traits"]
         fact_filter_iterators = ["employee_id", "pn"]
         fact_filter_condition = [fact_filter_cond1, fact_filter_cond2]
-        self.assertEqual(fact_filter_wildcards, rule_fact_filter.wildcards)
-        self.assertEqual(fact_filter_iterators, rule_fact_filter.iterators)
-        self.assertEqual(fact_filter_condition, rule_fact_filter.conditions)
+        fact_filter = JarlFilterExpr(fact_filter_iterators, fact_filter_wildcards, fact_filter_condition)
 
-        rule_fact = rules[0].fact.facts[0]
         fact_chk1 = JarlCheckpoint("tourist_show_passport", ["pn", "passport", "traits"])
         fact_chk2 = JarlCheckpoint("employee_request_passport", ["employee_id"])
         fact_req = JarlRuleFactRequirementOrder(fact_chk2)
-        expected_fact_expr = JarlRuleFactClause(fact_chk1, fact_req)
-        self.assertEqual(expected_fact_expr, rule_fact)
+        fact_clause = [JarlRuleFactClause(fact_chk1, fact_req)]
+
+        fact = JarlRuleFact(fact_filter, fact_clause)
+
+        expected_rule = JarlRule(rule_name, scope, fact)
+        self.assertEqual(expected_rule, rules[0])
 
 if __name__ == '__main__':
     unittest.main()
