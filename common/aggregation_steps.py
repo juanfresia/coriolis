@@ -22,6 +22,9 @@ class AggregationStep:
     def _mongofy(self):
         raise NotImplementedError
 
+    def __eq__(self, other):
+        return isinstance(other, AggregationStep) and other._mongofy() == self._mongofy()
+
     def _expr_to_cmp(self, expr):
         EXPR_TO_CMP = {
             "=": "$eq",
