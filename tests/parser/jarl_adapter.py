@@ -28,8 +28,7 @@ class TestAdapter(unittest.TestCase):
         ])
         expected_rule_adapted = JARLRule("", rule_header, rule_fact, passed_by_default=False)
 
-        self.assertEqual(expected_rule_adapted.evaluate_fact_steps(),
-                steps.evalaute_fact_steps())
+        self.assertEqual(expected_rule_adapted, steps)
 
 if __name__ == '__main__':
     unittest.main()

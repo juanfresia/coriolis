@@ -54,6 +54,18 @@ class JARLRule:
     def has_scope(self):
         return self.scope is not None
 
+    def __eq__(self, other):
+        return isinstance(other, JARLRule) and \
+            self.text == other.text and \
+            self.rule_header == other.rule_header and \
+            self.fact == other.fact and \
+            self.scope == other.scope and \
+            self.status == other.status and \
+            self.passed_by_default == other.passed_by_default and \
+            self.failed_info == other.failed_info and \
+            self.failed_scope == other.failed_scope and \
+            self._dynamic_args == other._dynamic_args
+
 class RuleScope:
     def __init__(self, aggregation_steps):
         self.steps = aggregation_steps
@@ -74,6 +86,9 @@ class RuleScope:
     def get_default_scope():
         return [ {"c1": {"log_line": "MIN"}, "c2": {"log_line": "MAX"}} ]
 
+    def __eq__(self, other):
+        return isinstance(other, RuleScope) and self.steps == other.steps
+
 class RuleFact:
     def __init__(self, aggregation_steps):
         self.steps = aggregation_steps
@@ -82,3 +97,6 @@ class RuleFact:
         steps = copy.deepcopy(self.steps)
         steps = [s.evaluate(dynamic_args) for s in steps]
         return [s for subs in steps for s in subs]
+
+    def __eq__(self, other):
+        return isinstance(other, RuleFact) and self.steps == other.steps

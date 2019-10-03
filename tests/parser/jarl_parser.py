@@ -23,7 +23,7 @@ class TestParserCLI(unittest.TestCase):
 
     # TODO make it raise error
     def test_parse_garbage(self):
-        rules = parse_str("this is a garbage rule, it should not mean anything")
+        rules = parse_str("this is a garbage rule, it should not mean anything", show_errors=False)
         self.assertFalse(rules)
         self.assertListEqual([], rules)
 
