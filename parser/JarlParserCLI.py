@@ -5,13 +5,14 @@ from .JarlParser import JarlParser
 from .JarlActualListener import JarlListener
 from .JarlRuleValidator import validate_rule
 
-def parse_stream(input):
+def parse_stream(input, show_errors=True):
     """ Uses JarlLexer and JarlParser to parse an input stream.
     Returns a list of JarlRues"""
 
     lexer = JarlLexer(input)
     stream = CommonTokenStream(lexer)
     parser = JarlParser(stream)
+    if not show_errors: parser.removeErrorListeners()
     tree = parser.jarl()
     
     Jarl = JarlListener()
@@ -22,13 +23,13 @@ def parse_stream(input):
         validate_rule(rule)
     return Jarl.rules
 
-def parse_file(filepath):
+def parse_file(filepath, show_errors=True):
     input = FileStream(filepath)
-    return parse_stream(input)
+    return parse_stream(input, show_errors)
 
-def parse_str(s):
+def parse_str(s, show_errors=True):
     input = InputStream(s)
-    return parse_stream(input)
+    return parse_stream(input, show_errors)
 
 def main(argv):
     rules = parse_file(argv[1])
