@@ -56,7 +56,6 @@ class JARLRule:
 
     def __eq__(self, other):
         return isinstance(other, JARLRule) and \
-            self.text == other.text and \
             self.rule_header == other.rule_header and \
             self.fact == other.fact and \
             self.scope == other.scope and \

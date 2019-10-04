@@ -26,7 +26,7 @@ class TestAdapter(unittest.TestCase):
             CompareResultsQuantity("=", 2),
             ReduceResult()
         ])
-        expected_rule_adapted = JARLRule("", rule_header, rule_fact, passed_by_default=False)
+        expected_rule_adapted = JARLRule(rule, rule_header, rule_fact, passed_by_default=False)
 
         self.assertEqual(expected_rule_adapted, steps)
 
