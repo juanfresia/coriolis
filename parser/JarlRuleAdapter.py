@@ -125,6 +125,12 @@ class JarlRuleAdapter():
             scope_selector = ScopeBetween(scope.selector.start.name, scope.selector.end.name)
         elif scope.selector.type == JarlSelectorClauseType.BETWEEN_PREV:
             scope_selector = ScopeBetween(scope.selector.start.name, scope.selector.end.name, False)
+        elif scope.selector.type == JarlSelectorClauseType.AFTER:
+            scope_selector = ScopeBetween(scope.selector.start.name)
+        elif scope.selector.type == JarlSelectorClauseType.BEFORE:
+            scope_selector = ScopeBetween(scope.selector.end.name)
+        else:
+            raise Exception("Unexpected Selector Clause type")
 
         scope_steps.append(scope_selector)
         return RuleScope(scope_steps)
