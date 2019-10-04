@@ -72,6 +72,7 @@ class JarlRuleAdapter():
 
         # From 2)
         if right in scope_args:
+            # TODO(jfresia) how the hell are we doing these dynamic scopes?
             self.dynamic_scopes.append((right, True))
             right = "#" + right
             literal = True
@@ -180,13 +181,15 @@ class JarlRuleAdapter():
         return RuleFact(fact_steps)
 
     def rule_to_steps(self, rule):
-        # TODO add validation of the rule here
+        # TODO(jfresia) add validation of the rule here
 
         # Get each part of a rule
         rule_text = self.get_rule_text(rule)
         rule_header = self.get_rule_header(rule)
         rule_scope = self.get_rule_scope(rule)
         rule_fact = self.get_rule_fact(rule)
+
+        # TODO(jfresia) Somehow infer the passed_by_default part of the rule
 
         # Compose rule and return
         return JARLRule(rule_text, rule_header, rule_fact, rule_scope, passed_by_default=False)
