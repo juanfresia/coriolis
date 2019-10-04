@@ -58,7 +58,7 @@ class TestAdapter(unittest.TestCase):
         ])
 
         # TODO stuff: remove me when the rule is fully parsed
-        steps.scope = rule_scope
+        # steps.scope = rule_scope
         steps.passed_by_default = True
 
         expected_rule_adapted = JARLRule(rule, rule_header, rule_fact, rule_scope)
@@ -69,7 +69,7 @@ class TestAdapter(unittest.TestCase):
     def test_adapter_with_reference_to_scope(self):
         rule = """
         rule reader_reads_what_was_last_written
-        for every r1, m1, r2, m2 and any r, w with m1!='NULL', r2=r1, m2=m1
+        for every r1, m1, r2, m2 and any r, w with m1!='NULL', r1=r2, m1=m2
         between read_room(r, r1, m1) and previous write_room(w, r2, m2)
         for any wid, roomid, m with roomid=r2, m!=m2
         write_room(wid, roomid, m) must happen 0 times
@@ -84,8 +84,8 @@ class TestAdapter(unittest.TestCase):
             RenameArgs([["read_room", "r", "r1", "m1"], ["write_room", "w", "r2", "m2"]]),
             CrossAndGroupByArgs([["read_room", "r1", "m1"], ["write_room", "r2", "m2"]]),
             ImposeIteratorCondition("m1", "!=", "NULL", True),
-            ImposeIteratorCondition("m1", "=", "m2"),
             ImposeIteratorCondition("r1", "=", "r2"),
+            ImposeIteratorCondition("m1", "=", "m2"),
             ScopeBetween("read_room", "write_room", False)
         ])
         rule_fact = RuleFact([
@@ -103,6 +103,8 @@ class TestAdapter(unittest.TestCase):
         expected_rule_adapted.set_dynamic_scope_arg("m2", True)
 
         # TODO stuff: remove me when the rule is fully parsed
+        i = 4
+        self.assertEqual(steps.scope.steps[i], rule_scope.steps[i])
         steps.scope = rule_scope
         steps.passed_by_default = True
         steps.set_dynamic_scope_arg("r2", True)

@@ -265,9 +265,9 @@ rule_10.set_dynamic_scope_arg("msg", False)
 rule_11_statement = (
     "# Reader always reads room last message\n"
     "rule reader_reads_what_was_last_written\n"
-    "for every r1, m1, r2, m2 and any r, w with m1!='NULL', r2=r1, m2=m1:\n"
+    "for every r1, m1, r2, m2 and any r, w with m1!='NULL', r1=r2, m1=m2:\n"
     "between read_room(r, r1, m1) and previous write_room(w, r2, m2):\n"
-    "  for any wid, roomid, m with roomid=r2:\n"
+    "  for any wid, roomid, m with roomid=r2, m!=m2:\n"
     "  write_room(wid, roomid, m) must happen 0 times\n"
 )
 rule_11_header = "reader_reads_what_was_last_written"
@@ -276,8 +276,8 @@ rule_11_scope = RuleScope([
     RenameArgs([["read_room", "r", "r1", "m1"], ["write_room", "w", "r2", "m2"]]),
     CrossAndGroupByArgs([["read_room", "r1", "m1"], ["write_room", "r2", "m2"]]),
     ImposeIteratorCondition("m1", "!=", "NULL", True),
-    ImposeIteratorCondition("m1", "=", "m2"),
     ImposeIteratorCondition("r1", "=", "r2"),
+    ImposeIteratorCondition("m1", "=", "m2"),
     ScopeBetween("read_room", "write_room", False)
 ])
 rule_11_fact = RuleFact([

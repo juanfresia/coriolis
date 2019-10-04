@@ -1,9 +1,17 @@
 from common.aggregation_steps import *
 from common.jarl_rule import *
+from parser.JarlRule import *
 
 class JarlRuleAdapter():
     def __init__(self):
         self.dynamic_scopes = []
+
+    def unique_checkpoints(self, checkpoints):
+        unique = []
+        for chk in checkpoints:
+            if not chk in unique:
+                unique.append(chk)
+        return unique
 
     def concat_checkpoint(self, chk):
         concat = [chk.name]
@@ -14,6 +22,32 @@ class JarlRuleAdapter():
         concat = [chk.name]
         concat += [arg for arg in chk.arguments if arg in iterators]
         return concat
+
+    def any_checkpoint_has_args(self, checkpoints):
+        for chk in checkpoints:
+            if chk.arguments:
+                return True
+        return False
+
+    def adapt_scope_filter_condition(self, condition, scope_filter):
+        # 1) Define condition type:
+        # - if condition.left is wildcard -> ImposeWildcardCondition
+        # - if condition.right is iterator -> ImposeIteratorCondition
+        #
+        # 2) If condition is literal:
+        # - last parameter is True
+
+        left = condition.l
+        operator = condition.c.value
+        right = condition.r
+        literal = condition.is_literal
+
+        if left in scope_filter.wildcards:
+            return ImposeWildcardCondition(left, operator, right, literal)
+        elif left in scope_filter.iterators:
+            return ImposeIteratorCondition(left, operator, right, literal)
+        else:
+            raise Exception("Comparison argument was not declared!")
 
     def adapt_fact_filter_condition(self, condition, fact_filter, scope_filter=None):
         # 1) Define condition type:
@@ -56,7 +90,44 @@ class JarlRuleAdapter():
         return rule.name
 
     def get_rule_scope(self, rule):
-        return None
+        scope = rule.scope
+        if not scope:
+            return None
+
+        checkpoints = scope.selector.get_checkpoints()
+        iterators = []
+        if scope.filter:
+            iterators = scope.filter.iterators
+
+        scope_steps = []
+
+        match_checkpoints = MatchCheckpoints([chk.name for chk in self.unique_checkpoints(checkpoints)])
+        scope_steps.append(match_checkpoints)
+
+        if self.any_checkpoint_has_args(checkpoints):
+            flattened_checkpoints = [self.concat_checkpoint(chk) for chk in checkpoints]
+            rename_args = RenameArgs(flattened_checkpoints)
+            scope_steps.append(rename_args)
+
+        flattened_checkpoints = [self.concat_checkpoint_only_iters(chk, iterators) for chk in checkpoints]
+        cross_and_group = CrossAndGroupByArgs(flattened_checkpoints)
+        scope_steps.append(cross_and_group)
+
+        # Conditions
+        conditions = []
+        if scope.filter:
+            conditions = scope.filter.conditions
+
+        for cond in conditions:
+            scope_steps.append(self.adapt_scope_filter_condition(cond, scope.filter))
+
+        if scope.selector.type == JarlSelectorClauseType.BETWEEN_NEXT:
+            scope_selector = ScopeBetween(scope.selector.start.name, scope.selector.end.name)
+        elif scope.selector.type == JarlSelectorClauseType.BETWEEN_PREV:
+            scope_selector = ScopeBetween(scope.selector.start.name, scope.selector.end.name, False)
+
+        scope_steps.append(scope_selector)
+        return RuleScope(scope_steps)
 
     def get_rule_fact(self, rule):
         fact = rule.fact
@@ -65,14 +136,17 @@ class JarlRuleAdapter():
         if fact.filter:
             iterators = fact.filter.iterators
 
+        scope_filter = rule.scope.filter if rule.scope else None
+
         fact_steps = []
 
         match_checkpoints = MatchCheckpoints([chk.name for chk in checkpoints])
         fact_steps.append(match_checkpoints)
 
-        flattened_checkpoints = [self.concat_checkpoint(chk) for chk in checkpoints]
-        rename_args = RenameArgs(flattened_checkpoints)
-        fact_steps.append(rename_args)
+        if self.any_checkpoint_has_args(checkpoints):
+            flattened_checkpoints = [self.concat_checkpoint(chk) for chk in checkpoints]
+            rename_args = RenameArgs(flattened_checkpoints)
+            fact_steps.append(rename_args)
 
         flattened_checkpoints = [self.concat_checkpoint_only_iters(chk, iterators) for chk in checkpoints]
         cross_and_group = CrossAndGroupByArgs(flattened_checkpoints)
@@ -84,7 +158,7 @@ class JarlRuleAdapter():
             conditions = fact.filter.conditions
 
         for cond in conditions:
-            fact_steps.append(self.adapt_fact_filter_condition(cond, fact.filter, rule.scope.filter))
+            fact_steps.append(self.adapt_fact_filter_condition(cond, fact.filter, scope_filter))
 
         requirement = fact.facts[0].requirement
         if requirement.get_checkpoints():
