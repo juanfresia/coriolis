@@ -2,6 +2,8 @@ from common.aggregation_steps import *
 from common.jarl_rule import *
 
 class JarlRuleAdapter():
+    def __init__(self):
+        self.dynamic_scopes = []
 
     def concat_checkpoint(self, chk):
         concat = [chk.name]
@@ -12,6 +14,40 @@ class JarlRuleAdapter():
         concat = [chk.name]
         concat += [arg for arg in chk.arguments if arg in iterators]
         return concat
+
+    def adapt_fact_filter_condition(self, condition, fact_filter, scope_filter=None):
+        # 1) Define condition type:
+        # - if condition.left is wildcard -> ImposeWildcardCondition
+        # - if condition.right is iterator -> ImposeIteratorCondition
+        #
+        # 2) If right de is from scope_filter:
+        # - prepend a # to the argument name
+        # - last parameter is True
+        #
+        # 3) If condition is literal:
+        # - last parameter is True
+
+        scope_args = []
+        if scope_filter:
+            scope_args = scope_filter.arguments()
+
+        left = condition.l
+        operator = condition.c.value
+        right = condition.r
+        literal = condition.is_literal
+
+        # From 2)
+        if right in scope_args:
+            self.dynamic_scopes.append((right, True))
+            right = "#" + right
+            literal = True
+
+        if left in fact_filter.wildcards:
+            return ImposeWildcardCondition(left, operator, right, literal)
+        elif left in fact_filter.iterators:
+            return ImposeIteratorCondition(left, operator, right, literal)
+        else:
+            raise Exception("Comparison argument was not declared!")
 
     def get_rule_text(self, rule):
         return rule.text
@@ -41,6 +77,14 @@ class JarlRuleAdapter():
         flattened_checkpoints = [self.concat_checkpoint_only_iters(chk, iterators) for chk in checkpoints]
         cross_and_group = CrossAndGroupByArgs(flattened_checkpoints)
         fact_steps.append(cross_and_group)
+
+        # Conditions
+        conditions = []
+        if fact.filter:
+            conditions = fact.filter.conditions
+
+        for cond in conditions:
+            fact_steps.append(self.adapt_fact_filter_condition(cond, fact.filter, rule.scope.filter))
 
         requirement = fact.facts[0].requirement
         if requirement.get_checkpoints():

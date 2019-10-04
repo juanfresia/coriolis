@@ -24,29 +24,7 @@ class JarlRuleScope():
         self.selector = selector
 
     def toSteps(self):
-        checkpoints = self.selector.get_checkpoints()
-
-        ## TODO: check validity of checkpoint arguments
-
-        chk_names = {chk.name for chk in checkpoints}
-        # 1)
-        print("MatchCheckpoints({})".format([c for c in chk_names]))
-
-        # 2) and 3)
-        names = []
-        args = []
-        for chk in checkpoints:
-            names.append(chk.name)
-            args.append(chk.arguments)
-        print("RenameArgs({}, {})".format(names, args))
-        print("CrossAndGroupByArgs({}, {})".format(names, args))
-
-        # 4)
-        for cond in self.filter.conditions:
-            print("ImposeIteratorCondition({}, {}, {})".format(cond.l, cond.c, cond.r))
-
-        # 5)
-        print(self.selector.toSteps())
+        pass
 
     def __eq__(self, other):
         return isinstance(other, JarlRuleScope) and \
