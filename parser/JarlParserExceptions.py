@@ -2,6 +2,9 @@
 class JarlRuleValidationError(Exception):
     pass
 
+class JarlRuleParsingError(Exception):
+    pass
+
 class JarlArgumentAlreadyDeclared(JarlRuleValidationError):
     def __init__(self, arg):
         self.arg = arg
@@ -25,5 +28,10 @@ class JarlConditionMixesArguments(JarlRuleValidationError):
         self.arg1 = arg1
         self.arg2 = arg2
         msg = "Arguments \'{}\' and \'{}\' cannot be used in the same condition".format(arg1, arg2)
+        super().__init__(msg)
+
+class JarlNegatedOrderRequirement(JarlRuleParsingError):
+    def __init__(self):
+        msg = "Fact order requirement cannot be negated (must not precede is not allowed)"
         super().__init__(msg)
 

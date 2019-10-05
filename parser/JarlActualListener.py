@@ -6,6 +6,7 @@ else:
     from JarlParser import JarlParser
 
 from .JarlRule import *
+from .JarlParserExceptions import *
 
 # This class defines a complete listener for a parse tree produced by JarlParser.
 class JarlListener(ParseTreeListener):
@@ -210,6 +211,9 @@ class JarlListener(ParseTreeListener):
         chk_args = [arg.getText() for arg in chk_args_list]
 
         req = JarlRuleFactRequirementOrder(JarlCheckpoint(chk_name, chk_args))
+
+        if ctx.NOT():
+            raise JarlNegatedOrderRequirement()
 
         self.stack.append(req)
 

@@ -495,6 +495,30 @@ class TestParserCLI(unittest.TestCase):
         expected_fact = JarlRuleFactClause(chk, req)
         self.assertEqual(expected_fact, rule_fact)
 
+    def test_parse_fact_order(self):
+        rule = """
+        rule test_parse_fact_order
+        bar() must precede foo()
+        """
+
+        rules = parse_str(rule)
+
+        rule_fact = rules[0].fact.facts[0]
+        chk1 = JarlCheckpoint("bar")
+        chk2 = JarlCheckpoint("foo")
+
+        req = JarlRuleFactRequirementOrder(chk2)
+        expected_fact = JarlRuleFactClause(chk1, req)
+        self.assertEqual(expected_fact, rule_fact)
+
+    def test_parse_fact_order_negated_err(self):
+        rule = """
+        rule test_parse_fact_order
+        bar() must not precede foo()
+        """
+
+        self.assertRaises(JarlNegatedOrderRequirement, parse_str, rule)
+
     def test_parse_fact_undefined_args(self):
         rule = """
         rule test_parse_fact_undefined_args
@@ -560,7 +584,6 @@ class TestParserCLI(unittest.TestCase):
         """
 
         self.assertRaises(JarlArgumentNotDeclared, parse_str, rule)
-
 
     # Integration tests
     def test_parse_integration(self):
