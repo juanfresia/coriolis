@@ -141,7 +141,7 @@ rule_7_fact = RuleFact([
     CompareResultsQuantity("=", 2),
     ReduceResult()
 ])
-rule_7 = JARLRule(rule_7_statement, rule_7_header, rule_7_fact, rule_7_scope)
+rule_7 = JARLRule(rule_7_statement, rule_7_header, rule_7_fact, rule_7_scope, passed_by_default=False)
 
 rule_8_statement = (
     "# 1 oxygen atom must bond to make a new water molecule\n"

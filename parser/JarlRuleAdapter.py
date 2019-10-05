@@ -180,10 +180,25 @@ class JarlRuleAdapter():
 
         return RuleFact(fact_steps)
 
+    def get_passed_by_default(self, rule):
+        req = rule.fact.facts[0].requirement
+
+        # If requirement is of order, passed_by_default is always true
+        if req.get_checkpoints():
+            return True
+
+        if req.type == JarlComparator.EQ and req.count != 0:
+            return False
+        if req.type == JarlComparator.GE and req.count != 0:
+            return False
+        return True
+
     def set_rule_dynamic_scope_args(self, rule, adapted_rule):
         is_in_first_chk = True
         for dynamic_arg in self.dynamic_args:
             selector = rule.scope.selector
+            if selector.type == JarlSelectorClauseType.BEFORE:
+                is_in_first_chk = False
             if selector.type == JarlSelectorClauseType.BETWEEN_NEXT:
                 if dynamic_arg in selector.end.arguments:
                     is_in_first_chk = False
@@ -192,7 +207,6 @@ class JarlRuleAdapter():
                 if dynamic_arg in selector.start.arguments:
                     is_in_first_chk = False
 
-            print(dynamic_arg, is_in_first_chk)
             adapted_rule.set_dynamic_scope_arg(dynamic_arg, is_in_first_chk)
 
     def rule_to_steps(self, rule):
@@ -203,10 +217,10 @@ class JarlRuleAdapter():
         rule_header = self.get_rule_header(rule)
         rule_scope = self.get_rule_scope(rule)
         rule_fact = self.get_rule_fact(rule)
+        passed_by_default = self.get_passed_by_default(rule)
 
-        # TODO(jfresia) Somehow infer the passed_by_default part of the rule
-
-        # Compose rule and return
-        adapted_rule = JARLRule(rule_text, rule_header, rule_fact, rule_scope, passed_by_default=False)
+        # Compose rule, set dynamic args and return
+        adapted_rule = JARLRule(rule_text, rule_header, rule_fact, rule_scope, passed_by_default=passed_by_default)
         self.set_rule_dynamic_scope_args(rule, adapted_rule)
+
         return adapted_rule

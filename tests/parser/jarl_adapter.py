@@ -57,11 +57,8 @@ class TestAdapter(unittest.TestCase):
             ReduceResult()
         ])
 
-        # TODO stuff: remove me when the rule is fully parsed
-        # steps.scope = rule_scope
-        steps.passed_by_default = True
-
-        expected_rule_adapted = JARLRule(rule, rule_header, rule_fact, rule_scope)
+        print(steps.passed_by_default)
+        expected_rule_adapted = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=False)
         self.assertEqual(expected_rule_adapted, steps)
 
         pass
@@ -101,9 +98,6 @@ class TestAdapter(unittest.TestCase):
         expected_rule_adapted = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=True)
         expected_rule_adapted.set_dynamic_scope_arg("r2", True)
         expected_rule_adapted.set_dynamic_scope_arg("m2", True)
-
-        # TODO stuff: remove me when the rule is fully parsed
-        steps.passed_by_default = True
 
         self.assertEqual(expected_rule_adapted, steps)
 
