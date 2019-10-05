@@ -1,0 +1,62 @@
+# Every item is produced only once
+rule produce_once
+for every i and any p:
+produce(p, i) must happen 1 times
+
+# Every item is consumed only once
+rule consume_once
+for every i and any c:
+consume(c, i) must happen 1 times
+
+# 10 items are produced
+rule produce_ten
+for any p, i:
+produce(p, i) must happen 10 times
+
+# 10 items are consumed
+rule consume_ten
+for any c, i:
+consume(c, i) must happen 10 times
+
+# Every item is produced before consumed
+rule produce_then_consume
+for every iid and any c:
+before consume(c, iid):
+  for every i and any p with i=iid:
+  produce(p, i) must happen 1 times
+
+# Items are produced in order
+rule produce_in_order
+for every i, j and any p, q with j>i:
+produce(p, i) must precede produce(q, j)
+
+# Items are consumed in order
+rule consume_in_order
+for every i, j and any c, d with j>i:
+consume(c, i) must precede consume(d, j)
+
+# The buffer size is 5
+rule buffer_size_five
+for any pid, cid, i1, i2:
+between produce(pid, i1) and next consume(cid, i2):
+  for any p, i:
+  produce(p, i) must happen at most 5 times
+
+# Item is consumed only once (written differently)
+rule consume_once_alt
+for any cid, iid:
+after consume(cid, iid):
+  for every i and any c:
+  consume(c, i) must happen 1 times
+
+# Item is produced only once (written differently)
+rule produce_once_alt
+for any pid, iid:
+before produce(pid, iid):
+  for every i and any p:
+  produce(p, i) must happen 1 times
+
+# Consumer cannot consume items smaller than their own ID
+rule consume_smaller
+for every c, i with i<c:
+consume(c, i) must not happen

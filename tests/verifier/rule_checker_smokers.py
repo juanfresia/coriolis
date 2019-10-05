@@ -4,7 +4,7 @@ from verifier.rule_checker import *
 
 
 class TestSmokers(unittest.TestCase):
-    log_file = "/vagrant/resources/smokers_2.log"
+    log_file = "/vagrant/resources/smokers_1.log"
     checkpoint_file = "/vagrant/resources/smokers.chk"
 
     rule_1_statement = (
@@ -160,7 +160,7 @@ class TestSmokers(unittest.TestCase):
         MatchCheckpoints(["smoker_take_element"]),
         RenameArgs([ ["smoker_take_element", "s", "e"] ]),
         CrossAndGroupByArgs([ ["smoker_take_element", "s", "e"] ]),
-        ImposeIteratorCondition("s", "=", "e"),
+        ImposeIteratorCondition("e", "=", "s"),
         CompareResultsQuantity("=", 0),
         ReduceResult()
     ])
@@ -229,7 +229,7 @@ class TestSmokers(unittest.TestCase):
         "# 20 cigarettes can be smoked\n"
         "rule twenty_cigarettes_smoked\n"
         "for any s:\n"
-        "smoker_smoke(e) must happen 20 times\n"
+        "smoker_smoke(s) must happen 20 times\n"
     )
     rule_11_header = "twenty_cigarettes_smoked"
     rule_11_fact = RuleFact([

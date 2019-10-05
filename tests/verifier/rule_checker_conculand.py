@@ -20,7 +20,7 @@ class TestConculand(unittest.TestCase):
         MatchCheckpoints(["employee_ready"]),
         RenameArgs([ ["employee_ready", "e1"], ["employee_ready", "e2"] ]),
         CrossAndGroupByArgs([ ["employee_ready", "e1"], ["employee_ready", "e2"] ]),
-        ImposeIteratorCondition("e1", "=", "e2"),
+        ImposeIteratorCondition("e2", "=", "e1"),
         ScopeBetween("employee_ready", "employee_ready")
     ])
     rule_1_fact = RuleFact([
@@ -31,7 +31,7 @@ class TestConculand(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_1 = JARLRule(rule_1_statement, rule_1_header, rule_1_fact, rule_1_scope)
+    rule_1 = JARLRule(rule_1_statement, rule_1_header, rule_1_fact, rule_1_scope, passed_by_default=False)
     rule_1.set_dynamic_scope_arg("e1", True)
 
     rule_2_statement = (
@@ -58,7 +58,7 @@ class TestConculand(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_2 = JARLRule(rule_2_statement, rule_2_header, rule_2_fact, rule_2_scope)
+    rule_2 = JARLRule(rule_2_statement, rule_2_header, rule_2_fact, rule_2_scope, passed_by_default=False)
     rule_2.set_dynamic_scope_arg("person_name", False)
 
     rule_3_statement = (
@@ -85,7 +85,7 @@ class TestConculand(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_3 = JARLRule(rule_3_statement, rule_3_header, rule_3_fact, rule_3_scope)
+    rule_3 = JARLRule(rule_3_statement, rule_3_header, rule_3_fact, rule_3_scope, passed_by_default=False)
     rule_3.set_dynamic_scope_arg("person_name", False)
 
     rule_4_statement = (
@@ -101,13 +101,13 @@ class TestConculand(unittest.TestCase):
         MatchCheckpoints(["employee_serve", "employee_ready"]),
         RenameArgs([ ["employee_serve", "e1", "person_name", "t"], ["employee_ready", "e2"] ]),
         CrossAndGroupByArgs([ ["employee_serve", "e1", "person_name", "t"], ["employee_ready", "e2"] ]),
-        ImposeIteratorCondition("e1", "=", "e2"),
+        ImposeIteratorCondition("e2", "=", "e1"),
         ImposeIteratorCondition("t", "=", "tourist", True),
         ScopeBetween("employee_serve", "employee_ready")
     ])
     rule_4_fact = RuleFact([
-        MatchCheckpoints(["tourist_show_passport", "employee_request_passport"]),
-        RenameArgs([ ["tourist_show_passport", "pn", "passport", "traits"], ["employee_request_passport", "employee_id"] ]),
+        MatchCheckpoints(["employee_request_passport", "tourist_show_passport"]),
+        RenameArgs([ ["employee_request_passport", "employee_id"], ["tourist_show_passport", "pn", "passport", "traits"] ]),
         CrossAndGroupByArgs([ ["employee_request_passport", "employee_id"], ["tourist_show_passport", "pn"] ]),
         ImposeIteratorCondition("pn", "=", "#person_name", True),
         ImposeIteratorCondition("employee_id", "=", "#e1", True),
@@ -121,7 +121,7 @@ class TestConculand(unittest.TestCase):
     rule_5_statement = (
         "# Every resident shows their document after being asked for it\n"
         "rule resident_show_document_when_requested\n"
-        "for every e1, e2, person_name, with e2=e1, t='resident':\n"
+        "for every e1, e2, person_name, t with e2=e1, t='resident':\n"
         "between employee_serve(e1, person_name, t) and next employee_ready(e2):\n"
         "  for every employee_id, pn and any document, gender with employee_id=e1, pn=person_name:\n"
         "  employee_request_document(employee_id) must precede resident_show_document(pn, document, gender)\n"
@@ -131,16 +131,16 @@ class TestConculand(unittest.TestCase):
         MatchCheckpoints(["employee_serve", "employee_ready"]),
         RenameArgs([ ["employee_serve", "e1", "person_name", "t"], ["employee_ready", "e2"] ]),
         CrossAndGroupByArgs([ ["employee_serve", "e1", "person_name", "t"], ["employee_ready", "e2"] ]),
-        ImposeIteratorCondition("e1", "=", "e2"),
+        ImposeIteratorCondition("e2", "=", "e1"),
         ImposeIteratorCondition("t", "=", "resident", True),
         ScopeBetween("employee_serve", "employee_ready")
     ])
     rule_5_fact = RuleFact([
-        MatchCheckpoints(["resident_show_document", "employee_request_document"]),
-        RenameArgs([ ["resident_show_document", "pn", "document", "gender"], ["employee_request_document", "employee_id"] ]),
+        MatchCheckpoints(["employee_request_document", "resident_show_document"]),
+        RenameArgs([ ["employee_request_document", "employee_id"], ["resident_show_document", "pn", "document", "gender"] ]),
         CrossAndGroupByArgs([ ["employee_request_document", "employee_id"], ["resident_show_document", "pn"] ]),
-        ImposeIteratorCondition("pn", "=", "#person_name", True),
         ImposeIteratorCondition("employee_id", "=", "#e1", True),
+        ImposeIteratorCondition("pn", "=", "#person_name", True),
         CompareResultsPrecedence("employee_request_document", "resident_show_document"),
         ReduceResult()
     ])
@@ -161,9 +161,9 @@ class TestConculand(unittest.TestCase):
         MatchCheckpoints(["tourist_spawn", "tourist_die"]),
         RenameArgs([ ["tourist_spawn", "pn1", "p1", "t1"], ["tourist_die", "pn2", "p2", "t2"] ]),
         CrossAndGroupByArgs([ ["tourist_spawn", "pn1", "p1", "t1"], ["tourist_die", "pn2", "p2", "t2"] ]),
-        ImposeIteratorCondition("pn1", "=", "pn2"),
-        ImposeIteratorCondition("p1", "=", "p2"),
-        ImposeIteratorCondition("t1", "=", "t2"),
+        ImposeIteratorCondition("pn2", "=", "pn1"),
+        ImposeIteratorCondition("p2", "=", "p1"),
+        ImposeIteratorCondition("t2", "=", "t1"),
         ScopeBetween("tourist_spawn", "tourist_die")
     ])
     rule_6_fact = RuleFact([
@@ -176,7 +176,7 @@ class TestConculand(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_6 = JARLRule(rule_6_statement, rule_6_header, rule_6_fact, rule_6_scope)
+    rule_6 = JARLRule(rule_6_statement, rule_6_header, rule_6_fact, rule_6_scope, passed_by_default=False)
     rule_6.set_dynamic_scope_arg("pn1", True)
     rule_6.set_dynamic_scope_arg("p1", True)
     rule_6.set_dynamic_scope_arg("t1", True)
@@ -194,9 +194,9 @@ class TestConculand(unittest.TestCase):
         MatchCheckpoints(["resident_spawn", "resident_die"]),
         RenameArgs([ ["resident_spawn", "pn1", "d1", "g1"], ["resident_die", "pn2", "d2", "g2"] ]),
         CrossAndGroupByArgs([ ["resident_spawn", "pn1", "d1", "g1"], ["resident_die", "pn2", "d2", "g2"] ]),
-        ImposeIteratorCondition("pn1", "=", "pn2"),
-        ImposeIteratorCondition("d1", "=", "d2"),
-        ImposeIteratorCondition("g1", "=", "g2"),
+        ImposeIteratorCondition("pn2", "=", "pn1"),
+        ImposeIteratorCondition("d2", "=", "d1"),
+        ImposeIteratorCondition("g2", "=", "g1"),
         ScopeBetween("resident_spawn", "resident_die")
     ])
     rule_7_fact = RuleFact([
@@ -209,7 +209,7 @@ class TestConculand(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_7 = JARLRule(rule_7_statement, rule_7_header, rule_7_fact, rule_7_scope)
+    rule_7 = JARLRule(rule_7_statement, rule_7_header, rule_7_fact, rule_7_scope, passed_by_default=False)
     rule_7.set_dynamic_scope_arg("pn1", True)
     rule_7.set_dynamic_scope_arg("d1", True)
     rule_7.set_dynamic_scope_arg("g1", True)
@@ -238,14 +238,14 @@ class TestConculand(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_8 = JARLRule(rule_8_statement, rule_8_header, rule_8_fact, rule_8_scope)
+    rule_8 = JARLRule(rule_8_statement, rule_8_header, rule_8_fact, rule_8_scope, passed_by_default=False)
     rule_8.set_dynamic_scope_arg("employee_id", False)
     rule_8.set_dynamic_scope_arg("passport", False)
 
     rule_9_statement = (
         "# A seal must be taken before sealing a passport\n"
         "rule seal_needed_to_seal_passport\n"
-        "for every e1, e2, person_name, t, passport with e=e1, t='tourist':\n"
+        "for every e1, e2, person_name, t, passport with e2=e1, t='tourist':\n"
         "between employee_serve(e1, person_name, t) and next employee_allow_tourist(e2, passport):\n"
         "  for every eid1, eid2, p with eid1=e1, eid2=e1, p=passport:\n"
         "  employee_take_seal(eid1) must precede employee_seal_passport(eid2, p)\n"
@@ -255,7 +255,7 @@ class TestConculand(unittest.TestCase):
         MatchCheckpoints(["employee_serve", "employee_allow_tourist"]),
         RenameArgs([ ["employee_serve", "e1", "person_name", "t"], ["employee_allow_tourist", "e2", "passport"] ]),
         CrossAndGroupByArgs([ ["employee_serve", "e1", "person_name", "t"], ["employee_allow_tourist", "e2", "passport"] ]),
-        ImposeIteratorCondition("e1", "=", "e2"),
+        ImposeIteratorCondition("e2", "=", "e1"),
         ImposeIteratorCondition("t", "=", "tourist", True),
         ScopeBetween("employee_serve", "employee_allow_tourist")
     ])

@@ -1,6 +1,7 @@
 from common.aggregation_steps import *
 from common.jarl_rule import *
 
+
 rule_1_statement = (
     "# 60 atoms are spawned in total\n"
     "rule sixty_spawn\n"
@@ -15,7 +16,7 @@ rule_1_fact = RuleFact([
     CompareResultsQuantity("=", 60),
     ReduceResult()
 ])
-rule_1 = JARLRule(rule_1_statement, rule_1_header, rule_1_fact)
+rule_1 = JARLRule(rule_1_statement, rule_1_header, rule_1_fact, passed_by_default=False)
 
 rule_2_statement = (
     "# All 60 atoms eventually die\n"
@@ -31,15 +32,15 @@ rule_2_fact = RuleFact([
     CompareResultsQuantity("=", 60),
     ReduceResult()
 ])
-rule_2 = JARLRule(rule_2_statement, rule_2_header, rule_2_fact)
+rule_2 = JARLRule(rule_2_statement, rule_2_header, rule_2_fact, passed_by_default=False)
 
 rule_3_statement = (
     "# Atoms die after spawning\n"
     "rule die_after_spawn\n"
     "for every atom_id and any atom_type:\n"
     "after atom_spawn(atom_type, atom_id):\n"
-    "  for every aid and any at with aid=atom_id, at=atom_type:\n"
-    "  atom_die(at, aid) must happen 1 times\n"
+    "  for every aid and any aty with aid=atom_id, aty=atom_type:\n"
+    "  atom_die(aty, aid) must happen 1 times\n"
 )
 rule_3_header = "die_after_spawn"
 rule_3_scope = RuleScope([
@@ -50,14 +51,14 @@ rule_3_scope = RuleScope([
 ])
 rule_3_fact = RuleFact([
     MatchCheckpoints(["atom_die"]),
-    RenameArgs([["atom_die", "at", "aid"]]),
+    RenameArgs([["atom_die", "aty", "aid"]]),
     CrossAndGroupByArgs([["atom_die", "aid"]]),
     ImposeIteratorCondition("aid", "=", "#atom_id", True),
-    ImposeWildcardCondition("at", "=", "#atom_type", True),
+    ImposeWildcardCondition("aty", "=", "#atom_type", True),
     CompareResultsQuantity("=", 1),
     ReduceResult()
 ])
-rule_3 = JARLRule(rule_3_statement, rule_3_header, rule_3_fact, rule_3_scope)
+rule_3 = JARLRule(rule_3_statement, rule_3_header, rule_3_fact, rule_3_scope, passed_by_default=False)
 rule_3.set_dynamic_scope_arg("atom_id", True)
 rule_3.set_dynamic_scope_arg("atom_type", True)
 
@@ -75,14 +76,14 @@ rule_4_fact = RuleFact([
     CompareResultsQuantity("=", 60),
     ReduceResult()
 ])
-rule_4 = JARLRule(rule_4_statement, rule_4_header, rule_4_fact)
+rule_4 = JARLRule(rule_4_statement, rule_4_header, rule_4_fact, passed_by_default=False)
 
 rule_5_statement = (
     "# Atoms bond while being alive\n"
     "rule bond_while_alive\n"
     "for every aid1, aid2 and any at1, at2 with aid2=aid1, at2=at1:\n"
     "between atom_spawn(at1, aid1) and next atom_die(at2, aid2):\n"
-    "  for every atom_id=aid1 and any atom_type=at1:\n"
+    "  for every atom_id and any atom_type with atom_id=aid1, atom_type=at1:\n"
     "  bond(atom_type, atom_id) must happen 1 times\n"
 )
 rule_5_header = "bond_while_alive"
@@ -102,7 +103,7 @@ rule_5_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult()
 ])
-rule_5 = JARLRule(rule_5_statement, rule_5_header, rule_5_fact, rule_5_scope)
+rule_5 = JARLRule(rule_5_statement, rule_5_header, rule_5_fact, rule_5_scope, passed_by_default=False)
 rule_5.set_dynamic_scope_arg("aid1", True)
 rule_5.set_dynamic_scope_arg("at1", True)
 
@@ -118,7 +119,7 @@ rule_6_fact = RuleFact([
     CompareResultsQuantity("=", 20),
     ReduceResult()
 ])
-rule_6 = JARLRule(rule_6_statement, rule_6_header, rule_6_fact)
+rule_6 = JARLRule(rule_6_statement, rule_6_header, rule_6_fact, passed_by_default=False)
 
 rule_7_statement = (
     "# 2 hydrogen atoms must bond to make a new water molecule\n"
@@ -164,7 +165,7 @@ rule_8_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult()
 ])
-rule_8 = JARLRule(rule_8_statement, rule_8_header, rule_8_fact, rule_8_scope)
+rule_8 = JARLRule(rule_8_statement, rule_8_header, rule_8_fact, rule_8_scope, passed_by_default=False)
 
 rule_9_statement = (
     "# In total, 3 atoms bond to make a new water molecule\n"
@@ -186,7 +187,7 @@ rule_9_fact = RuleFact([
     CompareResultsQuantity("=", 3),
     ReduceResult()
 ])
-rule_9 = JARLRule(rule_9_statement, rule_9_header, rule_9_fact, rule_9_scope)
+rule_9 = JARLRule(rule_9_statement, rule_9_header, rule_9_fact, rule_9_scope, passed_by_default=False)
 
 rule_10_statement = (
     "# At most 2 bonds can happen between consecutive hydrogen bonds\n"

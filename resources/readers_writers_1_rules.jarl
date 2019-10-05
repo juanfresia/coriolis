@@ -1,0 +1,79 @@
+# If a writer is on a room, readers cannot enter
+rule readers_cant_enter_if_writer_inside
+for every w1, w2, room1, room2 with w2=w1, room2=room1:
+between writer_enter(w1, room1) and next writer_exit(w2, room2):
+  for every room and any r with room=room1:
+  reader_enter(r, room) must not happen
+
+# If a reader is on a room, writers cannot enter
+rule writers_cant_enter_if_reader_inside
+for every r1, r2, room1, room2 with r2=r1, room2=room1:
+between reader_enter(r1, room1) and next reader_exit(r2, room2):
+  for every room and any w with room=room1:
+  writer_enter(w, room) must not happen
+
+# Each reader reads a room 2 times
+rule readers_read_two_times
+for every r and any room, msg:
+read_room(r, room, msg) must happen 2 times
+
+# Each writer writes a room 4 times
+rule writers_write_four_times
+for every w and any room, msg:
+write_room(w, room, msg) must happen 4 times
+
+# Only one writer can be on a room at the same time
+rule one_writer_at_room
+for every w1, w2, room1, room2 with w2=w1, room2=room1:
+between writer_enter(w1, room1) and next writer_exit(w2, room2):
+  for every room and any w with room=room1, w!=w1:
+  writer_enter(w, room) must not happen
+
+# Writer writes the room (only one time) when inside
+rule writer_writes_room_when_inside
+for every w1, w2, room1, room2 with w2=w1, room2=room1:
+between writer_enter(w1, room1) and next writer_exit(w2, room2):
+  for every room, w and any msg with room=room1, w=w1:
+  write_room(w, room, msg) must happen 1 times
+
+# Reader reads the room (only one time) when inside
+rule reader_reads_room_when_inside
+for every r1, r2, room1, room2 with r2=r1, room2=room1:
+between reader_enter(r1, room1) and next reader_exit(r2, room2):
+  for every room, r and any msg with room=room1, r=r1:
+  read_room(r, room, msg) must happen 1 times
+
+# Writers cannot write before entering a room first
+rule writers_cant_write_when_outside
+for every w1, w2 and any room1, room2 with w2=w1:
+between writer_exit(w1, room1) and next writer_enter(w2, room2):
+  for every w and any room, msg with w=w1:
+  write_room(w, room, msg) must happen 0 times
+
+# Readers cannot read before entering a room first
+rule readers_cant_read_when_outside
+for every r1, r2 and any room1, room2 with r2=r1:
+between reader_exit(r1, room1) and next reader_enter(r2, room2):
+  for every r and any room, msg with r=r1:
+  read_room(r, room, msg) must happen 0 times
+
+# If a reader reads something, a writer wrote it
+rule reader_reads_something_written
+for every r, room, msg with msg!='NULL':
+before read_room(r, room, msg):
+  for any roomid, m, w with roomid=room, m=msg:
+  write_room(w, roomid, m) must happen at least 1 times
+
+# Reader always reads room last message
+rule reader_reads_what_was_last_written
+for every r1, m1, r2, m2 and any r, w with m1!='NULL', r2=r1, m2=m1:
+between read_room(r, r1, m1) and previous write_room(w, r2, m2):
+  for any wid, roomid, m with roomid=r2, m!=m2:
+  write_room(wid, roomid, m) must happen 0 times
+
+# If a reader read NULL it is because the room was never written
+rule reader_reads_null_on_pristine_room
+for every r, room, msg with msg='NULL':
+before read_room(r, room, msg):
+  for any roomid, m, w with roomid=room:
+  write_room(w, roomid, m) must happen 0 times

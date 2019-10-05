@@ -117,7 +117,7 @@ class TestSanta(unittest.TestCase):
     rule_6_statement = (
         "# Reindeer leave only after getting hitched\n"
         "rule reindeer_get_hitched_before_leaving\n"
-        "for every r1, r2 with r1=r2:\n"
+        "for every r1, r2 with r2=r1:\n"
         "between reindeer_arrive(r1) and next reindeer_leave(r2):\n"
         "  for every r with r=r1:\n"
         "  get_hitched(r) must happen 1 times\n"
@@ -127,7 +127,7 @@ class TestSanta(unittest.TestCase):
         MatchCheckpoints(["reindeer_arrive", "reindeer_leave"]),
         RenameArgs([ ["reindeer_arrive", "r1"], ["reindeer_leave", "r2"] ]),
         CrossAndGroupByArgs([ ["reindeer_arrive", "r1"], ["reindeer_leave", "r2"] ]),
-        ImposeIteratorCondition("r1", "=", "r2"),
+        ImposeIteratorCondition("r2", "=", "r1"),
         ScopeBetween("reindeer_arrive", "reindeer_leave")
     ])
     rule_6_fact = RuleFact([
@@ -202,7 +202,7 @@ class TestSanta(unittest.TestCase):
         MatchCheckpoints(["elf_leave", "elf_arrive"]),
         RenameArgs([ ["elf_leave", "e1"], ["elf_arrive", "e2"] ]),
         CrossAndGroupByArgs([ ["elf_leave", "e1"], ["elf_arrive", "e2"] ]),
-        ImposeIteratorCondition("e1", "=", "e2"),
+        ImposeIteratorCondition("e2", "=", "e1"),
         ScopeBetween("elf_leave", "elf_arrive")
     ])
     rule_9_fact = RuleFact([
@@ -229,7 +229,7 @@ class TestSanta(unittest.TestCase):
         MatchCheckpoints(["reindeer_leave", "reindeer_arrive"]),
         RenameArgs([ ["reindeer_leave", "r1"], ["reindeer_arrive", "r2"] ]),
         CrossAndGroupByArgs([ ["reindeer_leave", "r1"], ["reindeer_arrive", "r2"] ]),
-        ImposeIteratorCondition("r1", "=", "r2"),
+        ImposeIteratorCondition("r2", "=", "r1"),
         ScopeBetween("reindeer_leave", "reindeer_arrive")
     ])
     rule_10_fact = RuleFact([
@@ -256,7 +256,7 @@ class TestSanta(unittest.TestCase):
         MatchCheckpoints(["reindeer_arrive", "reindeer_leave"]),
         RenameArgs([ ["reindeer_arrive", "r1"], ["reindeer_leave", "r2"] ]),
         CrossAndGroupByArgs([ ["reindeer_arrive", "r1"], ["reindeer_leave", "r2"] ]),
-        ImposeIteratorCondition("r1", "=", "r2"),
+        ImposeIteratorCondition("r2", "=", "r1"),
         ScopeBetween("reindeer_arrive", "reindeer_leave")
     ])
     rule_11_fact = RuleFact([
@@ -267,7 +267,7 @@ class TestSanta(unittest.TestCase):
         CompareResultsPrecedence("prepare_sleigh", "get_hitched"),
         ReduceResult()
     ])
-    rule_11 = JARLRule(rule_11_statement, rule_11_header, rule_11_fact, rule_11_scope)
+    rule_11 = JARLRule(rule_11_statement, rule_11_header, rule_11_fact, rule_11_scope, passed_by_default=True)
     rule_11.set_dynamic_scope_arg("r1", True)
 
     def check_one_rule(self, rule):

@@ -1,0 +1,64 @@
+# 60 atoms are spawned in total
+rule sixty_spawn
+for any atom_type, atom_id:
+atom_spawn(atom_type, atom_id) must happen 60 times
+
+# All 60 atoms eventually die
+rule sixty_die
+for any atom_type, atom_id:
+atom_die(atom_type, atom_id) must happen 60 times
+
+# Atoms die after spawning
+rule die_after_spawn
+for every atom_id and any atom_type:
+after atom_spawn(atom_type, atom_id):
+  for every aid and any aty with aid=atom_id, aty=atom_type:
+  atom_die(aty, aid) must happen 1 times
+
+# All 60 atoms eventually bond
+rule sixty_bond
+for any atom_type, atom_id:
+bond(atom_type, atom_id) must happen 60 times
+
+# Atoms bond while being alive
+rule bond_while_alive
+for every aid1, aid2 and any at1, at2 with aid2=aid1, at2=at1:
+between atom_spawn(at1, aid1) and next atom_die(at2, aid2):
+  for every atom_id and any atom_type with atom_id=aid1, atom_type=at1:
+  bond(atom_type, atom_id) must happen 1 times
+
+# 20 water molecules are made
+rule twenty_molecules_made
+water_made() must happen 20 times
+
+# 2 hydrogen atoms must bond to make a new water molecule
+rule two_hydrogen_per_molecule
+between water_made() and next water_made():
+  for every atom_type and any atom_id with atom_type='H':
+  bond(atom_type, atom_id) must happen 2 times
+
+# 1 oxygen atom must bond to make a new water molecule
+rule one_oxygen_per_molecule
+between water_made() and next water_made():
+  for every atom_type and any atom_id with atom_type='O':
+  bond(atom_type, atom_id) must happen 1 times
+
+# In total, 3 atoms bond to make a new water molecule
+rule three_bonds
+between water_made() and next water_made():
+  for any atom_type, atom_id:
+  bond(atom_type, atom_id) must happen 3 times
+
+# At most 2 bonds can happen between consecutive hydrogen bonds
+rule bonds_between_hydrogen
+for every at1, at2 and any aid1, aid2 with at1='H', at2='H':
+between bond(at1, aid1) and next bond(at2, aid2):
+  for any atom_type, atom_id with atom_type!='H':
+  bond(atom_type, atom_id) must happen at most 2 times
+
+# At most 4 bonds can happen between consecutive oxygen bonds
+rule bonds_between_oxygen
+for every at1, at2 and any aid1, aid2 with at1='O', at2='O':
+between bond(at1, aid1) and next bond(at2, aid2):
+  for any atom_type, atom_id with atom_type!='O':
+  bond(atom_type, atom_id) must happen at most 4 times

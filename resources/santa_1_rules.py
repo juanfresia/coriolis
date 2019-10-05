@@ -39,14 +39,7 @@ rule_2_fact = RuleFact([
     CompareResultsQuantity("<=", 1),
     ReduceResult()
 ])
-JARLRule(
-    rule_2_statement,
-    rule_2_header,
-    rule_2_fact,
-    rule_2_scope,
-    passed_by_default=True)\
-    .set_dynamic_scope_arg()\
-    .set_dynamic_scope_arg()
+rule_2 = JARLRule(rule_2_statement, rule_2_header, rule_2_fact, rule_2_scope, passed_by_default=True)
 
 rule_3_statement = (
     "# Santa cant prepare his sleigh if asleep\n"
@@ -128,7 +121,7 @@ rule_6_scope = RuleScope([
     MatchCheckpoints(["reindeer_arrive", "reindeer_leave"]),
     RenameArgs([ ["reindeer_arrive", "r1"], ["reindeer_leave", "r2"] ]),
     CrossAndGroupByArgs([ ["reindeer_arrive", "r1"], ["reindeer_leave", "r2"] ]),
-    ImposeIteratorCondition("r1", "=", "r2"),
+    ImposeIteratorCondition("r2", "=", "r1"),
     ScopeBetween("reindeer_arrive", "reindeer_leave")
 ])
 rule_6_fact = RuleFact([
@@ -203,7 +196,7 @@ rule_9_scope = RuleScope([
     MatchCheckpoints(["elf_leave", "elf_arrive"]),
     RenameArgs([ ["elf_leave", "e1"], ["elf_arrive", "e2"] ]),
     CrossAndGroupByArgs([ ["elf_leave", "e1"], ["elf_arrive", "e2"] ]),
-    ImposeIteratorCondition("e1", "=", "e2"),
+    ImposeIteratorCondition("e2", "=", "e1"),
     ScopeBetween("elf_leave", "elf_arrive")
 ])
 rule_9_fact = RuleFact([
@@ -230,7 +223,7 @@ rule_10_scope = RuleScope([
     MatchCheckpoints(["reindeer_leave", "reindeer_arrive"]),
     RenameArgs([ ["reindeer_leave", "r1"], ["reindeer_arrive", "r2"] ]),
     CrossAndGroupByArgs([ ["reindeer_leave", "r1"], ["reindeer_arrive", "r2"] ]),
-    ImposeIteratorCondition("r1", "=", "r2"),
+    ImposeIteratorCondition("r2", "=", "r1"),
     ScopeBetween("reindeer_leave", "reindeer_arrive")
 ])
 rule_10_fact = RuleFact([
@@ -257,7 +250,7 @@ rule_11_scope = RuleScope([
     MatchCheckpoints(["reindeer_arrive", "reindeer_leave"]),
     RenameArgs([ ["reindeer_arrive", "r1"], ["reindeer_leave", "r2"] ]),
     CrossAndGroupByArgs([ ["reindeer_arrive", "r1"], ["reindeer_leave", "r2"] ]),
-    ImposeIteratorCondition("r1", "=", "r2"),
+    ImposeIteratorCondition("r2", "=", "r1"),
     ScopeBetween("reindeer_arrive", "reindeer_leave")
 ])
 rule_11_fact = RuleFact([
@@ -268,7 +261,7 @@ rule_11_fact = RuleFact([
     CompareResultsPrecedence("prepare_sleigh", "get_hitched"),
     ReduceResult()
 ])
-rule_11 = JARLRule(rule_11_statement, rule_11_header, rule_11_fact, rule_11_scope)
+rule_11 = JARLRule(rule_11_statement, rule_11_header, rule_11_fact, rule_11_scope, passed_by_default=True)
 rule_11.set_dynamic_scope_arg("r1", True)
 
 

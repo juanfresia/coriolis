@@ -117,7 +117,7 @@ class TestProducersConsumers(unittest.TestCase):
     rule_7_statement = (
         "# Items are consumed in order\n"
         "rule consume_in_order\n"
-        "for every i, j and any d with j>i:\n"
+        "for every i, j and any c, d with j>i:\n"
         "consume(c, i) must precede consume(d, j)\n"
     )
     rule_7_header = "consume_in_order"

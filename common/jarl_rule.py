@@ -83,7 +83,6 @@ class JARLRule:
         return s
 
 
-
 class RuleScope:
     def __init__(self, aggregation_steps):
         self.steps = aggregation_steps

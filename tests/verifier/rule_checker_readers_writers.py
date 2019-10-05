@@ -4,7 +4,7 @@ from verifier.rule_checker import *
 
 
 class TestReadersWriters(unittest.TestCase):
-    log_file = "/vagrant/resources/readers_writers_2.log"
+    log_file = "/vagrant/resources/readers_writers_1.log"
     checkpoint_file = "/vagrant/resources/readers_writers.chk"
 
     rule_1_statement = (
@@ -20,8 +20,8 @@ class TestReadersWriters(unittest.TestCase):
         MatchCheckpoints(["writer_enter", "writer_exit"]),
         RenameArgs([["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"]]),
         CrossAndGroupByArgs([["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"]]),
-        ImposeIteratorCondition("w1", "=", "w2"),
-        ImposeIteratorCondition("room1", "=", "room2"),
+        ImposeIteratorCondition("w2", "=", "w1"),
+        ImposeIteratorCondition("room2", "=", "room1"),
         ScopeBetween("writer_enter", "writer_exit")
     ])
     rule_1_fact = RuleFact([
@@ -48,8 +48,8 @@ class TestReadersWriters(unittest.TestCase):
         MatchCheckpoints(["reader_enter", "reader_exit"]),
         RenameArgs([["reader_enter", "r1", "room1"], ["reader_exit", "r2", "room2"]]),
         CrossAndGroupByArgs([["reader_enter", "r1", "room1"], ["reader_exit", "r2", "room2"]]),
-        ImposeIteratorCondition("r1", "=", "r2"),
-        ImposeIteratorCondition("room1", "=", "room2"),
+        ImposeIteratorCondition("r2", "=", "r1"),
+        ImposeIteratorCondition("room2", "=", "room1"),
         ScopeBetween("reader_enter", "reader_exit")
     ])
     rule_2_fact = RuleFact([
@@ -108,8 +108,8 @@ class TestReadersWriters(unittest.TestCase):
         MatchCheckpoints(["writer_enter", "writer_exit"]),
         RenameArgs([["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"]]),
         CrossAndGroupByArgs([["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"]]),
-        ImposeIteratorCondition("w1", "=", "w2"),
-        ImposeIteratorCondition("room1", "=", "room2"),
+        ImposeIteratorCondition("w2", "=", "w1"),
+        ImposeIteratorCondition("room2", "=", "room1"),
         ScopeBetween("writer_enter", "writer_exit")
     ])
     rule_5_fact = RuleFact([
@@ -138,14 +138,14 @@ class TestReadersWriters(unittest.TestCase):
         MatchCheckpoints(["writer_enter", "writer_exit"]),
         RenameArgs([["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"]]),
         CrossAndGroupByArgs([["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"]]),
-        ImposeIteratorCondition("w1", "=", "w2"),
-        ImposeIteratorCondition("room1", "=", "room2"),
+        ImposeIteratorCondition("w2", "=", "w1"),
+        ImposeIteratorCondition("room2", "=", "room1"),
         ScopeBetween("writer_enter", "writer_exit")
     ])
     rule_6_fact = RuleFact([
         MatchCheckpoints(["write_room"]),
         RenameArgs([["write_room", "w", "room", "msg"]]),
-        CrossAndGroupByArgs([["write_room", "room", "w"]]),
+        CrossAndGroupByArgs([["write_room", "w", "room"]]),
         ImposeIteratorCondition("room", "=", "#room1", True),
         ImposeIteratorCondition("w", "=", "#w1", True),
         CompareResultsQuantity("=", 1),
@@ -168,8 +168,8 @@ class TestReadersWriters(unittest.TestCase):
         MatchCheckpoints(["reader_enter", "reader_exit"]),
         RenameArgs([["reader_enter", "r1", "room1"], ["reader_exit", "r2", "room2"]]),
         CrossAndGroupByArgs([["reader_enter", "r1", "room1"], ["reader_exit", "r2", "room2"]]),
-        ImposeIteratorCondition("r1", "=", "r2"),
-        ImposeIteratorCondition("room1", "=", "room2"),
+        ImposeIteratorCondition("r2", "=", "r1"),
+        ImposeIteratorCondition("room2", "=", "room1"),
         ScopeBetween("reader_enter", "reader_exit")
     ])
     rule_7_fact = RuleFact([
@@ -198,7 +198,7 @@ class TestReadersWriters(unittest.TestCase):
         MatchCheckpoints(["writer_exit", "writer_enter"]),
         RenameArgs([["writer_exit", "w1", "room1"], ["writer_enter", "w2", "room2"]]),
         CrossAndGroupByArgs([["writer_exit", "w1"], ["writer_enter", "w2"]]),
-        ImposeIteratorCondition("w1", "=", "w2"),
+        ImposeIteratorCondition("w2", "=", "w1"),
         ScopeBetween("writer_exit", "writer_enter")
     ])
     rule_8_fact = RuleFact([
@@ -225,7 +225,7 @@ class TestReadersWriters(unittest.TestCase):
         MatchCheckpoints(["reader_exit", "reader_enter"]),
         RenameArgs([["reader_exit", "r1", "room1"], ["reader_enter", "r2", "room2"]]),
         CrossAndGroupByArgs([["reader_exit", "r1"], ["reader_enter", "r2"]]),
-        ImposeIteratorCondition("r1", "=", "r2"),
+        ImposeIteratorCondition("r2", "=", "r1"),
         ScopeBetween("reader_exit", "reader_enter")
     ])
     rule_9_fact = RuleFact([
@@ -273,7 +273,7 @@ class TestReadersWriters(unittest.TestCase):
         "rule reader_reads_what_was_last_written\n"
         "for every r1, m1, r2, m2 and any r, w with m1!='NULL', r2=r1, m2=m1:\n"
         "between read_room(r, r1, m1) and previous write_room(w, r2, m2):\n"
-        "  for any wid, roomid, m with roomid=r2:\n"
+        "  for any wid, roomid, m with roomid=r2, m!=m2:\n"
         "  write_room(wid, roomid, m) must happen 0 times\n"
     )
     rule_11_header = "reader_reads_what_was_last_written"
@@ -282,8 +282,8 @@ class TestReadersWriters(unittest.TestCase):
         RenameArgs([["read_room", "r", "r1", "m1"], ["write_room", "w", "r2", "m2"]]),
         CrossAndGroupByArgs([["read_room", "r1", "m1"], ["write_room", "r2", "m2"]]),
         ImposeIteratorCondition("m1", "!=", "NULL", True),
-        ImposeIteratorCondition("m1", "=", "m2"),
-        ImposeIteratorCondition("r1", "=", "r2"),
+        ImposeIteratorCondition("r2", "=", "r1"),
+        ImposeIteratorCondition("m2", "=", "m1"),
         ScopeBetween("read_room", "write_room", False)
     ])
     rule_11_fact = RuleFact([
