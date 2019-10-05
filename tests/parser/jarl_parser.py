@@ -460,7 +460,7 @@ class TestParserCLI(unittest.TestCase):
 
         rule_fact = rules[0].fact.facts[0]
         chk = JarlCheckpoint("bar")
-        req = JarlRuleFactRequirementCount(negated=True)
+        req = JarlRuleFactRequirementCount(type=JarlComparator.EQ, count=0)
         expected_fact = JarlRuleFactClause(chk, req)
         self.assertEqual(expected_fact, rule_fact)
 
@@ -490,7 +490,8 @@ class TestParserCLI(unittest.TestCase):
 
         rule_fact = rules[0].fact.facts[0]
         chk = JarlCheckpoint("bar")
-        req = JarlRuleFactRequirementCount(count=2, type=JarlComparator.LE, negated=True)
+        # Since fact requirement is negated, the expected comparator would be GT
+        req = JarlRuleFactRequirementCount(count=2, type=JarlComparator.GT)
         expected_fact = JarlRuleFactClause(chk, req)
         self.assertEqual(expected_fact, rule_fact)
 

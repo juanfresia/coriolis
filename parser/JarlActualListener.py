@@ -177,19 +177,28 @@ class JarlListener(ParseTreeListener):
     def enterRequirement_count(self, ctx:JarlParser.Requirement_countContext):
         req = JarlRuleFactRequirementCount()
 
-        # TODO: condense the negated into the requirement type
-        if ctx.NOT():
-            req.negated = True
+        negated = ctx.NOT()
 
         ## If hoy_many is not specified, we leave default values '=' and 1
         if ctx.how_many():
             if ctx.how_many().MOST():
                 # AT MOST means less or equal than
-                req.type = JarlComparator.LE
-            if ctx.how_many().LEAST():
+                req.type = JarlComparator.GT if negated else JarlComparator.LE
+            elif ctx.how_many().LEAST():
                 # AT LEAST means greater or equal than
-                req.type = JarlComparator.GE
+                req.type = JarlComparator.LT if negated else JarlComparator.GE
+            else:
+                req.type = JarlComparator.NE if negated else JarlComparator.EQ
             req.count = int(ctx.how_many().NUMBER().getText())
+        else:
+            ## There is not a count, then the comparator should be JarlComparator.GE
+            ## If a must happen is negated, then it means JarlComparator.EQ 0
+            if negated:
+                req.type = JarlComparator.EQ
+                req.count = 0
+            else:
+                req.type = JarlComparator.GE
+                req.count = 1
 
         self.stack.append(req)
 
@@ -201,10 +210,6 @@ class JarlListener(ParseTreeListener):
         chk_args = [arg.getText() for arg in chk_args_list]
 
         req = JarlRuleFactRequirementOrder(JarlCheckpoint(chk_name, chk_args))
-
-        # If NOT is present the requirement is negted
-        if ctx.NOT():
-            req.negated = True
 
         self.stack.append(req)
 

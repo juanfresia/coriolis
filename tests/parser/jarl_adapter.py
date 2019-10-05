@@ -169,7 +169,6 @@ class TestAdapter(unittest.TestCase):
         self.assertEqual(expected_rule, steps)
 
     def test_adapter_rule_checker_smokers_8(self):
-
         rule = """
         rule smokers_smoke_while_awake
         for every s1, s2 with s1=s2
@@ -195,6 +194,41 @@ class TestAdapter(unittest.TestCase):
         ])
         expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=False)
         expected_rule.set_dynamic_scope_arg("s1", True)
+
+        rules = parse_str(rule)
+        steps = JarlRuleAdapter().rule_to_steps(rules[0])
+        self.assertEqual(expected_rule, steps)
+
+    def test_adapter_rule_checker_reader_writers_6(self):
+        rule = """
+        rule one_writer_at_room
+        for every w1, w2, room1, room2 with w1=w2, room1=room2
+        between writer_enter(w1, room1) and next writer_exit(w2, room2)
+        for every room and any w with room=room1, w!=w1
+        writer_enter(w, room) must not happen
+        """
+
+        rule_header = "one_writer_at_room"
+        rule_scope = RuleScope([
+            MatchCheckpoints(["writer_enter", "writer_exit"]),
+            RenameArgs([["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"]]),
+            CrossAndGroupByArgs([["writer_enter", "w1", "room1"], ["writer_exit", "w2", "room2"]]),
+            ImposeIteratorCondition("w1", "=", "w2"),
+            ImposeIteratorCondition("room1", "=", "room2"),
+            ScopeBetween("writer_enter", "writer_exit")
+        ])
+        rule_fact = RuleFact([
+            MatchCheckpoints(["writer_enter"]),
+            RenameArgs([["writer_enter", "w", "room"]]),
+            CrossAndGroupByArgs([["writer_enter", "room"]]),
+            ImposeIteratorCondition("room", "=", "#room1", True),
+            ImposeWildcardCondition("w", "!=", "#w1", True),
+            CompareResultsQuantity("=", 0),
+            ReduceResult()
+        ])
+        expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=True)
+        expected_rule.set_dynamic_scope_arg("w1", True)
+        expected_rule.set_dynamic_scope_arg("room1", True)
 
         rules = parse_str(rule)
         steps = JarlRuleAdapter().rule_to_steps(rules[0])
@@ -232,12 +266,16 @@ class TestAdapter(unittest.TestCase):
 
         rules = parse_str(rule)
         steps = JarlRuleAdapter().rule_to_steps(rules[0])
+        steps = JarlRuleAdapter().rule_to_steps(rules[0])
+        i = 5
+        self.assertEqual(expected_rule.fact.steps[i], steps.fact.steps[i])
         self.assertEqual(expected_rule.fact, steps.fact)
         i = 0
         self.assertEqual(expected_rule.scope.steps[i], steps.scope.steps[i])
         self.assertEqual(expected_rule.scope, steps.scope)
         self.assertEqual(expected_rule.passed_by_default, steps.passed_by_default)
         self.assertEqual(expected_rule._dynamic_args, steps._dynamic_args)
+        self.assertEqual(expected_rule, steps)
 
 if __name__ == '__main__':
     unittest.main()

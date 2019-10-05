@@ -211,10 +211,9 @@ class JarlRuleFactClause():
         return "<{} {}>".format(self.checkpoint, self.requirement)
 
 class JarlRuleFactRequirementCount():
-    def __init__(self, type=JarlComparator.EQ, count=1, negated=False):
+    def __init__(self, type=JarlComparator.GE, count=1):
         self.type = type
         self.count = count
-        self.negated = negated
 
     def get_checkpoints(self):
         return []
@@ -222,25 +221,22 @@ class JarlRuleFactRequirementCount():
     def __eq__(self, other):
         return isinstance(other, JarlRuleFactRequirementCount) and \
                 self.count == other.count and \
-                self.negated == other.negated and \
                 self.type == other.type
 
     def __repr__(self):
-        return "<{} {} {}>".format("not" if self.negated else "", self.type, self.count)
+        return "<{} {}>".format(self.type, self.count)
 
 class JarlRuleFactRequirementOrder():
-    def __init__(self, checkpoint, negated=False):
+    def __init__(self, checkpoint):
         self.checkpoint = checkpoint
-        self.negated = negated
 
     def get_checkpoints(self):
         return [self.checkpoint]
 
     def __eq__(self, other):
         return isinstance(other, JarlRuleFactRequirementOrder) and \
-                self.checkpoint == other.checkpoint and \
-                self.negated == other.negated
+                self.checkpoint == other.checkpoint
 
     def __repr__(self):
-        return "<{} precedes {}>".format("not" if self.negated else "", self.checkpoint)
+        return "<precedes {}>".format(self.checkpoint)
 

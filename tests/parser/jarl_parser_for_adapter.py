@@ -23,7 +23,7 @@ class TestExamplesFromSpec(unittest.TestCase):
         fact_filter = JarlFilterExpr(fact_filter_iterators, fact_filter_wildcards, fact_filter_condition)
 
         fact_chk = JarlCheckpoint("read_room", ["r", "room", "msg"])
-        fact_req = JarlRuleFactRequirementCount(count=2)
+        fact_req = JarlRuleFactRequirementCount(count=2, type=JarlComparator.EQ)
         fact_clause = [JarlRuleFactClause(fact_chk, fact_req)]
 
         fact = JarlRuleFact(fact_filter, fact_clause)
