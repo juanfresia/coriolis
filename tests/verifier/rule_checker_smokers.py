@@ -169,7 +169,7 @@ class TestSmokers(unittest.TestCase):
     rule_8_statement = (
         "# Smoker smokes once between dreams\n"
         "rule smokers_smoke_while_awake\n"
-        "for every s1, s2 with s2=s1:\n"
+        "for every s1, s2 with s1=s2:\n"
         "between smoker_sleep(s1) and next smoker_sleep(s2):\n"
         "  for any s with s=s1:\n"
         "  smoker_smoke(s) must happen 1 times\n"
@@ -191,7 +191,7 @@ class TestSmokers(unittest.TestCase):
         ReduceResult()
     ])
     rule_8 = JARLRule(rule_8_statement, rule_8_header, rule_8_fact, rule_8_scope, passed_by_default=False)
-    rule_8.set_dynamic_scope_arg("s1", False)
+    rule_8.set_dynamic_scope_arg("s1", True)
 
     rule_9_statement = (
         "# 40 elements are produced\n"

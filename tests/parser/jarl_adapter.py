@@ -168,6 +168,76 @@ class TestAdapter(unittest.TestCase):
         steps = JarlRuleAdapter().rule_to_steps(rules[0])
         self.assertEqual(expected_rule, steps)
 
+    def test_adapter_rule_checker_smokers_8(self):
+
+        rule = """
+        rule smokers_smoke_while_awake
+        for every s1, s2 with s1=s2
+        between smoker_sleep(s1) and next smoker_sleep(s2)
+        for any s with s=s1
+        smoker_smoke(s) must happen 1 times
+        """
+        rule_header = "smokers_smoke_while_awake"
+        rule_scope = RuleScope([
+            MatchCheckpoints(["smoker_sleep"]),
+            RenameArgs([ ["smoker_sleep", "s1"], ["smoker_sleep", "s2"] ]),
+            CrossAndGroupByArgs([ ["smoker_sleep", "s1"], ["smoker_sleep", "s2"] ]),
+            ImposeIteratorCondition("s1", "=", "s2"),
+            ScopeBetween("smoker_sleep", "smoker_sleep")
+        ])
+        rule_fact = RuleFact([
+            MatchCheckpoints(["smoker_smoke"]),
+            RenameArgs([ ["smoker_smoke", "s"] ]),
+            CrossAndGroupByArgs([ ["smoker_smoke"] ]),
+            ImposeWildcardCondition("s", "=", "#s1", True),
+            CompareResultsQuantity("=", 1),
+            ReduceResult()
+        ])
+        expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=False)
+        expected_rule.set_dynamic_scope_arg("s1", True)
+
+        rules = parse_str(rule)
+        steps = JarlRuleAdapter().rule_to_steps(rules[0])
+        self.assertEqual(expected_rule, steps)
+
+    # TODO(jfresia) This is a helper to migrate tests, remove when tests are migrated
+    def test_skel(self):
+        pass
+
+        rule = """
+        rule smokers_smoke_while_awake
+        for every s1, s2 with s1=s2
+        between smoker_sleep(s1) and next smoker_sleep(s2)
+        for any s with s=s1
+        smoker_smoke(s) must happen 1 times
+        """
+        rule_header = "smokers_smoke_while_awake"
+        rule_scope = RuleScope([
+            MatchCheckpoints(["smoker_sleep"]),
+            RenameArgs([ ["smoker_sleep", "s1"], ["smoker_sleep", "s2"] ]),
+            CrossAndGroupByArgs([ ["smoker_sleep", "s1"], ["smoker_sleep", "s2"] ]),
+            ImposeIteratorCondition("s1", "=", "s2"),
+            ScopeBetween("smoker_sleep", "smoker_sleep")
+        ])
+        rule_fact = RuleFact([
+            MatchCheckpoints(["smoker_smoke"]),
+            RenameArgs([ ["smoker_smoke", "s"] ]),
+            CrossAndGroupByArgs([ ["smoker_smoke"] ]),
+            ImposeWildcardCondition("s", "=", "#s1", True),
+            CompareResultsQuantity("=", 1),
+            ReduceResult()
+        ])
+        expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=False)
+        expected_rule.set_dynamic_scope_arg("s1", True)
+
+        rules = parse_str(rule)
+        steps = JarlRuleAdapter().rule_to_steps(rules[0])
+        self.assertEqual(expected_rule.fact, steps.fact)
+        i = 0
+        self.assertEqual(expected_rule.scope.steps[i], steps.scope.steps[i])
+        self.assertEqual(expected_rule.scope, steps.scope)
+        self.assertEqual(expected_rule.passed_by_default, steps.passed_by_default)
+        self.assertEqual(expected_rule._dynamic_args, steps._dynamic_args)
 
 if __name__ == '__main__':
     unittest.main()

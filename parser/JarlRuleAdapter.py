@@ -10,8 +10,8 @@ class JarlRuleAdapter():
     def unique_checkpoints(self, checkpoints):
         unique = []
         for chk in checkpoints:
-            if not chk in unique:
-                unique.append(chk)
+            if not chk.name in unique:
+                unique.append(chk.name)
         return unique
 
     def concat_checkpoint(self, chk):
@@ -103,7 +103,8 @@ class JarlRuleAdapter():
 
         scope_steps = []
 
-        match_checkpoints = MatchCheckpoints([chk.name for chk in self.unique_checkpoints(checkpoints)])
+        match_checkpoints = MatchCheckpoints([chk for chk in self.unique_checkpoints(checkpoints)])
+        print([chk for chk in self.unique_checkpoints(checkpoints)])
         scope_steps.append(match_checkpoints)
 
         flattened_checkpoints = [self.concat_checkpoint(chk) for chk in checkpoints if chk.arguments]
