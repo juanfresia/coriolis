@@ -13,8 +13,7 @@ class JarlRuleValidator():
 
         args = filter.wildcards + filter.iterators
         # Include filter arguments from scope, if any
-        if scope_filter:
-            args = args + scope_filter.wildcards + scope_filter.iterators
+        if scope_filter: args = args + scope_filter.wildcards + scope_filter.iterators
 
         seen = set()
         for arg in args:
@@ -39,9 +38,7 @@ class JarlRuleValidator():
         arguments = iterators + wildcards
 
         # Previous scope filter arguments need to be separated
-        scope_arguments = []
-        if scope_filter:
-            scope_arguments = scope_filter.iterators + scope_filter.wildcards
+        scope_arguments = scope_filter.iterators + scope_filter.wildcards if scope_filter else []
 
         for cond in filter.conditions:
             # Left side should always be declared in current filter
@@ -73,9 +70,7 @@ class JarlRuleValidator():
         """
 
         # Get known arguments for checkpoints
-        filter_args = []
-        if filter:
-            filter_args = filter.arguments()
+        filter_args = filter.arguments() if filter else []
 
         # Make sure every argument is defined and used at most only once
         seen = set()
@@ -97,13 +92,8 @@ class JarlRuleValidator():
         """
 
         # Get known arguments for checkpoints
-        known_args = []
-        if fact_filter:
-            known_args += fact_filter.arguments()
-
-        scope_selector_chk = []
-        if scope_selector:
-            scope_selector_chk = scope_selector.get_checkpoints()
+        known_args = fact_filter.arguments() if fact_filter else []
+        scope_selector_chk = scope_selector.get_checkpoints() if scope_selector else []
 
         # Get arguments used in scope selector
         used_args = []
@@ -144,4 +134,3 @@ class JarlRuleValidator():
 
         for fact in rule.fact.facts:
             self.validate_fact(fact, fact_filter, scope_selector)
-

@@ -150,7 +150,7 @@ class JarlRuleAdapter():
             selector = rule.scope.selector
             if selector.type == JarlSelectorClauseType.BEFORE:
                 is_in_first_chk = False
-                
+
             if selector.type == JarlSelectorClauseType.BETWEEN_NEXT:
                 if dynamic_arg in selector.end.arguments:
                     is_in_first_chk = False

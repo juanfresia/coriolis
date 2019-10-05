@@ -23,9 +23,6 @@ class JarlRuleScope():
         self.filter = filter
         self.selector = selector
 
-    def toSteps(self):
-        pass
-
     def __eq__(self, other):
         return isinstance(other, JarlRuleScope) and \
                 self.filter == other.filter and \
@@ -148,10 +145,6 @@ class JarlSelectorExpr():
 
         return checkpoints
 
-    def toSteps(self):
-        end_name = ", {}".format(self.end.name) if self.type == JarlSelectorClauseType.BETWEEN_NEXT or self.type == JarlSelectorClauseType.BETWEEN_PREV else ""
-        return "Scope{}({}{})".format(self.type, self.start.name, end_name)
-
     def __eq__(self, other):
         return isinstance(other, JarlSelectorExpr) and \
                 self.type == other.type and \
@@ -197,10 +190,7 @@ class JarlRuleFactClause():
         self.requirement = requirement
 
     def get_checkpoints(self):
-        checkpoints = [self.checkpoint]
-        checkpoints += self.requirement.get_checkpoints()
-        return checkpoints
-
+        return [self.checkpoint] + self.requirement.get_checkpoints()
 
     def __eq__(self, other):
         return isinstance(other, JarlRuleFactClause) and \
@@ -239,4 +229,3 @@ class JarlRuleFactRequirementOrder():
 
     def __repr__(self):
         return "<precedes {}>".format(self.checkpoint)
-
