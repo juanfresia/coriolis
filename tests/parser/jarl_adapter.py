@@ -109,6 +109,49 @@ class TestAdapter(unittest.TestCase):
 
         self.assertEqual(expected_rule_adapted, steps)
 
+    def test_adapter_with_both_dynamic_args(self):
+
+        rule = """
+        rule seal_needed_to_seal_passport
+        for every e1, e2, person_name, t, passport with e1=e2, t='tourist'
+        between employee_serve(e1, person_name, t) and next employee_allow_tourist(e2, passport)
+        for every eid1, eid2, p with eid1=e1, eid2=e1, p=passport
+        employee_take_seal(eid1) must precede employee_seal_passport(eid2, p)
+        """
+        rules = parse_str(rule)
+
+        steps = JarlRuleAdapter().rule_to_steps(rules[0])
+
+        rule_header = "seal_needed_to_seal_passport"
+        rule_scope = RuleScope([
+            MatchCheckpoints(["employee_serve", "employee_allow_tourist"]),
+            RenameArgs([ ["employee_serve", "e1", "person_name", "t"], ["employee_allow_tourist", "e2", "passport"] ]),
+            CrossAndGroupByArgs([ ["employee_serve", "e1", "person_name", "t"], ["employee_allow_tourist", "e2", "passport"] ]),
+            ImposeIteratorCondition("e1", "=", "e2"),
+            ImposeIteratorCondition("t", "=", "tourist", True),
+            ScopeBetween("employee_serve", "employee_allow_tourist")
+        ])
+        rule_fact = RuleFact([
+            MatchCheckpoints(["employee_take_seal", "employee_seal_passport"]),
+            RenameArgs([ ["employee_take_seal", "eid1"], ["employee_seal_passport", "eid2", "p"] ]),
+            CrossAndGroupByArgs([ ["employee_take_seal", "eid1"], ["employee_seal_passport", "eid2", "p"] ]),
+            ImposeIteratorCondition("eid1", "=", "#e1", True),
+            ImposeIteratorCondition("eid2", "=", "#e1", True),
+            ImposeIteratorCondition("p", "=", "#passport", True),
+            CompareResultsPrecedence("employee_take_seal", "employee_seal_passport"),
+            ReduceResult()
+        ])
+
+        expected_rule_adapted = JARLRule(rule, rule_header, rule_fact, rule_scope)
+        expected_rule_adapted.set_dynamic_scope_arg("e1", True)
+        expected_rule_adapted.set_dynamic_scope_arg("passport", False)
+
+        rule_header = "reader_reads_what_was_last_written"
+
+        # TODO stuff: remove me when the rule is fully parsed
+        steps.passed_by_default = True
+
+        self.assertEqual(expected_rule_adapted, steps)
 
 if __name__ == '__main__':
     unittest.main()

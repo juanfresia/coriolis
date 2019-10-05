@@ -4,7 +4,7 @@ from parser.JarlRule import *
 
 class JarlRuleAdapter():
     def __init__(self):
-        self.dynamic_scopes = []
+        self.dynamic_args = []
 
     def unique_checkpoints(self, checkpoints):
         unique = []
@@ -72,8 +72,8 @@ class JarlRuleAdapter():
 
         # From 2)
         if right in scope_args:
-            # TODO(jfresia) how the hell are we doing these dynamic scopes?
-            self.dynamic_scopes.append((right, True))
+            # We store these parameters to later call set_dynamic_scope_args
+            self.dynamic_args.append(right)
             right = "#" + right
             literal = True
 
@@ -170,7 +170,7 @@ class JarlRuleAdapter():
         requirement = fact.facts[0].requirement
         if requirement.get_checkpoints():
             # It is a precedence requirement
-            compare_results = CompareResultsPrecedence(fact.checkpoint.name, requirement.checkpoint.name)
+            compare_results = CompareResultsPrecedence(fact.facts[0].checkpoint.name, requirement.checkpoint.name)
         else:
             # It is an order requirement
             compare_results = CompareResultsQuantity(requirement.type.value, requirement.count)
@@ -179,6 +179,17 @@ class JarlRuleAdapter():
         fact_steps.append(ReduceResult())
 
         return RuleFact(fact_steps)
+
+    def set_rule_dynamic_scope_args(self, rule, adapted_rule):
+        is_in_first_chk = True
+        for dynamic_arg in self.dynamic_args:
+            selector = rule.scope.selector
+            if selector.start and selector.end:
+                if dynamic_arg in selector.end.arguments:
+                    is_in_first_chk = False
+
+            print(dynamic_arg, is_in_first_chk)
+            adapted_rule.set_dynamic_scope_arg(dynamic_arg, is_in_first_chk)
 
     def rule_to_steps(self, rule):
         # TODO(jfresia) add validation of the rule here
@@ -192,4 +203,6 @@ class JarlRuleAdapter():
         # TODO(jfresia) Somehow infer the passed_by_default part of the rule
 
         # Compose rule and return
-        return JARLRule(rule_text, rule_header, rule_fact, rule_scope, passed_by_default=False)
+        adapted_rule = JARLRule(rule_text, rule_header, rule_fact, rule_scope, passed_by_default=False)
+        self.set_rule_dynamic_scope_args(rule, adapted_rule)
+        return adapted_rule
