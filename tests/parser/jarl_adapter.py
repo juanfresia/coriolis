@@ -138,7 +138,6 @@ class TestAdapter(unittest.TestCase):
 
 
     def test_adapter_rule_checker_smokers_2(self):
-
         rule = """
         rule smoker_took_two_elements
         for any s
@@ -163,6 +162,33 @@ class TestAdapter(unittest.TestCase):
         ])
         expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=False)
         expected_rule.set_dynamic_scope_arg("s", False)
+
+        rules = parse_str(rule)
+        steps = JarlRuleAdapter().rule_to_steps(rules[0])
+        self.assertEqual(expected_rule, steps)
+
+    def test_adapter_rule_checker_smokers_5(self):
+        rule = (
+            "# Agent produces 2 items per round\n"
+            "rule two_produce_per_round\n"
+            "between agent_wake() and next agent_sleep():\n"
+            "  for any e:\n"
+            "  agent_produce(e) must happen 2 times\n"
+        )
+        rule_header = "two_produce_per_round"
+        rule_scope = RuleScope([
+            MatchCheckpoints(["agent_wake", "agent_sleep"]),
+            CrossAndGroupByArgs([["agent_wake"], ["agent_sleep"]]),
+            ScopeBetween("agent_wake", "agent_sleep")
+        ])
+        rule_fact = RuleFact([
+            MatchCheckpoints(["agent_produce"]),
+            RenameArgs([["agent_produce", "e"]]),
+            CrossAndGroupByArgs([["agent_produce"]]),
+            CompareResultsQuantity("=", 2),
+            ReduceResult()
+        ])
+        expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=False)
 
         rules = parse_str(rule)
         steps = JarlRuleAdapter().rule_to_steps(rules[0])
@@ -229,6 +255,38 @@ class TestAdapter(unittest.TestCase):
         expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=True)
         expected_rule.set_dynamic_scope_arg("w1", True)
         expected_rule.set_dynamic_scope_arg("room1", True)
+
+        rules = parse_str(rule)
+        steps = JarlRuleAdapter().rule_to_steps(rules[0])
+        self.assertEqual(expected_rule, steps)
+
+    def test_adapter_rule_checker_readers_writers_8(self):
+        rule = (
+            "# Writers cannot write before entering a room first\n"
+            "rule writers_cant_write_when_outside\n"
+            "for every w1, w2 and any room1, room2 with w2=w1:\n"
+            "between writer_exit(w1, room1) and next writer_enter(w2, room2):\n"
+            "  for every w and any room, msg with w=w1:\n"
+            "  write_room(w, room, msg) must happen 0 times\n"
+        )
+        rule_header = "writers_cant_write_when_outside"
+        rule_scope = RuleScope([
+            MatchCheckpoints(["writer_exit", "writer_enter"]),
+            RenameArgs([["writer_exit", "w1", "room1"], ["writer_enter", "w2", "room2"]]),
+            CrossAndGroupByArgs([["writer_exit", "w1"], ["writer_enter", "w2"]]),
+            ImposeIteratorCondition("w2", "=", "w1"),
+            ScopeBetween("writer_exit", "writer_enter")
+        ])
+        rule_fact = RuleFact([
+            MatchCheckpoints(["write_room"]),
+            RenameArgs([["write_room", "w", "room", "msg"]]),
+            CrossAndGroupByArgs([["write_room", "w"]]),
+            ImposeIteratorCondition("w", "=", "#w1", True),
+            CompareResultsQuantity("=", 0),
+            ReduceResult()
+        ])
+        expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=True)
+        expected_rule.set_dynamic_scope_arg("w1", True)
 
         rules = parse_str(rule)
         steps = JarlRuleAdapter().rule_to_steps(rules[0])
@@ -354,6 +412,28 @@ class TestAdapter(unittest.TestCase):
         ])
         expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=True)
         expected_rule.set_dynamic_scope_arg("r1", True)
+
+        rules = parse_str(rule)
+        steps = JarlRuleAdapter().rule_to_steps(rules[0])
+        self.assertEqual(expected_rule, steps)
+
+    def test_adapter_prod_cons_7(self):
+        rule = (
+            "# Items are consumed in order\n"
+            "rule consume_in_order\n"
+            "for every i, j and any c, d with j>i:\n"
+            "consume(c, i) must precede consume(d, j)\n"
+        )
+        rule_header = "consume_in_order"
+        rule_fact = RuleFact([
+            MatchCheckpoints(["consume"]),
+            RenameArgs([["consume", "c", "i"], ["consume", "d", "j"]]),
+            CrossAndGroupByArgs([["consume", "i"], ["consume", "j"]]),
+            ImposeIteratorCondition("j", ">", "i"),
+            CompareResultsPrecedence("consume", "consume"),
+            ReduceResult()
+        ])
+        expected_rule = JARLRule(rule, rule_header, rule_fact)
 
         rules = parse_str(rule)
         steps = JarlRuleAdapter().rule_to_steps(rules[0])
