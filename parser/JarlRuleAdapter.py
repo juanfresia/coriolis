@@ -106,8 +106,8 @@ class JarlRuleAdapter():
         match_checkpoints = MatchCheckpoints([chk.name for chk in self.unique_checkpoints(checkpoints)])
         scope_steps.append(match_checkpoints)
 
-        if self.any_checkpoint_has_args(checkpoints):
-            flattened_checkpoints = [self.concat_checkpoint(chk) for chk in checkpoints]
+        flattened_checkpoints = [self.concat_checkpoint(chk) for chk in checkpoints if chk.arguments]
+        if flattened_checkpoints:
             rename_args = RenameArgs(flattened_checkpoints)
             scope_steps.append(rename_args)
 
@@ -151,8 +151,8 @@ class JarlRuleAdapter():
         match_checkpoints = MatchCheckpoints([chk.name for chk in checkpoints])
         fact_steps.append(match_checkpoints)
 
-        if self.any_checkpoint_has_args(checkpoints):
-            flattened_checkpoints = [self.concat_checkpoint(chk) for chk in checkpoints]
+        flattened_checkpoints = [self.concat_checkpoint(chk) for chk in checkpoints if chk.arguments]
+        if flattened_checkpoints:
             rename_args = RenameArgs(flattened_checkpoints)
             fact_steps.append(rename_args)
 

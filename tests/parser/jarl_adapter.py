@@ -106,6 +106,7 @@ class TestAdapter(unittest.TestCase):
         for every eid1, eid2, p with eid1=e1, eid2=e1, p=passport
         employee_take_seal(eid1) must precede employee_seal_passport(eid2, p)
         """
+
         rules = parse_str(rule)
 
         steps = JarlRuleAdapter().rule_to_steps(rules[0])
@@ -134,6 +135,39 @@ class TestAdapter(unittest.TestCase):
         expected_rule_adapted.set_dynamic_scope_arg("passport", False)
 
         self.assertEqual(expected_rule_adapted, steps)
+
+
+    def test_adapter_rule_checker_smokers_2(self):
+
+        rule = """
+        rule smoker_took_two_elements
+        for any s
+        between agent_wake() and next smoker_smoke(s)
+        for any sid, e with sid=s
+        smoker_take_element(sid, e) must happen 2 times
+        """
+        rule_header = "smoker_took_two_elements"
+        rule_scope = RuleScope([
+            MatchCheckpoints(["agent_wake", "smoker_smoke"]),
+            RenameArgs([ ["smoker_smoke", "s"] ]),
+            CrossAndGroupByArgs([ ["agent_wake"], ["smoker_smoke"] ]),
+            ScopeBetween("agent_wake", "smoker_smoke")
+        ])
+        rule_fact = RuleFact([
+            MatchCheckpoints(["smoker_take_element"]),
+            RenameArgs([ ["smoker_take_element", "sid", "e"] ]),
+            CrossAndGroupByArgs([ ["smoker_take_element"] ]),
+            ImposeWildcardCondition("sid", "=", "#s", True),
+            CompareResultsQuantity("=", 2),
+            ReduceResult()
+        ])
+        expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=False)
+        expected_rule.set_dynamic_scope_arg("s", False)
+
+        rules = parse_str(rule)
+        steps = JarlRuleAdapter().rule_to_steps(rules[0])
+        self.assertEqual(expected_rule, steps)
+
 
 if __name__ == '__main__':
     unittest.main()
