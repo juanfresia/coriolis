@@ -104,8 +104,6 @@ class TestAdapter(unittest.TestCase):
 
         # TODO stuff: remove me when the rule is fully parsed
         steps.passed_by_default = True
-        steps.set_dynamic_scope_arg("r2", True)
-        steps.set_dynamic_scope_arg("m2", True)
 
         self.assertEqual(expected_rule_adapted, steps)
 

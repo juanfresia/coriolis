@@ -184,8 +184,12 @@ class JarlRuleAdapter():
         is_in_first_chk = True
         for dynamic_arg in self.dynamic_args:
             selector = rule.scope.selector
-            if selector.start and selector.end:
+            if selector.type == JarlSelectorClauseType.BETWEEN_NEXT:
                 if dynamic_arg in selector.end.arguments:
+                    is_in_first_chk = False
+
+            if selector.type == JarlSelectorClauseType.BETWEEN_PREV:
+                if dynamic_arg in selector.start.arguments:
                     is_in_first_chk = False
 
             print(dynamic_arg, is_in_first_chk)
