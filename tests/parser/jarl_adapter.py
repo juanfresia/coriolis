@@ -259,7 +259,7 @@ class TestAdapter(unittest.TestCase):
         steps = JarlRuleAdapter().rule_to_steps(rules[0])
         self.assertEqual(expected_rule, steps)
 
-    def test_adapter_rule_checker_santa_1(self):
+    def test_adapter_rule_checker_santa_6(self):
         rule = """
         rule reindeer_get_hitched_before_leaving
         for every r1, r2 with r1=r2
