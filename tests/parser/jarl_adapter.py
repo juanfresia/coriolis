@@ -199,7 +199,7 @@ class TestAdapter(unittest.TestCase):
         steps = JarlRuleAdapter().rule_to_steps(rules[0])
         self.assertEqual(expected_rule, steps)
 
-    def test_adapter_rule_checker_reader_writers_6(self):
+    def test_adapter_rule_checker_reader_writers_5(self):
         rule = """
         rule one_writer_at_room
         for every w1, w2, room1, room2 with w1=w2, room1=room2
@@ -234,35 +234,69 @@ class TestAdapter(unittest.TestCase):
         steps = JarlRuleAdapter().rule_to_steps(rules[0])
         self.assertEqual(expected_rule, steps)
 
-    # TODO(jfresia) This is a helper to migrate tests, remove when tests are migrated
-    def test_skel(self):
-        pass
-
+    def test_adapter_rule_checker_santa_1(self):
         rule = """
-        rule smokers_smoke_while_awake
-        for every s1, s2 with s1=s2
-        between smoker_sleep(s1) and next smoker_sleep(s2)
-        for any s with s=s1
-        smoker_smoke(s) must happen 1 times
+        rule prepare_sleigh_once_per_round
+        between santa_wake() and next santa_sleep()
+        prepare_sleigh() must happen at most 1 times
         """
-        rule_header = "smokers_smoke_while_awake"
+
+        rule_header = "prepare_sleigh_once_per_round"
         rule_scope = RuleScope([
-            MatchCheckpoints(["smoker_sleep"]),
-            RenameArgs([ ["smoker_sleep", "s1"], ["smoker_sleep", "s2"] ]),
-            CrossAndGroupByArgs([ ["smoker_sleep", "s1"], ["smoker_sleep", "s2"] ]),
-            ImposeIteratorCondition("s1", "=", "s2"),
-            ScopeBetween("smoker_sleep", "smoker_sleep")
+            MatchCheckpoints(["santa_wake", "santa_sleep"]),
+            CrossAndGroupByArgs([ ["santa_wake"], ["santa_sleep"] ]),
+            ScopeBetween("santa_wake", "santa_sleep")
         ])
         rule_fact = RuleFact([
-            MatchCheckpoints(["smoker_smoke"]),
-            RenameArgs([ ["smoker_smoke", "s"] ]),
-            CrossAndGroupByArgs([ ["smoker_smoke"] ]),
-            ImposeWildcardCondition("s", "=", "#s1", True),
+            MatchCheckpoints(["prepare_sleigh"]),
+            CrossAndGroupByArgs([ ["prepare_sleigh"] ]),
+            CompareResultsQuantity("<=", 1),
+            ReduceResult()
+        ])
+        expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=True)
+
+        rules = parse_str(rule)
+        steps = JarlRuleAdapter().rule_to_steps(rules[0])
+        self.assertEqual(expected_rule, steps)
+
+    def test_adapter_rule_checker_santa_1(self):
+        rule = """
+        rule reindeer_get_hitched_before_leaving
+        for every r1, r2 with r1=r2
+        between reindeer_arrive(r1) and next reindeer_leave(r2)
+        for every r with r=r1
+        get_hitched(r) must happen 1 times
+        """
+
+        rule_header = "reindeer_get_hitched_before_leaving"
+        rule_scope = RuleScope([
+            MatchCheckpoints(["reindeer_arrive", "reindeer_leave"]),
+            RenameArgs([ ["reindeer_arrive", "r1"], ["reindeer_leave", "r2"] ]),
+            CrossAndGroupByArgs([ ["reindeer_arrive", "r1"], ["reindeer_leave", "r2"] ]),
+            ImposeIteratorCondition("r1", "=", "r2"),
+            ScopeBetween("reindeer_arrive", "reindeer_leave")
+        ])
+        rule_fact = RuleFact([
+            MatchCheckpoints(["get_hitched"]),
+            RenameArgs([ ["get_hitched", "r"] ]),
+            CrossAndGroupByArgs([ ["get_hitched", "r"] ]),
+            ImposeIteratorCondition("r", "=", "#r1", True),
             CompareResultsQuantity("=", 1),
             ReduceResult()
         ])
         expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=False)
-        expected_rule.set_dynamic_scope_arg("s1", True)
+        expected_rule.set_dynamic_scope_arg("r1", True)
+
+        rules = parse_str(rule)
+        steps = JarlRuleAdapter().rule_to_steps(rules[0])
+        self.assertEqual(expected_rule, steps)
+
+    # TODO(jfresia) This is a helper to migrate tests, remove when tests are migrated
+    def test_skel(self):
+        return
+
+        rule = """
+        """
 
         rules = parse_str(rule)
         steps = JarlRuleAdapter().rule_to_steps(rules[0])

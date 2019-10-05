@@ -117,7 +117,7 @@ class TestSanta(unittest.TestCase):
     rule_6_statement = (
         "# Reindeer leave only after getting hitched\n"
         "rule reindeer_get_hitched_before_leaving\n"
-        "for every r1, r2 with r2=r1:\n"
+        "for every r1, r2 with r1=r2:\n"
         "between reindeer_arrive(r1) and next reindeer_leave(r2):\n"
         "  for every r with r=r1:\n"
         "  get_hitched(r) must happen 1 times\n"
