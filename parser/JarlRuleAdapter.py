@@ -1,6 +1,7 @@
 from common.aggregation_steps import *
 from common.jarl_rule import *
 from parser.JarlRule import *
+from parser.JarlRuleValidator import *
 
 class JarlRuleAdapter():
     def __init__(self):
@@ -210,7 +211,8 @@ class JarlRuleAdapter():
             adapted_rule.set_dynamic_scope_arg(dynamic_arg, is_in_first_chk)
 
     def rule_to_steps(self, rule):
-        # TODO(jfresia) add validation of the rule here
+
+        JarlRuleValidator().validate_rule(rule)
 
         # Get each part of a rule
         rule_text = self.get_rule_text(rule)
