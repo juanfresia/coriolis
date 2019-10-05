@@ -1,0 +1,68 @@
+# Santa prepares his sleigh at most once when awake
+rule prepare_sleigh_once_per_round
+between santa_wake() and next santa_sleep():
+  prepare_sleigh() must happen at most 1 times
+
+# Santa helps the elves at most once when awake
+rule help_elves_once_per_round
+between santa_wake() and next santa_sleep():
+  help_elves() must happen at most 1 times
+
+# Santa cant prepare his sleigh if asleep
+rule cant_prepare_sleigh_sleeping
+between santa_sleep() and next santa_wake():
+  prepare_sleigh() must happen 0 times
+
+# Santa cant help the elves if asleep
+rule cant_help_elves_sleeping
+between santa_sleep() and next santa_wake():
+  help_elves() must happen 0 times
+
+# Elves leave only after getting help
+rule elves_get_help_before_leaving
+for every e1, e2 with e2=e1:
+between elf_arrive(e1) and next elf_leave(e2):
+  for every e with e=e1:
+  get_help(e) must happen 1 times
+
+# Reindeer leave only after getting hitched
+rule reindeer_get_hitched_before_leaving
+for every r1, r2 with r2=r1:
+between reindeer_arrive(r1) and next reindeer_leave(r2):
+  for every r with r=r1:
+  get_hitched(r) must happen 1 times
+
+# Santa helps the elves in groups of 3
+rule elves_helped_in_groups
+for every e:
+between get_help(e) and previous help_elves():
+  for any elf:
+  get_help(elf) must happen at most 3 times
+
+# Santa hitches the reindeers in groups of 9
+rule reindeers_hitched_in_groups
+for every r:
+between get_hitched(r) and previous prepare_sleigh():
+  for any reindeer:
+  get_hitched(reindeer) must happen at most 9 times
+
+# Elves cannot be helped if they dont arrive with Santa
+rule elves_cannot_be_helped_when_left
+for every e1, e2 with e2=e1:
+between elf_leave(e1) and next elf_arrive(e2):
+  for every e with e=e1:
+  get_help(e) must happen 0 times
+
+# Reindeers cannot be hitched if they dont arrive with Santa
+rule reindeers_cannot_be_helped_when_left
+for every r1, r2 with r2=r1:
+between reindeer_leave(r1) and next reindeer_arrive(r2):
+  for every r with r=r1:
+  get_hitched(r) must happen 0 times
+
+# Reindeer gets hitched after Santa prepares his sleigh
+rule reindeer_get_hitched_before_leaving
+for every r1, r2 with r2=r1:
+between reindeer_arrive(r1) and next reindeer_leave(r2):
+  for every r with r=r1:
+  prepare_sleigh() must precede get_hitched(r)

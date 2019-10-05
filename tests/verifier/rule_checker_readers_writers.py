@@ -264,7 +264,7 @@ class TestReadersWriters(unittest.TestCase):
         CompareResultsQuantity(">=", 1),
         ReduceResult()
     ])
-    rule_10 = JARLRule(rule_10_statement, rule_10_header, rule_10_fact, rule_10_scope, passed_by_default=True)
+    rule_10 = JARLRule(rule_10_statement, rule_10_header, rule_10_fact, rule_10_scope, passed_by_default=False)
     rule_10.set_dynamic_scope_arg("room", False)
     rule_10.set_dynamic_scope_arg("msg", False)
 

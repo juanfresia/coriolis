@@ -70,7 +70,7 @@ class JarlRuleAdapter():
             JarlSelectorClauseType.AFTER: ScopeAfter(start_name),
             JarlSelectorClauseType.BEFORE: ScopeBefore(end_name)
         }
-        if not scope_type in to_steps: raise Exception("Unexpected Selector Clause type")
+        if scope_type not in to_steps: raise Exception("Unexpected Selector Clause type")
         return to_steps[scope_type]
 
     def _adapt_checkpoints_names(self, checkpoints):
@@ -108,7 +108,9 @@ class JarlRuleAdapter():
         for cond in conditions:
             scope_steps.append(self._adapt_scope_filter_condition(cond, scope.filter))
 
-        scope_steps.append(self._adapt_scope_type(scope.selector.type, scope.selector.start.name, scope.selector.end.name))
+        end_name = scope.selector.end.name if scope.selector.end else None
+        start_name = scope.selector.start.name if scope.selector.start else None
+        scope_steps.append(self._adapt_scope_type(scope.selector.type, start_name, end_name))
         return RuleScope(scope_steps)
 
     def adapt_rule_fact(self, rule):

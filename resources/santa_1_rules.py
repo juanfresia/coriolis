@@ -39,7 +39,14 @@ rule_2_fact = RuleFact([
     CompareResultsQuantity("<=", 1),
     ReduceResult()
 ])
-rule_2 = JARLRule(rule_2_statement, rule_2_header, rule_2_fact, rule_2_scope, passed_by_default=True)
+JARLRule(
+    rule_2_statement,
+    rule_2_header,
+    rule_2_fact,
+    rule_2_scope,
+    passed_by_default=True)\
+    .set_dynamic_scope_arg()\
+    .set_dynamic_scope_arg()
 
 rule_3_statement = (
     "# Santa cant prepare his sleigh if asleep\n"

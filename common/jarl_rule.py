@@ -16,6 +16,7 @@ class JARLRule:
 
     def set_dynamic_scope_arg(self, scope_arg, first_checkpoint=True):
         self._dynamic_args["#{}".format(scope_arg)] = (scope_arg, first_checkpoint)
+        return self
 
     def evaluate_scope_steps(self):
         return self.scope.evaluate_steps()
@@ -65,6 +66,24 @@ class JARLRule:
             self.failed_scope == other.failed_scope and \
             self._dynamic_args == other._dynamic_args
 
+    def __repr__(self):
+        fact = str(self.fact).replace("\n", "\n\t")
+        scope = str(self.scope).replace("\n", "\n\t")
+        text = str(self.text).replace("\n", "\\n\"\n\t\"").replace("\"\\n\"", "")
+        s = """JARLRule(
+        (\"{}\"),
+        \"{}\",
+        {},
+        {},
+        passed_by_default={}
+        )""".format(text, self.rule_header, fact, scope, self.passed_by_default)
+        # We add the dynamic args
+        for (k, v) in self._dynamic_args.items():
+            s += "\\\n.set_dynamic_scope_arg(\"{}\", {})".format(v[0], v[1])
+        return s
+
+
+
 class RuleScope:
     def __init__(self, aggregation_steps):
         self.steps = aggregation_steps
@@ -88,6 +107,9 @@ class RuleScope:
     def __eq__(self, other):
         return isinstance(other, RuleScope) and self.steps == other.steps
 
+    def __repr__(self):
+        return "RuleScope([\n\t{}\n])".format(", \n\t".join(map(str, self.steps)))
+
 class RuleFact:
     def __init__(self, aggregation_steps):
         self.steps = aggregation_steps
@@ -99,3 +121,6 @@ class RuleFact:
 
     def __eq__(self, other):
         return isinstance(other, RuleFact) and self.steps == other.steps
+
+    def __repr__(self):
+        return "RuleFact([\n\t{}\n])".format(", \n\t".join(map(str, self.steps)))

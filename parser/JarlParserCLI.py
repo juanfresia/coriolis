@@ -50,8 +50,10 @@ def adapt_str(string, show_errors=True):
 
 def main(argv):
     rules = adapt_file(argv[1])
+    print("all_rules = [")
     for rule in rules:
-        print(rule)
+        print("\t{},\n".format(str(rule).replace("\n", "\n\t")))
+    print("]")
         
 if __name__ == '__main__':
     main(sys.argv)

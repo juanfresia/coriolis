@@ -199,7 +199,7 @@ class TestAdapter(unittest.TestCase):
         steps = JarlRuleAdapter().rule_to_steps(rules[0])
         self.assertEqual(expected_rule, steps)
 
-    def test_adapter_rule_checker_reader_writers_5(self):
+    def test_adapter_rule_checker_readers_writers_5(self):
         rule = """
         rule one_writer_at_room
         for every w1, w2, room1, room2 with w1=w2, room1=room2
@@ -229,6 +229,41 @@ class TestAdapter(unittest.TestCase):
         expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=True)
         expected_rule.set_dynamic_scope_arg("w1", True)
         expected_rule.set_dynamic_scope_arg("room1", True)
+
+        rules = parse_str(rule)
+        steps = JarlRuleAdapter().rule_to_steps(rules[0])
+        self.assertEqual(expected_rule, steps)
+
+    def test_adapter_rule_checker_readers_writers_10(self):
+        rule = """
+        # If a reader reads something, a writer wrote it
+        rule reader_reads_something_written
+        for every r, room, msg with msg!='NULL':
+        before read_room(r, room, msg):
+          for any roomid, m, w with roomid=room, m=msg:
+          write_room(w, roomid, m) must happen at least 1 times
+        """
+
+        rule_header = "reader_reads_something_written"
+        rule_scope = RuleScope([
+            MatchCheckpoints(["read_room"]),
+            RenameArgs([["read_room", "r", "room", "msg"]]),
+            CrossAndGroupByArgs([["read_room", "r", "room", "msg"]]),
+            ImposeIteratorCondition("msg", "!=", "NULL", True),
+            ScopeBefore("read_room")
+        ])
+        rule_fact = RuleFact([
+            MatchCheckpoints(["write_room"]),
+            RenameArgs([["write_room", "w", "roomid", "m"]]),
+            CrossAndGroupByArgs([["write_room"]]),
+            ImposeWildcardCondition("roomid", "=", "#room", True),
+            ImposeWildcardCondition("m", "=", "#msg", True),
+            CompareResultsQuantity(">=", 1),
+            ReduceResult()
+        ])
+        expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=False)
+        expected_rule.set_dynamic_scope_arg("room", False)
+        expected_rule.set_dynamic_scope_arg("msg", False)
 
         rules = parse_str(rule)
         steps = JarlRuleAdapter().rule_to_steps(rules[0])
@@ -286,6 +321,99 @@ class TestAdapter(unittest.TestCase):
         ])
         expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=False)
         expected_rule.set_dynamic_scope_arg("r1", True)
+
+        rules = parse_str(rule)
+        steps = JarlRuleAdapter().rule_to_steps(rules[0])
+        self.assertEqual(expected_rule, steps)
+
+    def test_adapter_rule_checker_santa_10(self):
+        rule = """
+        # Reindeers cannot be hitched if they dont arrive with Santa
+        rule reindeers_cannot_be_helped_when_left
+        for every r1, r2 with r1=r2:
+        between reindeer_leave(r1) and next reindeer_arrive(r2):
+          for every r with r=r1:
+          get_hitched(r) must happen 0 times
+        """
+
+        rule_header = "reindeers_cannot_be_helped_when_left"
+        rule_scope = RuleScope([
+            MatchCheckpoints(["reindeer_leave", "reindeer_arrive"]),
+            RenameArgs([["reindeer_leave", "r1"], ["reindeer_arrive", "r2"]]),
+            CrossAndGroupByArgs([["reindeer_leave", "r1"], ["reindeer_arrive", "r2"]]),
+            ImposeIteratorCondition("r1", "=", "r2"),
+            ScopeBetween("reindeer_leave", "reindeer_arrive")
+        ])
+        rule_fact = RuleFact([
+            MatchCheckpoints(["get_hitched"]),
+            RenameArgs([["get_hitched", "r"]]),
+            CrossAndGroupByArgs([["get_hitched", "r"]]),
+            ImposeIteratorCondition("r", "=", "#r1", True),
+            CompareResultsQuantity("=", 0),
+            ReduceResult()
+        ])
+        expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=True)
+        expected_rule.set_dynamic_scope_arg("r1", True)
+
+        rules = parse_str(rule)
+        steps = JarlRuleAdapter().rule_to_steps(rules[0])
+        self.assertEqual(expected_rule, steps)
+
+    def test_adapter_prod_cons_9(self):
+        rule = """
+        # Item is consumed only once (written differently)
+        rule consume_once_alt
+        for any cid, iid:
+        after consume(cid, iid):
+          for every i and any c:
+          consume(c, i) must happen 1 times
+        """
+
+        rule_header = "consume_once_alt"
+        rule_scope = RuleScope([
+            MatchCheckpoints(["consume"]),
+            RenameArgs([["consume", "cid", "iid"]]),
+            CrossAndGroupByArgs([["consume"]]),
+            ScopeAfter("consume")
+        ])
+        rule_9_fact = RuleFact([
+            MatchCheckpoints(["consume"]),
+            RenameArgs([["consume", "c", "i"]]),
+            CrossAndGroupByArgs([["consume", "i"]]),
+            CompareResultsQuantity("=", 1),
+            ReduceResult()
+        ])
+        expected_rule = JARLRule(rule, rule_header, rule_9_fact, rule_scope, passed_by_default=False)
+
+        rules = parse_str(rule)
+        steps = JarlRuleAdapter().rule_to_steps(rules[0])
+        self.assertEqual(expected_rule, steps)
+
+    def test_adapter_prod_cons_10(self):
+        rule = """
+        # Item is produced only once (written differently)
+        rule produce_once_alt
+        for any pid, iid:
+        before produce(pid, iid):
+          for every i and any p:
+          produce(p, i) must happen 1 times
+        """
+
+        rule_header = "produce_once_alt"
+        rule_scope = RuleScope([
+            MatchCheckpoints(["produce"]),
+            RenameArgs([["produce", "pid", "iid"]]),
+            CrossAndGroupByArgs([["produce"]]),
+            ScopeBefore("produce")
+        ])
+        rule_fact = RuleFact([
+            MatchCheckpoints(["produce"]),
+            RenameArgs([["produce", "p", "i"]]),
+            CrossAndGroupByArgs([["produce", "i"]]),
+            CompareResultsQuantity("=", 1),
+            ReduceResult()
+        ])
+        expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=False)
 
         rules = parse_str(rule)
         steps = JarlRuleAdapter().rule_to_steps(rules[0])
