@@ -11,8 +11,4 @@ between employee_ready(e1) and next employee_ready(e2) :
     for any employee_id, person_name, type with employee_id=e1:
     employee_serve(employee_id, person_name, type) must happen 1 times
 
-rule third_rule
-for every e1, e2:
-after employee(e1) :
-    employee(e2) must happen 1 times
 

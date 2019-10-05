@@ -4,10 +4,11 @@ from .JarlLexer import JarlLexer
 from .JarlParser import JarlParser
 from .JarlActualListener import JarlListener
 from .JarlRuleValidator import JarlRuleValidator
+from .JarlRuleAdapter import JarlRuleAdapter
 
 def parse_stream(input, show_errors=True):
     """ Uses JarlLexer and JarlParser to parse an input stream.
-    Returns a list of JarlRues"""
+    Returns a list of JarlRules"""
 
     lexer = JarlLexer(input)
     stream = CommonTokenStream(lexer)
@@ -27,22 +28,30 @@ def parse_file(filepath, show_errors=True):
     input = FileStream(filepath)
     return parse_stream(input, show_errors)
 
-def parse_str(s, show_errors=True):
-    input = InputStream(s)
+def parse_str(string, show_errors=True):
+    input = InputStream(string)
     return parse_stream(input, show_errors)
 
-def main(argv):
-    rules = parse_file(argv[1])
+def rules_to_steps(rules):
+    adapted_rules = []
     for rule in rules:
-        lines = [line for line in rule.text.splitlines() if line]
-        for line in lines:
-            print(line)
-        # print(rule)
-        # print("Is last condition litaral? ->", rule.scope.filter.conditions[0].is_literal)
-        print()
+        adapted_rule = JarlRuleAdapter().rule_to_steps(rule)
+        adapted_rules.append(adapted_rule)
+        
+    return adapted_rules
+
+def adapt_file(filepath, show_errors=True):
+    rules = parse_file(filepath)
+    return rules_to_steps(rules)
+    
+def adapt_str(string, show_errors=True):
+    rules = parse_str(string)
+    return rules_to_steps(rules)
+
+def main(argv):
+    rules = adapt_file(argv[1])
+    for rule in rules:
         print(rule)
-        print()
-        print()
         
 if __name__ == '__main__':
     main(sys.argv)
