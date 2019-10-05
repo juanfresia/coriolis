@@ -56,12 +56,9 @@ class TestAdapter(unittest.TestCase):
             CompareResultsQuantity("=", 2),
             ReduceResult()
         ])
-
-        print(steps.passed_by_default)
         expected_rule_adapted = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=False)
-        self.assertEqual(expected_rule_adapted, steps)
 
-        pass
+        self.assertEqual(expected_rule_adapted, steps)
 
     def test_adapter_with_reference_to_scope(self):
         rule = """
@@ -94,7 +91,6 @@ class TestAdapter(unittest.TestCase):
             CompareResultsQuantity("=", 0),
             ReduceResult()
         ])
-
         expected_rule_adapted = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=True)
         expected_rule_adapted.set_dynamic_scope_arg("r2", True)
         expected_rule_adapted.set_dynamic_scope_arg("m2", True)
@@ -133,15 +129,9 @@ class TestAdapter(unittest.TestCase):
             CompareResultsPrecedence("employee_take_seal", "employee_seal_passport"),
             ReduceResult()
         ])
-
         expected_rule_adapted = JARLRule(rule, rule_header, rule_fact, rule_scope)
         expected_rule_adapted.set_dynamic_scope_arg("e1", True)
         expected_rule_adapted.set_dynamic_scope_arg("passport", False)
-
-        rule_header = "reader_reads_what_was_last_written"
-
-        # TODO stuff: remove me when the rule is fully parsed
-        steps.passed_by_default = True
 
         self.assertEqual(expected_rule_adapted, steps)
 
