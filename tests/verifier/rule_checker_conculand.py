@@ -109,8 +109,8 @@ class TestConculand(unittest.TestCase):
         MatchCheckpoints(["employee_request_passport", "tourist_show_passport"]),
         RenameArgs([ ["employee_request_passport", "employee_id"], ["tourist_show_passport", "pn", "passport", "traits"] ]),
         CrossAndGroupByArgs([ ["employee_request_passport", "employee_id"], ["tourist_show_passport", "pn"] ]),
-        ImposeIteratorCondition("pn", "=", "#person_name", True),
         ImposeIteratorCondition("employee_id", "=", "#e1", True),
+        ImposeIteratorCondition("pn", "=", "#person_name", True),
         CompareResultsPrecedence("employee_request_passport", "tourist_show_passport"),
         ReduceResult()
     ])
@@ -311,7 +311,7 @@ class TestConculand(unittest.TestCase):
         CompareResultsQuantity("=", 12),
         ReduceResult()
     ])
-    rule_11 = JARLRule(rule_11_statement, rule_11_header, rule_11_fact)
+    rule_11 = JARLRule(rule_11_statement, rule_11_header, rule_11_fact, passed_by_default=False)
 
     rule_12_statement = (
         "# All taken seals are later returned\n"
@@ -336,7 +336,7 @@ class TestConculand(unittest.TestCase):
         CompareResultsQuantity(">=", 1),
         ReduceResult()
     ])
-    rule_12 = JARLRule(rule_12_statement, rule_12_header, rule_12_fact, rule_12_scope)
+    rule_12 = JARLRule(rule_12_statement, rule_12_header, rule_12_fact, rule_12_scope, passed_by_default=False)
     rule_12.set_dynamic_scope_arg("employee_id", True)
 
     def check_one_rule(self, rule):

@@ -91,7 +91,8 @@ rule_5_scope = RuleScope([
     MatchCheckpoints(["atom_spawn", "atom_die"]),
     RenameArgs([["atom_spawn", "at1", "aid1"], ["atom_die", "at2", "aid2"]]),
     CrossAndGroupByArgs([["atom_spawn", "aid1"], ["atom_die", "aid2"]]),
-    ImposeIteratorCondition("aid1", "=", "aid2"),
+    ImposeIteratorCondition("aid2", "=", "aid1"),
+    ImposeIteratorCondition("at2", "=", "at1"),
     ScopeBetween("atom_spawn", "atom_die")
 ])
 rule_5_fact = RuleFact([
@@ -104,8 +105,8 @@ rule_5_fact = RuleFact([
     ReduceResult()
 ])
 rule_5 = JARLRule(rule_5_statement, rule_5_header, rule_5_fact, rule_5_scope, passed_by_default=False)
-rule_5.set_dynamic_scope_arg("aid1", True)
 rule_5.set_dynamic_scope_arg("at1", True)
+rule_5.set_dynamic_scope_arg("aid1", True)
 
 rule_6_statement = (
     "# 20 water molecules are made\n"

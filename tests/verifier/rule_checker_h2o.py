@@ -96,7 +96,8 @@ class TestH2O(unittest.TestCase):
         MatchCheckpoints(["atom_spawn", "atom_die"]),
         RenameArgs([["atom_spawn", "at1", "aid1"], ["atom_die", "at2", "aid2"]]),
         CrossAndGroupByArgs([["atom_spawn", "aid1"], ["atom_die", "aid2"]]),
-        ImposeIteratorCondition("aid1", "=", "aid2"),
+        ImposeIteratorCondition("aid2", "=", "aid1"),
+        ImposeIteratorCondition("at2", "=", "at1"),
         ScopeBetween("atom_spawn", "atom_die")
     ])
     rule_5_fact = RuleFact([
@@ -109,8 +110,8 @@ class TestH2O(unittest.TestCase):
         ReduceResult()
     ])
     rule_5 = JARLRule(rule_5_statement, rule_5_header, rule_5_fact, rule_5_scope, passed_by_default=False)
-    rule_5.set_dynamic_scope_arg("aid1", True)
     rule_5.set_dynamic_scope_arg("at1", True)
+    rule_5.set_dynamic_scope_arg("aid1", True)
 
     rule_6_statement = (
         "# 20 water molecules are made\n"
@@ -372,7 +373,7 @@ class TestHighLoadH2O(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_3 = JARLRule(rule_3_statement, rule_3_header, rule_3_fact, rule_3_scope)
+    rule_3 = JARLRule(rule_3_statement, rule_3_header, rule_3_fact, rule_3_scope, passed_by_default=False)
     rule_3.set_dynamic_scope_arg("atom_id", True)
     rule_3.set_dynamic_scope_arg("atom_type", True)
 
@@ -417,7 +418,7 @@ class TestHighLoadH2O(unittest.TestCase):
         CompareResultsQuantity("=", 1),
         ReduceResult()
     ])
-    rule_5 = JARLRule(rule_5_statement, rule_5_header, rule_5_fact, rule_5_scope)
+    rule_5 = JARLRule(rule_5_statement, rule_5_header, rule_5_fact, rule_5_scope, passed_by_default=False)
     rule_5.set_dynamic_scope_arg("aid1", True)
     rule_5.set_dynamic_scope_arg("at1", True)
 
@@ -456,7 +457,7 @@ class TestHighLoadH2O(unittest.TestCase):
         CompareResultsQuantity("=", 2),
         ReduceResult()
     ])
-    rule_7 = JARLRule(rule_7_statement, rule_7_header, rule_7_fact, rule_7_scope)
+    rule_7 = JARLRule(rule_7_statement, rule_7_header, rule_7_fact, rule_7_scope, passed_by_default=False)
 
     rule_8_statement = (
         "# 1 oxygen atom must bond to make a new water molecule\n"
