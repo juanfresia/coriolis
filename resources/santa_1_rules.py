@@ -94,7 +94,7 @@ rule_5_scope = RuleScope([
     MatchCheckpoints(["elf_arrive", "elf_leave"]),
     RenameArgs([ ["elf_arrive", "e1"], ["elf_leave", "e2"] ]),
     CrossAndGroupByArgs([ ["elf_arrive", "e1"], ["elf_leave", "e2"] ]),
-    ImposeIteratorCondition("e1", "=", "e2"),
+    ImposeIteratorCondition("e2", "=", "e1"),
     ScopeBetween("elf_arrive", "elf_leave")
 ])
 rule_5_fact = RuleFact([
@@ -146,7 +146,7 @@ rule_7_statement = (
 rule_7_header = "elves_helped_in_groups"
 rule_7_scope = RuleScope([
     MatchCheckpoints(["get_help", "help_elves"]),
-    RenameArgs([ ["get_help", "e"], ["help_elves"] ]),
+    RenameArgs([ ["get_help", "e"] ]),
     CrossAndGroupByArgs([ ["get_help", "e"], ["help_elves"] ]),
     ScopeBetween("get_help", "help_elves", False)
 ])
@@ -170,7 +170,7 @@ rule_8_statement = (
 rule_8_header = "reindeers_hitched_in_groups"
 rule_8_scope = RuleScope([
     MatchCheckpoints(["get_hitched", "prepare_sleigh"]),
-    RenameArgs([ ["get_hitched", "r"], ["prepare_sleigh"] ]),
+    RenameArgs([ ["get_hitched", "r"] ]),
     CrossAndGroupByArgs([ ["get_hitched", "r"], ["prepare_sleigh"] ]),
     ScopeBetween("get_hitched", "prepare_sleigh", False)
 ])
@@ -255,7 +255,7 @@ rule_11_scope = RuleScope([
 ])
 rule_11_fact = RuleFact([
     MatchCheckpoints(["prepare_sleigh", "get_hitched"]),
-    RenameArgs([ ["prepare_sleigh"], ["get_hitched", "r"] ]),
+    RenameArgs([ ["get_hitched", "r"] ]),
     CrossAndGroupByArgs([ ["prepare_sleigh"], ["get_hitched", "r"] ]),
     ImposeIteratorCondition("r", "=", "#r1", True),
     CompareResultsPrecedence("prepare_sleigh", "get_hitched"),
@@ -268,15 +268,15 @@ rule_11.set_dynamic_scope_arg("r1", True)
 
 
 all_rules = [
-    #rule_1,
-    #rule_2,
-    #rule_3,
-    #rule_4,
-    #rule_5,
-    #rule_6,
-    #rule_7,
-    #rule_8,
-    #rule_9,
-    #rule_10,
+    rule_1,
+    rule_2,
+    rule_3,
+    rule_4,
+    rule_5,
+    rule_6,
+    rule_7,
+    rule_8,
+    rule_9,
+    rule_10,
     rule_11,
 ]

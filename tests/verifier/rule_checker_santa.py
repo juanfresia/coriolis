@@ -153,7 +153,7 @@ class TestSanta(unittest.TestCase):
     rule_7_scope = RuleScope([
         MatchCheckpoints(["get_help", "help_elves"]),
         RenameArgs([ ["get_help", "e"], ["help_elves"] ]),
-        CrossAndGroupByArgs([ ["get_help", "e"], ["help_elves"] ]),
+        CrossAndGroupByArgs([ ["get_help", "e"] ]),
         ScopeBetween("get_help", "help_elves", False)
     ])
     rule_7_fact = RuleFact([
@@ -176,7 +176,7 @@ class TestSanta(unittest.TestCase):
     rule_8_header = "reindeers_hitched_in_groups"
     rule_8_scope = RuleScope([
         MatchCheckpoints(["get_hitched", "prepare_sleigh"]),
-        RenameArgs([ ["get_hitched", "r"], ["prepare_sleigh"] ]),
+        RenameArgs([ ["get_hitched", "r"] ]),
         CrossAndGroupByArgs([ ["get_hitched", "r"], ["prepare_sleigh"] ]),
         ScopeBetween("get_hitched", "prepare_sleigh", False)
     ])
@@ -430,7 +430,7 @@ class TestHighLoadSanta(unittest.TestCase):
         MatchCheckpoints(["elf_arrive", "elf_leave"]),
         RenameArgs([["elf_arrive", "e1"], ["elf_leave", "e2"]]),
         CrossAndGroupByArgs([["elf_arrive", "e1"], ["elf_leave", "e2"]]),
-        ImposeIteratorCondition("e1", "=", "e2"),
+        ImposeIteratorCondition("e2", "=", "e1"),
         ScopeBetween("elf_arrive", "elf_leave")
     ])
     rule_5_fact = RuleFact([
@@ -586,7 +586,7 @@ class TestHighLoadSanta(unittest.TestCase):
         MatchCheckpoints(["reindeer_arrive", "reindeer_leave"]),
         RenameArgs([["reindeer_arrive", "r1"], ["reindeer_leave", "r2"]]),
         CrossAndGroupByArgs([["reindeer_arrive", "r1"], ["reindeer_leave", "r2"]]),
-        ImposeIteratorCondition("r1", "=", "r2"),
+        ImposeIteratorCondition("r2", "=", "r1"),
         ScopeBetween("reindeer_arrive", "reindeer_leave")
     ])
     rule_11_fact = RuleFact([

@@ -97,7 +97,7 @@ class TestH2O(unittest.TestCase):
         RenameArgs([["atom_spawn", "at1", "aid1"], ["atom_die", "at2", "aid2"]]),
         CrossAndGroupByArgs([["atom_spawn", "aid1"], ["atom_die", "aid2"]]),
         ImposeIteratorCondition("aid2", "=", "aid1"),
-        ImposeIteratorCondition("at2", "=", "at1"),
+        ImposeWildcardCondition("at2", "=", "at1"),
         ScopeBetween("atom_spawn", "atom_die")
     ])
     rule_5_fact = RuleFact([
