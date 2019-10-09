@@ -1,9 +1,9 @@
 import unittest
 
-from parser.JarlParserCLI import parse_str, parse_file
-from parser.JarlRule import *
-from parser.JarlParserExceptions import *
-from parser.JarlRuleAdapter import *
+from parser.jarl_parser_cli import parse_str
+from parser.jarl_rule import *
+from parser.jarl_parser_exceptions import *
+from parser.jarl_rule_adapter import *
 from common.aggregation_steps import *
 from common.jarl_rule import *
 
@@ -497,26 +497,6 @@ class TestAdapter(unittest.TestCase):
 
         rules = parse_str(rule)
         steps = JarlRuleAdapter().rule_to_steps(rules[0])
-        self.assertEqual(expected_rule, steps)
-
-    # TODO(jfresia) This is a helper to migrate tests, remove when tests are migrated
-    def test_skel(self):
-        return
-
-        rule = """
-        """
-
-        rules = parse_str(rule)
-        steps = JarlRuleAdapter().rule_to_steps(rules[0])
-        steps = JarlRuleAdapter().rule_to_steps(rules[0])
-        i = 5
-        self.assertEqual(expected_rule.fact.steps[i], steps.fact.steps[i])
-        self.assertEqual(expected_rule.fact, steps.fact)
-        i = 0
-        self.assertEqual(expected_rule.scope.steps[i], steps.scope.steps[i])
-        self.assertEqual(expected_rule.scope, steps.scope)
-        self.assertEqual(expected_rule.passed_by_default, steps.passed_by_default)
-        self.assertEqual(expected_rule._dynamic_args, steps._dynamic_args)
         self.assertEqual(expected_rule, steps)
 
 if __name__ == '__main__':

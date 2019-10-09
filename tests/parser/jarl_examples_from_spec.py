@@ -1,8 +1,8 @@
 import unittest
 
-from parser.JarlParserCLI import parse_str, parse_file
-from parser.JarlRule import *
-from parser.JarlParserExceptions import *
+from parser.jarl_parser_cli import parse_file
+from parser.jarl_rule import *
+from parser.jarl_parser_exceptions import *
 
 class TestExamplesFromSpec(unittest.TestCase):
 

@@ -1,7 +1,7 @@
 from common.aggregation_steps import *
 from common.jarl_rule import *
-from parser.JarlRule import *
-from parser.JarlRuleValidator import *
+from parser.jarl_rule import *
+from parser.jarl_rule_validator import *
 
 class JarlRuleAdapter():
     def __init__(self):

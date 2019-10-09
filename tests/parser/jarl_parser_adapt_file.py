@@ -1,6 +1,6 @@
 import unittest
 
-from parser.JarlParserCLI import adapt_file
+from parser.jarl_parser_cli import adapt_file
 
 class TestAdapterProdCons(unittest.TestCase):
     parsed_rules = adapt_file("resources/prod_cons_1_rules.jarl", False)

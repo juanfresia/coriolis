@@ -5,8 +5,8 @@ if __name__ is not None and "." in __name__:
 else:
     from JarlParser import JarlParser
 
-from .JarlRule import *
-from .JarlParserExceptions import *
+from .jarl_rule import *
+from .jarl_parser_exceptions import *
 
 # This class defines a complete listener for a parse tree produced by JarlParser.
 class JarlListener(ParseTreeListener):

@@ -1,4 +1,4 @@
-from .JarlParserExceptions import *
+from .jarl_parser_exceptions import *
 
 class JarlRuleValidator():
     def validate_filter_arguments(self, filter, scope_filter=None):

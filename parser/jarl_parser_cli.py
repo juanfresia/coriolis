@@ -2,9 +2,9 @@ import sys
 from antlr4 import *
 from .JarlLexer import JarlLexer
 from .JarlParser import JarlParser
-from .JarlActualListener import JarlListener
-from .JarlRuleValidator import JarlRuleValidator
-from .JarlRuleAdapter import JarlRuleAdapter
+from .jarl_actual_listener import JarlListener
+from .jarl_rule_validator import JarlRuleValidator
+from .jarl_rule_adapter import JarlRuleAdapter
 
 def parse_stream(input, show_errors=True):
     """ Uses JarlLexer and JarlParser to parse an input stream.
@@ -12,9 +12,9 @@ def parse_stream(input, show_errors=True):
 
     lexer = JarlLexer(input)
     stream = CommonTokenStream(lexer)
-    parser = JarlParser(stream)
-    if not show_errors: parser.removeErrorListeners()
-    tree = parser.jarl()
+    stream_parser = JarlParser(stream)
+    if not show_errors: stream_parser.removeErrorListeners()
+    tree = stream_parser.jarl()
     
     Jarl = JarlListener()
     walker = ParseTreeWalker()
