@@ -1,5 +1,6 @@
 from .jarl_parser_exceptions import *
 
+
 class JarlRuleValidator():
     def validate_filter_arguments(self, filter, scope_filter=None):
         """Validates filter arguments (iterators and wildcards) alone.
@@ -13,7 +14,8 @@ class JarlRuleValidator():
 
         args = filter.wildcards + filter.iterators
         # Include filter arguments from scope, if any
-        if scope_filter: args = args + scope_filter.wildcards + scope_filter.iterators
+        if scope_filter:
+            args = args + scope_filter.wildcards + scope_filter.iterators
 
         seen = set()
         for arg in args:
@@ -42,7 +44,7 @@ class JarlRuleValidator():
 
         for cond in filter.conditions:
             # Left side should always be declared in current filter
-            if not cond.l in arguments:
+            if cond.l not in arguments:
                 raise JarlArgumentNotDeclared(cond.l)
 
             # TODO: add checks in literal
@@ -51,7 +53,7 @@ class JarlRuleValidator():
                 continue
 
             # Right side CAN be declared in either the previous scope or the current filter
-            if not cond.r in arguments and not cond.r in scope_arguments:
+            if cond.r not in arguments and cond.r not in scope_arguments:
                 raise JarlArgumentNotDeclared(cond.r)
 
             # If right side is not in the previous scope, arguments must be of the same type
@@ -76,7 +78,7 @@ class JarlRuleValidator():
         seen = set()
         for chk in selector.get_checkpoints():
             for arg in chk.arguments:
-                if not arg in filter_args:
+                if arg not in filter_args:
                     raise JarlArgumentNotDeclared(arg)
                 if arg in seen:
                     raise JarlArgumentAlreadyUsed(arg)
@@ -106,7 +108,7 @@ class JarlRuleValidator():
             for arg in chk.arguments:
                 if arg in used_args:
                     raise JarlArgumentAlreadyUsed(arg)
-                if not arg in known_args:
+                if arg not in known_args:
                     raise JarlArgumentNotDeclared(arg)
                 if arg in seen:
                     raise JarlArgumentAlreadyUsed(arg)

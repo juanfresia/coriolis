@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+
 class Argument:
     def __init__(self, name, type):
         self.name = name
@@ -7,6 +8,7 @@ class Argument:
 
     def __str__(self):
         return ':'.join([self.name, self.type])
+
 
 class Checkpoint:
     def __init__(self, name, args=None):
@@ -17,18 +19,19 @@ class Checkpoint:
 
     def add_arg(self, arg):
         self.args.append(arg)
-    
+
     def get_arg_types(self):
         return [arg.type for arg in self.args]
 
     def __str__(self):
         return ' '.join([self.name] + [str(a) for a in self.args])
 
+
 class CheckpointTable:
     def __init__(self, file):
         self.checkpoints = {}
         self.parse_file(file)
-    
+
     def parse_argument(self, str):
         name, type = str.split(':')
         return Argument(name, type)
@@ -41,9 +44,9 @@ class CheckpointTable:
                 chk.add_arg(self.parse_argument(arg))
 
         return chk
-       
+
     def get_checkpoint(self, checkpoint_name):
-        if not checkpoint_name in self.checkpoints:
+        if checkpoint_name not in self.checkpoints:
             raise Exception("Checkpoint {} not found".format(checkpoint_name))
         return self.checkpoints[checkpoint_name]
 
@@ -60,6 +63,7 @@ class CheckpointTable:
         for line in lines:
             chk = self.parse_checkpoint(line)
             self.checkpoints[chk.name] = chk
+
 
 if __name__ == "__main__":
     chkt = CheckpointTable()

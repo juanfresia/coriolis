@@ -133,7 +133,7 @@ class JarlLexer(Lexer):
 
     atn = ATNDeserializer().deserialize(serializedATN())
 
-    decisionsToDFA = [ DFA(ds, i) for i, ds in enumerate(atn.decisionToState) ]
+    decisionsToDFA = [DFA(ds, i) for i, ds in enumerate(atn.decisionToState)]
 
     T__0 = 1
     T__1 = 2
@@ -166,37 +166,35 @@ class JarlLexer(Lexer):
     NEWLINE = 29
     COMMENT = 30
 
-    channelNames = [ u"DEFAULT_TOKEN_CHANNEL", u"HIDDEN" ]
+    channelNames = [u"DEFAULT_TOKEN_CHANNEL", u"HIDDEN"]
 
-    modeNames = [ "DEFAULT_MODE" ]
+    modeNames = ["DEFAULT_MODE"]
 
-    literalNames = [ "<INVALID>",
-            "','", "'('", "')'", "'after'", "'and'", "'any'", "'at'", "'before'", 
-            "'between'", "'every'", "'for'", "'happen'", "'least'", "'most'", 
-            "'must'", "'next'", "'not'", "'precede'", "'previous'", "'rule'", 
-            "'times'", "'with'", "':'" ]
+    literalNames = ["<INVALID>",
+                    "','", "'('", "')'", "'after'", "'and'", "'any'", "'at'", "'before'",
+                    "'between'", "'every'", "'for'", "'happen'", "'least'", "'most'",
+                    "'must'", "'next'", "'not'", "'precede'", "'previous'", "'rule'",
+                    "'times'", "'with'", "':'"]
 
-    symbolicNames = [ "<INVALID>",
-            "COMPARATOR", "AFTER", "AND", "ANY", "AT", "BEFORE", "BETWEEN", 
-            "EVERY", "FOR", "HAPPEN", "LEAST", "MOST", "MUST", "NEXT", "NOT", 
-            "PRECEDE", "PREVIOUS", "RULE", "TIMES", "WITH", "NUMBER", "IDENTIFIER", 
-            "COLON", "LITERAL_STR", "WHITESPACE", "NEWLINE", "COMMENT" ]
+    symbolicNames = ["<INVALID>",
+                     "COMPARATOR", "AFTER", "AND", "ANY", "AT", "BEFORE", "BETWEEN",
+                     "EVERY", "FOR", "HAPPEN", "LEAST", "MOST", "MUST", "NEXT", "NOT",
+                     "PRECEDE", "PREVIOUS", "RULE", "TIMES", "WITH", "NUMBER", "IDENTIFIER",
+                     "COLON", "LITERAL_STR", "WHITESPACE", "NEWLINE", "COMMENT"]
 
-    ruleNames = [ "T__0", "T__1", "T__2", "E", "NE", "GT", "GE", "LT", "LE", 
-                  "COMPARATOR", "AFTER", "AND", "ANY", "AT", "BEFORE", "BETWEEN", 
-                  "EVERY", "FOR", "HAPPEN", "LEAST", "MOST", "MUST", "NEXT", 
-                  "NOT", "PRECEDE", "PREVIOUS", "RULE", "TIMES", "WITH", 
-                  "DIGIT", "LOWERCASE", "UPPERCASE", "SINGLE_QUOTE", "NUMBER", 
-                  "IDENTIFIER", "COLON", "LITERAL_STR", "WHITESPACE", "NEWLINE", 
-                  "COMMENT" ]
+    ruleNames = ["T__0", "T__1", "T__2", "E", "NE", "GT", "GE", "LT", "LE",
+                 "COMPARATOR", "AFTER", "AND", "ANY", "AT", "BEFORE", "BETWEEN",
+                 "EVERY", "FOR", "HAPPEN", "LEAST", "MOST", "MUST", "NEXT",
+                 "NOT", "PRECEDE", "PREVIOUS", "RULE", "TIMES", "WITH",
+                 "DIGIT", "LOWERCASE", "UPPERCASE", "SINGLE_QUOTE", "NUMBER",
+                 "IDENTIFIER", "COLON", "LITERAL_STR", "WHITESPACE", "NEWLINE",
+                 "COMMENT"]
 
     grammarFileName = "Jarl.g4"
 
-    def __init__(self, input=None, output:TextIO = sys.stdout):
+    def __init__(self, input=None, output: TextIO = sys.stdout):
         super().__init__(input, output)
         self.checkVersion("4.7.1")
         self._interp = LexerATNSimulator(self, self.atn, self.decisionsToDFA, PredictionContextCache())
         self._actions = None
         self._predicates = None
-
-

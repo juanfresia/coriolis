@@ -2,6 +2,7 @@
 import copy
 from common.aggregation_steps import *
 
+
 class JARLRule:
     def __init__(self, statement_text, rule_header, fact, scope=None, passed_by_default=True):
         self.text = statement_text
@@ -101,13 +102,14 @@ class RuleScope:
 
     @staticmethod
     def get_default_scope():
-        return [ {"c1": {"log_line": "MIN"}, "c2": {"log_line": "MAX"}} ]
+        return [{"c1": {"log_line": "MIN"}, "c2": {"log_line": "MAX"}}]
 
     def __eq__(self, other):
         return isinstance(other, RuleScope) and self.steps == other.steps
 
     def __repr__(self):
         return "RuleScope([\n\t{}\n])".format(", \n\t".join(map(str, self.steps)))
+
 
 class RuleFact:
     def __init__(self, aggregation_steps):

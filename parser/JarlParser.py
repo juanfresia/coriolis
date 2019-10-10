@@ -5,6 +5,7 @@ from io import StringIO
 from typing.io import TextIO
 import sys
 
+
 def serializedATN():
     with StringIO() as buf:
         buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3 ")
@@ -97,29 +98,29 @@ def serializedATN():
         return buf.getvalue()
 
 
-class JarlParser ( Parser ):
+class JarlParser (Parser):
 
     grammarFileName = "Jarl.g4"
 
     atn = ATNDeserializer().deserialize(serializedATN())
 
-    decisionsToDFA = [ DFA(ds, i) for i, ds in enumerate(atn.decisionToState) ]
+    decisionsToDFA = [DFA(ds, i) for i, ds in enumerate(atn.decisionToState)]
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [ "<INVALID>", "','", "'('", "')'", "<INVALID>", "'after'", 
-                     "'and'", "'any'", "'at'", "'before'", "'between'", 
-                     "'every'", "'for'", "'happen'", "'least'", "'most'", 
-                     "'must'", "'next'", "'not'", "'precede'", "'previous'", 
-                     "'rule'", "'times'", "'with'", "<INVALID>", "<INVALID>", 
-                     "':'" ]
+    literalNames = ["<INVALID>", "','", "'('", "')'", "<INVALID>", "'after'",
+                    "'and'", "'any'", "'at'", "'before'", "'between'",
+                    "'every'", "'for'", "'happen'", "'least'", "'most'",
+                    "'must'", "'next'", "'not'", "'precede'", "'previous'",
+                    "'rule'", "'times'", "'with'", "<INVALID>", "<INVALID>",
+                    "':'"]
 
-    symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                      "COMPARATOR", "AFTER", "AND", "ANY", "AT", "BEFORE", 
-                      "BETWEEN", "EVERY", "FOR", "HAPPEN", "LEAST", "MOST", 
-                      "MUST", "NEXT", "NOT", "PRECEDE", "PREVIOUS", "RULE", 
-                      "TIMES", "WITH", "NUMBER", "IDENTIFIER", "COLON", 
-                      "LITERAL_STR", "WHITESPACE", "NEWLINE", "COMMENT" ]
+    symbolicNames = ["<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>",
+                     "COMPARATOR", "AFTER", "AND", "ANY", "AT", "BEFORE",
+                     "BETWEEN", "EVERY", "FOR", "HAPPEN", "LEAST", "MOST",
+                     "MUST", "NEXT", "NOT", "PRECEDE", "PREVIOUS", "RULE",
+                     "TIMES", "WITH", "NUMBER", "IDENTIFIER", "COLON",
+                     "LITERAL_STR", "WHITESPACE", "NEWLINE", "COMMENT"]
 
     RULE_jarl = 0
     RULE_jarl_rule = 1
@@ -148,95 +149,89 @@ class JarlParser ( Parser ):
     RULE_checkpoint = 24
     RULE_literal = 25
 
-    ruleNames =  [ "jarl", "jarl_rule", "rule_header", "rule_scope", "rule_fact", 
-                   "header_expr", "selector_expr", "filter_expr", "fact_expr", 
-                   "quantifier_clause", "with_clause", "after_clause", "before_clause", 
-                   "between_clause", "fact_clause", "requirement", "requirement_count", 
-                   "requirement_order", "how_many", "condition_list", "condition", 
-                   "quantifier", "arguments", "identifier_list", "checkpoint", 
-                   "literal" ]
+    ruleNames = ["jarl", "jarl_rule", "rule_header", "rule_scope", "rule_fact",
+                 "header_expr", "selector_expr", "filter_expr", "fact_expr",
+                 "quantifier_clause", "with_clause", "after_clause", "before_clause",
+                 "between_clause", "fact_clause", "requirement", "requirement_count",
+                 "requirement_order", "how_many", "condition_list", "condition",
+                 "quantifier", "arguments", "identifier_list", "checkpoint",
+                 "literal"]
 
     EOF = Token.EOF
-    T__0=1
-    T__1=2
-    T__2=3
-    COMPARATOR=4
-    AFTER=5
-    AND=6
-    ANY=7
-    AT=8
-    BEFORE=9
-    BETWEEN=10
-    EVERY=11
-    FOR=12
-    HAPPEN=13
-    LEAST=14
-    MOST=15
-    MUST=16
-    NEXT=17
-    NOT=18
-    PRECEDE=19
-    PREVIOUS=20
-    RULE=21
-    TIMES=22
-    WITH=23
-    NUMBER=24
-    IDENTIFIER=25
-    COLON=26
-    LITERAL_STR=27
-    WHITESPACE=28
-    NEWLINE=29
-    COMMENT=30
+    T__0 = 1
+    T__1 = 2
+    T__2 = 3
+    COMPARATOR = 4
+    AFTER = 5
+    AND = 6
+    ANY = 7
+    AT = 8
+    BEFORE = 9
+    BETWEEN = 10
+    EVERY = 11
+    FOR = 12
+    HAPPEN = 13
+    LEAST = 14
+    MOST = 15
+    MUST = 16
+    NEXT = 17
+    NOT = 18
+    PRECEDE = 19
+    PREVIOUS = 20
+    RULE = 21
+    TIMES = 22
+    WITH = 23
+    NUMBER = 24
+    IDENTIFIER = 25
+    COLON = 26
+    LITERAL_STR = 27
+    WHITESPACE = 28
+    NEWLINE = 29
+    COMMENT = 30
 
-    def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
+    def __init__(self, input: TokenStream, output: TextIO = sys.stdout):
         super().__init__(input, output)
         self.checkVersion("4.7.1")
         self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
 
-
-
     class JarlContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def EOF(self):
             return self.getToken(JarlParser.EOF, 0)
 
-        def jarl_rule(self, i:int=None):
+        def jarl_rule(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(JarlParser.Jarl_ruleContext)
             else:
-                return self.getTypedRuleContext(JarlParser.Jarl_ruleContext,i)
-
+                return self.getTypedRuleContext(JarlParser.Jarl_ruleContext, i)
 
         def getRuleIndex(self):
             return JarlParser.RULE_jarl
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterJarl" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterJarl"):
                 listener.enterJarl(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitJarl" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitJarl"):
                 listener.exitJarl(self)
-
-
-
 
     def jarl(self):
 
         localctx = JarlParser.JarlContext(self, self._ctx, self.state)
         self.enterRule(localctx, 0, self.RULE_jarl)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 55
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la==JarlParser.RULE or _la==JarlParser.NEWLINE:
+            while _la == JarlParser.RULE or _la == JarlParser.NEWLINE:
                 self.state = 52
                 self.jarl_rule()
                 self.state = 57
@@ -255,53 +250,47 @@ class JarlParser ( Parser ):
 
     class Jarl_ruleContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def rule_header(self):
-            return self.getTypedRuleContext(JarlParser.Rule_headerContext,0)
-
+            return self.getTypedRuleContext(JarlParser.Rule_headerContext, 0)
 
         def rule_fact(self):
-            return self.getTypedRuleContext(JarlParser.Rule_factContext,0)
+            return self.getTypedRuleContext(JarlParser.Rule_factContext, 0)
 
-
-        def NEWLINE(self, i:int=None):
+        def NEWLINE(self, i: int = None):
             if i is None:
                 return self.getTokens(JarlParser.NEWLINE)
             else:
                 return self.getToken(JarlParser.NEWLINE, i)
 
         def rule_scope(self):
-            return self.getTypedRuleContext(JarlParser.Rule_scopeContext,0)
-
+            return self.getTypedRuleContext(JarlParser.Rule_scopeContext, 0)
 
         def getRuleIndex(self):
             return JarlParser.RULE_jarl_rule
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterJarl_rule" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterJarl_rule"):
                 listener.enterJarl_rule(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitJarl_rule" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitJarl_rule"):
                 listener.exitJarl_rule(self)
-
-
-
 
     def jarl_rule(self):
 
         localctx = JarlParser.Jarl_ruleContext(self, self._ctx, self.state)
         self.enterRule(localctx, 2, self.RULE_jarl_rule)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 63
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la==JarlParser.NEWLINE:
+            while _la == JarlParser.NEWLINE:
                 self.state = 60
                 self.match(JarlParser.NEWLINE)
                 self.state = 65
@@ -312,24 +301,23 @@ class JarlParser ( Parser ):
             self.rule_header()
             self.state = 68
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,2,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input, 2, self._ctx)
             if la_ == 1:
                 self.state = 67
                 self.rule_scope()
-
 
             self.state = 70
             self.rule_fact()
             self.state = 74
             self._errHandler.sync(self)
-            _alt = self._interp.adaptivePredict(self._input,3,self._ctx)
-            while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-                if _alt==1:
+            _alt = self._interp.adaptivePredict(self._input, 3, self._ctx)
+            while _alt != 2 and _alt != ATN.INVALID_ALT_NUMBER:
+                if _alt == 1:
                     self.state = 71
-                    self.match(JarlParser.NEWLINE) 
+                    self.match(JarlParser.NEWLINE)
                 self.state = 76
                 self._errHandler.sync(self)
-                _alt = self._interp.adaptivePredict(self._input,3,self._ctx)
+                _alt = self._interp.adaptivePredict(self._input, 3, self._ctx)
 
         except RecognitionException as re:
             localctx.exception = re
@@ -341,27 +329,23 @@ class JarlParser ( Parser ):
 
     class Rule_headerContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def header_expr(self):
-            return self.getTypedRuleContext(JarlParser.Header_exprContext,0)
-
+            return self.getTypedRuleContext(JarlParser.Header_exprContext, 0)
 
         def getRuleIndex(self):
             return JarlParser.RULE_rule_header
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterRule_header" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterRule_header"):
                 listener.enterRule_header(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitRule_header" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitRule_header"):
                 listener.exitRule_header(self)
-
-
-
 
     def rule_header(self):
 
@@ -381,46 +365,40 @@ class JarlParser ( Parser ):
 
     class Rule_scopeContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def selector_expr(self):
-            return self.getTypedRuleContext(JarlParser.Selector_exprContext,0)
-
+            return self.getTypedRuleContext(JarlParser.Selector_exprContext, 0)
 
         def filter_expr(self):
-            return self.getTypedRuleContext(JarlParser.Filter_exprContext,0)
-
+            return self.getTypedRuleContext(JarlParser.Filter_exprContext, 0)
 
         def getRuleIndex(self):
             return JarlParser.RULE_rule_scope
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterRule_scope" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterRule_scope"):
                 listener.enterRule_scope(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitRule_scope" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitRule_scope"):
                 listener.exitRule_scope(self)
-
-
-
 
     def rule_scope(self):
 
         localctx = JarlParser.Rule_scopeContext(self, self._ctx, self.state)
         self.enterRule(localctx, 6, self.RULE_rule_scope)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 80
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==JarlParser.FOR:
+            if _la == JarlParser.FOR:
                 self.state = 79
                 self.filter_expr()
-
 
             self.state = 82
             self.selector_expr()
@@ -434,46 +412,40 @@ class JarlParser ( Parser ):
 
     class Rule_factContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def fact_expr(self):
-            return self.getTypedRuleContext(JarlParser.Fact_exprContext,0)
-
+            return self.getTypedRuleContext(JarlParser.Fact_exprContext, 0)
 
         def filter_expr(self):
-            return self.getTypedRuleContext(JarlParser.Filter_exprContext,0)
-
+            return self.getTypedRuleContext(JarlParser.Filter_exprContext, 0)
 
         def getRuleIndex(self):
             return JarlParser.RULE_rule_fact
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterRule_fact" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterRule_fact"):
                 listener.enterRule_fact(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitRule_fact" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitRule_fact"):
                 listener.exitRule_fact(self)
-
-
-
 
     def rule_fact(self):
 
         localctx = JarlParser.Rule_factContext(self, self._ctx, self.state)
         self.enterRule(localctx, 8, self.RULE_rule_fact)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 85
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==JarlParser.FOR:
+            if _la == JarlParser.FOR:
                 self.state = 84
                 self.filter_expr()
-
 
             self.state = 87
             self.fact_expr()
@@ -487,7 +459,7 @@ class JarlParser ( Parser ):
 
     class Header_exprContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -503,22 +475,19 @@ class JarlParser ( Parser ):
         def getRuleIndex(self):
             return JarlParser.RULE_header_expr
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterHeader_expr" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterHeader_expr"):
                 listener.enterHeader_expr(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitHeader_expr" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitHeader_expr"):
                 listener.exitHeader_expr(self)
-
-
-
 
     def header_expr(self):
 
         localctx = JarlParser.Header_exprContext(self, self._ctx, self.state)
         self.enterRule(localctx, 10, self.RULE_header_expr)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 89
@@ -528,10 +497,9 @@ class JarlParser ( Parser ):
             self.state = 92
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==JarlParser.NEWLINE:
+            if _la == JarlParser.NEWLINE:
                 self.state = 91
                 self.match(JarlParser.NEWLINE)
-
 
         except RecognitionException as re:
             localctx.exception = re
@@ -543,21 +511,18 @@ class JarlParser ( Parser ):
 
     class Selector_exprContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def after_clause(self):
-            return self.getTypedRuleContext(JarlParser.After_clauseContext,0)
-
+            return self.getTypedRuleContext(JarlParser.After_clauseContext, 0)
 
         def before_clause(self):
-            return self.getTypedRuleContext(JarlParser.Before_clauseContext,0)
-
+            return self.getTypedRuleContext(JarlParser.Before_clauseContext, 0)
 
         def between_clause(self):
-            return self.getTypedRuleContext(JarlParser.Between_clauseContext,0)
-
+            return self.getTypedRuleContext(JarlParser.Between_clauseContext, 0)
 
         def COLON(self):
             return self.getToken(JarlParser.COLON, 0)
@@ -568,22 +533,19 @@ class JarlParser ( Parser ):
         def getRuleIndex(self):
             return JarlParser.RULE_selector_expr
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterSelector_expr" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterSelector_expr"):
                 listener.enterSelector_expr(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitSelector_expr" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitSelector_expr"):
                 listener.exitSelector_expr(self)
-
-
-
 
     def selector_expr(self):
 
         localctx = JarlParser.Selector_exprContext(self, self._ctx, self.state)
         self.enterRule(localctx, 12, self.RULE_selector_expr)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 97
@@ -607,18 +569,16 @@ class JarlParser ( Parser ):
             self.state = 100
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==JarlParser.COLON:
+            if _la == JarlParser.COLON:
                 self.state = 99
                 self.match(JarlParser.COLON)
-
 
             self.state = 103
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==JarlParser.NEWLINE:
+            if _la == JarlParser.NEWLINE:
                 self.state = 102
                 self.match(JarlParser.NEWLINE)
-
 
         except RecognitionException as re:
             localctx.exception = re
@@ -630,29 +590,27 @@ class JarlParser ( Parser ):
 
     class Filter_exprContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def FOR(self):
             return self.getToken(JarlParser.FOR, 0)
 
-        def quantifier_clause(self, i:int=None):
+        def quantifier_clause(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(JarlParser.Quantifier_clauseContext)
             else:
-                return self.getTypedRuleContext(JarlParser.Quantifier_clauseContext,i)
+                return self.getTypedRuleContext(JarlParser.Quantifier_clauseContext, i)
 
-
-        def AND(self, i:int=None):
+        def AND(self, i: int = None):
             if i is None:
                 return self.getTokens(JarlParser.AND)
             else:
                 return self.getToken(JarlParser.AND, i)
 
         def with_clause(self):
-            return self.getTypedRuleContext(JarlParser.With_clauseContext,0)
-
+            return self.getTypedRuleContext(JarlParser.With_clauseContext, 0)
 
         def COLON(self):
             return self.getToken(JarlParser.COLON, 0)
@@ -663,22 +621,19 @@ class JarlParser ( Parser ):
         def getRuleIndex(self):
             return JarlParser.RULE_filter_expr
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterFilter_expr" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterFilter_expr"):
                 listener.enterFilter_expr(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitFilter_expr" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitFilter_expr"):
                 listener.exitFilter_expr(self)
-
-
-
 
     def filter_expr(self):
 
         localctx = JarlParser.Filter_exprContext(self, self._ctx, self.state)
         self.enterRule(localctx, 14, self.RULE_filter_expr)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 105
@@ -688,7 +643,7 @@ class JarlParser ( Parser ):
             self.state = 111
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la==JarlParser.AND:
+            while _la == JarlParser.AND:
                 self.state = 107
                 self.match(JarlParser.AND)
                 self.state = 108
@@ -700,26 +655,23 @@ class JarlParser ( Parser ):
             self.state = 115
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==JarlParser.WITH:
+            if _la == JarlParser.WITH:
                 self.state = 114
                 self.with_clause()
-
 
             self.state = 118
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==JarlParser.COLON:
+            if _la == JarlParser.COLON:
                 self.state = 117
                 self.match(JarlParser.COLON)
-
 
             self.state = 121
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==JarlParser.NEWLINE:
+            if _la == JarlParser.NEWLINE:
                 self.state = 120
                 self.match(JarlParser.NEWLINE)
-
 
         except RecognitionException as re:
             localctx.exception = re
@@ -731,18 +683,17 @@ class JarlParser ( Parser ):
 
     class Fact_exprContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def fact_clause(self, i:int=None):
+        def fact_clause(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(JarlParser.Fact_clauseContext)
             else:
-                return self.getTypedRuleContext(JarlParser.Fact_clauseContext,i)
+                return self.getTypedRuleContext(JarlParser.Fact_clauseContext, i)
 
-
-        def NEWLINE(self, i:int=None):
+        def NEWLINE(self, i: int = None):
             if i is None:
                 return self.getTokens(JarlParser.NEWLINE)
             else:
@@ -751,44 +702,40 @@ class JarlParser ( Parser ):
         def getRuleIndex(self):
             return JarlParser.RULE_fact_expr
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterFact_expr" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterFact_expr"):
                 listener.enterFact_expr(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitFact_expr" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitFact_expr"):
                 listener.exitFact_expr(self)
-
-
-
 
     def fact_expr(self):
 
         localctx = JarlParser.Fact_exprContext(self, self._ctx, self.state)
         self.enterRule(localctx, 16, self.RULE_fact_expr)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 123
             self.fact_clause()
             self.state = 130
             self._errHandler.sync(self)
-            _alt = self._interp.adaptivePredict(self._input,15,self._ctx)
-            while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-                if _alt==1:
+            _alt = self._interp.adaptivePredict(self._input, 15, self._ctx)
+            while _alt != 2 and _alt != ATN.INVALID_ALT_NUMBER:
+                if _alt == 1:
                     self.state = 125
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
-                    if _la==JarlParser.NEWLINE:
+                    if _la == JarlParser.NEWLINE:
                         self.state = 124
                         self.match(JarlParser.NEWLINE)
 
-
                     self.state = 127
-                    self.fact_clause() 
+                    self.fact_clause()
                 self.state = 132
                 self._errHandler.sync(self)
-                _alt = self._interp.adaptivePredict(self._input,15,self._ctx)
+                _alt = self._interp.adaptivePredict(self._input, 15, self._ctx)
 
         except RecognitionException as re:
             localctx.exception = re
@@ -800,31 +747,26 @@ class JarlParser ( Parser ):
 
     class Quantifier_clauseContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def quantifier(self):
-            return self.getTypedRuleContext(JarlParser.QuantifierContext,0)
-
+            return self.getTypedRuleContext(JarlParser.QuantifierContext, 0)
 
         def identifier_list(self):
-            return self.getTypedRuleContext(JarlParser.Identifier_listContext,0)
-
+            return self.getTypedRuleContext(JarlParser.Identifier_listContext, 0)
 
         def getRuleIndex(self):
             return JarlParser.RULE_quantifier_clause
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterQuantifier_clause" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterQuantifier_clause"):
                 listener.enterQuantifier_clause(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitQuantifier_clause" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitQuantifier_clause"):
                 listener.exitQuantifier_clause(self)
-
-
-
 
     def quantifier_clause(self):
 
@@ -846,7 +788,7 @@ class JarlParser ( Parser ):
 
     class With_clauseContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -854,22 +796,18 @@ class JarlParser ( Parser ):
             return self.getToken(JarlParser.WITH, 0)
 
         def condition_list(self):
-            return self.getTypedRuleContext(JarlParser.Condition_listContext,0)
-
+            return self.getTypedRuleContext(JarlParser.Condition_listContext, 0)
 
         def getRuleIndex(self):
             return JarlParser.RULE_with_clause
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterWith_clause" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterWith_clause"):
                 listener.enterWith_clause(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitWith_clause" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitWith_clause"):
                 listener.exitWith_clause(self)
-
-
-
 
     def with_clause(self):
 
@@ -891,7 +829,7 @@ class JarlParser ( Parser ):
 
     class After_clauseContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -899,22 +837,18 @@ class JarlParser ( Parser ):
             return self.getToken(JarlParser.AFTER, 0)
 
         def checkpoint(self):
-            return self.getTypedRuleContext(JarlParser.CheckpointContext,0)
-
+            return self.getTypedRuleContext(JarlParser.CheckpointContext, 0)
 
         def getRuleIndex(self):
             return JarlParser.RULE_after_clause
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterAfter_clause" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterAfter_clause"):
                 listener.enterAfter_clause(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitAfter_clause" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitAfter_clause"):
                 listener.exitAfter_clause(self)
-
-
-
 
     def after_clause(self):
 
@@ -936,7 +870,7 @@ class JarlParser ( Parser ):
 
     class Before_clauseContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -944,22 +878,18 @@ class JarlParser ( Parser ):
             return self.getToken(JarlParser.BEFORE, 0)
 
         def checkpoint(self):
-            return self.getTypedRuleContext(JarlParser.CheckpointContext,0)
-
+            return self.getTypedRuleContext(JarlParser.CheckpointContext, 0)
 
         def getRuleIndex(self):
             return JarlParser.RULE_before_clause
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterBefore_clause" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterBefore_clause"):
                 listener.enterBefore_clause(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitBefore_clause" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitBefore_clause"):
                 listener.exitBefore_clause(self)
-
-
-
 
     def before_clause(self):
 
@@ -981,19 +911,18 @@ class JarlParser ( Parser ):
 
     class Between_clauseContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def BETWEEN(self):
             return self.getToken(JarlParser.BETWEEN, 0)
 
-        def checkpoint(self, i:int=None):
+        def checkpoint(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(JarlParser.CheckpointContext)
             else:
-                return self.getTypedRuleContext(JarlParser.CheckpointContext,i)
-
+                return self.getTypedRuleContext(JarlParser.CheckpointContext, i)
 
         def AND(self):
             return self.getToken(JarlParser.AND, 0)
@@ -1007,22 +936,19 @@ class JarlParser ( Parser ):
         def getRuleIndex(self):
             return JarlParser.RULE_between_clause
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterBetween_clause" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterBetween_clause"):
                 listener.enterBetween_clause(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitBetween_clause" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitBetween_clause"):
                 listener.exitBetween_clause(self)
-
-
-
 
     def between_clause(self):
 
         localctx = JarlParser.Between_clauseContext(self, self._ctx, self.state)
         self.enterRule(localctx, 26, self.RULE_between_clause)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 145
@@ -1033,7 +959,7 @@ class JarlParser ( Parser ):
             self.match(JarlParser.AND)
             self.state = 148
             _la = self._input.LA(1)
-            if not(_la==JarlParser.NEXT or _la==JarlParser.PREVIOUS):
+            if not(_la == JarlParser.NEXT or _la == JarlParser.PREVIOUS):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
@@ -1050,31 +976,26 @@ class JarlParser ( Parser ):
 
     class Fact_clauseContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def checkpoint(self):
-            return self.getTypedRuleContext(JarlParser.CheckpointContext,0)
-
+            return self.getTypedRuleContext(JarlParser.CheckpointContext, 0)
 
         def requirement(self):
-            return self.getTypedRuleContext(JarlParser.RequirementContext,0)
-
+            return self.getTypedRuleContext(JarlParser.RequirementContext, 0)
 
         def getRuleIndex(self):
             return JarlParser.RULE_fact_clause
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterFact_clause" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterFact_clause"):
                 listener.enterFact_clause(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitFact_clause" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitFact_clause"):
                 listener.exitFact_clause(self)
-
-
-
 
     def fact_clause(self):
 
@@ -1096,31 +1017,26 @@ class JarlParser ( Parser ):
 
     class RequirementContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def requirement_count(self):
-            return self.getTypedRuleContext(JarlParser.Requirement_countContext,0)
-
+            return self.getTypedRuleContext(JarlParser.Requirement_countContext, 0)
 
         def requirement_order(self):
-            return self.getTypedRuleContext(JarlParser.Requirement_orderContext,0)
-
+            return self.getTypedRuleContext(JarlParser.Requirement_orderContext, 0)
 
         def getRuleIndex(self):
             return JarlParser.RULE_requirement
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterRequirement" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterRequirement"):
                 listener.enterRequirement(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitRequirement" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitRequirement"):
                 listener.exitRequirement(self)
-
-
-
 
     def requirement(self):
 
@@ -1130,7 +1046,7 @@ class JarlParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 156
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,16,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input, 16, self._ctx)
             if la_ == 1:
                 self.state = 154
                 self.requirement_count()
@@ -1140,7 +1056,6 @@ class JarlParser ( Parser ):
                 self.state = 155
                 self.requirement_order()
                 pass
-
 
         except RecognitionException as re:
             localctx.exception = re
@@ -1152,7 +1067,7 @@ class JarlParser ( Parser ):
 
     class Requirement_countContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -1166,28 +1081,24 @@ class JarlParser ( Parser ):
             return self.getToken(JarlParser.NOT, 0)
 
         def how_many(self):
-            return self.getTypedRuleContext(JarlParser.How_manyContext,0)
-
+            return self.getTypedRuleContext(JarlParser.How_manyContext, 0)
 
         def getRuleIndex(self):
             return JarlParser.RULE_requirement_count
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterRequirement_count" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterRequirement_count"):
                 listener.enterRequirement_count(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitRequirement_count" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitRequirement_count"):
                 listener.exitRequirement_count(self)
-
-
-
 
     def requirement_count(self):
 
         localctx = JarlParser.Requirement_countContext(self, self._ctx, self.state)
         self.enterRule(localctx, 32, self.RULE_requirement_count)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 158
@@ -1195,20 +1106,18 @@ class JarlParser ( Parser ):
             self.state = 160
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==JarlParser.NOT:
+            if _la == JarlParser.NOT:
                 self.state = 159
                 self.match(JarlParser.NOT)
-
 
             self.state = 162
             self.match(JarlParser.HAPPEN)
             self.state = 164
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==JarlParser.AT or _la==JarlParser.NUMBER:
+            if _la == JarlParser.AT or _la == JarlParser.NUMBER:
                 self.state = 163
                 self.how_many()
-
 
         except RecognitionException as re:
             localctx.exception = re
@@ -1220,7 +1129,7 @@ class JarlParser ( Parser ):
 
     class Requirement_orderContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -1231,8 +1140,7 @@ class JarlParser ( Parser ):
             return self.getToken(JarlParser.PRECEDE, 0)
 
         def checkpoint(self):
-            return self.getTypedRuleContext(JarlParser.CheckpointContext,0)
-
+            return self.getTypedRuleContext(JarlParser.CheckpointContext, 0)
 
         def NOT(self):
             return self.getToken(JarlParser.NOT, 0)
@@ -1240,22 +1148,19 @@ class JarlParser ( Parser ):
         def getRuleIndex(self):
             return JarlParser.RULE_requirement_order
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterRequirement_order" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterRequirement_order"):
                 listener.enterRequirement_order(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitRequirement_order" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitRequirement_order"):
                 listener.exitRequirement_order(self)
-
-
-
 
     def requirement_order(self):
 
         localctx = JarlParser.Requirement_orderContext(self, self._ctx, self.state)
         self.enterRule(localctx, 34, self.RULE_requirement_order)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 166
@@ -1263,10 +1168,9 @@ class JarlParser ( Parser ):
             self.state = 168
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==JarlParser.NOT:
+            if _la == JarlParser.NOT:
                 self.state = 167
                 self.match(JarlParser.NOT)
-
 
             self.state = 170
             self.match(JarlParser.PRECEDE)
@@ -1282,7 +1186,7 @@ class JarlParser ( Parser ):
 
     class How_manyContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -1304,16 +1208,13 @@ class JarlParser ( Parser ):
         def getRuleIndex(self):
             return JarlParser.RULE_how_many
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterHow_many" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterHow_many"):
                 listener.enterHow_many(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitHow_many" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitHow_many"):
                 listener.exitHow_many(self)
-
-
-
 
     def how_many(self):
 
@@ -1323,7 +1224,7 @@ class JarlParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 177
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,20,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input, 20, self._ctx)
             if la_ == 1:
                 self.state = 173
                 self.match(JarlParser.AT)
@@ -1335,7 +1236,6 @@ class JarlParser ( Parser ):
                 self.match(JarlParser.AT)
                 self.state = 176
                 self.match(JarlParser.LEAST)
-
 
             self.state = 179
             self.match(JarlParser.NUMBER)
@@ -1351,36 +1251,32 @@ class JarlParser ( Parser ):
 
     class Condition_listContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def condition(self, i:int=None):
+        def condition(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(JarlParser.ConditionContext)
             else:
-                return self.getTypedRuleContext(JarlParser.ConditionContext,i)
-
+                return self.getTypedRuleContext(JarlParser.ConditionContext, i)
 
         def getRuleIndex(self):
             return JarlParser.RULE_condition_list
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterCondition_list" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterCondition_list"):
                 listener.enterCondition_list(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitCondition_list" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitCondition_list"):
                 listener.exitCondition_list(self)
-
-
-
 
     def condition_list(self):
 
         localctx = JarlParser.Condition_listContext(self, self._ctx, self.state)
         self.enterRule(localctx, 38, self.RULE_condition_list)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 182
@@ -1388,7 +1284,7 @@ class JarlParser ( Parser ):
             self.state = 187
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la==JarlParser.T__0:
+            while _la == JarlParser.T__0:
                 self.state = 183
                 self.match(JarlParser.T__0)
                 self.state = 184
@@ -1407,11 +1303,11 @@ class JarlParser ( Parser ):
 
     class ConditionContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def IDENTIFIER(self, i:int=None):
+        def IDENTIFIER(self, i: int = None):
             if i is None:
                 return self.getTokens(JarlParser.IDENTIFIER)
             else:
@@ -1421,22 +1317,18 @@ class JarlParser ( Parser ):
             return self.getToken(JarlParser.COMPARATOR, 0)
 
         def literal(self):
-            return self.getTypedRuleContext(JarlParser.LiteralContext,0)
-
+            return self.getTypedRuleContext(JarlParser.LiteralContext, 0)
 
         def getRuleIndex(self):
             return JarlParser.RULE_condition
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterCondition" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterCondition"):
                 listener.enterCondition(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitCondition" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitCondition"):
                 listener.exitCondition(self)
-
-
-
 
     def condition(self):
 
@@ -1472,7 +1364,7 @@ class JarlParser ( Parser ):
 
     class QuantifierContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -1485,27 +1377,24 @@ class JarlParser ( Parser ):
         def getRuleIndex(self):
             return JarlParser.RULE_quantifier
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterQuantifier" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterQuantifier"):
                 listener.enterQuantifier(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitQuantifier" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitQuantifier"):
                 listener.exitQuantifier(self)
-
-
-
 
     def quantifier(self):
 
         localctx = JarlParser.QuantifierContext(self, self._ctx, self.state)
         self.enterRule(localctx, 42, self.RULE_quantifier)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 196
             _la = self._input.LA(1)
-            if not(_la==JarlParser.ANY or _la==JarlParser.EVERY):
+            if not(_la == JarlParser.ANY or _la == JarlParser.EVERY):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
@@ -1520,27 +1409,23 @@ class JarlParser ( Parser ):
 
     class ArgumentsContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def identifier_list(self):
-            return self.getTypedRuleContext(JarlParser.Identifier_listContext,0)
-
+            return self.getTypedRuleContext(JarlParser.Identifier_listContext, 0)
 
         def getRuleIndex(self):
             return JarlParser.RULE_arguments
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterArguments" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterArguments"):
                 listener.enterArguments(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitArguments" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitArguments"):
                 listener.exitArguments(self)
-
-
-
 
     def arguments(self):
 
@@ -1564,11 +1449,11 @@ class JarlParser ( Parser ):
 
     class Identifier_listContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def IDENTIFIER(self, i:int=None):
+        def IDENTIFIER(self, i: int = None):
             if i is None:
                 return self.getTokens(JarlParser.IDENTIFIER)
             else:
@@ -1577,34 +1462,31 @@ class JarlParser ( Parser ):
         def getRuleIndex(self):
             return JarlParser.RULE_identifier_list
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterIdentifier_list" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterIdentifier_list"):
                 listener.enterIdentifier_list(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitIdentifier_list" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitIdentifier_list"):
                 listener.exitIdentifier_list(self)
-
-
-
 
     def identifier_list(self):
 
         localctx = JarlParser.Identifier_listContext(self, self._ctx, self.state)
         self.enterRule(localctx, 46, self.RULE_identifier_list)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 210
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,24,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input, 24, self._ctx)
             if la_ == 1:
                 self.state = 202
                 self.match(JarlParser.IDENTIFIER)
                 self.state = 207
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                while _la==JarlParser.T__0:
+                while _la == JarlParser.T__0:
                     self.state = 203
                     self.match(JarlParser.T__0)
                     self.state = 204
@@ -1612,8 +1494,6 @@ class JarlParser ( Parser ):
                     self.state = 209
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
-
-
 
         except RecognitionException as re:
             localctx.exception = re
@@ -1625,7 +1505,7 @@ class JarlParser ( Parser ):
 
     class CheckpointContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -1633,22 +1513,18 @@ class JarlParser ( Parser ):
             return self.getToken(JarlParser.IDENTIFIER, 0)
 
         def arguments(self):
-            return self.getTypedRuleContext(JarlParser.ArgumentsContext,0)
-
+            return self.getTypedRuleContext(JarlParser.ArgumentsContext, 0)
 
         def getRuleIndex(self):
             return JarlParser.RULE_checkpoint
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterCheckpoint" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterCheckpoint"):
                 listener.enterCheckpoint(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitCheckpoint" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitCheckpoint"):
                 listener.exitCheckpoint(self)
-
-
-
 
     def checkpoint(self):
 
@@ -1670,7 +1546,7 @@ class JarlParser ( Parser ):
 
     class LiteralContext(ParserRuleContext):
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -1683,27 +1559,24 @@ class JarlParser ( Parser ):
         def getRuleIndex(self):
             return JarlParser.RULE_literal
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterLiteral" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterLiteral"):
                 listener.enterLiteral(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitLiteral" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitLiteral"):
                 listener.exitLiteral(self)
-
-
-
 
     def literal(self):
 
         localctx = JarlParser.LiteralContext(self, self._ctx, self.state)
         self.enterRule(localctx, 50, self.RULE_literal)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 215
             _la = self._input.LA(1)
-            if not(_la==JarlParser.NUMBER or _la==JarlParser.LITERAL_STR):
+            if not(_la == JarlParser.NUMBER or _la == JarlParser.LITERAL_STR):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
@@ -1715,8 +1588,3 @@ class JarlParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
-
-
-
-

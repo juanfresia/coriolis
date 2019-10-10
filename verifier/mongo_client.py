@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import pymongo
 
+
 class MongoClient:
     def __init__(self, host="localhost", port=27017):
         self.client = pymongo.MongoClient(host, port)
