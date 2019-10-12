@@ -50,6 +50,14 @@ class TestAdapterSanta(unittest.TestCase):
         for i in range(len(self.parsed_rules)):
             self.assertEqual(self.all_rules[i], self.parsed_rules[i])
 
+class TestAdapterPhilos(unittest.TestCase):
+    parsed_rules = adapt_file("resources/philos_1_rules.jarl", False)
+    exec(open("resources/philos_1_rules.py").read())
+
+    def test_all_philos_rules(self):
+        for i in range(len(self.parsed_rules)):
+            self.assertEqual(self.all_rules[i], self.parsed_rules[i])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -62,15 +62,16 @@ impl Philosopher {
         // @checkpoint acquire_fork fullname self.right round
 
         println!("{} is eating.", fullname);
-        // @checkpoint think fullname round
+        // @checkpoint eat fullname round
         sleep_rand_int(MAX_EATING_TIME);
         
-        drop(lf);
+
         println!("{} released left fork", fullname);
         // @checkpoint release_fork fullname self.left round
-        drop(rf);
+        drop(lf);
         println!("{} released right fork", fullname);
         // @checkpoint release_fork fullname self.right round
+        drop(rf);
     }
 }
 

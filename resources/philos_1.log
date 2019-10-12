@@ -1,0 +1,168 @@
+think  ImmanuelMarx  0
+think  KarlKant  0
+think  JohnRousseau  0
+think  KarlLocke  0
+think  ImmanuelDescartes  0
+think  ReneRousseau  0
+think  ReneLocke  0
+acquire_fork  ImmanuelMarx  2  0
+acquire_fork  ImmanuelMarx  3  0
+eat  ImmanuelMarx  0
+release_fork  ImmanuelMarx  2  0
+release_fork  ImmanuelMarx  3  0
+think  ImmanuelMarx  1
+acquire_fork  KarlLocke  3  0
+acquire_fork  KarlLocke  4  0
+eat  KarlLocke  0
+acquire_fork  ImmanuelMarx  2  1
+release_fork  KarlLocke  3  0
+release_fork  KarlLocke  4  0
+acquire_fork  ImmanuelMarx  3  1
+think  KarlLocke  1
+eat  ImmanuelMarx  1
+acquire_fork  ReneLocke  6  0
+acquire_fork  ReneLocke  0  0
+acquire_fork  JohnRousseau  1  0
+eat  ReneLocke  0
+release_fork  ImmanuelMarx  2  1
+release_fork  ImmanuelMarx  3  1
+acquire_fork  JohnRousseau  2  0
+think  ImmanuelMarx  2
+acquire_fork  KarlLocke  3  1
+eat  JohnRousseau  0
+acquire_fork  KarlLocke  4  1
+eat  KarlLocke  1
+acquire_fork  ReneRousseau  5  0
+release_fork  ReneLocke  6  0
+release_fork  ReneLocke  0  0
+acquire_fork  ReneRousseau  6  0
+think  ReneLocke  1
+acquire_fork  KarlKant  0  0
+eat  ReneRousseau  0
+release_fork  JohnRousseau  1  0
+release_fork  JohnRousseau  2  0
+acquire_fork  KarlKant  1  0
+think  JohnRousseau  1
+acquire_fork  ImmanuelMarx  2  2
+eat  KarlKant  0
+release_fork  ReneRousseau  5  0
+release_fork  ReneRousseau  6  0
+think  ReneRousseau  1
+release_fork  KarlLocke  3  1
+release_fork  KarlLocke  4  1
+acquire_fork  ImmanuelMarx  3  2
+eat  ImmanuelMarx  2
+think  KarlLocke  2
+acquire_fork  ImmanuelDescartes  4  0
+acquire_fork  ImmanuelDescartes  5  0
+eat  ImmanuelDescartes  0
+release_fork  ImmanuelDescartes  4  0
+release_fork  ImmanuelDescartes  5  0
+think  ImmanuelDescartes  1
+acquire_fork  ReneLocke  6  1
+acquire_fork  ReneRousseau  5  1
+release_fork  ImmanuelMarx  2  2
+release_fork  ImmanuelMarx  3  2
+think  ImmanuelMarx  3
+release_fork  KarlKant  0  0
+release_fork  KarlKant  1  0
+acquire_fork  ReneLocke  0  1
+think  KarlKant  1
+acquire_fork  JohnRousseau  1  1
+eat  ReneLocke  1
+acquire_fork  JohnRousseau  2  1
+eat  JohnRousseau  1
+acquire_fork  ImmanuelDescartes  4  1
+acquire_fork  KarlLocke  3  2
+release_fork  JohnRousseau  1  1
+release_fork  JohnRousseau  2  1
+think  JohnRousseau  2
+acquire_fork  ImmanuelMarx  2  3
+release_fork  ReneLocke  6  1
+release_fork  ReneLocke  0  1
+acquire_fork  ReneRousseau  6  1
+acquire_fork  KarlKant  0  1
+eat  ReneRousseau  1
+think  ReneLocke  2
+acquire_fork  KarlKant  1  1
+eat  KarlKant  1
+release_fork  ReneRousseau  5  1
+acquire_fork  ImmanuelDescartes  5  1
+release_fork  ReneRousseau  6  1
+eat  ImmanuelDescartes  1
+think  ReneRousseau  2
+acquire_fork  ReneLocke  6  2
+release_fork  KarlKant  0  1
+release_fork  KarlKant  1  1
+acquire_fork  ReneLocke  0  2
+think  KarlKant  2
+acquire_fork  JohnRousseau  1  2
+eat  ReneLocke  2
+release_fork  ImmanuelDescartes  4  1
+release_fork  ImmanuelDescartes  5  1
+acquire_fork  KarlLocke  4  2
+think  ImmanuelDescartes  2
+acquire_fork  ReneRousseau  5  2
+eat  KarlLocke  2
+release_fork  ReneLocke  6  2
+release_fork  ReneLocke  0  2
+acquire_fork  ReneRousseau  6  2
+acquire_fork  KarlKant  0  2
+eat  ReneRousseau  2
+think  ReneLocke  3
+release_fork  KarlLocke  3  2
+release_fork  KarlLocke  4  2
+think  KarlLocke  3
+acquire_fork  ImmanuelMarx  3  3
+acquire_fork  ImmanuelDescartes  4  2
+eat  ImmanuelMarx  3
+release_fork  ReneRousseau  5  2
+release_fork  ReneRousseau  6  2
+acquire_fork  ImmanuelDescartes  5  2
+think  ReneRousseau  3
+eat  ImmanuelDescartes  2
+acquire_fork  ReneLocke  6  3
+release_fork  ImmanuelDescartes  4  2
+release_fork  ImmanuelDescartes  5  2
+think  ImmanuelDescartes  3
+acquire_fork  ReneRousseau  5  3
+release_fork  ImmanuelMarx  2  3
+release_fork  ImmanuelMarx  3  3
+acquire_fork  JohnRousseau  2  2
+eat  JohnRousseau  2
+acquire_fork  KarlLocke  3  3
+acquire_fork  KarlLocke  4  3
+eat  KarlLocke  3
+release_fork  KarlLocke  3  3
+release_fork  KarlLocke  4  3
+acquire_fork  ImmanuelDescartes  4  3
+release_fork  JohnRousseau  1  2
+release_fork  JohnRousseau  2  2
+acquire_fork  KarlKant  1  2
+think  JohnRousseau  3
+eat  KarlKant  2
+release_fork  KarlKant  0  2
+release_fork  KarlKant  1  2
+acquire_fork  ReneLocke  0  3
+think  KarlKant  3
+acquire_fork  JohnRousseau  1  3
+eat  ReneLocke  3
+acquire_fork  JohnRousseau  2  3
+eat  JohnRousseau  3
+release_fork  ReneLocke  6  3
+release_fork  ReneLocke  0  3
+acquire_fork  ReneRousseau  6  3
+acquire_fork  KarlKant  0  3
+eat  ReneRousseau  3
+release_fork  JohnRousseau  1  3
+release_fork  JohnRousseau  2  3
+acquire_fork  KarlKant  1  3
+eat  KarlKant  3
+release_fork  KarlKant  0  3
+release_fork  KarlKant  1  3
+release_fork  ReneRousseau  5  3
+release_fork  ReneRousseau  6  3
+acquire_fork  ImmanuelDescartes  5  3
+eat  ImmanuelDescartes  3
+release_fork  ImmanuelDescartes  4  3
+release_fork  ImmanuelDescartes  5  3

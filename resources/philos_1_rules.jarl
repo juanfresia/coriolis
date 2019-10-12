@@ -1,0 +1,53 @@
+rule every_philo_eats_four_times
+for every p and any r:
+eat(p, r) must happen 4 times
+
+rule every_philo_thinks_four_times
+for every p and any r:
+think(p, r) must happen 4 times
+
+rule philo_needs_two_forks_to_eat
+for every p1, r1:
+before eat(p1, r1):
+  for every p2, r2 and any f with p2=p1, r2=r1:
+  acquire_fork(p2, f, r2) must happen 2 times
+
+rule philo_releases_forks_before_thinking
+for every p1, p2 and any r1, r2 with p1=p2:
+between eat(p1, r1) and next think(p2, r2):
+  for every p3 and any f, r3 with p3=p1:
+  release_fork(p3, f, r3) must happen 2 times
+
+rule all_acquired_forks_are_released_once
+for every p1, f1, r1:
+after acquire_fork(p1, f1, r1):
+  for every p2, f2, r2 with p2=p1, f2=f1, r2=r1:
+  release_fork(p2, f2, r2) must happen 1 times
+
+rule fork_held_by_one_philo_at_a_time
+for every p1, f1, r1, p2, f2, r2 with p2=p1, f2=f1, r2=r1:
+between acquire_fork(p1, f1, r1) and next release_fork(p2, f2, r2):
+  for any p3, f3, r3 with f3=f1, p3!=p1:
+  acquire_fork(p3, f3, r3) must not happen
+
+rule philo_acquires_no_forks_while_thinking
+for every p1, p2 and any r1, r2 with p1=p2:
+between eat(p1, r1) and next think(p2, r2):
+  for every p3 and any f, r3 with p3=p1:
+  acquire_fork(p3, f, r3) must not happen
+
+rule only_two_philos_use_same_fork
+for every f, r and any p:
+acquire_fork(p, f, r) must happen 2 times
+
+rule philo_dont_release_fork_without_eating
+for every p1, f1, r1, p2, f2, r2 with p2=p1, f2=f1, r2=r1:
+between acquire_fork(p1, f1, r1) and next release_fork(p2, f2, r2):
+  for every p3 and any r3 with p3=p1:
+  eat(p3, r3) must happen 1 times
+
+rule philo_dont_acquire_fork_without_thiking
+for every p1, f1, r1, p2, f2, r2 with p2=p1, f2=f1, r2=r1:
+between release_fork(p1, f1, r1) and next acquire_fork(p2, f2, r2):
+  for every p3 and any r3 with p3=p1:
+  think(p3, r3) must happen 1 times
