@@ -39,6 +39,8 @@ Vagrant.configure(2) do |config|
     echo "alias antlr4='java -Xmx500M -cp "/usr/local/lib/antlr-4.7.1-complete.jar:$CLASSPATH" org.antlr.v4.Tool'" >> .bashrc
     echo "alias grun='java org.antlr.v4.gui.TestRig'" >> .bashrc
 
+    curl https://sh.rustup.rs -sSf | sh -s -- -y;
+
     sudo apt-get install -y python3-pip valgrind
     sudo pip3 install virtualenv
     cd /vagrant && virtualenv venv

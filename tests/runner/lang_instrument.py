@@ -76,5 +76,27 @@ class TestPyInstrumenter(unittest.TestCase):
         l = LanguagePyInstrumenter("/vagrant/resources/prod_cons.chk").instrument_line("# checkpoint produce 1 2")
         self.assertEqual(l, '# checkpoint produce 1 2')
 
+class TestRustInstrumenter(unittest.TestCase):
+    def test_can_instrument(self):
+        l = LanguageRustInstrumenter('/vagrant/resources/prod_cons.chk')
+        self.assertTrue(l.can_instrument("test.rs"))
+        self.assertFalse(l.can_instrument("test.py"))
+
+    def test_normal_line(self):
+        l = LanguageRustInstrumenter('/vagrant/resources/prod_cons.chk').instrument_line('println!("Hello world");')
+        self.assertEqual(l, 'println!("Hello world");')
+
+    def test_checkpoint_line(self):
+        l = LanguageRustInstrumenter('/vagrant/resources/prod_cons.chk').instrument_line('// @checkpoint produce 1 2')
+        self.assertEqual(l, 'coriolis_logger::coriolis_logger_write(format!("{}  {}  {}\\n", "produce", 1, 2));\n')
+
+    def test_checkpoint_not_in_table(self):
+        l = LanguageRustInstrumenter('/vagrant/resources/prod_cons.chk').instrument_line('// @checkpoint magic 8')
+        self.assertEqual(l, '// @checkpoint magic 8')
+
+    def test_line_without_annotation(self):
+        l = LanguageRustInstrumenter("/vagrant/resources/prod_cons.chk").instrument_line("// checkpoint produce 1 2")
+        self.assertEqual(l, '// checkpoint produce 1 2')
+
 if __name__ == '__main__':
     unittest.main()
