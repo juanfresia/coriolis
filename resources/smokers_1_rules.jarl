@@ -1,0 +1,65 @@
+# Only one smoker smokes at a time
+rule one_smoke_per_round
+between agent_wake() and next agent_wake():
+  for any s:
+  smoker_smoke(s) must happen 1 times
+
+# Smoker that smoked took two elements
+rule smoker_took_two_elements
+for any s:
+between agent_wake() and next smoker_smoke(s):
+  for any sid, e with sid=s:
+  smoker_take_element(sid, e) must happen 2 times
+
+# Every element can only be taken once
+rule elements_taken_once
+for any s:
+between agent_wake() and next smoker_smoke(s):
+  for every e and any sid with sid=s:
+  smoker_take_element(sid, e) must happen 1 times
+
+# Elements cant be taken after smoking if agent doesnt wake again
+rule elements_cant_be_taken_after_smoking
+for any s:
+between smoker_smoke(s) and next agent_wake():
+  for any sid, e:
+  smoker_take_element(sid, e) must happen 0 times
+
+# Agent produces 2 items per round
+rule two_produce_per_round
+between agent_wake() and next agent_sleep():
+  for any e:
+  agent_produce(e) must happen 2 times
+
+# Elements arent produced if agent is sleeping
+rule agent_cant_produce_sleeping
+between agent_sleep() and next agent_wake():
+  for any e:
+  agent_produce(e) must happen 0 times
+
+# Smokers never take elements they already have
+rule smokers_dont_take_their_element
+for every s, e with e=s:
+smoker_take_element(s, e) must happen 0 times
+
+# Smoker smokes once between dreams
+rule smokers_smoke_while_awake
+for every s1, s2 with s1=s2:
+between smoker_sleep(s1) and next smoker_sleep(s2):
+  for any s with s=s1:
+  smoker_smoke(s) must happen 1 times
+
+# 40 elements are produced
+rule forty_elements_produced
+for any e:
+agent_produce(e) must happen 40 times
+
+# All elements are taken
+rule all_elements_taken
+for any s, e:
+smoker_take_element(s, e) must happen 40 times
+
+# 20 cigarettes can be smoked
+rule twenty_cigarettes_smoked
+for any s:
+smoker_smoke(s) must happen 20 times

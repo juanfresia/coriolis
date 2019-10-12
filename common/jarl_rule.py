@@ -3,8 +3,9 @@ import copy
 from common.aggregation_steps import *
 
 class JARLRule:
-    def __init__(self, statement_text, fact, scope=None, passed_by_default=True):
+    def __init__(self, statement_text, rule_header, fact, scope=None, passed_by_default=True):
         self.text = statement_text
+        self.rule_header = rule_header
         self.fact = fact
         self.scope = scope
         self.status = "Pending"
@@ -15,6 +16,7 @@ class JARLRule:
 
     def set_dynamic_scope_arg(self, scope_arg, first_checkpoint=True):
         self._dynamic_args["#{}".format(scope_arg)] = (scope_arg, first_checkpoint)
+        return self
 
     def evaluate_scope_steps(self):
         return self.scope.evaluate_steps()
@@ -53,6 +55,34 @@ class JARLRule:
     def has_scope(self):
         return self.scope is not None
 
+    def __eq__(self, other):
+        return isinstance(other, JARLRule) and \
+            self.rule_header == other.rule_header and \
+            self.fact == other.fact and \
+            self.scope == other.scope and \
+            self.status == other.status and \
+            self.passed_by_default == other.passed_by_default and \
+            self.failed_info == other.failed_info and \
+            self.failed_scope == other.failed_scope and \
+            self._dynamic_args == other._dynamic_args
+
+    def __repr__(self):
+        fact = str(self.fact).replace("\n", "\n\t")
+        scope = str(self.scope).replace("\n", "\n\t")
+        text = str(self.text).replace("\n", "\\n\"\n\t\"").replace("\"\\n\"", "")
+        s = """JARLRule(
+        (\"{}\"),
+        \"{}\",
+        {},
+        {},
+        passed_by_default={}
+        )""".format(text, self.rule_header, fact, scope, self.passed_by_default)
+        # We add the dynamic args
+        for (k, v) in self._dynamic_args.items():
+            s += "\\\n.set_dynamic_scope_arg(\"{}\", {})".format(v[0], v[1])
+        return s
+
+
 class RuleScope:
     def __init__(self, aggregation_steps):
         self.steps = aggregation_steps
@@ -73,6 +103,12 @@ class RuleScope:
     def get_default_scope():
         return [ {"c1": {"log_line": "MIN"}, "c2": {"log_line": "MAX"}} ]
 
+    def __eq__(self, other):
+        return isinstance(other, RuleScope) and self.steps == other.steps
+
+    def __repr__(self):
+        return "RuleScope([\n\t{}\n])".format(", \n\t".join(map(str, self.steps)))
+
 class RuleFact:
     def __init__(self, aggregation_steps):
         self.steps = aggregation_steps
@@ -81,3 +117,9 @@ class RuleFact:
         steps = copy.deepcopy(self.steps)
         steps = [s.evaluate(dynamic_args) for s in steps]
         return [s for subs in steps for s in subs]
+
+    def __eq__(self, other):
+        return isinstance(other, RuleFact) and self.steps == other.steps
+
+    def __repr__(self):
+        return "RuleFact([\n\t{}\n])".format(", \n\t".join(map(str, self.steps)))

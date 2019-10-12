@@ -59,7 +59,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output)
 
     def test_rename_one_arg(self):
-        step = RenameArgs( ["f"], [ ["x"] ] )
+        step = RenameArgs([ ["f", "x"] ])
         input = [
             {'log_line': 1, 'arg_1': 8, 'checkpoint': 'f'}
         ]
@@ -69,7 +69,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output)
 
     def test_rename_same_arg_twice(self):
-        step = RenameArgs( ["f", "f"], [ ["x"], ["y"] ] )
+        step = RenameArgs([ ["f", "x"], ["f", "y"] ])
         input = [
             {'log_line': 1, 'arg_1': 8, 'checkpoint': 'f'},
             {'log_line': 2, 'arg_1': 6, 'checkpoint': 'f'}
@@ -81,7 +81,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output)
 
     def test_rename_args(self):
-        step = RenameArgs( ["f", "g"], [ ["i", "j"], ["a1", "a2"] ] )
+        step = RenameArgs([ ["f", "i", "j"], ["g", "a1", "a2"] ])
         input = [
             {'log_line': 1, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'f'},
             {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g'},
@@ -114,7 +114,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output)
 
     def test_cross_group_by_args(self):
-        step = CrossAndGroupByArgs(["f", "g"], [["i1"], ["i2"]])
+        step = CrossAndGroupByArgs([ ["f", "i1"], ["g", "i2"] ])
         input= [
             {'log_line': 1, 'checkpoint': 'f', 'arg_i1': 1},
             {'log_line': 2, 'checkpoint': 'g', 'arg_c': 1, 'arg_i2': 1},
@@ -133,7 +133,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output)
 
     def test_cross_group_by_null(self):
-        step = CrossAndGroupByArgs(["f"], [["null"]])
+        step = CrossAndGroupByArgs([ ["f", "null"] ])
         input= [
             {'log_line': 1, 'checkpoint': 'f', 'arg_x': 1},
             {'log_line': 2, 'checkpoint': 'f', 'arg_x': 3},
@@ -222,7 +222,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output)
 
     def test_compare_results_precedence(self):
-        step = CompareResultsPrecedence("f1", "g2")
+        step = CompareResultsPrecedence("f", "g")
         input = [
             {'results': [{'log_line': 3, 'checkpoint': 'f1', 'arg_i1': 2}, {'log_line': 7, 'checkpoint': 'g2', 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 2}},
             {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'checkpoint': 'g2', 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 1}},
@@ -322,7 +322,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output)
 
     def test_scope_between(self):
-        step = ScopeBetween("f1", "g2")
+        step = ScopeBetween("f", "g")
         input = [
             {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 2, 'checkpoint': 'g2', 'arg_i2': 1}], '_id': {'i2': 1, 'i1': 1}},
             {'results': [{'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, {'log_line': 6, 'checkpoint': 'g2', 'arg_i2': 2}], '_id': {'i2': 2, 'i1': 1}},
@@ -340,7 +340,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output, remove_id=False)
 
     def test_scope_after(self):
-        step = ScopeAfter("f1")
+        step = ScopeAfter("f")
         input = [
             {'_id': {'null': None}, 'results': [
                 {'log_line': 2, 'checkpoint': 'f1', 'arg_x': 1},
@@ -360,7 +360,7 @@ class TestAggregationSteps(unittest.TestCase):
         self.check_aggregation_step(step, input, expected_output, remove_id=False)
 
     def test_scope_before(self):
-        step = ScopeBefore("f1")
+        step = ScopeBefore("f")
         input = [
             {'_id': {'null': None}, 'results': [
                 {'log_line': 2, 'checkpoint': 'f1', 'arg_x': 1},

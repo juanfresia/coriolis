@@ -12,6 +12,7 @@ import json
 class AggregationStep:
     def __init__(self):
         self.overridable_list = []
+        self._repr_string = "AggregationStep()"
 
     def evaluate(self, dynamic_args={}):
         for k in self.overridable_list:
@@ -21,6 +22,12 @@ class AggregationStep:
 
     def _mongofy(self):
         raise NotImplementedError
+
+    def __eq__(self, other):
+        return isinstance(other, AggregationStep) and other._mongofy() == self._mongofy()
+
+    def __repr__(self):
+        return self._repr_string
 
     def _expr_to_cmp(self, expr):
         EXPR_TO_CMP = {
@@ -71,12 +78,13 @@ class MatchCheckpoints(AggregationStep):
     def __init__(self, checkpoint_names):
         super().__init__()
         self.checkpoint_names = checkpoint_names
+        self._repr_string = "MatchCheckpoints({})".format(checkpoint_names)
 
     def _mongofy(self):
         checkpoint_names = [{"checkpoint": cn} for cn in self.checkpoint_names]
         return [ {"$match": {"$or": checkpoint_names }} ]
 
-# USAGE EXAMPLE: RenameArgs( ["f", "g"], [ ["i", "j"], ["a1", "a2"] ] )
+# USAGE EXAMPLE: RenameArgs( [ ["f", "i", "j"], ["g", "a1", "a2"] ] )
 # Input:
 #   {'log_line': 1, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'f'}
 #   {'log_line': 2, 'arg_1': 1, 'arg_2': 1, 'checkpoint': 'g'}
@@ -86,10 +94,12 @@ class MatchCheckpoints(AggregationStep):
 #   {'log_line': 2, 'checkpoint': 'g', 'arg_a1': 1, 'arg_a2': 1}
 #   {'log_line': 3, 'checkpoint': 'f', 'arg_i': 2, 'arg_j': 2}
 class RenameArgs(AggregationStep):
-    def  __init__(self, checkpoint_names, arg_names_list):
+    def  __init__(self, checkpoints_and_args_list):
         super().__init__()
-        self.checkpoint_names = checkpoint_names
-        self.arg_names_list = arg_names_list
+        self.checkpoint_names = [ c[0] for c in checkpoints_and_args_list ]
+        # If no args are present for a checkpoint, a ["null"] list is assigned
+        self.arg_names_list = [ a[1:] if len(a[1:]) > 0 else ["null"] for a in checkpoints_and_args_list ]
+        self._repr_string = "RenameArgs({})".format(checkpoints_and_args_list)
 
     def _mongofy(self):
         steps = []
@@ -128,6 +138,7 @@ class CrossJoinCheckpoints(AggregationStep):
     def __init__(self, checkpoint_names):
         super().__init__()
         self.checkpoint_names = checkpoint_names
+        self._repr_string = "CrossJoinCheckpoints({})".format(checkpoint_names)
 
     def _mongofy(self):
         steps = []
@@ -161,7 +172,7 @@ class CrossJoinCheckpoints(AggregationStep):
 
         return steps
 
-# USAGE EXAMPLE: CrossAndGroupByArgs( ["f", "g"], [ ["i1"], ["i2"] ] )
+# USAGE EXAMPLE: CrossAndGroupByArgs( [ ["f", "i1"], ["g", "i2"] ] )
 # Input:
 #   {'log_line': 1, 'checkpoint': 'f', 'arg_i1': 1}
 #   {'log_line': 2, 'checkpoint': 'g', 'arg_c': 1, 'arg_i2': 1}
@@ -178,10 +189,12 @@ class CrossJoinCheckpoints(AggregationStep):
 #
 # NOTE: The checkpoint names are modified by adding a number sufix (i.e. from "f","g" to "f1","g2")
 class CrossAndGroupByArgs(AggregationStep):
-    def __init__(self, checkpoint_names, arg_names):
+    def __init__(self, checkpoints_and_args_list):
         super().__init__()
-        self.checkpoint_names = checkpoint_names
-        self.arg_names = arg_names
+        self.checkpoint_names = [ c[0] for c in checkpoints_and_args_list ]
+        # If no args are present for a checkpoint, a ["null"] list is assigned
+        self.arg_names = [ a[1:] if len(a[1:]) > 0 else ["null"] for a in checkpoints_and_args_list ]
+        self._repr_string = "CrossAndGroupByArgs({})".format(checkpoints_and_args_list)
 
     def _mongofy(self):
         # Step 1: We cross join all checkpoints according their names
@@ -224,6 +237,9 @@ class ImposeIteratorCondition(AggregationStep):
         self.i2 = i2
         self.using_literal = using_literal
         self.overridable_list += ["i1", "i2"]
+        i1_f = "\"{}\"".format(i1) if isinstance(i1, str) else i1
+        i2_f = "\"{}\"".format(i2) if isinstance(i2, str) else i2
+        self._repr_string = "ImposeIteratorCondition({}, \"{}\", {}, using_literal={})".format(i1_f, expr, i2_f, using_literal)
 
     def _mongofy(self):
         i2 = self.i2 if self.using_literal else "$_id.{}".format(self.i2)
@@ -252,6 +268,9 @@ class ImposeWildcardCondition(AggregationStep):
         self.w2 = w2
         self.using_literal = using_literal
         self.overridable_list += ["w1", "w2"]
+        w1_f = "\"{}\"".format(w1) if isinstance(w1, str) else w1
+        w2_f = "\"{}\"".format(w2) if isinstance(w2, str) else w2
+        self._repr_string = "ImposeWildcardCondition({}, \"{}\", {}, using_literal={})".format(w1_f, expr, w2_f, using_literal)
 
     def _mongofy(self):
         w2 = self.w2 if self.using_literal else "$$r.arg_{}".format(self.w2)
@@ -274,6 +293,7 @@ class CompareResultsQuantity(AggregationStep):
         super().__init__()
         self.expr = expr
         self.n = n
+        self._repr_string = "CompareResultsQuantity(\"{}\", {})".format(expr, n)
 
     def _make_info_message(self):
         log_lines = {"$map": { "input": "$results", "as": "r", "in": {"$concat": [ " ", self._int_to_str("$$r.log_line") ]} }}
@@ -293,11 +313,14 @@ class CompareResultsQuantity(AggregationStep):
 #   {'result': True, 'info': 'Some info message', '_id': {'i1': 2, 'i2': 2}}
 #   {'result': True, 'info': 'Some info message', '_id': {'i1': 1, 'i2': 1}}
 #   {'result': False, 'info': 'Some info message', '_id': {'i1': 3, 'i2': 3}}
+#
+# NOTE: A number is appended to the checkpoint names to match the CrossAndGroupByArgs format (i.e. from "f","g" to "f1","g2")
 class CompareResultsPrecedence(AggregationStep):
     def __init__(self, checkpoint_first, checkpoint_second):
         super().__init__()
-        self.checkpoint_first = checkpoint_first
-        self.checkpoint_second = checkpoint_second
+        self.checkpoint_first = "{}1".format(checkpoint_first)
+        self.checkpoint_second = "{}2".format(checkpoint_second)
+        self._repr_string = "CompareResultsPrecedence(\"{}\", \"{}\")".format(checkpoint_first, checkpoint_second)
 
     def _make_info_message(self):
         msg = "Checkpoint {} did not precede {} (involved lines on log: ".format(self.checkpoint_first[:-1], self.checkpoint_second[:-1])
@@ -329,6 +352,7 @@ class ReduceResult(AggregationStep):
     def __init__(self, and_results=True):
         super().__init__()
         self.and_results = and_results
+        self._repr_string = "ReduceResult(and_results={})".format(and_results)
 
     def _mongofy(self):
         steps = [ {"$addFields": {"info": {"$cond": ["$result", "", "$info"]}}} ]
@@ -356,6 +380,7 @@ class FilterByLogLines(AggregationStep):
         super().__init__()
         self.l_first = l_first
         self.l_second = l_second
+        self._repr_string = "FilterByLogLines({}, {})".format(l_first, l_second)
 
     def _mongofy(self):
         if (self.l_second == "MAX") and (self.l_first == "MIN"): return []
@@ -368,6 +393,7 @@ class SortByLogLine(AggregationStep):
     def __init__(self, ascending=True):
         super().__init__()
         self.ascending = ascending
+        self._repr_string = "SortByLogLine(ascending={})".format(ascending)
 
     def _mongofy(self):
         return [ {"$sort": {"log_line": 1 if self.ascending else -1}} ]
@@ -387,10 +413,13 @@ class SortByLogLine(AggregationStep):
 #   {'_id': {'null': None}, 'c1': {'log_line': 8, 'checkpoint': 'f1', 'arg_x': 2}, 'c2': {'log_line': 'MAX'}}
 #   {'_id': {'null': None}, 'c1': {'log_line': 9, 'checkpoint': 'f1', 'arg_x': 3}, 'c2': {'log_line': 'MAX'}}
 #   {'_id': {'null': None}, 'c1': {'log_line': 10, 'checkpoint': 'f1', 'arg_x': 3}, 'c2': {'log_line': 'MAX'}}
+#
+# NOTE: A number is appended to the checkpoint name to match the CrossAndGroupByArgs format (i.e. from "f" to "f1")
 class ScopeAfter(AggregationStep):
     def __init__(self, checkpoint_name):
         super().__init__()
-        self.checkpoint_name = checkpoint_name
+        self.checkpoint_name = "{}1".format(checkpoint_name)
+        self._repr_string = "ScopeAfter(\"{}\")".format(checkpoint_name)
 
     def _mongofy(self):
         steps = []
@@ -413,10 +442,13 @@ class ScopeAfter(AggregationStep):
 #   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 8, 'checkpoint': 'f1', 'arg_x': 2}},
 #   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 9, 'checkpoint': 'f1', 'arg_x': 3}},
 #   {'_id': {'null': None}, 'c1': {'log_line': 'MIN'}, 'c2': {'log_line': 10, 'checkpoint': 'f1', 'arg_x': 3}}
+#
+# NOTE: A number is appended to the checkpoint name to match the CrossAndGroupByArgs format (i.e. from "f" to "f1")
 class ScopeBefore(AggregationStep):
     def __init__(self, checkpoint_name):
         super().__init__()
-        self.checkpoint_name = checkpoint_name
+        self.checkpoint_name = "{}1".format(checkpoint_name)
+        self._repr_string = "ScopeBefore(\"{}\")".format(checkpoint_name)
 
     def _mongofy(self):
         steps = []
@@ -437,13 +469,16 @@ class ScopeBefore(AggregationStep):
 #   {'c2': {'log_line': 6, 'checkpoint': 'g2', 'arg_i2': 2}, 'c1': {'log_line': 1, 'checkpoint': 'f1', 'arg_i1': 1}, '_id': {'i1': 1, 'i2': 2}}
 #   {'c2': {'log_line': 6, 'checkpoint': 'g2', 'arg_i2': 2}, 'c1': {'log_line': 3, 'checkpoint': 'f1', 'arg_i1': 2}, '_id': {'i1': 2, 'i2': 2}}
 #   {'c2': {'log_line': 6, 'checkpoint': 'g2', 'arg_i2': 2}, 'c1': {'log_line': 4, 'checkpoint': 'f1', 'arg_i1': 3}, '_id': {'i1': 3, 'i2': 2}}
+#
+# NOTE: A number is appended to the checkpoint names to match the CrossAndGroupByArgs format (i.e. from "f","g" to "f1","g2")
 class ScopeBetween(AggregationStep):
     def __init__(self, checkpoint_first, checkpoint_second, using_next=True, using_beyond=False):
         super().__init__()
-        self.checkpoint_first = checkpoint_first
-        self.checkpoint_second = checkpoint_second
+        self.checkpoint_first = "{}1".format(checkpoint_first)
+        self.checkpoint_second = "{}2".format(checkpoint_second)
         self.using_next = using_next
         self.using_beyond = using_beyond
+        self._repr_string = "ScopeBetween(\"{}\", \"{}\", using_next={}, using_beyond={})".format(checkpoint_first, checkpoint_second, using_next, using_beyond)
 
     def _mongofy(self):
         steps = []

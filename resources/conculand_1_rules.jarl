@@ -1,0 +1,81 @@
+# Employees serve a person per round (they are not gnocchi)
+rule serve_once_per_round
+for every e1, e2 with e2=e1:
+between employee_ready(e1) and next employee_ready(e2):
+  for any employee_id, person_name, type with employee_id=e1:
+  employee_serve(employee_id, person_name, type) must happen 1 times
+
+# Every tourist must wait in queue before being served
+rule tourist_wait_before_served
+for every e, person_name, t with t='tourist':
+before employee_serve(e, person_name, t):
+  for any pn with pn=person_name:
+  tourist_queued(pn) must happen 1 times
+
+# Every resident must wait in queue before being served
+rule resident_wait_before_served
+for every e, person_name, t with t='resident':
+before employee_serve(e, person_name, t):
+  for any pn with pn=person_name:
+  resident_queued(pn) must happen 1 times
+
+# Every tourist shows their passport after being asked for it
+rule tourist_show_passport_when_requested
+for every e1, e2, person_name, t with e2=e1, t='tourist':
+between employee_serve(e1, person_name, t) and next employee_ready(e2):
+  for every employee_id, pn and any passport, traits with employee_id=e1, pn=person_name:
+  employee_request_passport(employee_id) must precede tourist_show_passport(pn, passport, traits)
+
+# Every resident shows their document after being asked for it
+rule resident_show_document_when_requested
+for every e1, e2, person_name, t with e2=e1, t='resident':
+between employee_serve(e1, person_name, t) and next employee_ready(e2):
+  for every employee_id, pn and any document, gender with employee_id=e1, pn=person_name:
+  employee_request_document(employee_id) must precede resident_show_document(pn, document, gender)
+
+# Every tourist shows their passport once before dying
+rule tourist_show_passport_before_die
+for every pn1, p1, t1, pn2, p2, t2 with pn2=pn1, p2=p1, t2=t1:
+between tourist_spawn(pn1, p1, t1) and next tourist_die(pn2, p2, t2):
+  for any person_name, passport, traits with person_name=pn1, passport=p1, traits=t1:
+  tourist_show_passport(person_name, passport, traits) must happen 1 times
+
+# Every resident shows their document once before dying
+rule resident_show_document_before_die
+for every pn1, d1, g1, pn2, d2, g2 with pn2=pn1, d2=d1, g2=g1:
+between resident_spawn(pn1, d1, g1) and next resident_die(pn2, d2, g2):
+  for any person_name, document, gender with person_name=pn1, document=d1, gender=g1:
+  resident_show_document(person_name, document, gender) must happen 1 times
+
+# Tourists passports are sealed once before being allowed in
+rule tourist_passport_is_sealed
+for every employee_id, passport:
+before employee_allow_tourist(employee_id, passport):
+  for any e, p with e=employee_id, p=passport:
+  employee_seal_passport(e, p) must happen 1 times
+
+# A seal must be taken before sealing a passport
+rule seal_needed_to_seal_passport
+for every e1, e2, person_name, t, passport with e2=e1, t='tourist':
+between employee_serve(e1, person_name, t) and next employee_allow_tourist(e2, passport):
+  for every eid1, eid2, p with eid1=e1, eid2=e1, p=passport:
+  employee_take_seal(eid1) must precede employee_seal_passport(eid2, p)
+
+# There are only 3 seals available
+rule seals_available_are_3
+for any e1, e2:
+between employee_take_seal(e1) and next employee_return_seal(e2):
+  for any e:
+  employee_take_seal(e) must happen at most 3 times
+
+# 12 people are served
+rule twelve_people_served
+for any e, p, t:
+employee_serve(e, p, t) must happen 12 times
+
+# All taken seals are later returned
+rule serve_once_per_round
+for every employee_id:
+after employee_take_seal(employee_id):
+  for any e with e=employee_id:
+  employee_return_seal(e) must happen at least 1 times

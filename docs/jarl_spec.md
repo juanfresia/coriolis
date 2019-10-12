@@ -1,6 +1,6 @@
-# JARL Language Specification Guide
+# JARL Language v.0.4.1 Specification Guide
 
-![](jarl_logo2.png)
+![](jarl_logo.png)
 
 ## Abstract
 
@@ -22,6 +22,7 @@ JARL aims to define a "common language" for writing business level user-defined 
   - [Before scope](#before-scope)
   - [Between scope](#between-scope)
   - [Argument matching in rule scopes](#argument-matching-in-rule-scopes)
+- [JARL rule files](#jarl-rule-files)
 
 
 ## Execution checkpoints
@@ -105,15 +106,15 @@ The list of iterators implies the enclosed rule fact should be valid for every v
 Examples:
 
 ```
-# Every message is written before read
+# Every message is written before reading everything
 for every msg:
-write(msg) must precede read(msg)
+write(msg) must precede read_everything()
 ```
 
 ```
 # Every shared resource must be released
 for every shmid:
-shm_destroy(shmid) must happen 1 time
+shm_destroy(shmid) must happen 1 times
 ```
 
 ```
@@ -169,15 +170,9 @@ for every [iterator ...] and any [wildcard ...]:
 Examples:
 
 ```
-# All items are must have been produced before consumed
-for every item_id and any cid, pid:
-produce(pid, item_id) must precede consume(cid, item_id)
-```
-
-```
-# All acquired locks are released
-for every lock_id and any pid:
-lock_release(lock_id, pid) must follow lock_acquire(lock_id, pid)
+# All items must have been produced before consuming all
+for every item_id and any pid:
+produce(pid, item_id) must precede consume_all()
 ```
 
 ```
@@ -196,7 +191,7 @@ Of course, the grouping argument behaviour when combining wildcards and iterator
 
 ### Imposing argument conditions (filtering)
 
-In JARL, it is also possible to _filter_ wildcards and iterators argument values according to binary conditions. This filtering will affect the argument matching by imposing extra restrictions on the checkpoints' argument values. The following is a list of all supported conditions:
+In JARL, it is also possible to _filter_ wildcards and iterators argument values according to binary conditions using the reserved word `with`. This filtering will affect the argument matching by imposing extra restrictions on the checkpoints' argument values. The following is a list of all supported conditions:
 
 - Equal to: `=`
 - Not equal to: `!=`
@@ -211,7 +206,7 @@ Comparisons can be made between iterators or wildcards, or against literal value
 
 ```
 # Smokers never take elements they already have
-for any smoker_id, element_id=smoker_id:
+for any smoker_id, element_id with element_id=smoker_id:
 smoker_take_element(smoker_id, element_id) must happen 0 times
 ```
 
@@ -219,15 +214,15 @@ smoker_take_element(smoker_id, element_id) must happen 0 times
 
 ```
 # Items are produced in order
-for every i, j>i and any p:
-produce(p, i) must precede produce(p, j)
+for every i, j with j>i:
+produce(i) must precede produce(j)
 ```
 
 - Comparison against literal values:
 
 ```
 # Semaphore cannot have negative value
-for every semid, k<0:
+for every semid, k with k<0:
 sem_create(semid, k) must happen 0 times
 ```
 
@@ -252,14 +247,14 @@ Examples:
 
 ```
 # Released resource cannot be accessed
-after shm_destroy:
+after shm_destroy():
 for any pid:
 shm_read(pid) must happen 0 times
 ```
 
 ```
 # At most 5 processes are awaken via notify
-after notify_all:
+after notify_all():
 for any pid:
 process_awake(pid) must happen at most 5 times
 ```
@@ -279,16 +274,16 @@ Examples:
 
 ```
 # Lock cannot be acquired if it was not yet created
-before lock_create:
+before lock_create():
 for any pid:
 lock_acquire(pid) must happen 0 times
 ```
 
 ```
 # At most 5 processes can wait on the semaphore
-before sem_signal:
+before sem_signal():
 for any pid:
-sem_waig(pid) must happen at most 5 times
+sem_wait(pid) must happen at most 5 times
 ```
 
 In the case that the checkpoint inside the `before` scope is called more than once, the rule should be valid _before every call_ since the beginning of the execution.
@@ -306,14 +301,14 @@ Examples:
 
 ```
 # Lock should not be destroyed twice
-between lock_destroy and previous lock_create:
-lock_destroy must happen 1 times
+between lock_destroy() and previous lock_create():
+lock_destroy() must happen 1 times
 ```
 
 ```
 # The items buffer size is 5
-between produce and next consume:
-produce must happen at most 5 times
+between produce() and next consume():
+produce() must happen at most 5 times
 ```
 
 **Note:** A `between` scope is necessarily defined by two checkpoint calls. Hence, if in the last example `consume` is not called after some `produce`, then those `produce` checkpoints will fall into no validation range and would be as if they did not exist for such rule.
@@ -333,39 +328,105 @@ Examples:
 ```
 # Elements cannot be taken after smoking if agent does not wake again
 for any smoker_id:
-between smoker_smoke(smoker_id) and next agent_wake:
+between smoker_smoke(smoker_id) and next agent_wake():
 for any sid, element_id:
 smoker_take_element(sid, element_id) must happen 0 times
+```
+
+```
+# At most 10 elements can enter inside the buffer
+for any producer_id, consumer_id, i1, i2:
+between produce(producer_id, i1) and next consume(consumer_id, i2):
+for any p, i:
+produce(p, i) must happen at most 10 times
+```
+
+**Note:** Arguments inside a rule fact can be compared against those of a rule scope. Also, an argument vs wildcard comparison is allowed on this cases. Please refer to the following examples: 
+
+```
+# Locks must not be acquired after their destruction
+for every lock_id:
+after lock_destroy(lock_id):
+for every lid with lid=lock_id:
+lock_acquire(lid) must happen 0 times
+```
+
+```
+# On every queue, messages are sent before received
+for every msqid1, msqid2 with msqid1=msqid2:
+between msq_create(msqid1) and next msq_destroy(msqid2):
+for every m1, m2 and any msg_id1, msg_id2 with m1=msqid1, m2=m1, msg_id1=msg_id2:
+msq_send(m1, msg_id1) must precede msq_receive(m2, msg_id2)
 ```
 
 ```
 # If a reader reads something, a writer wrote it
 for every reader_id, buffer, msg:
 before read_buffer(reader_id, buffer, msg):
-for any b=buffer, m=msg, writer_id:
+for any b, m, writer_id with b=buffer, m=msg:
 write_buffer(writer_id, b, m) must happen at least 1 times
 ```
 
-```
-# Locks must not be acquired after their destruction
-for every lock_id:
-after lock_destroy(lock_id):
-for every lid=lock_id:
-lock_acquire(lid) must happen 0 times
-```
+## JARL rule files
+
+A JARL rule file contains all the rules to be validated by the underlying testing runtime. It should be stored with the `.jarl` extension. Since whitespaces, tabulation and newlines are all optional inside JARL syntax, rules shoud be distinguished from one another with the `rule` reserved word, according to the following syntax:
 
 ```
-# At most 10 elements can enter inside the buffer
-for any producer_id, cconsumer_id, i1, i2:
-between every produce(producer_id, i1) and next consume(cconsumer_id, i2):
+rule <rule-name>
+<rule-statement>
+```
+
+An example `producer_consumer.jarl` file (obviously addressing the producer-consumer problem) could be like the following:
+
+```
+# Every item is produced only once
+rule produce_once
+for every i and any p:
+produce(p, i) must happen 1 times
+
+
+# Every item is consumed only once
+rule consume_once
+for every i and any c:
+consume(c, i) must happen 1 times
+
+
+# 10 items are produced
+rule produce_ten
 for any p, i:
-produce(producer_id, i) must happen at most 10 times
-```
+produce(p, i) must happen 10 times
 
-```
-# On every queue, messages are sent before received
-for every msqid:
-between msq_create(msqid) and next msq_destroy(msqid):
-for every m=msqid and any msg_id:
-msq_send(m, msg_id) must precede msq_receive(m, msg_id)
+
+# 10 items are consumed
+rule consume_ten
+for any c, i:
+consume(c, i) must happen 10 times
+
+
+# Every item is produced before consumed
+rule produce_then_consume
+for every iid and any c:
+before consume(c, iid):
+    for every i and any p with i=iid:
+    produce(p, i) must happen 1 times
+
+
+# Items are produced in order
+rule ordered_produce
+for every i, j and any p1, p2 with j>i:
+produce(p1, i) must precede produce(p2, j)
+
+
+# Items are consumed in order
+rule ordered_consume
+for every i, j and any c1, c2 with j>i:
+consume(c1, i) must precede consume(c2, j)
+
+
+# The buffer size is 5
+rule buffer_size_five
+for any pid, cid, i1, i2:
+between produce(pid, i1) and next consume(cid, i2):
+    for any p, i:
+    produce(p, i) must happen at most 5 times
 ```
