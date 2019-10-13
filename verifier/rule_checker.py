@@ -9,14 +9,7 @@ from verifier.mongo_client import MongoClient
 from verifier.printer import VerifierPrinter
 from common.jarl_rule import JARLRule, RuleScope, RuleFact
 from common.aggregation_steps import *
-
-class FullPaths(argparse.Action):
-    """Expand user- and relative-paths"""
-    def __call__(self, parser, namespace, values, option_string=None):
-        setattr(namespace, self.dest,
-                os.path.abspath(os.path.expanduser(values[0])))
-
-
+from common.utils import FullPaths
 
 class RuleChecker:
     def __init__(self, rules_to_check, log_file, checkpoint_file):
@@ -47,7 +40,17 @@ class RuleChecker:
         self.mongo_client.drop()
         return all_rules
 
+def run_verifier(args):
+    try:
+        exec(open(args.rules).read())
+        rc = RuleChecker(all_rules, args.log_file, args.checkpoints)
+        all_rules = rc.check_all_rules()
+        VerifierPrinter(args.verbose).print_verifier_summary(all_rules)
+    except NameError as e:
+        print("FATAL: The {} file seems to be corrupt:".format(args.rules))
+        print(str(e))
 
+# TODO: remove this?
 if __name__ == "__main__":
     # Set arguments
     CURDIR = os.getcwd()
@@ -62,13 +65,7 @@ if __name__ == "__main__":
                         action=FullPaths, help='Rules parsed .py file',
                         default='{}/rules.py'.format(CURDIR))
     parser.add_argument('-v', '--verbose',action='store_true', help="Enables verbosity")
+    parser.set_defaults(func=run_verifier)
     # Parse arguments
     args = parser.parse_args()
-    try:
-        exec(open(args.rules).read())
-        rc = RuleChecker(all_rules, args.log_file, args.checkpoints)
-        all_rules = rc.check_all_rules()
-        VerifierPrinter(args.verbose).print_verifier_summary(all_rules)
-    except NameError as e:
-        print("FATAL: The {} file seems to be corrupt:".format(args.rules))
-        print(str(e))
+    args.func(args)
