@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import argparse
-import os
 import multiprocessing
 
 from verifier.log_parser import LogParser
@@ -9,7 +7,6 @@ from verifier.mongo_client import MongoClient
 from verifier.printer import VerifierPrinter
 from common.jarl_rule import JARLRule, RuleScope, RuleFact
 from common.aggregation_steps import *
-from common.utils import FullPaths
 
 
 class RuleChecker:
@@ -53,25 +50,3 @@ def run_verifier(args):
     except NameError as e:
         print("FATAL: The {} file seems to be corrupt:".format(args.rules))
         print(str(e))
-
-
-# TODO: remove this?
-if __name__ == "__main__":
-    # Set arguments
-    CURDIR = os.getcwd()
-    parser = argparse.ArgumentParser(description='Verifies concurrent rules based on log file.')
-    parser.add_argument('-l', '--log-file', metavar='logfile', nargs=1,
-                        action=FullPaths, help='Log file',
-                        default='{}/coriolis_run.log'.format(CURDIR))
-    parser.add_argument('-c', '--checkpoints', metavar='checkpoints', nargs=1,
-                        action=FullPaths, help='Checkpoint list file',
-                        default='{}/rules.chk'.format(CURDIR))
-    parser.add_argument('-r', '--rules', metavar='rules', nargs=1,
-                        action=FullPaths, help='Rules parsed .py file',
-                        default='{}/rules.py'.format(CURDIR))
-    parser.add_argument('-v', '--verbose', action='store_true', help="Enables verbosity")
-    parser.set_defaults(func=run_verifier)
-
-    # Parse arguments
-    args = parser.parse_args()
-    args.func(args)
