@@ -32,6 +32,18 @@ class Instrumenter:
                 if self.instrumenter.can_instrument(file):
                     self.instrumenter.instrument_file_inline(file)
 
+def run_instrumenter(args):
+    print("Source: ", args.source)
+    print("Destination: ", args.destination)
+    print("Language: ", args.language)
+    print("Checkpoints: ", args.checkpoints)
+
+    inst = Instrumenter(args.language[0], args.checkpoints)
+    inst.instrument(args.source, args.destination)
+
+    # TODO: Remove this (it copies the coriolis logger)
+    distutils.dir_util.copy_tree("/vagrant/runner/libs/", args.destination)
+
 if __name__ == "__main__":
     # Set arguments
     CURDIR = os.getcwd()
@@ -45,17 +57,8 @@ if __name__ == "__main__":
     parser.add_argument('-c', '--checkpoints', metavar='checkpoints', nargs=1,
                         action=FullPaths, help='Checkpoint list file',
                         default='{}/test.chk'.format(CURDIR))
+    parser.set_defaults(func=run_instrumenter)
 
     # Parse and log captured arguments
     args = parser.parse_args()
-
-    print("Source: ", args.source)
-    print("Destination: ", args.destination)
-    print("Language: ", args.language)
-    print("Checkpoints: ", args.checkpoints)
-
-    inst = Instrumenter(args.language[0], args.checkpoints)
-    inst.instrument(args.source, args.destination)
-
-    # TODO: Remove this (it copies the coriolis logger)
-    distutils.dir_util.copy_tree("/vagrant/runner/libs/", args.destination)
+    args.func(args)
