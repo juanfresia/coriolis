@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-from colorama import Fore, Back, Style # pip3 install colorama
+from colorama import Fore, Back, Style  # pip3 install colorama
 from textwrap import wrap
 from math import ceil, floor
 
 BANNER_LENGTH = 84
 BANNER = "=" * int(BANNER_LENGTH)
+
 
 class VerifierPrinter:
     def __init__(self, using_verbosity=False):
@@ -22,20 +23,26 @@ class VerifierPrinter:
         passed_rules = 0
         self._print_over_banner("CHECKING RULES")
         for i in range(len(rules)):
-            if i and self.using_verbosity: self._print_banner()
+            if i and self.using_verbosity:
+                self._print_banner()
             self._print_rule(rules[i])
-            if rules[i].has_passed(): passed_rules += 1
+            if rules[i].has_passed():
+                passed_rules += 1
         self._print_over_banner("SUMMARY")
-        if self.using_verbosity: print()
+        if self.using_verbosity:
+            print()
         summary_fore = Fore.GREEN if passed_rules == len(rules) else Fore.RED
         summary = "{} rules, {} assertions, {} failures".format(len(rules), passed_rules, len(rules) - passed_rules)
         print(summary_fore + summary + Style.RESET_ALL)
 
     def _rule_failed_scope_string(self, rule):
         l_first, l_second = rule.get_failed_scope()
-        if l_second == "MAX" and l_first == "MIN": return "During the whole execution"
-        if l_first == "MIN": return "Before log line {}".format(l_second)
-        if l_second == "MAX": return "After log line {}".format(l_first)
+        if l_second == "MAX" and l_first == "MIN":
+            return "During the whole execution"
+        if l_first == "MIN":
+            return "Before log line {}".format(l_second)
+        if l_second == "MAX":
+            return "After log line {}".format(l_first)
         return "Between log lines {}-{}".format(l_first, l_second)
 
     def _print_rule(self, rule):
@@ -53,5 +60,5 @@ class VerifierPrinter:
                 failed_scope = self._rule_failed_scope_string(rule)
                 print("{}:".format(failed_scope))
                 info = wrap(rule.get_failed_info(), BANNER_LENGTH)
-                print(*info, sep = "\n")
+                print(*info, sep="\n")
                 print()
