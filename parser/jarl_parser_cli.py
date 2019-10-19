@@ -56,13 +56,9 @@ def adapt_str(string, show_errors=True):
     return rules_to_steps(rules)
 
 
-def main(argv):
-    rules = adapt_file(argv[1])
+def run_parser(args):
+    rules = adapt_file(args.rules_file)
     print("all_rules = [")
     for rule in rules:
         print("\t{},\n".format(str(rule).replace("\n", "\n\t")))
     print("]")
-
-
-if __name__ == '__main__':
-    main(sys.argv)

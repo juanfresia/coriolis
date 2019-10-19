@@ -5,6 +5,7 @@ import os
 
 from verifier.rule_checker import run_verifier
 from runner.instrument import run_instrumenter
+from parser.jarl_parser_cli import run_parser
 from common.utils import FullPaths
 
 class CoriolisCLI():
@@ -13,6 +14,7 @@ class CoriolisCLI():
         self.subcommands = self.parser.add_subparsers()
         self._add_verify_subcommand()
         self._add_instrument_subcommand()
+        self._add_parse_subcommand()
         self.parser.set_defaults(func=self.print_usage)
 
     def print_usage(self, args):
@@ -48,6 +50,13 @@ class CoriolisCLI():
                             default='{}/test.chk'.format(CURDIR))
         instrument_parser.add_argument('-v', '--verbose',action='store_true', help="Enables verbosity")
         instrument_parser.set_defaults(func=run_instrumenter)
+
+    def _add_parse_subcommand(self):
+        CURDIR = os.getcwd()
+        parse_parser = self.subcommands.add_parser('parse', description='Parse .jarl file.')
+        parse_parser.add_argument('rules_file', metavar='file', nargs=1,
+                            help='Rules file', action=FullPaths)
+        parse_parser.set_defaults(func=run_parser)
 
     def parse_args(self):
         return self.parser.parse_args()
