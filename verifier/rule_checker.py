@@ -4,7 +4,7 @@ import multiprocessing
 
 from verifier.log_parser import LogParser
 from verifier.mongo_client import MongoClient
-from common.printer import VerifierPrinter
+from verifier.verifier_printer import VerifierPrinter
 from common.jarl_rule import JARLRule, RuleScope, RuleFact
 from common.aggregation_steps import *
 

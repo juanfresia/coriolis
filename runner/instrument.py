@@ -4,7 +4,7 @@ import os
 import distutils.dir_util
 
 from runner import lang_instrumenter
-from common.printer import InstrumenterPrinter
+from runner.instrumenter_printer import InstrumenterPrinter
 
 
 class Instrumenter:
