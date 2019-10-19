@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from common.printer import CoriolisPrinter
+from common.printer import *
 
 
 class VerifierPrinter(CoriolisPrinter):
@@ -42,7 +42,6 @@ class VerifierPrinter(CoriolisPrinter):
             print(rule_fore + rule.text + Style.RESET_ALL)
             if rule.has_failed():
                 self._print_over_separator("REASON")
-                print()
                 failed_scope = self._rule_failed_scope_string(rule)
                 print("{}:".format(failed_scope))
                 self._print_wrapped_text(rule.get_failed_info())

@@ -4,17 +4,13 @@ import re
 import os
 
 from common import checkpoint_table
-
+from runner.instrumenter_printer import *
 
 class FileInstrumenter:
-    def __init__(self, checkpoint_file, debug=False):
+    def __init__(self, checkpoint_file, verbose_mode=False):
         self.checkpoint_table = checkpoint_table.CheckpointTable(checkpoint_file)
-        self.debug = debug
+        self.printer = InstrumenterPrinter(verbose_mode)
         self.ext = ""
-
-    def _debug_message(self, msg):
-        if self.debug:
-            print("[{}] {}".format(self.ext, msg))
 
     def process_lines(self, lines):
         for n, line in enumerate(lines):
@@ -33,6 +29,10 @@ class FileInstrumenter:
     def instrument_line(self, line):
         raise NotImplementedError
 
+    def _debug_message(self, text):
+        return
+        print(text)
+
     def can_instrument(self, path):
         raise NotImplementedError
 
@@ -46,7 +46,6 @@ class NoOpInstrumenter(FileInstrumenter):
         return line
 
     def can_instrument(self, path):
-        self._debug_message("Can instrument?: {}".format(path))
         return False
 
 
@@ -69,11 +68,11 @@ class LanguageCInstrumenter(FileInstrumenter):
         try:
             arg_types = self.checkpoint_table.get_checkpoint(args[0]).get_arg_types()
         except Exception as e:
-            self._debug_message("{}".format(e))
+            self.printer.print_error("{}".format(e))
             raise Exception
 
         if len(args[1:]) != len(arg_types):
-            self._debug_message("Arguments for {} dont match".format(args[0]))
+            self.printer.print_error("Arguments for {} dont match".format(args[0]))
             raise Exception
 
         format_string = " ".join(["%s"] + [LanguageCInstrumenter.type_to_format[t] for t in arg_types])
@@ -85,22 +84,20 @@ class LanguageCInstrumenter(FileInstrumenter):
         return log_line
 
     def can_instrument(self, path):
-        self._debug_message("Can instrument?: {}".format(path))
         ext = os.path.splitext(path)[-1].lower()
         return ext in [".c", ".h"]
 
     def instrument_file_inline(self, path):
-        self._debug_message("Instrumenting: ".format(path))
         super().instrument_file_inline(path)
 
     def instrument_line(self, line):
         match = self.pattern.match(line)
         if match:
             indentation = self.left_spaces.match(line).group()
-            self._debug_message("Matched line is:\n{}".format(line))
 
             log_line = line
             if match.group(1) == "checkpoint":
+                self.printer.print_matched_line(line)
                 line_args = line.replace("//", "").replace("@checkpoint", "").split()
                 if len(line_args):
                     try:
@@ -111,7 +108,6 @@ class LanguageCInstrumenter(FileInstrumenter):
             elif match.group(1) == "has_checkpoints":
                 log_line = '#include \"coriolis_logger.h\"\n'
 
-            self._debug_message("New line is:\n{}".format(log_line))
             return log_line
 
         return line
@@ -125,7 +121,6 @@ class LanguageCppInstrumenter(LanguageCInstrumenter):
         self.ext = "C++"
 
     def can_instrument(self, path):
-        self._debug_message("Can instrument?: {}".format(path))
         ext = os.path.splitext(path)[-1].lower()
         return ext in [".cpp", ".c", ".h"]
 
@@ -135,11 +130,11 @@ class LanguageCppInstrumenter(LanguageCInstrumenter):
         try:
             arg_types = self.checkpoint_table.get_checkpoint(args[0]).get_arg_types()
         except Exception as e:
-            self._debug_message("{}".format(e))
+            self.printer.print_error("{}".format(e))
             raise Exception
 
         if len(args[1:]) != len(arg_types):
-            self._debug_message("Arguments for {} dont match".format(args[0]))
+            self.printer.print_error("Arguments for {} dont match".format(args[0]))
             raise Exception
 
         casted_args = [args[0]]
@@ -169,11 +164,11 @@ class LanguagePyInstrumenter(FileInstrumenter):
         try:
             arg_types = self.checkpoint_table.get_checkpoint(args[0]).get_arg_types()
         except Exception as e:
-            self._debug_message("{}".format(e))
+            self.printer.print_error("{}".format(e))
             raise Exception
 
         if len(args[1:]) != len(arg_types):
-            self._debug_message("Arguments for {} dont match".format(args[0]))
+            self.printer.print_error("Arguments for {} dont match".format(args[0]))
             raise Exception
 
         format_string = " ".join(["{}"] + [" {}" for t in arg_types])
@@ -185,22 +180,20 @@ class LanguagePyInstrumenter(FileInstrumenter):
         return log_line
 
     def can_instrument(self, path):
-        self._debug_message("Can instrument?: {}".format(path))
         ext = os.path.splitext(path)[-1].lower()
         return ext in [".py"]
 
     def instrument_file_inline(self, path):
-        self._debug_message("Instrumenting: ".format(path))
         super().instrument_file_inline(path)
 
     def instrument_line(self, line):
         match = self.pattern.match(line)
         if match:
             indentation = self.left_spaces.match(line).group()
-            self._debug_message("Matched line is:\n{}".format(line))
 
             log_line = line
             if match.group(1) == "checkpoint":
+                self.printer.print_matched_line(line)
                 line_args = line.replace("#", "").replace("@checkpoint", "").split()
                 if len(line_args):
                     try:
@@ -211,7 +204,6 @@ class LanguagePyInstrumenter(FileInstrumenter):
             elif match.group(1) == "has_checkpoints":
                 log_line = "from coriolis_logger import *\n"
 
-            self._debug_message("New line is:\n{}".format(log_line))
             return log_line
 
         return line
@@ -230,11 +222,11 @@ class LanguageRustInstrumenter(FileInstrumenter):
         try:
             arg_types = self.checkpoint_table.get_checkpoint(args[0]).get_arg_types()
         except Exception as e:
-            self._debug_message("{}".format(e))
+            self.printer.print_error("{}".format(e))
             raise Exception
 
         if len(args[1:]) != len(arg_types):
-            self._debug_message("Arguments for {} dont match".format(args[0]))
+            self.printer.print_error("Arguments for {} dont match".format(args[0]))
             raise Exception
 
         format_string = " ".join(["{}"] + [" {}" for t in arg_types])
@@ -246,22 +238,20 @@ class LanguageRustInstrumenter(FileInstrumenter):
         return log_line
 
     def can_instrument(self, path):
-        self._debug_message("Can instrument?: {}".format(path))
         ext = os.path.splitext(path)[-1].lower()
         return ext in [".rs"]
 
     def instrument_file_inline(self, path):
-        self._debug_message("Instrumenting: ".format(path))
         super().instrument_file_inline(path)
 
     def instrument_line(self, line):
         match = self.pattern.match(line)
         if match:
             indentation = self.left_spaces.match(line).group()
-            self._debug_message("Matched line is:\n{}".format(line))
 
             log_line = line
             if match.group(1) == "checkpoint":
+                self.printer.print_matched_line(line)
                 line_args = line.replace("//", "").replace("@checkpoint", "").split()
                 if len(line_args):
                     try:
@@ -272,7 +262,6 @@ class LanguageRustInstrumenter(FileInstrumenter):
             elif match.group(1) == "has_checkpoints":
                 log_line = "mod coriolis_logger;\n"
 
-            self._debug_message("New line is:\n{}".format(log_line))
             return log_line
 
         return line
@@ -287,7 +276,7 @@ LANGUAGES = {
 }
 
 
-def get_file_instrumenter(lang, checkpoints):
+def get_file_instrumenter(lang, checkpoints, verbose_mode=False):
     if lang in LANGUAGES.keys():
-        return LANGUAGES[lang](checkpoints, True)
+        return LANGUAGES[lang](checkpoints, verbose_mode)
     return LANGUAGES['noop'](checkpoints)
