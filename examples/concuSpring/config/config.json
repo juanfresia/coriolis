@@ -1,0 +1,70 @@
+{
+  "ShowLog" : "A",
+
+  "MaxDistributionCenters" : 3,
+  "ClassifiedFlowersPackageSize": 3,
+
+  "MaxFlowerProducers" : 3,
+  "RoseHarvestProbability" : 50,
+  "TulipHarvestProbability" : 50,
+  "FailHarvestProbability" : 5,
+  "SecondsToSleepAfterHarvestTry" : 1,
+
+  "pointsOfSales": [
+    {
+      "id": 1,
+      "name": "Vivero S.A.",
+      "internetOrders": [
+        {
+          "buyer": "Juan",
+          "roses": 4,
+          "tulips": 9
+        },
+        {
+          "buyer": "Pedro",
+          "roses": 0,
+          "tulips": 1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Dia S.A.",
+      "internetOrders": [
+        {
+          "buyer": "Gustavo",
+          "roses": 2,
+          "tulips": 2
+        },
+        {
+          "buyer": "Gabriel",
+          "roses": 5,
+          "tulips": 1
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Carrefour S.A.",
+      "internetOrders": [
+        {
+          "buyer": "Yamila",
+          "roses": 2,
+          "tulips": 1
+        },
+        {
+          "buyer": "Estanislao",
+          "roses": 1,
+          "tulips": 0
+        }
+      ]
+    }
+  ],
+
+  "clientSleepTime" : 1,
+  "clientFailOrderProbability" : 10,
+  "localOrderMaxRoses" : 5,
+  "localOrderMinRoses" : 1,
+  "localOrderMaxTulips" : 5,
+  "localOrderMinTulips" : 1
+}

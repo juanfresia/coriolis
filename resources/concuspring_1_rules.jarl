@@ -1,0 +1,126 @@
+# Lines starting with '#' and empty lines are ignored
+# Format is:
+#   <breakpoint-name> [<param-name>:<param-type> ...]
+#
+# Valid param-types are: int, float, string, char
+#
+# prod_make_bouquet      prod_id:string   bouquet_id:int   bouquet_type:string
+# prod_send_box          prod_id:string   box_id:int       dc_id:int
+# dc_receive_box         dc_id:int        box_id:int
+# dc_send_package        dc_id:int        sp_id:int        package_id:int        bouquet_type:string
+# sp_receive_package     sp_id:int        package_id:int   bouquet_type:string
+# sp_serve_order         sp_id:int        order_id:int
+#
+# internet_make_order    order_id:int     r_amount:int     t_amount:int          sp_id:int
+# customer_make_order    order_id:int     r_amount:int     t_amount:int          sp_id:int
+#
+# prod_box_bouquet       prod_id:string   bouquet_id:int   box_id:int            bouquet_type:string
+# dc_unbox_bouquet       dc_id:int        bouquet_id:int   box_id:int            bouquet_type:string
+# dc_package_bouquet     dc_id:int        bouquet_id:int   package_id:int        bouquet_type:string
+# sp_unpackage_bouquet   sp_id:int        bouquet_id:int   package_id:int        bouquet_type:string
+# sp_prepare_bouquet     sp_id:int        bouquet_id:int   order_id:int          bouquet_type:string
+
+
+rule bouquets_made_before_boxed
+for every p1, b1, t1 and any box:
+before prod_box_bouquet(p1, b1, box, t1):
+  for every p2, b2 and any t with p2=p1, b2=b1:
+  prod_make_bouquet(p2, b2, t) must happen 1 times
+
+rule ten_bouquets_per_box_when_sent
+for every p1, box1 and any dc:
+before prod_send_box(p1, box1, dc):
+  for every p2, box2 and any b, t with p2=p1, box2=box1:
+  prod_box_bouquet(p2, b, box2, t) must happen 10 times
+
+rule at_most_ten_bouquets_in_box
+for every box and any p, b, t:
+prod_box_bouquet(p, b, box, t) must happen at most 10 times
+
+rule box_sent_before_received
+for every dc1, box1:
+before dc_receive_box(dc1, box1):
+  for every dc2, box2 and any p with dc2=dc1, box2=box1:
+  prod_send_box(p, box2, dc2) must happen 1 times
+
+rule bouquet_unboxed_only_after_received
+for every dc1, b, box1, t:
+before dc_unbox_bouquet(dc1, b, box1, t):
+  for every dc2, box2 with dc2=dc1, box2=box1:
+  dc_receive_box(dc2, box2) must happen 1 times
+
+rule at_most_ten_bouquets_unboxed_per_box
+for every b1 and any dc1, box1, t1, dc2, box2 with dc2=dc1, box2=box1:
+between dc_unbox_bouquet(dc1, b1, box1, t1) and previous dc_receive_box(dc2, box2):
+  for every dc3, box3 and any b2, t2 with box3=box1:
+  dc_unbox_bouquet(dc3, b2, box3, t2) must happen at most 10 times
+
+rule bouquets_only_boxed_once
+for every b, t and any p, box:
+prod_box_bouquet(p, b, box, t) must happen 1 times
+
+rule bouquets_only_unboxed_once
+for every b, t and any dc, box:
+dc_unbox_bouquet(dc, b, box, t) must happen 1 times
+
+rule hundred_bouquets_per_package_when_sent
+for every dc1, pack1 and any sp, t1:
+before dc_send_package(dc1, sp, pack1, t1):
+  for every dc2, pack2 and any b, t2 with dc2=dc1, pack2=pack1, t2=t1:
+  dc_package_bouquet(dc2, b, pack2, t2) must happen 3 times
+
+rule bouquets_only_packaged_once
+for every b, t and any dc, pack:
+dc_package_bouquet(dc, b, pack, t) must happen 1 times
+
+rule packages_dont_have_bouquets_of_different_type
+for every dc1, pack1, t1 and any sp:
+before dc_send_package(dc1, sp, pack1, t1):
+  for every dc2, pack2, t2 and any b with dc2=dc1, pack2=pack1, t2!=t1:
+  dc_package_bouquet(dc2, b, pack2, t2) must not happen
+
+rule at_most_hundred_bouquets_per_package
+for every pack and any dc, b, t:
+dc_package_bouquet(dc, b, pack, t) must happen at most 3 times
+
+rule package_sent_before_received
+for every pack1, t1, sp1:
+before sp_receive_package(sp1, pack1, t1):
+  for every pack2, t2, sp2 and any dc with t2=t1, pack2=pack1, sp2=sp1:
+  dc_send_package(dc, sp2, pack2, t2) must happen 1 times
+
+rule unpackaged_bouquet_was_previously_packaged
+for every b1, pack1, t1 and any sp:
+before sp_unpackage_bouquet(sp, b1, pack1, t1):
+  for every b2, t2, pack2 and any dc with b2=b1, pack2=pack1, t2=t1:
+  dc_package_bouquet(dc, b2, pack2, t2) must happen 1 times
+
+rule at_most_hundred_bouquets_unpackaged_per_package
+for every sp1, sp2, pack1, pack2, b1 and any t1, t2 with sp2=sp1, pack2=pack1:
+between sp_unpackage_bouquet(sp1, b1, pack1, t1) and previous sp_receive_package(sp2, pack2, t2):
+  for every sp3, pack3 and any b2, t3 with pack3=pack1:
+  sp_unpackage_bouquet(sp3, b2, pack3, t3) must happen at most 3 times
+
+rule internet_orders_requested_before_served
+for every o1, o2, sp1, sp2 and any ra, ta with o1=o2, sp1=sp2:
+internet_make_order(o1, ra, ta, sp1) must precede sp_serve_order(sp2, o2)
+
+rule customer_orders_requested_before_served
+for every o1, o2, sp1, sp2 and any ra, ta with o1=o2, sp1=sp2:
+customer_make_order(o1, ra, ta, sp1) must precede sp_serve_order(sp2, o2)
+
+rule bouquets_only_prepared_once
+for every b, t and any sp, o:
+sp_prepare_bouquet(sp, b, o, t) must happen 1 times
+
+rule prepared_bouquets_were_unpackaged
+for every sp1, b1, t1 and any o:
+before sp_prepare_bouquet(sp1, b1, o, t1):
+  for every sp2, b2, t2 and any pack with sp2=sp1, b2=b1, t2=t1:
+  sp_unpackage_bouquet(sp2, b2, pack, t2) must happen 1 times
+
+rule orders_have_bouquets
+for every sp1, o1:
+before sp_serve_order(sp1, o1):
+  for every sp2, o2 and any b, t with sp2=sp1, o2=o1:
+  sp_prepare_bouquet(sp2, b, o2, t) must happen

@@ -1,0 +1,10 @@
+# Lines starting with '#' and empty lines are ignored
+# Format is:
+#   <breakpoint-name> [<param-name>:<param-type> ...]
+#
+# Valid param-types are: int, float, string, char
+
+think           philo:string    round:int
+eat             philo:string    round:int
+acquire_fork    philo:string    fork:int     round:int
+release_fork    philo:string    fork:int     round:int

@@ -21,7 +21,7 @@ class Instrumenter:
         for dirpath, _, files in os.walk(dst_dir):
             for file in files:
                 file = os.path.join(dirpath, file)
- 
+
                 if self.instrumenter.can_instrument(file):
                     self.instrumenter.instrument_file_inline(file)
 

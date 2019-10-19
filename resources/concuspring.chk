@@ -1,0 +1,21 @@
+# Lines starting with '#' and empty lines are ignored
+# Format is:
+#   <breakpoint-name> [<param-name>:<param-type> ...]
+#
+# Valid param-types are: int, float, string, char
+#
+prod_make_bouquet      prod_id:int      bouquet_id:int   bouquet_type:string
+prod_send_box          prod_id:int      box_id:int       dc_id:int
+dc_receive_box         dc_id:int        box_id:int
+dc_send_package        dc_id:int        sp_id:int        package_id:int        bouquet_type:string
+sp_receive_package     sp_id:int        package_id:int   bouquet_type:string
+sp_serve_order         sp_id:int        order_id:int
+
+internet_make_order    order_id:int     r_amount:int     t_amount:int          sp_id:int
+customer_make_order    order_id:int     r_amount:int     t_amount:int          sp_id:int
+
+prod_box_bouquet       prod_id:int      bouquet_id:int   box_id:int            bouquet_type:string
+dc_unbox_bouquet       dc_id:int        bouquet_id:int   box_id:int            bouquet_type:string
+dc_package_bouquet     dc_id:int        bouquet_id:int   package_id:int        bouquet_type:string
+sp_unpackage_bouquet   sp_id:int        bouquet_id:int   package_id:int        bouquet_type:string
+sp_prepare_bouquet     sp_id:int        bouquet_id:int   order_id:int          bouquet_type:string

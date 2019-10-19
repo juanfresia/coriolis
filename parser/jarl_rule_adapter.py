@@ -3,6 +3,7 @@ from common.jarl_rule import *
 from parser.jarl_rule import *
 from parser.jarl_rule_validator import *
 
+
 class JarlRuleAdapter():
     def __init__(self):
         self.dynamic_args = []
@@ -70,7 +71,8 @@ class JarlRuleAdapter():
             JarlSelectorClauseType.AFTER: ScopeAfter(start_name),
             JarlSelectorClauseType.BEFORE: ScopeBefore(end_name)
         }
-        if scope_type not in to_steps: raise Exception("Unexpected Selector Clause type")
+        if scope_type not in to_steps:
+            raise Exception("Unexpected Selector Clause type")
         return to_steps[scope_type]
 
     def _adapt_checkpoints_names(self, checkpoints):
@@ -85,13 +87,14 @@ class JarlRuleAdapter():
         return CrossAndGroupByArgs(flattened_checkpoints)
 
     def _adapt_fact_requirement(self, requirement, other_checkpoint_name=None):
-        if requirement.get_checkpoints(): # Order requirement
+        if requirement.get_checkpoints():  # Order requirement
             return CompareResultsPrecedence(other_checkpoint_name, requirement.checkpoint.name)
-        else: # Quantity requirement
+        else:  # Quantity requirement
             return CompareResultsQuantity(requirement.type.value, requirement.count)
 
     def adapt_rule_scope(self, rule):
-        if not rule.scope: return None
+        if not rule.scope:
+            return None
 
         scope = rule.scope
         checkpoints = scope.selector.get_checkpoints()
@@ -100,7 +103,8 @@ class JarlRuleAdapter():
         scope_steps = [self._adapt_checkpoints_names(checkpoints)]
 
         adapter_arg_names = self._adapt_argument_names(checkpoints)
-        if adapter_arg_names: scope_steps.append(adapter_arg_names)
+        if adapter_arg_names:
+            scope_steps.append(adapter_arg_names)
 
         scope_steps.append(self._adapt_checkpoints_cross_and_group(checkpoints, iterators))
 
@@ -122,7 +126,8 @@ class JarlRuleAdapter():
         fact_steps = [self._adapt_checkpoints_names(checkpoints)]
 
         adapter_arg_names = self._adapt_argument_names(checkpoints)
-        if adapter_arg_names: fact_steps.append(adapter_arg_names)
+        if adapter_arg_names:
+            fact_steps.append(adapter_arg_names)
 
         fact_steps.append(self._adapt_checkpoints_cross_and_group(checkpoints, iterators))
 
@@ -138,7 +143,8 @@ class JarlRuleAdapter():
     def get_passed_by_default(self, rule):
         req = rule.fact.facts[0].requirement
         # If requirement is of order, passed_by_default is always true
-        if req.get_checkpoints(): return True
+        if req.get_checkpoints():
+            return True
 
         false_cases = [
             req.type == JarlComparator.EQ and req.count != 0,

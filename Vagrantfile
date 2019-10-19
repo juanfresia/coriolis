@@ -20,7 +20,7 @@ Vagrant.configure(2) do |config|
       vb.name = "Concutest"
     end
   end
- 
+
   config.vm.provision 'shell' do |s|
     s.privileged = true
     s.path = "dev/provision.sh"
