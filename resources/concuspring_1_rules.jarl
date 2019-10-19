@@ -41,7 +41,7 @@ rule box_sent_before_received
 for every dc1, box1:
 before dc_receive_box(dc1, box1):
   for every dc2, box2 and any p with dc2=dc1, box2=box1:
-  prod_send_box(p, box, dc2) must happen 1 times
+  prod_send_box(p, box2, dc2) must happen 1 times
 
 rule bouquet_unboxed_only_after_received
 for every dc1, b, box1, t:
@@ -67,7 +67,7 @@ rule hundred_bouquets_per_package_when_sent
 for every dc1, pack1 and any sp, t1:
 before dc_send_package(dc1, sp, pack1, t1):
   for every dc2, pack2 and any b, t2 with dc2=dc1, pack2=pack1, t2=t1:
-  dc_package_bouquet(dc2, b, pack2, t2) must happen 100 times
+  dc_package_bouquet(dc2, b, pack2, t2) must happen 3 times
 
 rule bouquets_only_packaged_once
 for every b, t and any dc, pack:
@@ -81,10 +81,10 @@ before dc_send_package(dc1, sp, pack1, t1):
 
 rule at_most_hundred_bouquets_per_package
 for every pack and any dc, b, t:
-dc_package_bouquet(dc, b, pack, t) must happen at most 100 times
+dc_package_bouquet(dc, b, pack, t) must happen at most 3 times
 
 rule package_sent_before_received
-for every pack1, t1, sp:
+for every pack1, t1, sp1:
 before sp_receive_package(sp1, pack1, t1):
   for every pack2, t2, sp2 and any dc with t2=t1, pack2=pack1, sp2=sp1:
   dc_send_package(dc, sp2, pack2, t2) must happen 1 times
@@ -93,13 +93,13 @@ rule unpackaged_bouquet_was_previously_packaged
 for every b1, pack1, t1 and any sp:
 before sp_unpackage_bouquet(sp, b1, pack1, t1):
   for every b2, t2, pack2 and any dc with b2=b1, pack2=pack1, t2=t1:
-  dc_package_bouquet(dc2, b2, pack2, t2) must happen 1 times
+  dc_package_bouquet(dc, b2, pack2, t2) must happen 1 times
 
 rule at_most_hundred_bouquets_unpackaged_per_package
 for every sp1, sp2, pack1, pack2, b1 and any t1, t2 with sp2=sp1, pack2=pack1:
 between sp_unpackage_bouquet(sp1, b1, pack1, t1) and previous sp_receive_package(sp2, pack2, t2):
   for every sp3, pack3 and any b2, t3 with pack3=pack1:
-  sp_unpackage_bouquet(sp3, b2, pack3, t3) must happen at most 100 times
+  sp_unpackage_bouquet(sp3, b2, pack3, t3) must happen at most 3 times
 
 rule internet_orders_requested_before_served
 for every o1, o2, sp1, sp2 and any ra, ta with o1=o2, sp1=sp2:
