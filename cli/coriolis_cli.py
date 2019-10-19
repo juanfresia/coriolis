@@ -46,6 +46,7 @@ class CoriolisCLI():
         instrument_parser.add_argument('-c', '--checkpoints', metavar='checkpoints', nargs=1,
                             action=FullPaths, help='Checkpoint list file',
                             default='{}/test.chk'.format(CURDIR))
+        instrument_parser.add_argument('-v', '--verbose',action='store_true', help="Enables verbosity")
         instrument_parser.set_defaults(func=run_instrumenter)
 
     def parse_args(self):

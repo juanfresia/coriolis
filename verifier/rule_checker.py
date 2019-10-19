@@ -4,7 +4,7 @@ import multiprocessing
 
 from verifier.log_parser import LogParser
 from verifier.mongo_client import MongoClient
-from verifier.printer import VerifierPrinter
+from common.printer import VerifierPrinter
 from common.jarl_rule import JARLRule, RuleScope, RuleFact
 from common.aggregation_steps import *
 
@@ -44,9 +44,9 @@ class RuleChecker:
 def run_verifier(args):
     try:
         exec(open(args.rules).read())
-        rc = RuleChecker(all_rules, args.log_file, args.checkpoints)
-        all_rules = rc.check_all_rules()
-        VerifierPrinter(args.verbose).print_verifier_summary(all_rules)
+        rc = RuleChecker(locals()['all_rules'], args.log_file, args.checkpoints)
+        rules_results = rc.check_all_rules()
+        VerifierPrinter(args.verbose).print_verifier_summary(rules_results)
     except NameError as e:
         print("FATAL: The {} file seems to be corrupt:".format(args.rules))
         print(str(e))

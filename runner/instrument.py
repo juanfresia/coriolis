@@ -4,6 +4,8 @@ import os
 import distutils.dir_util
 
 from runner import lang_instrumenter
+from common.printer import InstrumenterPrinter
+
 
 class Instrumenter:
     def __init__(self, language, checkpoints):
@@ -25,15 +27,12 @@ class Instrumenter:
                 if self.instrumenter.can_instrument(file):
                     self.instrumenter.instrument_file_inline(file)
 
+
 def run_instrumenter(args):
-    print("Source: ", args.source)
-    print("Destination: ", args.destination)
-    print("Language: ", args.language)
-    print("Checkpoints: ", args.checkpoints)
+    InstrumenterPrinter(args.verbose).print_instrument_summary(args.source, args.destination, args.language[0], args.checkpoints)
 
     inst = Instrumenter(args.language[0], args.checkpoints)
     inst.instrument(args.source, args.destination)
 
     # TODO: Remove this (it copies the coriolis logger)
     distutils.dir_util.copy_tree("/vagrant/runner/libs/", args.destination)
-
