@@ -6,9 +6,9 @@ apt-get update
 
 /vagrant/dev/scripts/install-docker
 /vagrant/dev/scripts/install-antlr
+/vagrant/dev/scripts/install-rust
 
-curl https://sh.rustup.rs -sSf | sh -s -- -y;
-
+# Set up MongoDB as a container ran with systemd
 cp /vagrant/dev/files/mongodb.service /etc/systemd/system/mongodb.service
 systemctl enable mongodb
 
