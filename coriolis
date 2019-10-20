@@ -21,20 +21,24 @@ class CoriolisCLI():
         # TODO: fill this
         print("Usage: TODO fill-me")
 
+    def _parse_and_verify(self, args):
+        all_rules = run_parser(args)
+        run_verifier(args, all_rules)
+
     def _add_verify_subcommand(self):
         CURDIR = os.getcwd()
-        verify_parser = self.subcommands.add_parser('verify', description='Verifies concurrent rules based on log file.')
+        verify_parser = self.subcommands.add_parser('verify', description='Verifies JARL rules based on log files.')
         verify_parser.add_argument('-l', '--log-file', metavar='logfile', nargs=1,
                             action=FullPaths, help='Log file',
                             default='{}/coriolis_run.log'.format(CURDIR))
         verify_parser.add_argument('-c', '--checkpoints', metavar='checkpoints', nargs=1,
                             action=FullPaths, help='Checkpoint list file',
                             default='{}/rules.chk'.format(CURDIR))
-        verify_parser.add_argument('-r', '--rules', metavar='rules', nargs=1,
-                            action=FullPaths, help='Rules parsed .py file',
-                            default='{}/rules.py'.format(CURDIR))
+        verify_parser.add_argument('-r', '--rules', metavar='rules_file', nargs=1,
+                            action=FullPaths, help='Rules .jarl file',
+                            default='{}/rules.jarl'.format(CURDIR))
         verify_parser.add_argument('-v', '--verbose',action='store_true', help="Enables verbosity")
-        verify_parser.set_defaults(func=run_verifier)
+        verify_parser.set_defaults(func=self._parse_and_verify)
 
     def _add_instrument_subcommand(self):
         CURDIR = os.getcwd()
@@ -53,7 +57,7 @@ class CoriolisCLI():
 
     def _add_parse_subcommand(self):
         CURDIR = os.getcwd()
-        parse_parser = self.subcommands.add_parser('parse', description='Parses rules from .jarl file.')
+        parse_parser = self.subcommands.add_parser('parse', description='Parses and validates JARL rules from file.')
         parse_parser.add_argument('-r', '--rules', metavar='rules_file', nargs=1,
                             action=FullPaths, help='Rules .jarl file',
                             default='{}/rules.jarl'.format(CURDIR))

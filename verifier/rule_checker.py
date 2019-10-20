@@ -41,9 +41,8 @@ class RuleChecker:
         return all_rules
 
 
-def run_verifier(args):
+def run_verifier(args, all_rules):
     try:
-        exec(open(args.rules).read())
         rc = RuleChecker(locals()['all_rules'], args.log_file, args.checkpoints)
         rules_results = rc.check_all_rules()
         VerifierPrinter(args.verbose).print_verifier_summary(rules_results)
