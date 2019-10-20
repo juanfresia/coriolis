@@ -99,4 +99,4 @@ class TestRustInstrumenter(unittest.TestCase):
         self.assertEqual(l, '// checkpoint produce 1 2')
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(buffer=True)

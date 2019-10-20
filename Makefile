@@ -15,10 +15,10 @@ lint:
 	@autopep8 ${PEP8FLAGS} ${PEP8FILES}
 
 test_parser test_common test_verifier test_runner: lint
-	@python3 -m unittest discover -s tests/$(patsubst test_%,%,$@) -p '*.py' -t . -v
+	@python3 -m unittest discover -b -s tests/$(patsubst test_%,%,$@) -p '*.py' -t . -v
 .PHONY: test_parser test_common test_verifier test_runner
 
 test: lint
-	@python3 -m unittest discover -s tests -p '*.py' -t .
+	@python3 -m unittest discover -b -s tests -p '*.py' -t .
 
 .PHONY: test

@@ -36,7 +36,7 @@ class VerifierPrinter(CoriolisPrinter):
     def _print_rule(self, rule):
         rule_fore = Fore.GREEN if rule.has_passed() else Fore.RED
         rule_status = "PASSED" if rule.has_passed() else "FAILED"
-        self._print_left_right_aligned("RULE {}".format(rule.rule_header), rule_status, None, rule_fore)
+        self._print_left_right_aligned("Rule {}".format(rule.rule_header), rule_status, None, rule_fore)
         if self.using_verbosity:
             print()
             print(rule_fore + rule.text + Style.RESET_ALL)

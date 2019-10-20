@@ -1,8 +1,29 @@
 import unittest
 
-from parser.jarl_parser_cli import parse_str
+from parser.jarl_parser_cli import *
+from antlr4 import *
+from parser.JarlLexer import JarlLexer
+from parser.JarlParser import JarlParser
+from parser.jarl_actual_listener import JarlListener
+from parser.jarl_rule_validator import JarlRuleValidator
 from parser.jarl_rule import *
 from parser.jarl_parser_exceptions import *
+
+def parse_str(input):
+    input = InputStream(input)
+    lexer = JarlLexer(input)
+    stream = CommonTokenStream(lexer)
+    stream_parser = JarlParser(stream)
+
+    tree = stream_parser.jarl()
+    Jarl = JarlListener()
+    walker = ParseTreeWalker()
+    walker.walk(Jarl, tree)
+
+    for rule in Jarl.rules:
+        JarlRuleValidator().validate_rule(rule)
+
+    return Jarl.rules
 
 class TestParserCLI(unittest.TestCase):
     def test_parse_rule_name(self):
@@ -23,7 +44,7 @@ class TestParserCLI(unittest.TestCase):
 
     # TODO make it raise error
     def test_parse_garbage(self):
-        rules = parse_str("this is a garbage rule, it should not mean anything", show_errors=False)
+        rules = parse_str("this is a garbage rule, it should not mean anything")
         self.assertFalse(rules)
         self.assertListEqual([], rules)
 
@@ -631,4 +652,4 @@ class TestParserCLI(unittest.TestCase):
         self.assertEqual(expected_rule, rules[0])
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(buffer=True)

@@ -38,7 +38,7 @@ class CoriolisCLI():
 
     def _add_instrument_subcommand(self):
         CURDIR = os.getcwd()
-        instrument_parser = self.subcommands.add_parser('instrument', description='Instrument code.')
+        instrument_parser = self.subcommands.add_parser('instrument', description='Instruments user code.')
         instrument_parser.add_argument('-s', '--source', metavar='source', nargs=1,
                             help='Source directory', default=CURDIR, action=FullPaths)
         instrument_parser.add_argument('-d', '--destination', metavar='destination', nargs=1,
@@ -53,9 +53,11 @@ class CoriolisCLI():
 
     def _add_parse_subcommand(self):
         CURDIR = os.getcwd()
-        parse_parser = self.subcommands.add_parser('parse', description='Parse .jarl file.')
-        parse_parser.add_argument('rules_file', metavar='file', nargs=1,
-                            help='Rules file', action=FullPaths)
+        parse_parser = self.subcommands.add_parser('parse', description='Parses rules from .jarl file.')
+        parse_parser.add_argument('-r', '--rules', metavar='rules_file', nargs=1,
+                            action=FullPaths, help='Rules .jarl file',
+                            default='{}/rules.jarl'.format(CURDIR))
+        parse_parser.add_argument('-v', '--verbose',action='store_true', help="Enables verbosity")
         parse_parser.set_defaults(func=run_parser)
 
     def parse_args(self):

@@ -22,9 +22,10 @@ class InstrumenterPrinter(CoriolisPrinter):
             self._print_separator()
         file_fore = Fore.GREEN if can_instrument else None
         file_text = "FINISHED" if can_instrument else "SKIPPED"
-        self._print_left_right_aligned("FILE {}".format(filename), file_text, None, file_fore)
+        self._print_left_right_aligned("File {}".format(filename), file_text, None, file_fore)
 
     def print_error(self, error_msg):
+        error_msg = "ERROR: {}".format(error_msg)
         self._print_wrapped_text(Fore.RED + error_msg + Style.RESET_ALL)
 
     def print_matched_line(self, line):

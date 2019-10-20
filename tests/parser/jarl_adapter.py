@@ -500,4 +500,4 @@ class TestAdapter(unittest.TestCase):
         self.assertEqual(expected_rule, steps)
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(buffer=True)

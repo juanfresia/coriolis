@@ -6,6 +6,7 @@ import os
 from common import checkpoint_table
 from runner.instrumenter_printer import *
 
+
 class FileInstrumenter:
     def __init__(self, checkpoint_file, verbose_mode=False):
         self.checkpoint_table = checkpoint_table.CheckpointTable(checkpoint_file)
@@ -28,10 +29,6 @@ class FileInstrumenter:
 
     def instrument_line(self, line):
         raise NotImplementedError
-
-    def _debug_message(self, text):
-        return
-        print(text)
 
     def can_instrument(self, path):
         raise NotImplementedError

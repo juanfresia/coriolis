@@ -6,8 +6,6 @@ from parser.jarl_parser_exceptions import *
 
 class TestExamplesFromSpec(unittest.TestCase):
 
-    rules = parse_file("resources/jarl_spec_examples.jarl")
-
     def test_jarl_spec_example_1(self):
         fact_filter_wildcards = []
         fact_filter_iterators = ["msg"]
@@ -24,7 +22,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[0])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[0])
 
     def test_jarl_spec_example_2(self):
         fact_filter_wildcards = []
@@ -41,7 +40,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[1])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[1])
 
     def test_jarl_spec_example_3(self):
         fact_filter_wildcards = []
@@ -58,7 +58,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[2])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[2])
 
     def test_jarl_spec_example_4(self):
         fact_filter_wildcards = ["item_id"]
@@ -75,7 +76,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[3])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[3])
 
     def test_jarl_spec_example_5(self):
         fact_filter_wildcards = ["pid"]
@@ -92,7 +94,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[4])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[4])
 
     def test_jarl_spec_example_6(self):
         fact_filter_wildcards = ["i", "j"]
@@ -109,7 +112,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[5])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[5])
 
     def test_jarl_spec_example_7(self):
         fact_filter_wildcards = ["pid"]
@@ -127,7 +131,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[6])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[6])
 
     def test_jarl_spec_example_8(self):
         fact_filter_wildcards = ["msg"]
@@ -144,7 +149,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[7])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[7])
 
     def test_jarl_spec_example_9(self):
         fact_filter_wildcards = ["j"]
@@ -161,7 +167,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[8])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[8])
 
     def test_jarl_spec_example_10(self):
         fact_filter_wildcards = ["smoker_id", "element_id"]
@@ -180,7 +187,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[9])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[9])
 
     def test_jarl_spec_example_11(self):
         fact_filter_wildcards = []
@@ -200,7 +208,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[10])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[10])
 
     def test_jarl_spec_example_12(self):
         fact_filter_wildcards = []
@@ -219,7 +228,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[11])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[11])
 
 
 
@@ -242,7 +252,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[12])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[12])
 
     def test_jarl_spec_example_14(self):
         scope_selector_chk1 = JarlCheckpoint("notify_all")
@@ -263,7 +274,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[13])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[13])
 
     def test_jarl_spec_example_15(self):
         scope_selector_chk1 = JarlCheckpoint("lock_create")
@@ -284,7 +296,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[14])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[14])
 
     def test_jarl_spec_example_16(self):
         scope_selector_chk1 = JarlCheckpoint("sem_signal")
@@ -305,7 +318,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[15])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[15])
 
     def test_jarl_spec_example_17(self):
         scope_selector_chk1 = JarlCheckpoint("lock_destroy")
@@ -322,7 +336,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(None, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[16])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[16])
 
     def test_jarl_spec_example_18(self):
         scope_selector_chk1 = JarlCheckpoint("produce")
@@ -339,7 +354,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(None, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[17])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[17])
 
     def test_jarl_spec_example_19(self):
         scope_filter_wildcards = ["smoker_id"]
@@ -366,7 +382,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[18])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[18])
 
     def test_jarl_spec_example_20(self):
         scope_filter_wildcards = ["producer_id", "consumer_id", "i1", "i2"]
@@ -393,7 +410,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[19])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[19])
 
     def test_jarl_spec_example_21(self):
         scope_filter_wildcards = []
@@ -421,7 +439,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[20])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[20])
 
     def test_jarl_spec_example_22(self):
         scope_filter_wildcards = []
@@ -455,7 +474,8 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[21])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[21])
 
     def test_jarl_spec_example_23(self):
         scope_filter_wildcards = []
@@ -484,9 +504,10 @@ class TestExamplesFromSpec(unittest.TestCase):
             fact=JarlRuleFact(fact_filter, fact_clause)
         )
 
-        self.assertEqual(expected_rule, self.rules[22])
+        rules = parse_file("resources/jarl_spec_examples.jarl")
+        self.assertEqual(expected_rule, rules[22])
 
 
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(buffer=True)
