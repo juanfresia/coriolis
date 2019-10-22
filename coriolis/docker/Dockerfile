@@ -9,5 +9,5 @@ RUN pyinstaller --clean --onefile coriolis
 
 FROM python:3.6
 
-COPY --from=0 /coriolis/dist/coriolis /coriolis/
+COPY --from=0 /coriolis/dist/coriolis /coriolis
 ENTRYPOINT ["/coriolis"]
