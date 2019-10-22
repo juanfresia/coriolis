@@ -4,8 +4,8 @@ from verifier.rule_checker import *
 
 
 class TestSanta(unittest.TestCase):
-    log_file = "/vagrant/resources/santa_1.log"
-    checkpoint_file = "/vagrant/resources/santa.chk"
+    log_file = "./resources/santa_1.log"
+    checkpoint_file = "./resources/santa.chk"
 
     rule_1_statement = (
         "# Santa prepares his sleigh at most once when awake\n"
@@ -334,8 +334,8 @@ class TestSanta(unittest.TestCase):
 
 @unittest.skip("Skipping because it is a load test")
 class TestHighLoadSanta(unittest.TestCase):
-    log_file = "/vagrant/resources/santa_2.log"
-    checkpoint_file = "/vagrant/resources/santa.chk"
+    log_file = "./resources/santa_2.log"
+    checkpoint_file = "./resources/santa.chk"
 
     rule_1_statement = (
         "# Santa prepares his sleigh at most once when awake\n"

@@ -4,8 +4,8 @@ from verifier.rule_checker import *
 
 
 class TestPhilos(unittest.TestCase):
-    log_file = "/vagrant/resources/philos_1.log"
-    checkpoint_file = "/vagrant/resources/philos.chk"
+    log_file = "./resources/philos_1.log"
+    checkpoint_file = "./resources/philos.chk"
 
     rule_1_statement = (
         "rule every_philo_eats_four_times\n"

@@ -4,8 +4,8 @@ from verifier.rule_checker import *
 
 
 class TestProducersConsumers(unittest.TestCase):
-    log_file = "/vagrant/resources/prod_cons_1.log"
-    checkpoint_file = "/vagrant/resources/prod_cons.chk"
+    log_file = "./resources/prod_cons_1.log"
+    checkpoint_file = "./resources/prod_cons.chk"
 
     rule_1_statement = (
         "# Every item is produced only once\n"

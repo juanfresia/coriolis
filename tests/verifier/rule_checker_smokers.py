@@ -4,8 +4,8 @@ from verifier.rule_checker import *
 
 
 class TestSmokers(unittest.TestCase):
-    log_file = "/vagrant/resources/smokers_1.log"
-    checkpoint_file = "/vagrant/resources/smokers.chk"
+    log_file = "./resources/smokers_1.log"
+    checkpoint_file = "./resources/smokers.chk"
 
     rule_1_statement = (
         "# Only one smoker smokes at a time\n"

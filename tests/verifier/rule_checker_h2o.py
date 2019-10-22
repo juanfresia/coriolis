@@ -4,8 +4,8 @@ from verifier.rule_checker import *
 
 
 class TestH2O(unittest.TestCase):
-    log_file = "/vagrant/resources/h2o_1.log"
-    checkpoint_file = "/vagrant/resources/h2o.chk"
+    log_file = "./resources/h2o_1.log"
+    checkpoint_file = "./resources/h2o.chk"
 
     rule_1_statement = (
         "# 60 atoms are spawned in total\n"
@@ -314,8 +314,8 @@ class TestH2O(unittest.TestCase):
 
 @unittest.skip("Skipping because it is a load test")
 class TestHighLoadH2O(unittest.TestCase):
-    log_file = "/vagrant/resources/h2o_2.log"
-    checkpoint_file = "/vagrant/resources/h2o.chk"
+    log_file = "./resources/h2o_2.log"
+    checkpoint_file = "./resources/h2o.chk"
 
     rule_1_statement = (
         "# 1500 atoms are spawned in total\n"

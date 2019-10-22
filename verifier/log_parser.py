@@ -37,5 +37,5 @@ class LogParser:
 
 
 if __name__ == "__main__":
-    log_parser = LogParser("/vagrant/resources/prod_cons_1.log", "/vagrant/resources/prod_cons.chk")
+    log_parser = LogParser("./resources/prod_cons_1.log", "./resources/prod_cons.chk")
     log_parser.populate_db()

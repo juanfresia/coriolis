@@ -4,8 +4,8 @@ from verifier.rule_checker import *
 
 
 class TestReadersWriters(unittest.TestCase):
-    log_file = "/vagrant/resources/readers_writers_1.log"
-    checkpoint_file = "/vagrant/resources/readers_writers.chk"
+    log_file = "./resources/readers_writers_1.log"
+    checkpoint_file = "./resources/readers_writers.chk"
 
     rule_1_statement = (
         "# If a writer is on a room, readers cannot enter\n"

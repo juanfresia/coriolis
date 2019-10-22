@@ -4,8 +4,8 @@ from verifier.rule_checker import *
 
 
 class TestConculand(unittest.TestCase):
-    log_file = "/vagrant/resources/conculand_1.log"
-    checkpoint_file = "/vagrant/resources/conculand.chk"
+    log_file = "./resources/conculand_1.log"
+    checkpoint_file = "./resources/conculand.chk"
 
     rule_1_statement = (
         "# Employees serve a person per round (they are not gnocchi)\n"

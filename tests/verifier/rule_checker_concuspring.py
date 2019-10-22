@@ -4,8 +4,8 @@ from verifier.rule_checker import *
 
 
 class TestConcuspring(unittest.TestCase):
-    log_file = "/vagrant/resources/concuspring_1.log"
-    checkpoint_file = "/vagrant/resources/concuspring.chk"
+    log_file = "./resources/concuspring_1.log"
+    checkpoint_file = "./resources/concuspring.chk"
 
     rule_1_statement = (
         "rule bouquets_made_before_boxed\n"
