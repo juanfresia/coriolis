@@ -20,5 +20,7 @@ test_parser test_common test_verifier test_runner: lint
 
 test: lint
 	@python3 -m unittest discover -b -s tests -p '*.py' -t .
-
 .PHONY: test
+
+docker-image:
+	docker build -f docker/Dockerfile -t coriolis:latest .
