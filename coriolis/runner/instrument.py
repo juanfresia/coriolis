@@ -38,4 +38,4 @@ def run_instrumenter(args):
     inst.instrument(args.source, args.destination)
 
     # TODO: Remove this (it copies the coriolis logger)
-    distutils.dir_util.copy_tree("/vagrant/runner/libs/", args.destination)
+    distutils.dir_util.copy_tree("runner/libs/", args.destination)

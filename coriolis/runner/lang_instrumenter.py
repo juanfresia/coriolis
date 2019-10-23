@@ -87,6 +87,9 @@ class LanguageCInstrumenter(FileInstrumenter):
     def instrument_file_inline(self, path):
         super().instrument_file_inline(path)
 
+    def _get_coriolis_header(self):
+        return '#include <coriolis_logger.h>\n'
+
     def instrument_line(self, line):
         match = self.pattern.match(line)
         if match:
@@ -103,7 +106,7 @@ class LanguageCInstrumenter(FileInstrumenter):
                     except BaseException:
                         log_line = line
             elif match.group(1) == "has_checkpoints":
-                log_line = '#include \"coriolis_logger.h\"\n'
+                log_line = self._get_coriolis_header()
 
             return log_line
 
@@ -119,7 +122,10 @@ class LanguageCppInstrumenter(LanguageCInstrumenter):
 
     def can_instrument(self, path):
         ext = os.path.splitext(path)[-1].lower()
-        return ext in [".cpp", ".c", ".h"]
+        return ext in [".cpp", ".h"]
+
+    def _get_coriolis_header(self):
+        return 'extern "C" {\n#include <coriolis_logger.h>\n}\n'
 
     def format_logging_line(self, args):
         log_line = "coriolis_logger_write(\""

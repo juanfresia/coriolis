@@ -8,7 +8,7 @@
 #include <sys/time.h>
 #include "coriolis_lock.h"
 
-#define CORIOLIS_LOGGER_OUTPUT_FILE "coriolis_run.log"
+#define CORIOLIS_LOGGER_OUTPUT_FILE "/logs/coriolis_run.log"
 
 /* Structure used to represent coriolis_logger. */
 typedef struct coriolis_logger_ {
