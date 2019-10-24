@@ -11,7 +11,7 @@ except ModuleNotFoundError:
     ON_LINUX = False
 
 
-CORIOLIS_LOGGER_OUTPUT_FILE = "coriolis_run.log"
+CORIOLIS_LOGGER_OUTPUT_FILE = "/logs/coriolis_run.log"
 
 class CoriolisLogger:
     def __init__(self):

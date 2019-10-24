@@ -5,7 +5,7 @@ RUN apt-get update && \
     wget -qO- "https://cmake.org/files/v3.15/cmake-3.15.4-Linux-x86_64.tar.gz" | \
     tar --strip-components=1 -xz -C /usr/local
 
-WORKDIR /logs
+RUN mkdir -p /logs
 WORKDIR /src
 COPY /coriolis_* ./
 RUN gcc -Wall -Werror -c -fPIC coriolis_lock.c -o coriolis_lock.o && \
