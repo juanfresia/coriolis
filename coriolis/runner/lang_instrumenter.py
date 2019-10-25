@@ -220,7 +220,7 @@ class LanguageRustInstrumenter(FileInstrumenter):
         self.ext = "Rs"
 
     def format_logging_line(self, args):
-        log_line = "coriolis_logger::coriolis_logger_write(format!(\""
+        log_line = "coriolis::coriolis_logger_write(format!(\""
 
         try:
             arg_types = self.checkpoint_table.get_checkpoint(args[0]).get_arg_types()
@@ -263,7 +263,7 @@ class LanguageRustInstrumenter(FileInstrumenter):
                     except BaseException:
                         log_line = line
             elif match.group(1) == "has_checkpoints":
-                log_line = "mod coriolis_logger;\n"
+                log_line = "extern crate coriolis;\n"
 
             return log_line
 

@@ -88,7 +88,7 @@ class TestRustInstrumenter(unittest.TestCase):
 
     def test_checkpoint_line(self):
         l = LanguageRustInstrumenter('./resources//prod_cons.chk').instrument_line('// @checkpoint produce 1 2')
-        self.assertEqual(l, 'coriolis_logger::coriolis_logger_write(format!("{}  {}  {}\\n", "produce", 1, 2));\n')
+        self.assertEqual(l, 'coriolis::coriolis_logger_write(format!("{}  {}  {}\\n", "produce", 1, 2));\n')
 
     def test_checkpoint_not_in_table(self):
         l = LanguageRustInstrumenter('./resources//prod_cons.chk').instrument_line('// @checkpoint magic 8')

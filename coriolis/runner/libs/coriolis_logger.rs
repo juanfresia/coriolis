@@ -1,7 +1,7 @@
 use std::fs::OpenOptions;
 use std::io::prelude::*;
 
-const CORIOLIS_LOGGER_OUTPUT_FILE: &str = "coriolis_run.log";
+const CORIOLIS_LOGGER_OUTPUT_FILE: &str = "/logs/coriolis_run.log";
 
 
 pub fn coriolis_logger_write(log_line: String) {
