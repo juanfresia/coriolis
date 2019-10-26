@@ -15,5 +15,5 @@ systemctl enable mongodb
 apt-get install -y python3-pip valgrind
 pip3 install virtualenv
 
-cd /vagrant && virtualenv venv
-source /vagrant/venv/bin/activate && pip3 install -r /vagrant/requirements.txt
+cd /vagrant/coriolis && virtualenv venv
+source /vagrant/coriolis/venv/bin/activate && pip3 install -r /vagrant/coriolis/requirements.txt
