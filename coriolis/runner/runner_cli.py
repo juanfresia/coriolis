@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import time
 import distutils.dir_util
 import docker  # pip3 install docker
 from uuid import uuid4
@@ -57,13 +58,17 @@ class Runner:
         volumes = {src_dir: {"bind": "/src", "mode": "rw"}, logs_dir: {"bind": "/logs", "mode": "rw"}}
         docker_args = {
             "remove": True,
+            "auto_remove": True,
             "stdin_open": True,
             "tty": True,
             "init": True,
             "detach": True,
             "volumes": volumes
         }
-        self.docker_client.containers.run(image, **docker_args)
+        docker_container = self.docker_client.containers.run(image, **docker_args)
+        for i in range(0, 3000):
+            time.sleep(0.5)
+            print(docker_container.status)
 
 
 def run_runner(args):
