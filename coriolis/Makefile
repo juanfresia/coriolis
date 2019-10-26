@@ -24,3 +24,6 @@ test: lint
 
 docker-image:
 	docker build -f docker/Dockerfile -t coriolis:latest .
+
+build:
+	docker run --rm -v $(shell pwd)/bin:/mnt coriolis:latest cp dist/coriolis /mnt
