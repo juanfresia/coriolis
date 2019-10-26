@@ -1,6 +1,10 @@
+GIT_SHA := $(shell git rev-parse HEAD | cut -c 1-12)
+VERSION := $(shell git describe --tags --dirty --always --abbrev=12)
+
+PWD := $(shell pwd)
+
 PEP8FILES = common/*.py parser/*.py runner/*.py tests/*.py verifier/*.py
 PEP8FLAGS = -v -v -v --in-place --aggressive --aggressive --aggressive --max-line-length 200
-
 
 # Recursively call parser Makefile
 parser_%:
@@ -23,4 +27,7 @@ test: lint
 .PHONY: test
 
 docker-image:
-	docker build -f docker/Dockerfile -t coriolis:latest .
+	docker build -f docker/Dockerfile -t coriolis:${VERSION} .
+
+build:
+	docker run --rm -v ${PWD}/bin:/mnt coriolis:${VERSION} cp dist/coriolis /mnt/coriolis-${VERSION}
