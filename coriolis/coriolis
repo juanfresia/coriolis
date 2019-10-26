@@ -4,7 +4,7 @@ import argparse
 import os
 
 from verifier.verifier_cli import run_verifier
-from runner.runner_cli import run_instrumenter
+from runner.runner_cli import run_runner
 from parser.parser_cli import run_parser
 from common.utils import FullPaths
 
@@ -13,7 +13,7 @@ class CoriolisCLI():
         self.parser = argparse.ArgumentParser(description='Coriolis CLI tool')
         self.subcommands = self.parser.add_subparsers()
         self._add_verify_subcommand()
-        self._add_instrument_subcommand()
+        self._add_run_subcommand()
         self._add_parse_subcommand()
         self.parser.set_defaults(func=self.print_usage)
 
@@ -40,9 +40,9 @@ class CoriolisCLI():
         verify_parser.add_argument('-v', '--verbose',action='store_true', help="Enables verbosity")
         verify_parser.set_defaults(func=self._parse_and_verify)
 
-    def _add_instrument_subcommand(self):
+    def _add_run_subcommand(self):
         CURDIR = os.getcwd()
-        instrument_parser = self.subcommands.add_parser('instrument', description='Instruments user code.')
+        instrument_parser = self.subcommands.add_parser('run', description='Runs user code producing log files.')
         instrument_parser.add_argument('-s', '--source', metavar='source', nargs=1,
                             help='Source directory', default=CURDIR, action=FullPaths)
         instrument_parser.add_argument('-d', '--destination', metavar='destination', nargs=1,
@@ -53,7 +53,7 @@ class CoriolisCLI():
                             action=FullPaths, help='Checkpoint list file',
                             default='{}/test.chk'.format(CURDIR))
         instrument_parser.add_argument('-v', '--verbose',action='store_true', help="Enables verbosity")
-        instrument_parser.set_defaults(func=run_instrumenter)
+        instrument_parser.set_defaults(func=run_runner)
 
     def _add_parse_subcommand(self):
         CURDIR = os.getcwd()
