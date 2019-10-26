@@ -5,6 +5,6 @@ RUN pip3 install pyinstaller
 ADD . /coriolis
 
 WORKDIR /coriolis
-
 RUN pip3 install -r requirements.txt
+
 RUN pyinstaller --clean --onefile coriolis

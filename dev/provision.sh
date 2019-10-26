@@ -11,6 +11,7 @@ apt-get update
 # Set up MongoDB as a container ran with systemd
 cp /vagrant/dev/files/mongodb.service /etc/systemd/system/mongodb.service
 systemctl enable mongodb
+systemctl start mongodb
 
 apt-get install -y python3-pip valgrind
 pip3 install virtualenv
