@@ -1,6 +1,6 @@
 import unittest
 
-from parser.jarl_parser_cli import adapt_file
+from parser.parser_cli import adapt_file
 
 class TestAdapterProdCons(unittest.TestCase):
     exec(open("resources/prod_cons_1_rules.py").read())

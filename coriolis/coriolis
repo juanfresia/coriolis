@@ -3,9 +3,9 @@
 import argparse
 import os
 
-from verifier.rule_checker import run_verifier
-from runner.instrument import run_instrumenter
-from parser.jarl_parser_cli import run_parser
+from verifier.verifier_cli import run_verifier
+from runner.runner_cli import run_instrumenter
+from parser.parser_cli import run_parser
 from common.utils import FullPaths
 
 class CoriolisCLI():

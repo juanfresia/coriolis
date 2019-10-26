@@ -83,7 +83,3 @@ def adapt_str(string, verbose=False):
 
 def run_parser(args):
     return adapt_file(args.rules, args.verbose)
-    #print("all_rules = [")
-    # for rule in rules:
-    #    print("\t{},\n".format(str(rule).replace("\n", "\n\t")))
-    # print("]")

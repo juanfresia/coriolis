@@ -1,6 +1,6 @@
 import unittest
 
-from parser.jarl_parser_cli import parse_str
+from parser.parser_cli import parse_str
 from parser.jarl_rule import *
 from parser.jarl_parser_exceptions import *
 

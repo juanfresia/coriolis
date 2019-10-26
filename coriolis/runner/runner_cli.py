@@ -4,15 +4,18 @@ import os
 import distutils.dir_util
 
 from runner import lang_instrumenter
-from runner.instrumenter_printer import InstrumenterPrinter
+from runner.runner_printer import RunnerPrinter
 
 
-class Instrumenter:
+class Runner:
     def __init__(self, language, checkpoints, verbose_mode=False):
         self.instrumenter = lang_instrumenter.get_file_instrumenter(language, checkpoints, verbose_mode)
-        self.printer = InstrumenterPrinter(verbose_mode)
+        self.printer = RunnerPrinter(verbose_mode)
+        self.language = language
+        self.checkpoints = checkpoints
 
     def instrument(self, src_dir, dst_dir):
+        self.printer.print_instrument_summary(src_dir, dst_dir, self.language, self.checkpoints)
         try:
             distutils.dir_util.copy_tree(src_dir, dst_dir)
         except Exception as err:
@@ -32,10 +35,5 @@ class Instrumenter:
 
 
 def run_instrumenter(args):
-    InstrumenterPrinter(args.verbose).print_instrument_summary(args.source, args.destination, args.language[0], args.checkpoints)
-
-    inst = Instrumenter(args.language[0], args.checkpoints, args.verbose)
-    inst.instrument(args.source, args.destination)
-
-    # TODO: Remove this (it copies the coriolis logger)
-    distutils.dir_util.copy_tree("runner/libs/", args.destination)
+    coriolis_runner = Runner(args.language[0], args.checkpoints, args.verbose)
+    coriolis_runner.instrument(args.source, args.destination)

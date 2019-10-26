@@ -1,6 +1,6 @@
 import unittest
 
-from verifier.rule_checker import *
+from verifier.verifier_cli import *
 
 
 class TestPhilos(unittest.TestCase):

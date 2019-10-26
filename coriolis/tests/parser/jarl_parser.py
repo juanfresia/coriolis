@@ -1,6 +1,6 @@
 import unittest
 
-from parser.jarl_parser_cli import *
+from parser.parser_cli import *
 from antlr4 import *
 from parser.JarlLexer import JarlLexer
 from parser.JarlParser import JarlParser
