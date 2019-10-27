@@ -54,6 +54,8 @@ class CoriolisCLI():
                             default='{}/test.chk'.format(CURDIR))
         instrument_parser.add_argument('-n', '--number-runs', metavar='number', type=int,
                             help='Number of runs to perform', default=1)
+        instrument_parser.add_argument('-t', '--timeout', metavar='secs', type=float,
+                            help='Number of seconds to wait before timeout', default=10.0)
         instrument_parser.add_argument('-v', '--verbose',action='store_true', help="Enables verbosity")
         instrument_parser.set_defaults(func=run_runner)
 

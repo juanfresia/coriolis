@@ -56,7 +56,7 @@ class Runner:
                 except Exception as e:
                     self.printer.print_error("{}".format(e))
 
-    def _run_container(self, image, docker_args, container_id):
+    def _run_container(self, image, docker_args, container_id, timeout):
         try:
             docker_container = self.docker_client.containers.run(image, **docker_args)
             self.printer.print_launch_container(container_id, True)
@@ -65,9 +65,15 @@ class Runner:
             self.printer.print_error("{}".format(e))
             return
 
-        # TODO: Change for a timeout
-        time.sleep(1.8)
+        delta_t = 1.0
+        time_elapsed = 0.0
         try:
+            while time_elapsed < timeout:
+                # We monitor the container querying the API for its status
+                docker_container.reload()
+                time.sleep(delta_t)
+                time_elapsed += delta_t
+
             docker_container.stop()
             self.printer.print_stop_container(container_id, True, True)
         except docker.errors.NotFound:
@@ -78,7 +84,7 @@ class Runner:
             self.printer.print_stop_container(container_id, False)
             self.printer.print_error("{}".format(e))
 
-    def run_code(self, logs_dir, n):
+    def run_code(self, logs_dir, n, timeout):
         self.printer.print_runner_summary(1)
         src_dir = self._get_tmp_dir()
         # Check if the run_coriolis script is inside the users project
@@ -102,10 +108,10 @@ class Runner:
                 "detach": True,
                 "volumes": volumes
             }
-            self._run_container(image, docker_args, i + 1)
+            self._run_container(image, docker_args, i + 1, timeout)
 
 
 def run_runner(args):
     coriolis_runner = Runner(args.language[0], args.checkpoints, args.verbose)
     coriolis_runner.instrument(args.source)
-    coriolis_runner.run_code(args.destination, args.number_runs)
+    coriolis_runner.run_code(args.destination, args.number_runs, args.timeout)
