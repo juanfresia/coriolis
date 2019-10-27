@@ -10,13 +10,9 @@ class ParserPrinter(CoriolisPrinter):
     def print_parser_summary(self, rules_file):
         self._print_over_separator("PARSING RULES")
         self._print_left_right_aligned("Rules file:", rules_file)
-        if not self.using_verbosity:
-            self._print_separator()
+        self._print_separator()
 
     def print_checking_syntax(self, error_lines):
-        if self.using_verbosity:
-            print()
-            self._print_separator()
         status_fore = Fore.GREEN if len(error_lines) == 0 else Fore.RED
         status_text = "OK" if len(error_lines) == 0 else "FAILED"
         self._print_left_right_aligned("Checking syntax:", status_text, None, status_fore)

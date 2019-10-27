@@ -43,7 +43,7 @@ class RuleChecker:
 
 def run_verifier(args, all_rules):
     try:
-        rc = RuleChecker(locals()['all_rules'], args.log_file, args.checkpoints)
+        rc = RuleChecker(all_rules, args.log_file, args.checkpoints)
         rules_results = rc.check_all_rules()
         VerifierPrinter(args.verbose).print_verifier_summary(rules_results)
     except NameError as e:

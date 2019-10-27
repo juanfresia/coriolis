@@ -16,8 +16,11 @@ class CoriolisPrinter:
         print(SEPARATOR)
 
     def _print_over_separator(self, text):
-        d = (SEPARATOR_LENGTH - len(text) - 2) / 2
-        print("{} {} {}".format(SEPARATOR[:floor(d)], text, SEPARATOR[-ceil(d):]))
+        #d = (SEPARATOR_LENGTH - len(text) - 2) / 2
+        print(SEPARATOR)
+        print(text.center(SEPARATOR_LENGTH))
+        #print("{} {} {}".format(SEPARATOR[:floor(d)], text, SEPARATOR[-ceil(d):]))
+        print(SEPARATOR)
 
     def _print_left_right_aligned(self, left_text, right_text, left_fore=None, right_fore=None):
         left_text = "{}".format(left_text).ljust(SEPARATOR_LENGTH - len(right_text))

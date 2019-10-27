@@ -39,9 +39,9 @@ class VerifierPrinter(CoriolisPrinter):
         self._print_left_right_aligned("Rule {}".format(rule.rule_header), rule_status, None, rule_fore)
         if self.using_verbosity:
             print()
-            print(rule_fore + rule.text + Style.RESET_ALL)
+            print(rule_fore + rule.text.rstrip() + Style.RESET_ALL)
+            print()
             if rule.has_failed():
-                self._print_over_separator("REASON")
                 failed_scope = self._rule_failed_scope_string(rule)
                 print("{}:".format(failed_scope))
                 self._print_wrapped_text(rule.get_failed_info())
