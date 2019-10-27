@@ -1,5 +1,5 @@
 GIT_SHA := $(shell git rev-parse HEAD | cut -c 1-12)
-VERSION := $(shell git describe --tags --dirty --always --abbrev=12)
+VERSION := 1.0-$(shell git describe --tags --dirty --always --abbrev=12)
 
 PWD := $(shell pwd)
 
