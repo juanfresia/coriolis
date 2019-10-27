@@ -37,7 +37,7 @@ class CoriolisCLI():
         verify_parser.add_argument('-r', '--rules', metavar='rules_file', nargs=1,
                             action=FullPaths, help='Rules .jarl file',
                             default='{}/rules.jarl'.format(CURDIR))
-        verify_parser.add_argument('-h', '--mongo-host', metavar='mongo_host', nargs=1,
+        verify_parser.add_argument('-H', '--mongo-host', metavar='mongo_host', nargs=1,
                             help='Host or IP of the mongo server',
                             default='localhost')
         verify_parser.add_argument('-p', '--mongo-port', metavar='mongo_port', nargs=1,
