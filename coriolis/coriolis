@@ -28,8 +28,8 @@ class CoriolisCLI():
     def _add_verify_subcommand(self):
         CURDIR = os.getcwd()
         verify_parser = self.subcommands.add_parser('verify', description='Verifies JARL rules based on log files.')
-        verify_parser.add_argument('-l', '--log-file', metavar='logfile', nargs=1,
-                            action=FullPaths, help='Log file',
+        verify_parser.add_argument('-l', '--log-path', metavar='logpath', nargs=1,
+                            action=FullPaths, help='Path to check for logs',
                             default='{}/coriolis_run.log'.format(CURDIR))
         verify_parser.add_argument('-c', '--checkpoints', metavar='checkpoints', nargs=1,
                             action=FullPaths, help='Checkpoint list file',

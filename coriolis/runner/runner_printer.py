@@ -40,7 +40,3 @@ class RunnerPrinter(CoriolisPrinter):
     def print_runner_summary(self, n):
         self._print_over_separator("RUNNING CODE")
         print("Starting {} runs for program...".format(n))
-
-    def print_error(self, error_msg):
-        error_msg = "ERROR: {}".format(error_msg)
-        self._print_wrapped_text(Fore.RED + error_msg + Style.RESET_ALL)

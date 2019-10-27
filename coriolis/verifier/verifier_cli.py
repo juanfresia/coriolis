@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import multiprocessing
+import os
+import copy
 
 from verifier.log_parser import LogParser
 from verifier.mongo_client import MongoClient
@@ -41,11 +43,44 @@ class RuleChecker:
         return all_rules
 
 
-def run_verifier(args, all_rules):
+def _file_is_coriolis_log(filename):
+    return filename.endswith(".log")
+
+
+def _get_all_coriolis_logs(logs_path):
+    all_logs = []
+    if os.path.isfile(logs_path) and _file_is_coriolis_log(logs_path):
+        all_logs.append(logs_path)
+    elif os.path.isdir(logs_path):
+        for dirpath, _, files in os.walk(logs_path):
+            for file in files:
+                this_file = os.path.join(dirpath, file)
+                if _file_is_coriolis_log(this_file):
+                    all_logs.append(this_file)
+
+    if len(all_logs) == 0:
+        raise Exception("Could not find any coriolis logs on {}".format(logs_path))
+    return all_logs
+
+
+def _full_log_has_passed(all_rules):
+    return all([rule.has_passed() for rule in all_rules])
+
+
+def run_verifier(args, rules):
+    printer = VerifierPrinter(args.verbose)
+    printer.print_checking_rules()
     try:
-        rc = RuleChecker(all_rules, args.log_file, args.checkpoints)
-        rules_results = rc.check_all_rules()
-        VerifierPrinter(args.verbose).print_verifier_summary(rules_results)
-    except NameError as e:
-        print("FATAL: The {} file seems to be corrupt:".format(args.rules))
-        print(str(e))
+        logs_names = _get_all_coriolis_logs(args.log_path)
+        logs_passed = [False] * len(logs_names)
+
+        for i in range(len(logs_names)):
+            all_rules = copy.deepcopy(rules)
+            rc = RuleChecker(all_rules, logs_names[i], args.checkpoints)
+            rules_results = rc.check_all_rules()
+            printer.print_logfile_summary(rules_results, logs_names[i])
+            logs_passed[i] = _full_log_has_passed(rules_results)
+
+        printer.print_verifier_summary(logs_names, logs_passed)
+    except Exception as e:
+        printer.print_error("{}".format(e))

@@ -32,10 +32,6 @@ class ParserPrinter(CoriolisPrinter):
         if caught_error:
             self.print_error("{}".format(caught_error))
 
-    def print_error(self, error_msg):
-        error_msg = "ERROR: {}".format(error_msg)
-        self._print_wrapped_text(Fore.RED + error_msg + Style.RESET_ALL)
-
     def _print_parser_error_lines(self, error_lines):
         for e in error_lines:
             self.print_error("At {}".format(e))

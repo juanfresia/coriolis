@@ -31,3 +31,7 @@ class CoriolisPrinter:
     def _print_wrapped_text(self, text):
         s = wrap(text, SEPARATOR_LENGTH)
         print(*s, sep="\n")
+
+    def print_error(self, error_msg):
+        error_msg = "ERROR: {}".format(error_msg)
+        self._print_wrapped_text(Fore.RED + error_msg + Style.RESET_ALL)

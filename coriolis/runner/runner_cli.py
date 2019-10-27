@@ -85,7 +85,7 @@ class Runner:
             self.printer.print_error("{}".format(e))
 
     def run_code(self, logs_dir, n, timeout):
-        self.printer.print_runner_summary(1)
+        self.printer.print_runner_summary(n)
         src_dir = self._get_tmp_dir()
         # Check if the run_coriolis script is inside the users project
         if not self._run_script_exists(src_dir):
