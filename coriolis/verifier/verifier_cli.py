@@ -1,26 +1,27 @@
 #!/usr/bin/env python3
 
+from functools import partial
 import multiprocessing
 import os
 import copy
 
 from verifier.log_parser import LogParser
-from verifier.mongo_client import MongoClient
+from verifier.mongo_client import MongoClientFactory
 from verifier.verifier_printer import VerifierPrinter
 from common.jarl_rule import JARLRule, RuleScope, RuleFact
 from common.aggregation_steps import *
 
 
 class RuleChecker:
-    def __init__(self, rules_to_check, log_file, checkpoint_file):
+    def __init__(self, rules_to_check, log_file, checkpoint_file, mongo_factory=MongoClientFactory()):
         self.rules = rules_to_check
         self.lp = LogParser(log_file, checkpoint_file)
         self.workers = multiprocessing.Pool(processes=2)  # TODO: Decide if this should be a constant or the default CPU amount
-        self.mongo_client = MongoClient()
+        self.mongo_factory = mongo_factory
 
     @staticmethod
-    def check_rule(rule):
-        client = MongoClient()
+    def check_rule(mongo_factory, rule):
+        client = mongo_factory.new_mongo_client()
         rule.set_passed()
         rule_scope = RuleScope.get_default_scope()
         if rule.has_scope():
@@ -37,9 +38,13 @@ class RuleChecker:
         return rule
 
     def check_all_rules(self):
-        self.lp.populate_db(MongoClient())  # TODO: Make populate_db parallel too
-        all_rules = self.workers.map(RuleChecker.check_rule, self.rules)
-        self.mongo_client.drop()
+        client = self.mongo_factory.new_mongo_client()
+        self.lp.populate_db(client)  # TODO: Make populate_db parallel too
+
+        map_func = partial(RuleChecker.check_rule, self.mongo_factory)
+        all_rules = self.workers.map(map_func, self.rules)
+
+        client.drop()
         return all_rules
 
 
@@ -70,13 +75,16 @@ def _full_log_has_passed(all_rules):
 def run_verifier(args, rules):
     printer = VerifierPrinter(args.verbose)
     printer.print_checking_rules()
+
+    # Create mongo client factory
+    mongo_factory = MongoClientFactory(args.mongo_host, args.mongo_port)
     try:
         logs_names = _get_all_coriolis_logs(args.log_path)
         logs_passed = [False] * len(logs_names)
 
         for i in range(len(logs_names)):
             all_rules = copy.deepcopy(rules)
-            rc = RuleChecker(all_rules, logs_names[i], args.checkpoints)
+            rc = RuleChecker(all_rules, logs_names[i], args.checkpoints, mongo_factory)
             rules_results = rc.check_all_rules()
             printer.print_logfile_summary(rules_results, logs_names[i])
             logs_passed[i] = _full_log_has_passed(rules_results)

@@ -1,5 +1,5 @@
 [Unit]
-Description=MongoDB container
+Description=MongoDB container for coriolis verifier
 After=docker.service
 Requires=docker.service
 

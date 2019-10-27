@@ -2,8 +2,17 @@
 import pymongo
 
 
+class MongoClientFactory:
+    def __init__(self, host="localhost", port=21592):
+        self.host = host
+        self.port = port
+
+    def new_mongo_client(self):
+        return MongoClient(self.host, self.port)
+
+
 class MongoClient:
-    def __init__(self, host="localhost", port=27017):
+    def __init__(self, host="localhost", port=21592):
         self.client = pymongo.MongoClient(host, port)
         self.concu_collection = self.client.concu_db.concu_collection
 
