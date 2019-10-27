@@ -27,7 +27,7 @@ test: lint
 .PHONY: test
 
 docker-image:
-	docker build -f docker/Dockerfile -t coriolis:${VERSION} .
+	docker build -f docker/Dockerfile --build-arg VERSION=$(VERSION) -t coriolis:$(VERSION) .
 
 build:
-	docker run --rm -v ${PWD}/bin:/mnt coriolis:${VERSION} cp dist/coriolis /mnt/coriolis-${VERSION}
+	docker run --rm -v ${PWD}/bin:/mnt coriolis:${VERSION} bash -c "cp dist/* /mnt"
