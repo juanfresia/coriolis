@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import shutil
 import time
 import distutils.dir_util
 import docker  # pip3 install docker
@@ -94,11 +95,12 @@ class Runner:
 
         # Launch the n containers
         image = self._get_image()
+        logs_dir = os.path.join(logs_dir, "coriolis_logs")
         for i in range(0, n):
-            current_logs_dir = os.path.join(logs_dir, "coriolis_logs/{}".format(i + 1))
-            if not os.path.exists(current_logs_dir):
-                os.makedirs(current_logs_dir)
-            volumes = {src_dir: {"bind": "/src", "mode": "rw"}, current_logs_dir: {"bind": "/logs", "mode": "rw"}}
+            current_log_dir = os.path.join(logs_dir, "{}".format(i + 1))
+            if not os.path.exists(current_log_dir):
+                os.makedirs(current_log_dir)
+            volumes = {src_dir: {"bind": "/src", "mode": "rw"}, current_log_dir: {"bind": "/logs", "mode": "rw"}}
             docker_args = {
                 "remove": True,
                 "auto_remove": True,
@@ -109,9 +111,16 @@ class Runner:
                 "volumes": volumes
             }
             self._run_container(image, docker_args, i + 1, timeout)
+        return logs_dir
+
+    def clean_tmp_dir(self):
+        tmp_dir = self._get_tmp_dir()
+        shutil.rmtree(tmp_dir, ignore_errors=True)
 
 
 def run_runner(args):
     coriolis_runner = Runner(args.language[0], args.checkpoints, args.verbose)
     coriolis_runner.instrument(args.source)
-    coriolis_runner.run_code(args.destination, args.number_runs, args.timeout)
+    logs_dir = coriolis_runner.run_code(args.destination, args.number_runs, args.timeout)
+    coriolis_runner.clean_tmp_dir()
+    return logs_dir
