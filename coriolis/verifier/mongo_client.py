@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import pymongo
+from common.utils import *
 
 
 class MongoClientFactory:
-    def __init__(self, host="localhost", port=21592):
+    def __init__(self, host=MONGO_DEFAULT_HOST, port=MONGO_DEFAULT_PORT):
         self.host = host
         self.port = port
 
@@ -12,7 +13,7 @@ class MongoClientFactory:
 
 
 class MongoClient:
-    def __init__(self, host="localhost", port=21592):
+    def __init__(self, host=MONGO_DEFAULT_HOST, port=MONGO_DEFAULT_PORT):
         self.client = pymongo.MongoClient(host, port)
         self.concu_collection = self.client.concu_db.concu_collection
 

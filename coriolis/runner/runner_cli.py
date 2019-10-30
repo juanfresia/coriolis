@@ -7,10 +7,9 @@ import distutils.dir_util
 import docker  # pip3 install docker
 import dockerpty  # pip3 install dockerpty
 from uuid import uuid4
+from common.utils import *
 from runner import lang_instrumenter
 from runner.runner_printer import RunnerPrinter
-
-TMP_DIR = "/tmp/coriolis"
 
 
 class Runner:
@@ -22,24 +21,11 @@ class Runner:
         self.docker_client = docker.from_env()
         self.id = str(uuid4())[-12:]
 
-    def _get_image(self):
-        # TODO: Build images as "coriolis_{self.language}" ?
-        return {
-            "c": "coriolis_cpp",
-            "cpp": "coriolis_cpp",
-            "py": "coriolis_python",
-            "rs": "coriolis_rust"
-        }[self.language]
-
-    def _get_tmp_dir(self):
-        return "{}/{}/".format(TMP_DIR, self.id)
-
-    def _run_script_exists(self, src_dir):
-        run_script = os.path.join(src_dir, "run_coriolis.sh")
-        return os.path.isfile(run_script)
+    def _get_instrumented_code_dir(self):
+        return "{}/{}/".format(INSTRUMENTED_CODE_DIR, self.id)
 
     def instrument(self, src_dir):
-        dst_dir = self._get_tmp_dir()
+        dst_dir = self._get_instrumented_code_dir()
         self.printer.print_instrument_summary(src_dir, dst_dir, self.language, self.checkpoints)
         try:
             distutils.dir_util.copy_tree(src_dir, dst_dir)
@@ -99,16 +85,16 @@ class Runner:
 
     def run_code(self, logs_dir, n, timeout):
         self.printer.print_runner_summary(n)
-        src_dir = self._get_tmp_dir()
+        src_dir = self._get_instrumented_code_dir()
         # Check if the run_coriolis script is inside the users project
-        if not self._run_script_exists(src_dir):
-            self.printer.print_error("run_script.sh not found on project!")
+        if not coriolis_run_script_exists(src_dir):
+            self.printer.print_error("{} not found on project!".format(RUN_SCRIPT))
             return
 
         # Launch the n containers
-        image = self._get_image()
+        image = language_to_docker_image(self.language)
         interactive_mode = (timeout <= 0)
-        logs_dir = os.path.join(logs_dir, "coriolis_logs")
+        logs_dir = os.path.join(logs_dir, LOGS_FOLDER)
         for i in range(0, n):
             current_log_dir = os.path.join(logs_dir, "{}".format(i + 1))
             if not os.path.exists(current_log_dir):
@@ -129,7 +115,7 @@ class Runner:
         return logs_dir
 
     def clean_tmp_dir(self):
-        tmp_dir = self._get_tmp_dir()
+        tmp_dir = self._get_instrumented_code_dir()
         shutil.rmtree(tmp_dir, ignore_errors=True)
 
 

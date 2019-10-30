@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from common.printer import *
+from common.utils import language_to_language_name
 
 
 class RunnerPrinter(CoriolisPrinter):
@@ -9,7 +10,7 @@ class RunnerPrinter(CoriolisPrinter):
 
     def print_instrument_summary(self, source, destination, language, checkpoints):
         self._print_over_separator("INSTRUMENTING CODE")
-        self._print_left_right_aligned("Language:", language)
+        self._print_left_right_aligned("Language:", language_to_language_name(language))
         self._print_left_right_aligned("Source:", source)
         self._print_left_right_aligned("Destination:", destination)
         self._print_left_right_aligned("Checkpoints:", checkpoints)

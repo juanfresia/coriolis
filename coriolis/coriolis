@@ -4,10 +4,15 @@ import argparse
 import os
 import shutil
 
+from common.utils import *
 from verifier.verifier_cli import run_verifier
 from runner.runner_cli import run_runner
 from parser.parser_cli import run_parser
-from common.utils import FullPaths
+
+class FullPaths(argparse.Action):
+    # Expand user- and relative-paths
+    def __call__(self, parser, namespace, values, option_string=None):
+        setattr(namespace, self.dest, os.path.abspath(os.path.expanduser(values[0])))
 
 class CoriolisCLI():
     def __init__(self):
@@ -50,14 +55,13 @@ class CoriolisCLI():
                             help='Number of seconds to wait before timeout', default=10.0)
         self.parser.add_argument('-H', '--mongo-host', metavar='mongo_host', nargs=1,
                             help='Host or IP of the mongo server',
-                            default='localhost')
+                            default=MONGO_DEFAULT_HOST)
         self.parser.add_argument('-p', '--mongo-port', metavar='mongo_port', nargs=1,
                             help='Port of the mongo server', type=int,
-                            default=21592)
+                            default=MONGO_DEFAULT_PORT)
         self.parser.add_argument('-v', '--verbose',action='store_true', help="Enables verbosity")
         self.parser.add_argument('-C', '--clean',action='store_true', help="Cleans logs after usage")
         self.parser.set_defaults(func=self._run_coriolis)
-
 
     def _add_verify_subcommand(self):
         CURDIR = os.getcwd()
@@ -73,10 +77,10 @@ class CoriolisCLI():
                             default='{}/rules.jarl'.format(CURDIR))
         verify_parser.add_argument('-H', '--mongo-host', metavar='mongo_host', nargs=1,
                             help='Host or IP of the mongo server',
-                            default='localhost')
+                            default=MONGO_DEFAULT_HOST)
         verify_parser.add_argument('-p', '--mongo-port', metavar='mongo_port', nargs=1,
                             help='Port of the mongo server', type=int,
-                            default=21592)
+                            default=MONGO_DEFAULT_PORT)
         verify_parser.add_argument('-v', '--verbose',action='store_true', help="Enables verbosity")
         verify_parser.set_defaults(func=self._parse_and_verify)
 
