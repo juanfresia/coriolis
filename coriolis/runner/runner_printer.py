@@ -24,10 +24,12 @@ class RunnerPrinter(CoriolisPrinter):
         file_text = "FINISHED" if can_instrument else "SKIPPED"
         self._print_left_right_aligned("File {}".format(filename), file_text, None, file_fore)
 
-    def print_launch_container(self, container_id, launched_ok):
+    def print_launch_container(self, container_id, launched_ok, is_interactive=False):
         status_fore = Fore.GREEN if launched_ok else Fore.RED
         status_text = "OK" if launched_ok else "FAILED"
         launch_text = "Starting run {}:".format(container_id)
+        if is_interactive:
+            self._print_separator()
         self._print_left_right_aligned(launch_text, status_text, None, status_fore)
 
     def print_stop_container(self, container_id, stopped_ok, timeouted=False):
