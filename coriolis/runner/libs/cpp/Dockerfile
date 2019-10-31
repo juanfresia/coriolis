@@ -6,7 +6,9 @@ RUN apt-get update && \
     tar --strip-components=1 -xz -C /usr/local
 
 RUN mkdir -p /logs
-WORKDIR /src
+RUN mkdir -p /src
+WORKDIR /coriolis
+COPY /start_coriolis.sh .
 COPY /coriolis_* ./
 RUN gcc -Wall -Werror -c -fPIC coriolis_lock.c -o coriolis_lock.o && \
     gcc -Wall -Werror -c -fPIC coriolis_logger.c -o coriolis_logger.o && \
@@ -15,4 +17,4 @@ RUN gcc -Wall -Werror -c -fPIC coriolis_lock.c -o coriolis_lock.o && \
     cp coriolis_lock.h /usr/include/ && \
     cp coriolis_logger.h /usr/include/
 
-ENTRYPOINT ["/bin/bash", "run_coriolis.sh"]
+ENTRYPOINT ["/bin/bash", "start_coriolis.sh"]

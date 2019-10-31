@@ -2,7 +2,8 @@
 # Call the proper docker build
 build_cpp build_python build_rust:
 	@echo "Building CORIOLIS image for $(patsubst build_%,%,$@) language"
-	@cd $(patsubst build_%,%,$@) && docker build . -t coriolis_$(patsubst build_%,%,$@):latest
+	@cp start_coriolis.sh $(patsubst build_%,%,$@)/
+	@cd $(patsubst build_%,%,$@) && docker build . -t coriolis_$(patsubst build_%,%,$@):latest && rm start_coriolis.sh
 
 all: build_cpp build_python build_rust
 	@echo "Done building!"

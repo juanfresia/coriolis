@@ -1,7 +1,9 @@
 FROM python:3.6
 
 RUN mkdir -p /logs
-WORKDIR /src
+RUN mkdir -p /src
+WORKDIR /coriolis
+COPY /start_coriolis.sh .
 COPY /coriolis_* /usr/local/lib/python3.6/
 
-ENTRYPOINT ["/bin/bash", "run_coriolis.sh"]
+ENTRYPOINT ["/bin/bash", "start_coriolis.sh"]
