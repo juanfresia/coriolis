@@ -15,7 +15,7 @@ rule_1_fact = RuleFact([
     CompareResultsQuantity("=", 4),
     ReduceResult(and_results=True)
 ])
-rule_1 = JARLRule(rule_1_statement, rule_1_header, rule_1_fact, passed_by_default=False)
+rule_1 = JARLRule(rule_1_statement, rule_1_header, rule_1_fact, passed_by_default=True)
 
 rule_2_statement = (
     "rule every_philo_thinks_four_times\n"
@@ -30,7 +30,7 @@ rule_2_fact = RuleFact([
     CompareResultsQuantity("=", 4),
     ReduceResult(and_results=True)
 ])
-rule_2 = JARLRule(rule_2_statement, rule_2_header, rule_2_fact, passed_by_default=False)
+rule_2 = JARLRule(rule_2_statement, rule_2_header, rule_2_fact, passed_by_default=True)
 
 rule_3_statement = (
     "rule philo_needs_two_forks_to_eat\n"
@@ -55,7 +55,7 @@ rule_3_scope = RuleScope([
     CrossAndGroupByArgs([['eat', 'p1', 'r1']]),
     ScopeBefore("eat")
 ])
-rule_3 = JARLRule(rule_3_statement, rule_3_header, rule_3_fact, rule_3_scope, passed_by_default=False)
+rule_3 = JARLRule(rule_3_statement, rule_3_header, rule_3_fact, rule_3_scope, passed_by_default=True)
 rule_3.set_dynamic_scope_arg("p1", False)
 rule_3.set_dynamic_scope_arg("r1", False)
 
@@ -82,7 +82,7 @@ rule_4_scope = RuleScope([
     ImposeIteratorCondition("p1", "=", "p2", using_literal=False),
     ScopeBetween("eat", "think", using_next=True, using_beyond=False)
 ])
-rule_4 = JARLRule(rule_4_statement, rule_4_header, rule_4_fact, rule_4_scope, passed_by_default=False)
+rule_4 = JARLRule(rule_4_statement, rule_4_header, rule_4_fact, rule_4_scope, passed_by_default=True)
 rule_4.set_dynamic_scope_arg("p1", True)
 
 rule_5_statement = (
@@ -109,7 +109,7 @@ rule_5_scope = RuleScope([
     CrossAndGroupByArgs([['acquire_fork', 'p1', 'f1', 'r1']]),
     ScopeAfter("acquire_fork")
 ])
-rule_5 = JARLRule(rule_5_statement, rule_5_header, rule_5_fact, rule_5_scope, passed_by_default=False)
+rule_5 = JARLRule(rule_5_statement, rule_5_header, rule_5_fact, rule_5_scope, passed_by_default=True)
 rule_5.set_dynamic_scope_arg("p1", True)
 rule_5.set_dynamic_scope_arg("f1", True)
 rule_5.set_dynamic_scope_arg("r1", True)
@@ -183,7 +183,7 @@ rule_8_fact = RuleFact([
     CompareResultsQuantity("=", 2),
     ReduceResult(and_results=True)
 ])
-rule_8 = JARLRule(rule_8_statement, rule_8_header, rule_8_fact, passed_by_default=False)
+rule_8 = JARLRule(rule_8_statement, rule_8_header, rule_8_fact, passed_by_default=True)
 
 rule_9_statement = (
     "rule philo_dont_release_fork_without_eating\n"
@@ -210,7 +210,7 @@ rule_9_scope = RuleScope([
     ImposeIteratorCondition("r2", "=", "r1", using_literal=False),
     ScopeBetween("acquire_fork", "release_fork", using_next=True, using_beyond=False)
 ])
-rule_9 = JARLRule(rule_9_statement, rule_9_header, rule_9_fact, rule_9_scope, passed_by_default=False)
+rule_9 = JARLRule(rule_9_statement, rule_9_header, rule_9_fact, rule_9_scope, passed_by_default=True)
 rule_9.set_dynamic_scope_arg("p1", True)
 
 rule_10_statement = (
@@ -238,7 +238,7 @@ rule_10_scope = RuleScope([
     ImposeIteratorCondition("r2", "=", "r1", using_literal=False),
     ScopeBetween("release_fork", "acquire_fork", using_next=True, using_beyond=False)
 ])
-rule_10 = JARLRule(rule_10_statement, rule_10_header, rule_10_fact, rule_10_scope, passed_by_default=False)
+rule_10 = JARLRule(rule_10_statement, rule_10_header, rule_10_fact, rule_10_scope, passed_by_default=True)
 rule_10.set_dynamic_scope_arg("p1", True)
 
 

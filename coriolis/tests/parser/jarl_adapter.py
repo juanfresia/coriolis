@@ -26,7 +26,7 @@ class TestAdapter(unittest.TestCase):
             CompareResultsQuantity("=", 2),
             ReduceResult()
         ])
-        expected_rule_adapted = JARLRule(rule, rule_header, rule_fact, passed_by_default=False)
+        expected_rule_adapted = JARLRule(rule, rule_header, rule_fact, passed_by_default=True)
 
         self.assertEqual(expected_rule_adapted, steps)
 
@@ -56,7 +56,7 @@ class TestAdapter(unittest.TestCase):
             CompareResultsQuantity("=", 2),
             ReduceResult()
         ])
-        expected_rule_adapted = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=False)
+        expected_rule_adapted = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=True)
 
         self.assertEqual(expected_rule_adapted, steps)
 
@@ -377,7 +377,7 @@ class TestAdapter(unittest.TestCase):
             CompareResultsQuantity("=", 1),
             ReduceResult()
         ])
-        expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=False)
+        expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=True)
         expected_rule.set_dynamic_scope_arg("r1", True)
 
         rules = parse_str(rule)
@@ -463,7 +463,7 @@ class TestAdapter(unittest.TestCase):
             CompareResultsQuantity("=", 1),
             ReduceResult()
         ])
-        expected_rule = JARLRule(rule, rule_header, rule_9_fact, rule_scope, passed_by_default=False)
+        expected_rule = JARLRule(rule, rule_header, rule_9_fact, rule_scope, passed_by_default=True)
 
         rules = parse_str(rule)
         steps = JarlRuleAdapter().rule_to_steps(rules[0])
@@ -493,7 +493,7 @@ class TestAdapter(unittest.TestCase):
             CompareResultsQuantity("=", 1),
             ReduceResult()
         ])
-        expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=False)
+        expected_rule = JARLRule(rule, rule_header, rule_fact, rule_scope, passed_by_default=True)
 
         rules = parse_str(rule)
         steps = JarlRuleAdapter().rule_to_steps(rules[0])

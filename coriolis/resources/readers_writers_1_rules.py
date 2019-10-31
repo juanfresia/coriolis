@@ -71,7 +71,7 @@ rule_3_fact = RuleFact([
     CompareResultsQuantity("=", 2),
     ReduceResult()
 ])
-rule_3 = JARLRule(rule_3_statement, rule_3_header, rule_3_fact, passed_by_default=False)
+rule_3 = JARLRule(rule_3_statement, rule_3_header, rule_3_fact, passed_by_default=True)
 
 rule_4_statement = (
     "# Each writer writes a room 4 times\n"
@@ -87,7 +87,7 @@ rule_4_fact = RuleFact([
     CompareResultsQuantity("=", 4),
     ReduceResult()
 ])
-rule_4 = JARLRule(rule_4_statement, rule_4_header, rule_4_fact, passed_by_default=False)
+rule_4 = JARLRule(rule_4_statement, rule_4_header, rule_4_fact, passed_by_default=True)
 
 rule_5_statement = (
     "# Only one writer can be on a room at the same time\n"
@@ -145,7 +145,7 @@ rule_6_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult()
 ])
-rule_6 = JARLRule(rule_6_statement, rule_6_header, rule_6_fact, rule_6_scope, passed_by_default=False)
+rule_6 = JARLRule(rule_6_statement, rule_6_header, rule_6_fact, rule_6_scope, passed_by_default=True)
 rule_6.set_dynamic_scope_arg("w1", True)
 rule_6.set_dynamic_scope_arg("room1", True)
 
@@ -175,7 +175,7 @@ rule_7_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult()
 ])
-rule_7 = JARLRule(rule_7_statement, rule_7_header, rule_7_fact, rule_7_scope, passed_by_default=False)
+rule_7 = JARLRule(rule_7_statement, rule_7_header, rule_7_fact, rule_7_scope, passed_by_default=True)
 rule_7.set_dynamic_scope_arg("r1", True)
 rule_7.set_dynamic_scope_arg("room1", True)
 

@@ -289,7 +289,7 @@ rule_10_fact = RuleFact([
     CompareResultsQuantity("<=", 3),
     ReduceResult()
 ])
-rule_10 = JARLRule(rule_10_statement, rule_10_header, rule_10_fact, rule_10_scope)
+rule_10 = JARLRule(rule_10_statement, rule_10_header, rule_10_fact, rule_10_scope, passed_by_default=True)
 
 rule_11_statement = (
     "# 12 people are served\n"

@@ -105,7 +105,7 @@ rule_5_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult()
 ])
-rule_5 = JARLRule(rule_5_statement, rule_5_header, rule_5_fact, rule_5_scope, passed_by_default=False)
+rule_5 = JARLRule(rule_5_statement, rule_5_header, rule_5_fact, rule_5_scope, passed_by_default=True)
 rule_5.set_dynamic_scope_arg("e1", True)
 
 rule_6_statement = (
@@ -132,7 +132,7 @@ rule_6_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult()
 ])
-rule_6 = JARLRule(rule_6_statement, rule_6_header, rule_6_fact, rule_6_scope, passed_by_default=False)
+rule_6 = JARLRule(rule_6_statement, rule_6_header, rule_6_fact, rule_6_scope, passed_by_default=True)
 rule_6.set_dynamic_scope_arg("r1", True)
 
 rule_7_statement = (

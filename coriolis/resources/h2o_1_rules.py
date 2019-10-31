@@ -58,7 +58,7 @@ rule_3_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult()
 ])
-rule_3 = JARLRule(rule_3_statement, rule_3_header, rule_3_fact, rule_3_scope, passed_by_default=False)
+rule_3 = JARLRule(rule_3_statement, rule_3_header, rule_3_fact, rule_3_scope, passed_by_default=True)
 rule_3.set_dynamic_scope_arg("atom_id", True)
 rule_3.set_dynamic_scope_arg("atom_type", True)
 
@@ -104,7 +104,7 @@ rule_5_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult()
 ])
-rule_5 = JARLRule(rule_5_statement, rule_5_header, rule_5_fact, rule_5_scope, passed_by_default=False)
+rule_5 = JARLRule(rule_5_statement, rule_5_header, rule_5_fact, rule_5_scope, passed_by_default=True)
 rule_5.set_dynamic_scope_arg("at1", True)
 rule_5.set_dynamic_scope_arg("aid1", True)
 
@@ -143,7 +143,7 @@ rule_7_fact = RuleFact([
     CompareResultsQuantity("=", 2),
     ReduceResult()
 ])
-rule_7 = JARLRule(rule_7_statement, rule_7_header, rule_7_fact, rule_7_scope, passed_by_default=False)
+rule_7 = JARLRule(rule_7_statement, rule_7_header, rule_7_fact, rule_7_scope, passed_by_default=True)
 
 rule_8_statement = (
     "# 1 oxygen atom must bond to make a new water molecule\n"
@@ -166,7 +166,7 @@ rule_8_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult()
 ])
-rule_8 = JARLRule(rule_8_statement, rule_8_header, rule_8_fact, rule_8_scope, passed_by_default=False)
+rule_8 = JARLRule(rule_8_statement, rule_8_header, rule_8_fact, rule_8_scope, passed_by_default=True)
 
 rule_9_statement = (
     "# In total, 3 atoms bond to make a new water molecule\n"
@@ -215,7 +215,7 @@ rule_10_fact = RuleFact([
     CompareResultsQuantity("<=", 2),
     ReduceResult()
 ])
-rule_10 = JARLRule(rule_10_statement, rule_10_header, rule_10_fact, rule_10_scope)
+rule_10 = JARLRule(rule_10_statement, rule_10_header, rule_10_fact, rule_10_scope, passed_by_default=True)
 
 rule_11_statement = (
     "# At most 4 bonds can happen between consecutive oxygen bonds\n"
@@ -242,7 +242,7 @@ rule_11_fact = RuleFact([
     CompareResultsQuantity("<=", 4),
     ReduceResult()
 ])
-rule_11 = JARLRule(rule_11_statement, rule_11_header, rule_11_fact, rule_11_scope)
+rule_11 = JARLRule(rule_11_statement, rule_11_header, rule_11_fact, rule_11_scope, passed_by_default=True)
 
 all_rules = [
     rule_1,

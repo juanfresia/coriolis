@@ -145,6 +145,9 @@ class JarlRuleAdapter():
         # If requirement is of order, passed_by_default is always true
         if req.get_checkpoints():
             return True
+        # If rule fact has iterators, passed_by_default is always true
+        if rule.fact.filter and len(rule.fact.filter.iterators) > 0:
+            return True
 
         false_cases = [
             req.type == JarlComparator.EQ and req.count != 0,

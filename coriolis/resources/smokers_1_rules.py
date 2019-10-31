@@ -72,7 +72,7 @@ rule_3_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult()
 ])
-rule_3 = JARLRule(rule_3_statement, rule_3_header, rule_3_fact, rule_3_scope, passed_by_default=False)
+rule_3 = JARLRule(rule_3_statement, rule_3_header, rule_3_fact, rule_3_scope, passed_by_default=True)
 rule_3.set_dynamic_scope_arg("s", False)
 
 rule_4_statement = (

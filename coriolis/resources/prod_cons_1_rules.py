@@ -15,7 +15,7 @@ rule_1_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult()
 ])
-rule_1 = JARLRule(rule_1_statement, rule_1_header, rule_1_fact, passed_by_default=False)
+rule_1 = JARLRule(rule_1_statement, rule_1_header, rule_1_fact, passed_by_default=True)
 
 rule_2_statement = (
     "# Every item is consumed only once\n"
@@ -31,7 +31,7 @@ rule_2_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult()
 ])
-rule_2 = JARLRule(rule_2_statement, rule_2_header, rule_2_fact, passed_by_default=False)
+rule_2 = JARLRule(rule_2_statement, rule_2_header, rule_2_fact, passed_by_default=True)
 
 rule_3_statement = (
     "# 10 items are produced\n"
@@ -88,7 +88,7 @@ rule_5_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult()
 ])
-rule_5 = JARLRule(rule_5_statement, rule_5_header, rule_5_fact, rule_5_scope, passed_by_default=False)
+rule_5 = JARLRule(rule_5_statement, rule_5_header, rule_5_fact, rule_5_scope, passed_by_default=True)
 rule_5.set_dynamic_scope_arg("iid", False)
 
 rule_6_statement = (
@@ -106,7 +106,7 @@ rule_6_fact = RuleFact([
     CompareResultsPrecedence("produce", "produce"),
     ReduceResult()
 ])
-rule_6 = JARLRule(rule_6_statement, rule_6_header, rule_6_fact)
+rule_6 = JARLRule(rule_6_statement, rule_6_header, rule_6_fact, passed_by_default=True)
 
 rule_7_statement = (
     "# Items are consumed in order\n"
@@ -123,7 +123,7 @@ rule_7_fact = RuleFact([
     CompareResultsPrecedence("consume", "consume"),
     ReduceResult()
 ])
-rule_7 = JARLRule(rule_7_statement, rule_7_header, rule_7_fact)
+rule_7 = JARLRule(rule_7_statement, rule_7_header, rule_7_fact, passed_by_default=True)
 
 rule_8_statement = (
     "# The buffer size is 5\n"
@@ -171,7 +171,7 @@ rule_9_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult()
 ])
-rule_9 = JARLRule(rule_9_statement, rule_9_header, rule_9_fact, rule_9_scope, passed_by_default=False)
+rule_9 = JARLRule(rule_9_statement, rule_9_header, rule_9_fact, rule_9_scope, passed_by_default=True)
 
 rule_10_statement = (
     "# Item is produced only once (written differently)\n"
@@ -195,7 +195,7 @@ rule_10_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult()
 ])
-rule_10 = JARLRule(rule_10_statement, rule_10_header, rule_10_fact, rule_10_scope, passed_by_default=False)
+rule_10 = JARLRule(rule_10_statement, rule_10_header, rule_10_fact, rule_10_scope, passed_by_default=True)
 
 rule_11_statement = (
     "# Consumer cannot consume items smaller than their own ID\n"

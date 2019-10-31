@@ -24,7 +24,7 @@ rule_1_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult(and_results=True)
 ])
-rule_1 = JARLRule(rule_1_statement, rule_1_header, rule_1_fact, rule_1_scope, passed_by_default=False)
+rule_1 = JARLRule(rule_1_statement, rule_1_header, rule_1_fact, rule_1_scope, passed_by_default=True)
 rule_1.set_dynamic_scope_arg("b1", False)
 rule_1.set_dynamic_scope_arg("p1", False)
 
@@ -51,7 +51,7 @@ rule_2_fact = RuleFact([
     CompareResultsQuantity("=", 10),
     ReduceResult(and_results=True)
 ])
-rule_2 = JARLRule(rule_2_statement, rule_2_header, rule_2_fact, rule_2_scope, passed_by_default=False)
+rule_2 = JARLRule(rule_2_statement, rule_2_header, rule_2_fact, rule_2_scope, passed_by_default=True)
 rule_2.set_dynamic_scope_arg("p1", False)
 rule_2.set_dynamic_scope_arg("box1", False)
 
@@ -93,7 +93,7 @@ rule_4_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult(and_results=True)
 ])
-rule_4 = JARLRule(rule_4_statement, rule_4_header, rule_4_fact, rule_4_scope, passed_by_default=False)
+rule_4 = JARLRule(rule_4_statement, rule_4_header, rule_4_fact, rule_4_scope, passed_by_default=True)
 rule_4.set_dynamic_scope_arg("dc1", False)
 rule_4.set_dynamic_scope_arg("box1", False)
 
@@ -120,7 +120,7 @@ rule_5_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult(and_results=True)
 ])
-rule_5 = JARLRule(rule_5_statement, rule_5_header, rule_5_fact, rule_5_scope, passed_by_default=False)
+rule_5 = JARLRule(rule_5_statement, rule_5_header, rule_5_fact, rule_5_scope, passed_by_default=True)
 rule_5.set_dynamic_scope_arg("dc1", False)
 rule_5.set_dynamic_scope_arg("box1", False)
 
@@ -164,7 +164,7 @@ rule_7_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult(and_results=True)
 ])
-rule_7 = JARLRule(rule_7_statement, rule_7_header, rule_7_fact, passed_by_default=False)
+rule_7 = JARLRule(rule_7_statement, rule_7_header, rule_7_fact, passed_by_default=True)
 
 rule_8_statement = (
     "rule bouquets_only_unboxed_once\n"
@@ -179,7 +179,7 @@ rule_8_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult(and_results=True)
 ])
-rule_8 = JARLRule(rule_8_statement, rule_8_header, rule_8_fact, passed_by_default=False)
+rule_8 = JARLRule(rule_8_statement, rule_8_header, rule_8_fact, passed_by_default=True)
 
 rule_9_statement = (
     "rule hundred_bouquets_per_package_when_sent\n"
@@ -205,7 +205,7 @@ rule_9_fact = RuleFact([
     CompareResultsQuantity("=", 3),
     ReduceResult(and_results=True)
 ])
-rule_9 = JARLRule(rule_9_statement, rule_9_header, rule_9_fact, rule_9_scope, passed_by_default=False)
+rule_9 = JARLRule(rule_9_statement, rule_9_header, rule_9_fact, rule_9_scope, passed_by_default=True)
 rule_9.set_dynamic_scope_arg("dc1", False)
 rule_9.set_dynamic_scope_arg("t1", False)
 rule_9.set_dynamic_scope_arg("pack1", False)
@@ -223,7 +223,7 @@ rule_10_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult(and_results=True)
 ])
-rule_10 = JARLRule(rule_10_statement, rule_10_header, rule_10_fact, passed_by_default=False)
+rule_10 = JARLRule(rule_10_statement, rule_10_header, rule_10_fact, passed_by_default=True)
 
 rule_11_statement = (
     "rule packages_dont_have_bouquets_of_different_type\n"
@@ -293,7 +293,7 @@ rule_13_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult(and_results=True)
 ])
-rule_13 = JARLRule(rule_13_statement, rule_13_header, rule_13_fact, rule_13_scope, passed_by_default=False)
+rule_13 = JARLRule(rule_13_statement, rule_13_header, rule_13_fact, rule_13_scope, passed_by_default=True)
 rule_13.set_dynamic_scope_arg("sp1", False)
 rule_13.set_dynamic_scope_arg("t1", False)
 rule_13.set_dynamic_scope_arg("pack1", False)
@@ -322,7 +322,7 @@ rule_14_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult(and_results=True)
 ])
-rule_14 = JARLRule(rule_14_statement, rule_14_header, rule_14_fact, rule_14_scope, passed_by_default=False)
+rule_14 = JARLRule(rule_14_statement, rule_14_header, rule_14_fact, rule_14_scope, passed_by_default=True)
 rule_14.set_dynamic_scope_arg("b1", False)
 rule_14.set_dynamic_scope_arg("t1", False)
 rule_14.set_dynamic_scope_arg("pack1", False)
@@ -401,7 +401,7 @@ rule_18_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult(and_results=True)
 ])
-rule_18 = JARLRule(rule_18_statement, rule_18_header, rule_18_fact, passed_by_default=False)
+rule_18 = JARLRule(rule_18_statement, rule_18_header, rule_18_fact, passed_by_default=True)
 
 rule_19_statement = (
     "rule prepared_bouquets_were_unpackaged\n"
@@ -427,7 +427,7 @@ rule_19_fact = RuleFact([
     CompareResultsQuantity("=", 1),
     ReduceResult(and_results=True)
 ])
-rule_19 = JARLRule(rule_19_statement, rule_19_header, rule_19_fact, rule_19_scope, passed_by_default=False)
+rule_19 = JARLRule(rule_19_statement, rule_19_header, rule_19_fact, rule_19_scope, passed_by_default=True)
 rule_19.set_dynamic_scope_arg("b1", False)
 rule_19.set_dynamic_scope_arg("t1", False)
 rule_19.set_dynamic_scope_arg("sp1", False)
@@ -455,7 +455,7 @@ rule_20_fact = RuleFact([
     CompareResultsQuantity(">=", 1),
     ReduceResult(and_results=True)
 ])
-rule_20 = JARLRule(rule_20_statement, rule_20_header, rule_20_fact, rule_20_scope, passed_by_default=False)
+rule_20 = JARLRule(rule_20_statement, rule_20_header, rule_20_fact, rule_20_scope, passed_by_default=True)
 rule_20.set_dynamic_scope_arg("o1", False)
 rule_20.set_dynamic_scope_arg("sp1", False)
 
