@@ -1,6 +1,6 @@
 GIT_SHA := $(shell git rev-parse HEAD | cut -c 1-12)
 VERSION := 1.0-$(shell git describe --tags --dirty --always --abbrev=12)
-COVERAGE_OMIT := */venv/*,*/__init__.py,tests/*
+COVERAGE_OMIT := */venv/*,*/__init__.py,tests/*,parser/JarlParser.py
 
 PWD := $(shell pwd)
 
@@ -20,7 +20,7 @@ lint:
 	@autopep8 ${PEP8FLAGS} ${PEP8FILES}
 
 test_parser test_common test_verifier test_runner:
-	@coverage run --omit ${COVERAGE_OMIT} -m unittest discover -b -s tests/$(patsubst test_%,%,$@) -p '*.py' -t . -v && coverage report
+	@coverage run --omit ${COVERAGE_OMIT} -m unittest discover -b -s tests/$(patsubst test_%,%,$@) -p '*.py' -t . -v && coverage report -m
 .PHONY: test_parser test_common test_verifier test_runner
 
 test: lint

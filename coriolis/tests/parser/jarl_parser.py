@@ -606,6 +606,58 @@ class TestParserCLI(unittest.TestCase):
 
         self.assertRaises(JarlArgumentNotDeclared, parse_str, rule)
 
+    def test_parse_two_rules(self):
+        rule = """
+        rule test_two_rules_first
+        for any e1
+        after foo(e1)
+        for every e2 with e2!=e1
+        bar(e2) must happen
+        
+        rule test_two_rules_second
+        for every e1
+        after foo(e1)
+        for every e2
+        bar(e2) must happen 3 times
+        """
+
+        rules = parse_str(rule)
+
+        self.assertEquals(len(rules), 2)
+        rule_1_fact = rules[0].fact
+        expected_cond_1 = JarlWithCondition("e2", JarlComparator.NE, "e1")
+        expected_filter_wildcards_1 = []
+        expected_filter_iterators_1 = ["e2"]
+        expected_filter_condition_1 = [expected_cond_1]
+        self.assertEqual(expected_filter_wildcards_1, rule_1_fact.filter.wildcards)
+        self.assertEqual(expected_filter_iterators_1, rule_1_fact.filter.iterators)
+        self.assertEqual(expected_filter_condition_1, rule_1_fact.filter.conditions)
+        rule_2_scope = rules[1].scope
+        expected_filter_wildcards_2 = []
+        expected_filter_iterators_2 = ["e1"]
+        expected_filter_condition_2 = []
+        self.assertIsNotNone(rule_2_scope.filter)
+        self.assertEqual(expected_filter_wildcards_2, rule_2_scope.filter.wildcards)
+        self.assertEqual(expected_filter_iterators_2, rule_2_scope.filter.iterators)
+        self.assertEqual(expected_filter_condition_2, rule_2_scope.filter.conditions)
+
+    def test_rule_with_spaces(self):
+        rule = """
+        rule test_rule_with_spaces
+        
+        after foo()
+          for every e1
+          bar(e1) must happen
+        """
+
+        rules = parse_str(rule)
+
+        rule_fact = rules[0].fact.facts[0]
+        chk = JarlCheckpoint("bar", ["e1"])
+        req = JarlRuleFactRequirementCount()
+        expected_fact = JarlRuleFactClause(chk, req)
+        self.assertEqual(expected_fact, rule_fact)
+
     # Integration tests
     def test_parse_integration(self):
         rule = """
