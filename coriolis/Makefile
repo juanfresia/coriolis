@@ -1,5 +1,6 @@
 GIT_SHA := $(shell git rev-parse HEAD | cut -c 1-12)
 VERSION := 1.0-$(shell git describe --tags --dirty --always --abbrev=12)
+COVERAGE_OMIT := */venv/*,*/__init__.py,tests/*
 
 PWD := $(shell pwd)
 
@@ -19,11 +20,11 @@ lint:
 	@autopep8 ${PEP8FLAGS} ${PEP8FILES}
 
 test_parser test_common test_verifier test_runner: lint
-	@python3 -m unittest discover -b -s tests/$(patsubst test_%,%,$@) -p '*.py' -t . -v
+	@coverage run --omit ${COVERAGE_OMIT} -m unittest discover -b -s tests/$(patsubst test_%,%,$@) -p '*.py' -t . -v && coverage report
 .PHONY: test_parser test_common test_verifier test_runner
 
 test: lint
-	@python3 -m unittest discover -b -s tests -p '*.py' -t .
+	@coverage run --omit ${COVERAGE_OMIT} -m unittest discover -b -s tests -p '*.py' -t . && coverage report
 .PHONY: test
 
 docker-image:
