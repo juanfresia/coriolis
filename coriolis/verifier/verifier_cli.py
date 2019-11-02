@@ -90,5 +90,6 @@ def run_verifier(args, rules):
             logs_passed[i] = _full_log_has_passed(rules_results)
 
         printer.print_verifier_summary(logs_names, logs_passed)
+        return logs_passed
     except Exception as e:
         printer.print_error("{}".format(e))

@@ -2,7 +2,7 @@ import unittest
 
 from parser.parser_cli import adapt_file
 
-class TestAdapterProdCons(unittest.TestCase):
+class TestAdaptProdCons(unittest.TestCase):
     exec(open("resources/prod_cons_1_rules.py").read())
 
     def test_all_prod_cons_rules(self):
@@ -10,7 +10,7 @@ class TestAdapterProdCons(unittest.TestCase):
         for i in range(len(parsed_rules)):
             self.assertEqual(self.all_rules[i], parsed_rules[i])
 
-class TestAdapterSmokers(unittest.TestCase):
+class TestAdaptSmokers(unittest.TestCase):
     exec(open("resources/smokers_1_rules.py").read())
 
     def test_all_smoker_rules(self):
@@ -18,7 +18,7 @@ class TestAdapterSmokers(unittest.TestCase):
         for i in range(len(parsed_rules)):
             self.assertEqual(self.all_rules[i], parsed_rules[i])
 
-class TestAdapterReadersWriters(unittest.TestCase):
+class TestAdaptReadersWriters(unittest.TestCase):
     exec(open("resources/readers_writers_1_rules.py").read())
 
     def test_all_readers_writers_rules(self):
@@ -26,7 +26,7 @@ class TestAdapterReadersWriters(unittest.TestCase):
         for i in range(len(parsed_rules)):
             self.assertEqual(self.all_rules[i], parsed_rules[i])
 
-class TestAdapterConculand(unittest.TestCase):
+class TestAdaptConculand(unittest.TestCase):
     exec(open("resources/conculand_1_rules.py").read())
 
     def test_all_conculand_rules(self):
@@ -34,7 +34,7 @@ class TestAdapterConculand(unittest.TestCase):
         for i in range(len(parsed_rules)):
             self.assertEqual(self.all_rules[i], parsed_rules[i])
 
-class TestAdapterH2O(unittest.TestCase):
+class TestAdaptH2O(unittest.TestCase):
     exec(open("resources/h2o_1_rules.py").read())
 
     def test_all_h2o_rules(self):
@@ -42,7 +42,7 @@ class TestAdapterH2O(unittest.TestCase):
         for i in range(len(parsed_rules)):
             self.assertEqual(self.all_rules[i], parsed_rules[i])
 
-class TestAdapterSanta(unittest.TestCase):
+class TestAdaptSanta(unittest.TestCase):
     exec(open("resources/santa_1_rules.py").read())
 
     def test_all_santa_rules(self):
@@ -50,7 +50,7 @@ class TestAdapterSanta(unittest.TestCase):
         for i in range(len(parsed_rules)):
             self.assertEqual(self.all_rules[i], parsed_rules[i])
 
-class TestAdapterPhilos(unittest.TestCase):
+class TestAdaptPhilos(unittest.TestCase):
     exec(open("resources/philos_1_rules.py").read())
 
     def test_all_philos_rules(self):
@@ -58,7 +58,7 @@ class TestAdapterPhilos(unittest.TestCase):
         for i in range(len(parsed_rules)):
             self.assertEqual(self.all_rules[i], parsed_rules[i])
 
-class TestAdapterConcuspring(unittest.TestCase):
+class TestAdapteConcuspring(unittest.TestCase):
     exec(open("resources/concuspring_1_rules.py").read())
 
     def test_all_philos_rules(self):
