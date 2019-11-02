@@ -19,7 +19,7 @@ env:
 lint:
 	@autopep8 ${PEP8FLAGS} ${PEP8FILES}
 
-test_parser test_common test_verifier test_runner: lint
+test_parser test_common test_verifier test_runner:
 	@coverage run --omit ${COVERAGE_OMIT} -m unittest discover -b -s tests/$(patsubst test_%,%,$@) -p '*.py' -t . -v && coverage report
 .PHONY: test_parser test_common test_verifier test_runner
 
