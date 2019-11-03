@@ -46,7 +46,7 @@ class CoriolisCLI():
                             action=FullPaths, help='Checkpoint list file',
                             default='{}/rules.chk'.format(CURDIR))
         self.parser.add_argument('-d', '--destination', metavar='destination', nargs=1,
-                            help='Logs destination directory', default=CURDIR+"/out/", action=FullPaths)
+                            help='Logs destination directory', default=CURDIR+"/{}/".format(LOGS_FOLDER), action=FullPaths)
         self.parser.add_argument('-l', '--language', metavar='language', nargs=1,
                             help='Source code language', default='c', choices=["c", "cpp", "py", "rs", "noop"])
         self.parser.add_argument('-n', '--number-runs', metavar='number', type=int,
@@ -90,7 +90,7 @@ class CoriolisCLI():
         instrument_parser.add_argument('-s', '--source', metavar='source', nargs=1,
                             help='Source code directory', default=CURDIR, action=FullPaths)
         instrument_parser.add_argument('-d', '--destination', metavar='destination', nargs=1,
-                            help='Logs destination directory', default=CURDIR+"/out/", action=FullPaths)
+                            help='Logs destination directory', default=CURDIR+"/{}/".format(LOGS_FOLDER), action=FullPaths)
         instrument_parser.add_argument('-l', '--language', metavar='language', nargs=1,
                             help='Source code language', default='c', choices=["c", "cpp", "py", "rs", "noop"])
         instrument_parser.add_argument('-c', '--checkpoints', metavar='checkpoints', nargs=1,
