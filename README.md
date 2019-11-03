@@ -18,9 +18,9 @@ CORIOLIS is a CLI-based framework for running and testing concurrent software. C
 - [Quick start](#quick-start)
   - [Running Python example](#running-python-example)
   - [Running Rust example](#running-rust-example)
-  - [Running C/C++ example](#running-c/c++-example)
+  - [Running C/C++ example](#running-cc-example)
 - [Parsing JARL rules](#parsing-jarl-rules)
-- [Running user's code](#running-user's-code)
+- [Running user's code](#running-users-code)
 - [Verifying JARL rules](#verifying-jarl-rules)
 
 ## CORIOLIS overview
