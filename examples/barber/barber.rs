@@ -8,9 +8,9 @@ use std::time::{Duration, SystemTime, UNIX_EPOCH};
 const SEATS_AMOUNT: usize = 5;
 const CUSTOMERS_AMOUNT: usize = 20;
 const EXIT_CODE: usize = CUSTOMERS_AMOUNT + 8;
-const MAX_HAIRCUT_TIME: u32 = 119;
+const MAX_HAIRCUT_TIME: u32 = 189;
 const MAX_SPAWNING_TIME: u32 = 77;
-const MAX_IDLE_TIME: u32 = 387;
+const MAX_IDLE_TIME: u32 = 57;
 
 
 fn rand_int(n: u32) -> u32 {

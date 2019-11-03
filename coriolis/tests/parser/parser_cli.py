@@ -58,11 +58,19 @@ class TestAdaptPhilos(unittest.TestCase):
         for i in range(len(parsed_rules)):
             self.assertEqual(self.all_rules[i], parsed_rules[i])
 
-class TestAdapteConcuspring(unittest.TestCase):
+class TestAdaptConcuspring(unittest.TestCase):
     exec(open("resources/concuspring_1_rules.py").read())
 
     def test_all_philos_rules(self):
         parsed_rules = adapt_file("resources/concuspring_1_rules.jarl", False)
+        for i in range(len(parsed_rules)):
+            self.assertEqual(self.all_rules[i], parsed_rules[i])
+
+class TestAdaptBarberShop(unittest.TestCase):
+    exec(open("resources/barber_1_rules.py").read())
+
+    def test_all_barber_rules(self):
+        parsed_rules = adapt_file("resources/barber_1_rules.jarl", False)
         for i in range(len(parsed_rules)):
             self.assertEqual(self.all_rules[i], parsed_rules[i])
 
