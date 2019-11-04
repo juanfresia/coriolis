@@ -94,7 +94,7 @@ Some useful tips:
 - Setting the `-v` flag will make CORIOLIS generate a more verbose output. This will show more information on errors, like why a rule has not passed.
 - The `--timeout` argument controls how many seconds will CORIOLIS wait before forcefully stopping each run of the program under test. Using a value of `0` executes the program on 'interactive mode'.
 -  Currently, the languages available are C, C++, Python and Rust. Their values to pass to the `-l` argument are, respectively, `c`, `cpp`, `py` and `rs`.
-- CORIOLIS use MongoDB on the background. If, for some reason, you want to specify a custom MongoDB instance, use the `--mongo_host` and `--mongo_port` arguments.
+- CORIOLIS uses MongoDB on the background. If, for some reason, you want to specify a custom MongoDB instance, use the `--mongo_host` and `--mongo_port` arguments.
 
 The CORIOLIS repository already have several examples for every supported language. The following sections explain how to run several of these examples using the previous `coriolis` command.
 
@@ -117,11 +117,57 @@ You can run the example with `coriolis` like the following:
 
 ### Running Rust example
 
-TODO: Show how to run philosophers example
+A Rust implementation of the dinning philosophers problem can be found inside `examples/philosophers` on the CORIOLIS repository. The `run_coriolis.sh` script compiles and runs the code as shown below:
+
+```
+~$ cat examples/philosophers/run_coriolis.sh
+#!/bin/bash
+
+rustc philos.rs
+./philos
+```
+
+You can run the example using the next command from the repository home folder:
+
+```
+~$ coriolis -l rs -s examples/philosophers/ -r coriolis/resources/philos_1_rules.jarl -c coriolis/resources/philos.chk -C
+```
 
 ### Running C/C++ example
 
-TODO: Show how to run smokers example
+In order to run C or C++ code with CORIOLIS, you must make sure to link your code against the `coriolis` library. This can be achieved, for instance, by using the `-lcoriolis` flag with `gcc`:
+
+```
+~$ gcc -o main main.cpp -lcoriolis
+```
+
+For a C++ project with `cmake`, you may only need to add a `target_link_libraries` statement like the following:
+
+```
+cmake_minimum_required(VERSION 3.11)
+
+project(myProj)
+
+add_executable(myProj main.cpp)
+
+target_link_libraries(myProj coriolis)
+```
+
+You can find a C implementation of the smokers problem in `examples/smokers`. In this case, the `run_coriolis.sh` script uses a `makefile` to compile :
+
+```
+~$ cat examples/smokers/run_coriolis.sh
+#!/bin/bash
+
+make
+./main
+```
+
+To run the example use the following command:
+
+```
+~$ coriolis -l c -s examples/smokers/ -r coriolis/resources/smokers_1_rules.jarl -c coriolis/resources/smokers.chk -C
+```
 
 ## Parsing JARL rules
 
