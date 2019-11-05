@@ -153,7 +153,7 @@ add_executable(myProj main.cpp)
 target_link_libraries(myProj coriolis)
 ```
 
-You can find a C implementation of the smokers problem in `examples/smokers`. In this case, the `run_coriolis.sh` script uses a `makefile` to compile :
+You can find a C implementation of the smokers problem in `examples/smokers`. In this case, the `run_coriolis.sh` script uses a `makefile` to compile and run the program:
 
 ```
 ~$ cat examples/smokers/run_coriolis.sh
@@ -171,13 +171,90 @@ To run the example use the following command:
 
 ## Parsing JARL rules
 
-TODO: Briefly explain `coriolis parse` command
+If you only need to validate a JARL rules file (i.e. check the rules syntax and grammar) you can do so with the `parse` subcommand of CORIOLIS. Executing `coriolis parse -h` will allow you to inspect its usage:
+
+```
+~$ coriolis parse -h
+usage: coriolis parse [-h] [-r rules_file] [-v]
+
+Parses and validates JARL rules from file.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -r rules_file, --rules rules_file
+                        Rules .jarl file
+  -v, --verbose         Enables verbosity
+```
+
+For instance, you can validate the JARL specification examples with the following command from the project's home directory:
+
+```
+~$ coriolis parse -r coriolis/resources/jarl_spec_examples.jarl -v
+```
 
 ## Running user's code
 
-TODO: Briefly explain `coriolis run` command
+You can run your code and generate CORIOLIS output logs for you to inspect it with the `run` subcommand. You can find more info about this with `coriolis run -h`:
+
+```
+~$ coriolis run -h
+usage: coriolis run [-h] [-s source] [-d destination] [-l language]
+                    [-c checkpoints] [-n number] [-t secs] [-v]
+
+Runs user code producing log files.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -s source, --source source
+                        Source code directory
+  -d destination, --destination destination
+                        Logs destination directory
+  -l language, --language language
+                        Source code language
+  -c checkpoints, --checkpoints checkpoints
+                        Checkpoint list file
+  -n number, --number-runs number
+                        Number of runs to perform
+  -t secs, --timeout secs
+                        Number of seconds to wait before timeout
+  -v, --verbose         Enables verbosity
+```
+
+You can run an implementation of the sleeping barber problem producing three different output logs on the `output` directory with the following command:
+
+```
+~$ coriolis run -l rs -s examples/barber/ -c coriolis/resources/barber.chk -d output/ -n 3
+```
 
 ## Verifying JARL rules
 
-TODO: Briefly explain `coriolis verify` command
+If you have already generated some CORIOLIS logs with the `run` subcommand, you can inspect them and verify some JARL rules with the `verify` subcommand. The full `coriolis verify -h` command will show all flags for it:
+
+```
+~$ coriolis verify -h
+usage: coriolis verify [-h] [-l log_path] [-c checkpoints] [-r rules_file]
+                       [-H mongo_host] [-p mongo_port] [-v]
+
+Verifies JARL rules based on log files.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -l log_path, --log-path log_path
+                        Path to check for logs
+  -c checkpoints, --checkpoints checkpoints
+                        Checkpoint list file
+  -r rules_file, --rules rules_file
+                        Rules .jarl file
+  -H mongo_host, --mongo-host mongo_host
+                        Host or IP of the mongo server
+  -p mongo_port, --mongo-port mongo_port
+                        Port of the mongo server
+  -v, --verbose         Enables verbosity
+```
+
+CORIOLIS project already includes some previously defined JARL rules for the producer-consumer problem, as well as a sample log file. To verify such rules against the log, just run the next command:
+
+```
+~$ coriolis verify -l coriolis/resources/prod_cons_1.log -c coriolis/resources/prod_cons.chk -r coriolis/resources/prod_cons_1_rules.jarl -v
+```
 
