@@ -290,7 +290,7 @@ In the case that the checkpoint inside the `before` scope is called more than on
 
 ### Between scope:
 
-In a `between` scope, the rule must be valid between the callings of two certain checkpoints (that may or may not be different). These two checkpoints _are included_ inside the scope considered for the rule validation. The syntax of a complete rule with a `before` scope is:
+In a `between` scope, the rule must be valid between the callings of two certain checkpoints (that may or may not be different). These two checkpoints _are included_ inside the scope considered for the rule validation. The syntax of a complete rule with a `between` scope is:
 
 ```
 between <checkpoint_1> and [ next | previous ] <checkpoint_2>:

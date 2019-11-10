@@ -16,12 +16,13 @@ class FullPaths(argparse.Action):
 
 class CoriolisCLI():
     def __init__(self):
-        self.parser = argparse.ArgumentParser(description='Coriolis CLI tool')
+        self.parser = argparse.ArgumentParser(description='CORIOLIS CLI tool')
         self.subcommands = self.parser.add_subparsers()
         self._add_verify_subcommand()
         self._add_run_subcommand()
         self._add_parse_subcommand()
         self._add_coriolis_command()
+        self._add_version_command()
 
     def _run_coriolis(self, args):
         logs_path = run_runner(args)
@@ -34,6 +35,13 @@ class CoriolisCLI():
     def _parse_and_verify(self, args):
         all_rules = run_parser(args)
         run_verifier(args, all_rules)
+
+    def _print_version(self, args):
+        print("CORIOLIS CLI tool v.1.0")
+
+    def _add_version_command(self):
+        version_parser = self.subcommands.add_parser('version', description='CORIOLIS CLI tool version')
+        version_parser.set_defaults(func=self._print_version)
 
     def _add_coriolis_command(self):
         CURDIR = os.getcwd()

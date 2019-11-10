@@ -15,6 +15,10 @@ CORIOLIS is a CLI-based framework for running and testing concurrent software. C
 
 - [CORIOLIS overview](#coriolis-overview)
 - [Installation guide](#installation-guide)
+  - [Prerequisites](#prerequisites)
+  - [Installing from package](#installing-from-package)
+  - [Building from source](#building-from-source)
+  - [Running from source](#running-from-source)
 - [Quick start](#quick-start)
   - [Running Python example](#running-python-example)
   - [Running Rust example](#running-rust-example)
@@ -37,7 +41,68 @@ Input files and the relationships between these three parts are summarized on th
 
 ## Installation guide
 
-TODO: Fill me with installation steps
+The recommended way of using CORIOLIS is downloading and installing its `.deb` package. However, you can still download this repository and either build your own `.deb` package or run CORIOLIS from its source code. 
+
+### Prerequisites
+
+- Ubuntu 16.04 LTS OS
+- Docker (check the official docs [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-engine---community-1))
+
+### Installing from package
+
+You can install CORIOLIS from its `.deb` package using `dpkg`:
+
+```
+~$ sudo dpkg -i coriolis_1.0_amd64.deb
+```
+
+This will add the `coriolis` command to your binaries: 
+
+```
+~$ coriolis version
+CORIOLIS CLI tool v.1.0
+```
+
+Keep in mind that CORIOLIS package will also create a MongoDB service (as it is used for the rules verification) running on port 21592. You can check this service with `systemctl` or `service` using the name `coriolis-mongo`:
+
+```
+~$service coriolis-mongo status
+● coriolis-mongo.service - MongoDB container for coriolis verifier
+   Loaded: loaded (/lib/systemd/system/coriolis-mongo.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sun 2019-11-10 22:48:26 UTC; 15min ago
+```
+
+### Building from source
+
+You can build CORIOLIS package from source with the `Makefile` inside the `/coriolis` folder of the repository:
+
+```
+~$ make docker-image && make build
+docker build -f docker/Dockerfile --build-arg VERSION=1.0-48d972012959-dirty -t coriolis:1.0-48d972012959-dirty .
+Sending build context to Docker daemon  41.41MB
+Step 1/11 : FROM ubuntu:16.04
+...
+Successfully tagged coriolis:1.0-48d972012959-dirty
+docker run --rm -v /vagrant/coriolis/bin:/mnt coriolis:1.0-48d972012959-dirty bash -c "cp dist/* /mnt"
+~$ ls bin/
+coriolis_1.0-48d972012959-dirty_amd64.deb
+```
+
+### Running from source
+
+Since CORIOLIS is written in Python, you can run it directly from the `coriolis` file inside `/coriolis` folder -just make sure to install all the dependencies inside `requirements.txt`:
+
+```
+~$ pip3 install -r requirements.txt
+Requirement already satisfied: antlr4-python3-runtime==4.7.2 in /vagrant/venv/lib/python3.5/site-packages (from -r requirements.txt (line 1)) (4.7.2)
+...
+Requirement already satisfied: websocket-client==0.56.0 in /vagrant/venv/lib/python3.5/site-packages (from -r requirements.txt (line 15)) (0.56.0)
+~$ ./coriolis version
+CORIOLIS CLI tool v.1.0
+```
+
+**Note**: You will still need a MongoDB instance for the rules verification to work.
+
 
 ## Quick start
 
