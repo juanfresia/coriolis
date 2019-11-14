@@ -7,7 +7,7 @@ from random import randint
 WRITERS_AMOUNT = 3
 READERS_AMOUNT = 2
 BUFFERS_AMOUNT = 1
-WRITERS_ROUNDS = 3
+WRITERS_ROUNDS = 4
 READERS_ROUNDS = 2
 
 def generate_random_msg(): # Just for flavour

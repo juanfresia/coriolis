@@ -1,0 +1,17 @@
+[Unit]
+Description=MongoDB container for coriolis verifier
+After=docker.service
+Requires=docker.service
+
+[Service]
+Environment=VERSION=4.0.4
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop %n
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStartPre=/usr/bin/docker pull mongo:${VERSION}
+ExecStart=/usr/bin/docker run --rm -p 21592:27017 --name %n mongo:${VERSION}
+
+[Install]
+WantedBy=multi-user.target
+

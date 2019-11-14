@@ -1,0 +1,65 @@
+# If a customer wait, they get their hair cut
+rule get_hair_cut_once_if_waited
+for every c1:
+after take_seat(c1):
+    for any c2 with c2=c1:
+    get_hair_cut(c2) must happen 1 times
+
+# If a customer left, they don't get their hair cut
+rule dont_get_hair_cut_if_left
+for every c1:
+after leave_shop(c1):
+    for any c2 with c2=c1:
+    get_hair_cut(c2) must not happen
+
+# At most 2 customers get their hair cut between barber rounds
+rule at_most_2_get_hair_cut_between_cut_hairs
+for any c1, c2:
+between cut_hair(c1) and next cut_hair(c2):
+    for any c3:
+    get_hair_cut(c3) must happen at most 2 times
+
+# Only right customer get their hair cut between barber rounds
+rule correct_get_hair_cut_happens_between_cut_hairs
+for any c1, c2:
+between cut_hair(c1) and next cut_hair(c2):
+    for any c3 with c3!=c1, c3!=c2:
+    get_hair_cut(c3) must not happen
+
+# At most 2 customers get their hair cut between barber rounds
+rule at_most_2_cut_hair_between_get_hair_cuts
+for any c1, c2:
+between get_hair_cut(c1) and next get_hair_cut(c2):
+    for any c3:
+    cut_hair(c3) must happen at most 2 times
+
+# Only right customer get their hair cut between barber rounds
+rule correct_cut_hair_happens_between_get_hair_cuts
+for any c1, c2:
+between get_hair_cut(c1) and next get_hair_cut(c2):
+    for any c3 with c3!=c1, c3!=c2:
+    cut_hair(c3) must not happen
+
+# There are 5 chairs for costomers to take seat
+rule five_chairs_for_waiting
+for any c1, c2:
+between take_seat(c1) and next get_hair_cut(c2):
+  for any c3:
+  take_seat(c3) must happen at most 5 times
+
+# Customer don't get their hair cut before taking seat
+rule no_get_hair_cut_before_taking_seat
+for every c1:
+before take_seat(c1):
+    for any c2 with c2=c1:
+    get_hair_cut(c2) must not happen
+
+# All customers take seat at most once
+rule one_take_seat_per_customer
+for every c:
+take_seat(c) must happen at most 1 times
+
+# All customers leave the shop at most once
+rule one_leave_shop_per_customer
+for every c:
+leave_shop(c) must happen at most 1 times

@@ -5,7 +5,7 @@ from random import randint
 REINDEER_AMOUNT = 9
 ELVES_AMOUNT = 12
 MIN_ELVES_FOR_HELPING = 3
-SANTA_ROUNDS = 30
+SANTA_ROUNDS = 15
 
 
 # @has_checkpoints

@@ -1,6 +1,6 @@
 CFLAGS := -g
 VFLAGS := --leak-check=full --show-leak-kinds=all --track-origins=yes
-ARCHIVOS = lock.o semaphore.o coriolis_lock.o coriolis_logger.o
+ARCHIVOS = lock.o semaphore.o
 PROGRAMA = main
 
 all: clean $(PROGRAMA)
@@ -9,7 +9,7 @@ $(PROGRAMA): $(ARCHIVOS) $(PROGRAMA).o
 	@mkdir -p fifos
 	@mkdir -p locks
 	@rm -f fifos/*
-	gcc -o $(PROGRAMA) $^
+	gcc -o $(PROGRAMA) $^ -lcoriolis
 
 run: clean $(PROGRAMA)
 	./$(PROGRAMA)

@@ -1,5 +1,5 @@
 import threading, time
-from multiprocessing import Process, Semaphore, Value
+from multiprocessing import Semaphore, Value
 from random import randint
 
 # @has_checkpoints
@@ -7,33 +7,16 @@ from random import randint
 HYDROGEN_AMOUNT = 40
 OXYGEN_AMOUNT = 20
 
-class Barrier:
-    def __init__(self, n):
-        self.n       = n
-        self.count   = Value('i', 0)
-        self.mutex   = Semaphore(1)
-        self.barrier = Semaphore(0)
-
-    def wait(self):
-        self.mutex.acquire()
-        self.count.value += 1
-        self.mutex.release()
-
-        if self.count.value == self.n:
-            self.barrier.release()
-
-        self.barrier.acquire()
-        self.barrier.release()
-
 
 oxygen = 0
 hydrogen = 0
 mutex = Semaphore(1)
-barrier = Barrier(3)
+barrier = threading.Barrier(3)
 oxyQueue = Semaphore(0)
 hydroQueue = Semaphore(0)
 
 def bond(atom_type, atom_id):
+    time.sleep(randint(1, 10) / 500.0)
     # @checkpoint bond atom_type atom_id
     print("[ ID: {:02d} ] {} called bond".format(atom_id, atom_type))
     time.sleep(randint(1, 10) / 500.0)
@@ -56,8 +39,8 @@ def oxygen_main(oxy_id):
     oxyQueue.acquire()
     bond("O", oxy_id)
     barrier.wait()
-    # @checkpoint water_made
     print("**WATER MOLECULE MADE**")
+    # @checkpoint water_made
     mutex.release()
     # @checkpoint atom_die "O" oxy_id
 

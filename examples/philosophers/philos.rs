@@ -10,11 +10,11 @@ const MAX_THINKING_TIME: u32 = 411;
 const PHILOS_AMOUNT: usize = 7;
 const PHILOS_ROUNDS: usize = 4;
 
-const PHILOS_NAMES: [&'static str; 10] = [
-	"Karl", "Immanuel", "Rene", "John", "Thomas", "Jean", "Friedrich", "Richard", "Gottfried", "Francis"
+const PHILOS_NAMES: [&'static str; 11] = [
+	"Karl", "Immanuel", "Rene", "John", "Thomas", "Jean", "Friedrich", "Richard", "Gottfried", "Francis", "David"
 	];
-const PHILOS_SURNAMES: [&'static str; 10] = [
-	"Marx", "Kant", "Descartes", "Locke", "Hobbes", "Rousseau", "Nietzsche", "Bentle", "Leibniz", "Bacon"
+const PHILOS_SURNAMES: [&'static str; 11] = [
+	"Marx", "Kant", "Descartes", "Locke", "Hobbes", "Rousseau", "Nietzsche", "Bentle", "Leibniz", "Bacon", "Hume"
 	];
 
 fn rand_int(n: u32) -> u32 {
@@ -49,7 +49,7 @@ impl Philosopher {
     }
 
     fn main(&self, table: &Table, round: usize) {
-		let fullname = format!("{}{}", self.name, self.surname);
+		let fullname = format!("{}{}{}", self.name, self.surname, self.left);
         println!("{} is thinking", fullname);
         // @checkpoint think fullname round
         sleep_rand_int(MAX_THINKING_TIME);

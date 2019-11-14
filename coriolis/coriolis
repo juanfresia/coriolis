@@ -1,0 +1,129 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import shutil
+
+from common.utils import *
+from verifier.verifier_cli import run_verifier
+from runner.runner_cli import run_runner
+from parser.parser_cli import run_parser
+
+class FullPaths(argparse.Action):
+    # Expand user- and relative-paths
+    def __call__(self, parser, namespace, values, option_string=None):
+        setattr(namespace, self.dest, os.path.abspath(os.path.expanduser(values[0])))
+
+class CoriolisCLI():
+    def __init__(self):
+        self.parser = argparse.ArgumentParser(description='CORIOLIS CLI tool')
+        self.subcommands = self.parser.add_subparsers()
+        self._add_verify_subcommand()
+        self._add_run_subcommand()
+        self._add_parse_subcommand()
+        self._add_coriolis_command()
+        self._add_version_command()
+
+    def _run_coriolis(self, args):
+        logs_path = run_runner(args)
+        args.log_path = logs_path
+        all_rules = run_parser(args)
+        run_verifier(args, all_rules)
+        if args.clean:
+            shutil.rmtree(logs_path, ignore_errors=True)
+
+    def _parse_and_verify(self, args):
+        all_rules = run_parser(args)
+        run_verifier(args, all_rules)
+
+    def _print_version(self, args):
+        print("CORIOLIS CLI tool v.1.0")
+
+    def _add_version_command(self):
+        version_parser = self.subcommands.add_parser('version', description='CORIOLIS CLI tool version')
+        version_parser.set_defaults(func=self._print_version)
+
+    def _add_coriolis_command(self):
+        CURDIR = os.getcwd()
+        self.parser.add_argument('-s', '--source', metavar='source', nargs=1,
+                            help='Source code directory', default=CURDIR, action=FullPaths)
+        self.parser.add_argument('-r', '--rules', metavar='rules_file', nargs=1,
+                            action=FullPaths, help='Rules .jarl file',
+                            default='{}/rules.jarl'.format(CURDIR))
+        self.parser.add_argument('-c', '--checkpoints', metavar='checkpoints', nargs=1,
+                            action=FullPaths, help='Checkpoint list file',
+                            default='{}/rules.chk'.format(CURDIR))
+        self.parser.add_argument('-d', '--destination', metavar='destination', nargs=1,
+                            help='Logs destination directory', default=CURDIR+"/{}/".format(LOGS_FOLDER), action=FullPaths)
+        self.parser.add_argument('-l', '--language', metavar='language', nargs=1,
+                            help='Source code language', default='c', choices=["c", "cpp", "py", "rs", "noop"])
+        self.parser.add_argument('-n', '--number-runs', metavar='number', type=int,
+                            help='Number of runs to perform', default=1)
+        self.parser.add_argument('-t', '--timeout', metavar='secs', type=float,
+                            help='Number of seconds to wait before timeout', default=10.0)
+        self.parser.add_argument('-H', '--mongo-host', metavar='mongo_host', nargs=1,
+                            help='Host or IP of the mongo server',
+                            default=MONGO_DEFAULT_HOST)
+        self.parser.add_argument('-p', '--mongo-port', metavar='mongo_port', nargs=1,
+                            help='Port of the mongo server', type=int,
+                            default=MONGO_DEFAULT_PORT)
+        self.parser.add_argument('-v', '--verbose',action='store_true', help="Enables verbosity")
+        self.parser.add_argument('-C', '--clean',action='store_true', help="Cleans logs after usage")
+        self.parser.set_defaults(func=self._run_coriolis)
+
+    def _add_verify_subcommand(self):
+        CURDIR = os.getcwd()
+        verify_parser = self.subcommands.add_parser('verify', description='Verifies JARL rules based on log files.')
+        verify_parser.add_argument('-l', '--log-path', metavar='log_path', nargs=1,
+                            action=FullPaths, help='Path to check for logs',
+                            default='{}/coriolis_run.log'.format(CURDIR))
+        verify_parser.add_argument('-c', '--checkpoints', metavar='checkpoints', nargs=1,
+                            action=FullPaths, help='Checkpoint list file',
+                            default='{}/rules.chk'.format(CURDIR))
+        verify_parser.add_argument('-r', '--rules', metavar='rules_file', nargs=1,
+                            action=FullPaths, help='Rules .jarl file',
+                            default='{}/rules.jarl'.format(CURDIR))
+        verify_parser.add_argument('-H', '--mongo-host', metavar='mongo_host', nargs=1,
+                            help='Host or IP of the mongo server',
+                            default=MONGO_DEFAULT_HOST)
+        verify_parser.add_argument('-p', '--mongo-port', metavar='mongo_port', nargs=1,
+                            help='Port of the mongo server', type=int,
+                            default=MONGO_DEFAULT_PORT)
+        verify_parser.add_argument('-v', '--verbose',action='store_true', help="Enables verbosity")
+        verify_parser.set_defaults(func=self._parse_and_verify)
+
+    def _add_run_subcommand(self):
+        CURDIR = os.getcwd()
+        instrument_parser = self.subcommands.add_parser('run', description='Runs user code producing log files.')
+        instrument_parser.add_argument('-s', '--source', metavar='source', nargs=1,
+                            help='Source code directory', default=CURDIR, action=FullPaths)
+        instrument_parser.add_argument('-d', '--destination', metavar='destination', nargs=1,
+                            help='Logs destination directory', default=CURDIR+"/{}/".format(LOGS_FOLDER), action=FullPaths)
+        instrument_parser.add_argument('-l', '--language', metavar='language', nargs=1,
+                            help='Source code language', default='c', choices=["c", "cpp", "py", "rs", "noop"])
+        instrument_parser.add_argument('-c', '--checkpoints', metavar='checkpoints', nargs=1,
+                            action=FullPaths, help='Checkpoint list file',
+                            default='{}/test.chk'.format(CURDIR))
+        instrument_parser.add_argument('-n', '--number-runs', metavar='number', type=int,
+                            help='Number of runs to perform', default=1)
+        instrument_parser.add_argument('-t', '--timeout', metavar='secs', type=float,
+                            help='Number of seconds to wait before timeout', default=10.0)
+        instrument_parser.add_argument('-v', '--verbose',action='store_true', help="Enables verbosity")
+        instrument_parser.set_defaults(func=run_runner)
+
+    def _add_parse_subcommand(self):
+        CURDIR = os.getcwd()
+        parse_parser = self.subcommands.add_parser('parse', description='Parses and validates JARL rules from file.')
+        parse_parser.add_argument('-r', '--rules', metavar='rules_file', nargs=1,
+                            action=FullPaths, help='Rules .jarl file',
+                            default='{}/rules.jarl'.format(CURDIR))
+        parse_parser.add_argument('-v', '--verbose',action='store_true', help="Enables verbosity")
+        parse_parser.set_defaults(func=run_parser)
+
+    def parse_args(self):
+        return self.parser.parse_args()
+
+if __name__ == "__main__":
+    parser = CoriolisCLI()
+    args = parser.parse_args()
+    args.func(args)
