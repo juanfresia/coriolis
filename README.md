@@ -90,7 +90,7 @@ coriolis_1.0-48d972012959-dirty_amd64.deb
 
 ### Running from source
 
-Since CORIOLIS is written in Python, you can run it directly from the `coriolis` file inside `/coriolis` folder -just make sure to install all the dependencies inside `requirements.txt`:
+Since CORIOLIS is written in Python, you can run it directly from the `coriolis` file inside `/coriolis` folder, just make sure to install all the dependencies inside `requirements.txt`:
 
 ```
 ~$ pip3 install -r requirements.txt
