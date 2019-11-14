@@ -41,8 +41,6 @@ Input files and the relationships between these three parts are summarized on th
 
 ## Installation guide
 
-The recommended way of using CORIOLIS is downloading and installing its `.deb` package. However, you can still download this repository and either build your own `.deb` package or run CORIOLIS from its source code. 
-
 ### Prerequisites
 
 - Ubuntu 16.04 LTS OS
@@ -50,23 +48,24 @@ The recommended way of using CORIOLIS is downloading and installing its `.deb` p
 
 ### Installing from package
 
-You can install CORIOLIS from its `.deb` package using `dpkg`:
+The recommended way of using CORIOLIS is downloading and installing the latest `.deb` package from the releases tab (you can find the latest release [here](https://github.com/juanfresia/coriolis/releases/latest)):
 
 ```
-~$ sudo dpkg -i coriolis_1.0_amd64.deb
+$ wget https://github.com/juanfresia/coriolis/releases/download/1.0/coriolis_1.0_amd64.deb
+$ sudo dpkg -i coriolis_1.0_amd64.deb
 ```
 
 This will add the `coriolis` command to your binaries: 
 
 ```
-~$ coriolis version
+$ coriolis version
 CORIOLIS CLI tool v.1.0
 ```
 
 Keep in mind that CORIOLIS package will also create a MongoDB service (as it is used for the rules verification) running on port 21592. You can check this service with `systemctl` or `service` using the name `coriolis-mongo`:
 
 ```
-~$service coriolis-mongo status
+$ service coriolis-mongo status
 ● coriolis-mongo.service - MongoDB container for coriolis verifier
    Loaded: loaded (/lib/systemd/system/coriolis-mongo.service; enabled; vendor preset: enabled)
    Active: active (running) since Sun 2019-11-10 22:48:26 UTC; 15min ago
@@ -77,14 +76,16 @@ Keep in mind that CORIOLIS package will also create a MongoDB service (as it is 
 You can build CORIOLIS package from source with the `Makefile` inside the `/coriolis` folder of the repository:
 
 ```
-~$ make docker-image && make build
+$ git clone https://github.com/juanfresia/coriolis.git
+$ cd coriolis/coriolis
+$ make docker-image && make build
 docker build -f docker/Dockerfile --build-arg VERSION=1.0-48d972012959-dirty -t coriolis:1.0-48d972012959-dirty .
 Sending build context to Docker daemon  41.41MB
 Step 1/11 : FROM ubuntu:16.04
 ...
 Successfully tagged coriolis:1.0-48d972012959-dirty
 docker run --rm -v /vagrant/coriolis/bin:/mnt coriolis:1.0-48d972012959-dirty bash -c "cp dist/* /mnt"
-~$ ls bin/
+$ ls bin/
 coriolis_1.0-48d972012959-dirty_amd64.deb
 ```
 
@@ -93,16 +94,16 @@ coriolis_1.0-48d972012959-dirty_amd64.deb
 Since CORIOLIS is written in Python, you can run it directly from the `coriolis` file inside `/coriolis` folder, just make sure to install all the dependencies inside `requirements.txt`:
 
 ```
-~$ pip3 install -r requirements.txt
+$ cd coriolis
+$ pip3 install -r requirements.txt
 Requirement already satisfied: antlr4-python3-runtime==4.7.2 in /vagrant/venv/lib/python3.5/site-packages (from -r requirements.txt (line 1)) (4.7.2)
 ...
 Requirement already satisfied: websocket-client==0.56.0 in /vagrant/venv/lib/python3.5/site-packages (from -r requirements.txt (line 15)) (0.56.0)
-~$ ./coriolis version
+$ ./coriolis version
 CORIOLIS CLI tool v.1.0
 ```
 
-**Note**: You will still need a MongoDB instance for the rules verification to work.
-
+**Note**: You will still need a MongoDB instance for the rules verification to work. You can use the `coriolis-mongo.service` file provided in `coriolis/docker` directory.
 
 ## Quick start
 
@@ -111,7 +112,7 @@ CORIOLIS CLI tool v.1.0
 The easiest way to use CORIOLIS is with the basic `coriolis` command. You will want to specify, at least, your source code directory, your JARL rules file, the checkpoints table related to your code, and the language used in your project: 
 
 ```
-~$ coriolis -s myproject/src -r myrules.jarl -c mycheckpoints.chk -l py
+$ coriolis -s myproject/src -r myrules.jarl -c mycheckpoints.chk -l py
 ```
 
 **Note**: Remember CORIOLIS uses Docker on the background, so your user must have enough permissions to use the `docker` command.
@@ -119,7 +120,7 @@ The easiest way to use CORIOLIS is with the basic `coriolis` command. You will w
 You can check all flags with `coriolis -h`:
 
 ```
-~$ coriolis -h
+$ coriolis -h
 usage: coriolis [-h] [-s source] [-r rules_file] [-c checkpoints]
                 [-d destination] [-l language] [-n number] [-t secs]
                 [-H mongo_host] [-p mongo_port] [-v] [-C]
@@ -168,7 +169,7 @@ The CORIOLIS repository already have several examples for every supported langua
 A Python implementation of the readers and writers problem can be found on the CORIOLIS repository inside `examples/readersWriters`. Assuming you are on the repository home folder, you can inspect the contents of the `run_coriolis.sh` file to confirm it just runs the code:
 
 ```
-~$ cat examples/readersWriters/run_coriolis.sh
+$ cat examples/readersWriters/run_coriolis.sh
 #!/bin/bash
 
 python3 main.py
@@ -177,7 +178,7 @@ python3 main.py
 You can run the example with `coriolis` like the following:
 
 ```
-~$ coriolis -l py -s examples/readersWriters/ -r coriolis/resources/readers_writers_1_rules.jarl -c coriolis/resources/readers_writers.chk -C
+$ coriolis -l py -s examples/readersWriters/ -r coriolis/resources/readers_writers_1_rules.jarl -c coriolis/resources/readers_writers.chk -C
 ```
 
 ### Running Rust example
@@ -185,7 +186,7 @@ You can run the example with `coriolis` like the following:
 A Rust implementation of the dinning philosophers problem can be found inside `examples/philosophers` on the CORIOLIS repository. The `run_coriolis.sh` script compiles and runs the code as shown below:
 
 ```
-~$ cat examples/philosophers/run_coriolis.sh
+$ cat examples/philosophers/run_coriolis.sh
 #!/bin/bash
 
 rustc philos.rs
@@ -195,7 +196,7 @@ rustc philos.rs
 You can run the example using the next command from the repository home folder:
 
 ```
-~$ coriolis -l rs -s examples/philosophers/ -r coriolis/resources/philos_1_rules.jarl -c coriolis/resources/philos.chk -C
+$ coriolis -l rs -s examples/philosophers/ -r coriolis/resources/philos_1_rules.jarl -c coriolis/resources/philos.chk -C
 ```
 
 ### Running C/C++ example
@@ -203,7 +204,7 @@ You can run the example using the next command from the repository home folder:
 In order to run C or C++ code with CORIOLIS, you must make sure to link your code against the `coriolis` library. This can be achieved, for instance, by using the `-lcoriolis` flag with `gcc`:
 
 ```
-~$ gcc -o main main.cpp -lcoriolis
+$ gcc -o main main.cpp -lcoriolis
 ```
 
 For a C++ project with `cmake`, you may only need to add a `target_link_libraries` statement like the following:
@@ -221,7 +222,7 @@ target_link_libraries(myProj coriolis)
 You can find a C implementation of the smokers problem in `examples/smokers`. In this case, the `run_coriolis.sh` script uses a `makefile` to compile and run the program:
 
 ```
-~$ cat examples/smokers/run_coriolis.sh
+$ cat examples/smokers/run_coriolis.sh
 #!/bin/bash
 
 make
@@ -231,7 +232,7 @@ make
 To run the example use the following command:
 
 ```
-~$ coriolis -l c -s examples/smokers/ -r coriolis/resources/smokers_1_rules.jarl -c coriolis/resources/smokers.chk -C
+$ coriolis -l c -s examples/smokers/ -r coriolis/resources/smokers_1_rules.jarl -c coriolis/resources/smokers.chk -C
 ```
 
 ## Parsing JARL rules
@@ -239,7 +240,7 @@ To run the example use the following command:
 If you only need to validate a JARL rules file (i.e. check the rules syntax and grammar) you can do so with the `parse` subcommand of CORIOLIS. Executing `coriolis parse -h` will allow you to inspect its usage:
 
 ```
-~$ coriolis parse -h
+$ coriolis parse -h
 usage: coriolis parse [-h] [-r rules_file] [-v]
 
 Parses and validates JARL rules from file.
@@ -254,7 +255,7 @@ optional arguments:
 For instance, you can validate the JARL specification examples with the following command from the project's home directory:
 
 ```
-~$ coriolis parse -r coriolis/resources/jarl_spec_examples.jarl -v
+$ coriolis parse -r coriolis/resources/jarl_spec_examples.jarl -v
 ```
 
 ## Running user's code
@@ -262,7 +263,7 @@ For instance, you can validate the JARL specification examples with the followin
 You can run your code and generate CORIOLIS output logs for you to inspect it with the `run` subcommand. You can find more info about this with `coriolis run -h`:
 
 ```
-~$ coriolis run -h
+$ coriolis run -h
 usage: coriolis run [-h] [-s source] [-d destination] [-l language]
                     [-c checkpoints] [-n number] [-t secs] [-v]
 
@@ -288,7 +289,7 @@ optional arguments:
 You can run an implementation of the sleeping barber problem producing three different output logs on the `output` directory with the following command:
 
 ```
-~$ coriolis run -l rs -s examples/barber/ -c coriolis/resources/barber.chk -d output/ -n 3
+$ coriolis run -l rs -s examples/barber/ -c coriolis/resources/barber.chk -d output/ -n 3
 ```
 
 ## Verifying JARL rules
@@ -296,7 +297,7 @@ You can run an implementation of the sleeping barber problem producing three dif
 If you have already generated some CORIOLIS logs with the `run` subcommand, you can inspect them and verify some JARL rules with the `verify` subcommand. The full `coriolis verify -h` command will show all flags for it:
 
 ```
-~$ coriolis verify -h
+$ coriolis verify -h
 usage: coriolis verify [-h] [-l log_path] [-c checkpoints] [-r rules_file]
                        [-H mongo_host] [-p mongo_port] [-v]
 
@@ -320,6 +321,6 @@ optional arguments:
 CORIOLIS project already includes some previously defined JARL rules for the producer-consumer problem, as well as a sample log file. To verify such rules against the log, just run the next command:
 
 ```
-~$ coriolis verify -l coriolis/resources/prod_cons_1.log -c coriolis/resources/prod_cons.chk -r coriolis/resources/prod_cons_1_rules.jarl -v
+$ coriolis verify -l coriolis/resources/prod_cons_1.log -c coriolis/resources/prod_cons.chk -r coriolis/resources/prod_cons_1_rules.jarl -v
 ```
 
