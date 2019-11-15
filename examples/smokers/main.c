@@ -5,12 +5,14 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <time.h>
+#include <unistd.h>
 
 #include "lock.h"
 #include "semaphore.h"
 
 // @has_checkpoints
 int AGENT_ITERATIONS = 20;
+int MAX_SLEEPING_TIME = 54321;
 
 enum Semaphores {
     TOBACO_SEM = 0,
@@ -47,7 +49,7 @@ void agent_main(int num_servings) {
     unsigned int serving;
     for (int i = 0; i < AGENT_ITERATIONS; i++) {
         // @checkpoint agent_sleep
-        sleep(1);
+        usleep(rand() % MAX_SLEEPING_TIME);
         sem_wait(semid, AGENT_SEM);
 
         // @checkpoint agent_wake
@@ -62,6 +64,7 @@ void agent_main(int num_servings) {
         // @checkpoint agent_produce serving
         sem_post(semid, serving);
     }
+    sem_wait(semid, AGENT_SEM);
     exit(0);
 }
 
@@ -165,7 +168,8 @@ void clean() {
 
 
 void main() {
-	key_t key = ftok("main.c", 6);
+    srand(time(NULL));
+    key_t key = ftok("main.c", 6);
     int shmid = shmget(key, sizeof(bool) * _RESOURCES_NUM, IPC_CREAT | 0644);
     table = shmat(shmid, NULL, 0);
     for (int i = 0; i < _RESOURCES_NUM; i++) {
