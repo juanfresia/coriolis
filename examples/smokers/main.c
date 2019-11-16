@@ -51,16 +51,13 @@ void agent_main(int num_servings) {
         // @checkpoint agent_sleep
         usleep(rand() % MAX_SLEEPING_TIME);
         sem_wait(semid, AGENT_SEM);
-
         // @checkpoint agent_wake
         serving = rand() % 3;
         printf("Agent serving: %d\n", serving);
-
         // @checkpoint agent_produce serving
         sem_post(semid, serving);
         serving = (serving + 1) % 3;
         printf("Agent serving: %d\n", serving);
-
         // @checkpoint agent_produce serving
         sem_post(semid, serving);
     }
@@ -75,8 +72,9 @@ void smoker_main(int resource) {
         return;
     }
 
-    for (int i = 0; i < AGENT_ITERATIONS; i++) {
+    while(true) {
         // @checkpoint smoker_sleep resource
+        usleep(rand() % MAX_SLEEPING_TIME);
         sem_wait(semid, resource + 3);
         printf("[Smoker %d] Got everything, smoking\n", resource);
         // @checkpoint smoker_take_element resource ((resource+1)%3)
@@ -97,7 +95,7 @@ void pusher_main(int resource) {
     int res1 = (resource + 1) % 3;
     int res2 = (resource + 2) % 3;
 
-    for (int i = 0; i < AGENT_ITERATIONS; i++) {
+    while(true) {
         sem_wait(semid, resource);
         sem_wait(semid, MEM_LOCK);
         printf("[Pusher %d] Got something\n", resource);
