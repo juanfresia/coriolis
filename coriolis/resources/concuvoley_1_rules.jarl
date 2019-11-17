@@ -1,0 +1,81 @@
+# Run with F:3, C:2, K:5, M:10, P:17
+
+rule seventeen_players_join_tournament
+for any p:
+enter_tournament(p) must happen 17 times
+
+rule beach_capacity_is_ten
+for any p1, p2:
+between enter_beach(p1) and next leave_beach(p2):
+    for any p3:
+    enter_beach(p3) must happen at most 10 times
+
+rule players_cant_play_outside_beach
+for every p1, p2 with p2=p1:
+between leave_beach(p1) and next enter_beach(p2):
+    for any p3 with p3=p1:
+    play_set(p3) must not happen
+
+rule players_cant_search_court_if_left_tournament
+for every p1:
+after leave_tournament(p1):
+    for any p2 with p2=p1:
+    search_court(p2) must not happen
+
+rule players_cant_enter_beach_if_left_tournament
+for every p1:
+after leave_tournament(p1):
+    for any p2 with p2=p1:
+    enter_beach(p2) must not happen
+
+rule players_enter_tournament_once
+for every p:
+enter_tournament(p) must happen 1 times
+
+rule players_cant_repeat_their_partners
+for every p1, p2 with p1!=p2:
+partner_with(p1, p2) must happen at most 1 times
+
+rule players_cant_play_more_than_five_matches
+for every p and any c:
+finish_match(p, c) must happen at most 5 times
+
+rule matches_have_at_most_five_sets
+for every p1, c1, p2, c2 with p1=p2, c1=c2:
+between wait_at_court(p1, c1) and next leave_court(p2, c2):
+    for any p3 with p3=p1:
+    play_set(p3) must happen at most 5 times
+
+rule players_wait_at_court_before_leaving
+for every p1, p2, c1, c2 with p1=p2, c1=c2:
+between find_court(p1, c1) and next leave_court(p2, c2):
+    for any p3, c3 with p3=p1, c3=c1:
+    wait_at_court(p3, c3) must happen
+
+rule players_cant_play_if_no_court_found
+for every p1, p2 and any c1, c2 with p1=p2:
+between leave_court(p1, c1) and next find_court(p2, c2):
+    for any p3 with p3=p1:
+    play_set(p3) must not happen
+
+rule matches_cant_be_played_on_flooded_court
+for every c1, c2 with c1=c2:
+between flood_court(c1) and next unflood_court(c2):
+    for every c3 and any p with c3=c1:
+    finish_match(p, c3) must not happen
+
+rule players_cant_stay_at_court_if_flooded
+for every c1, c2 with c1=c2:
+between flood_court(c1) and next unflood_court(c2):
+    for every c3 and any p with c3=c1:
+    wait_at_court(p, c3) must not happen
+
+rule two_courts_get_flooded_after_tide_flowing
+after flow_tide():
+    for any c:
+    flood_court(c) must happen at least 2 times
+
+rule two_courts_get_unflooded_after_tide_ebbing
+after flow_tide():
+    for any c:
+    unflood_court(c) must happen at least 2 times

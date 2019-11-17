@@ -14,6 +14,7 @@
 #include "score_table.h"
 #include "partners_table.h"
 #include "tournament.h"
+// @has_checkpoints
 
 #include "protocol.h"
 
@@ -284,8 +285,10 @@ void court_handler_tide(int signum) {
 	tournament_t* tm = court->tm;
 	if (tm->tm_data->tm_courts[court->court_id].court_status == TM_C_FLOODED) {
 		court->flooded = true;
+		// @checkpoint flood_court court->court_id
 	} else {
 		court->flooded = false;
+		// @checkpoint unflood_court court->court_id
 		sem_post(court->flood_sem, court->court_id);
 	}
 }
@@ -300,22 +303,22 @@ void court_set_tide_handler() {
 	sigaction(SIG_TIDE, &sa, NULL);
 }
 
-/* Handler function for SIGTERM signal*/
+/* Handler function for SIGQUIT signal*/
 void court_handler_termination(int signum) {
-	assert(signum == SIGTERM);
+	assert(signum == SIGQUIT);
 	court_t* court = court_get_instance();
 	log_write(INFO_L, "Court %03d: No more matches can be played. Self-destruct protocol started.\n", court->court_id);
 	court_self_destruct();
 }
 
 void court_set_termination_handler() {
-	// Set the hanlder for the SIGTERM signal
+	// Set the hanlder for the SIGQUIT signal
 	struct sigaction sa;
 	sigset_t sigset;	
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
 	sa.sa_handler = court_handler_termination;
-	sigaction(SIGTERM, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 }
 
 /* Marks each player's partner on the partners_table stored at court.*/

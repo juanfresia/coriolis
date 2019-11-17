@@ -1,0 +1,27 @@
+# Lines starting with '#' and empty lines are ignored
+# Format is:
+#   <breakpoint-name> [<param-name>:<param-type> ...]
+#
+# Valid param-types are: int, float, string, char
+
+start_simulation
+end_simulation
+
+flood_court          court_id:int
+unflood_court        court_id:int
+flow_tide
+ebb_tide
+
+enter_tournament     player_id:int
+enter_beach	         player_id:int
+search_court	     player_id:int
+find_court	         player_id:int   court_id:int
+failed_join_court    player_id:int   court_id:int
+wait_at_court        player_id:int   court_id:int
+rejected_from_court  player_id:int   court_id:int
+play_set	         player_id:int
+finish_match	     player_id:int   court_id:int
+partner_with         player_id:int   partner_id:int
+leave_court          player_id:int   court_id:int
+leave_beach	         player_id:int
+leave_tournament     player_id:int

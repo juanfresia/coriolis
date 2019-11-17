@@ -8,6 +8,7 @@
 #include "lock.h"
 #include "confparser.h"
 #include "log.h"
+// @has_checkpoints
 
 void print_tournament_status(tournament_t* tm);
 
@@ -33,6 +34,7 @@ void tide_flow(tournament_t* tm, struct conf sc){
 	lock_acquire(tm->tm_lock);
 	int actual_tide = tm->tm_data->tm_tide_lvl;
 	log_write(INFO_L, "Tide: Flowing! (tide level: %d -> %d)\n", actual_tide, ((actual_tide+1) > (sc.rows) ? sc.rows : actual_tide));
+	// @checkpoint flow_tide
 
 	tm->tm_data->tm_tide_lvl++;
 	if (tm->tm_data->tm_tide_lvl > sc.rows)
@@ -58,6 +60,7 @@ void tide_ebb(tournament_t* tm, struct conf sc){
 	lock_acquire(tm->tm_lock);
 	int actual_tide = tm->tm_data->tm_tide_lvl;
 	log_write(INFO_L, "Tide: Ebbing! (tide level: %d -> %d)\n", actual_tide, ((actual_tide-1) < 0 ? -1 : actual_tide));
+    // @checkpoint ebb_tide
 
 	int i;
 	for (i = 0; i < tm->total_courts; i++) {

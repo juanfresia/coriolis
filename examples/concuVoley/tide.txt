@@ -6,5 +6,7 @@ waiting some time (in microseconds) as such line indicates.
 The format for each line of the file must be:
 <Command letter (F or E)> : <time to wait before executing>
 where the spaces and the end of line are compulsory.*/
+F : 200000
+F : 240000
 E : 300000
 E : 320000

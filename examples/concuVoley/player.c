@@ -163,22 +163,22 @@ void handler_players_set(int signum) {
 		player_stop_playing();
 }
 
-/* Handler function for SIGTERM signal*/
+/* Handler function for SIGQUIT signal*/
 void player_handler_termination(int signum) {
-	assert(signum == SIGTERM);
+	assert(signum == SIGQUIT);
 	player_t* player = player_get_instance();
 	log_write(INFO_L, "Player %03d: No more matches can be played. Player decided to leave the tournament on his own!\n", player->id);
 	player_seppuku(true);
 }
 
 void player_set_termination_handler() {
-	// Set the hanlder for the SIGTERM signal
+	// Set the hanlder for the SIGQUIT signal
 	struct sigaction sa;
 	sigset_t sigset;	
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
 	sa.sa_handler = player_handler_termination;
-	sigaction(SIGTERM, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 }
 
 void player_set_sigset_handler() {
@@ -214,8 +214,8 @@ void player_play_set(unsigned long int* set_score){
 
 /* Call this function once player has found a court to join.
  * Makes the player play every set and leave when necessary.*/
-void player_at_court(player_t* player, int court_fifo, int player_fifo) {
-	// @checkpoint waiting_at_court player->id
+void player_at_court(player_t* player, int court_fifo, int player_fifo, int court_id) {
+	// @checkpoint wait_at_court player->id court_id
 	message_t msg = {};
 	char* p_name = player->name;
 	while(msg.m_type != MSG_MATCH_END){
@@ -248,7 +248,7 @@ void player_at_court(player_t* player, int court_fifo, int player_fifo) {
 			// but other players that arrived couldn't make a team with them.
 			// Hence, court kicked every player there
 			log_write(INFO_L, "Player %03d: Kicked from previously accepted court\n", player->id);
-			// @checkpoint couldnt_make_team_at_court player->id 
+			// @checkpoint rejected_from_court player->id court_id
 			player->times_kicked++;
 			return;
 		} else {
@@ -256,13 +256,13 @@ void player_at_court(player_t* player, int court_fifo, int player_fifo) {
 			miss_count++;
 			if (miss_count >= 2) {
 				log_write(INFO_L, "Player %03d: Kicked from previously accepted court\n", player->id);
-				// @checkpoint couldnt_make_team_at_court player->id
+				// @checkpoint rejected_from_court player->id court_id
 				player->times_kicked++;
 			}
 		}
 	}
 	
-	// @checkpoint finish_match player->id
+	// @checkpoint finish_match player->id court_id
 	if(msg.m_type == MSG_MATCH_END) // Not needed for now, but good sanity check
 		player->matches_played++;
 }
@@ -274,7 +274,7 @@ void player_at_court(player_t* player, int court_fifo, int player_fifo) {
  * court found), or with the player joining the court, calling the
  * function player_at_court.*/
 void player_join_court(player_t* player, unsigned int court_id) {
-	// @checkpoint found_court player->id  court_id
+	// @checkpoint find_court player->id  court_id
 	log_write(INFO_L, "Player %03d: Found court %03d, attempting to join\n", player->id, court_id);
 	char court_fifo_name[MAX_FIFO_NAME_LEN];
 	get_court_fifo_name(court_id, court_fifo_name);
@@ -333,10 +333,11 @@ void player_join_court(player_t* player, unsigned int court_id) {
 	}
 
 	if (msg.m_type == MSG_MATCH_ACCEPT) {
-		player_at_court(player, court_fifo, my_fifo);
+		player_at_court(player, court_fifo, my_fifo, (int) court_id);
+		// @checkpoint leave_court player->id court_id
 	} else {
 		log_write(INFO_L, "Player %03d: Player was rejected from Court %03d\n", player->id, court_id);
-		// @checkpoint kicked_from_court player->id court_id
+		// @checkpoint failed_join_court player->id court_id
 		player->times_kicked++;
 	}
 	player_unset_sigset_handler();
@@ -355,7 +356,7 @@ void player_join_court(player_t* player, unsigned int court_id) {
  * Returns true if could found a court. */
 bool player_looking_for_court(player_t* player) {
 	log_write(INFO_L, "Player %03d: Looking for a court\n", player->id);
-	// @checkpoint looking_court player->id
+	// @checkpoint search_court player->id
 
 	// Search for a free court
 	int court_id = -1;
@@ -422,6 +423,7 @@ void player_main(unsigned int id, tournament_t* tm) {
 	log_write(INFO_L, "Player %03d: Player skill is: %d\n", player->id, player_get_skill());
 	
 	log_write(INFO_L, "Player %03d: decided to enter the tournament\n", player->id);
+	// @checkpoint enter_tournament player->id
 
 	lock_acquire(tm->tm_lock);
 	int sem_start = tm->tm_data->tm_init_sem;
@@ -434,6 +436,7 @@ void player_main(unsigned int id, tournament_t* tm) {
 	tm->tm_data->tm_on_beach_players++;
 	lock_release(tm->tm_lock);
 	log_write(INFO_L, "Player %03d: Has entered the beach\n", player->id);
+	// @checkpoint enter_beach player->id
 
 	int i, r;
 	bool cut_condition = false;
@@ -447,7 +450,6 @@ void player_main(unsigned int id, tournament_t* tm) {
 		unsigned long int prob = rand() % 100;
 		if (prob < LEAVING_PROB) {
 			log_write(INFO_L, "Player %03d: Decided to leave the tournament on his own!\n", player->id);
-			// @checkpoint leave_tournament player->id
 			sem_post(sem_start, 1);
 			lock_acquire(tm->tm_lock);
 			tm->tm_data->tm_on_beach_players--;

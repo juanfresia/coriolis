@@ -5,6 +5,7 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include "lock.h"
+// @has_checkpoints
 
 #include "partners_table.h"
 
@@ -110,6 +111,8 @@ void set_played_together(partners_table_t* pt, size_t p1_id, size_t p2_id){
 
 	lock_acquire(pt->lock);
 	pt->table[p1_id * pt->players_amount + p2_id] = true;
+	// @checkpoint partner_with p1_id p2_id
 	pt->table[p2_id * pt->players_amount + p1_id] = true;
+	// @checkpoint partner_with p2_id p1_id
 	lock_release(pt->lock);
 }

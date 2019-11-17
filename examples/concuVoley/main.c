@@ -24,6 +24,7 @@
 #include "score_table.h"
 #include "tournament.h"
 #include "tide.h"
+// @has_checkpoints
 
 
 /* Returns negative in case of error!*/
@@ -42,7 +43,7 @@ int main_init(tournament_t* tm, struct conf sc){
 	// SIG_TIDE signals unless we set it explicitily
 	signal(SIG_SET, SIG_IGN);
 	signal(SIG_TIDE, SIG_IGN);
-	signal(SIGTERM, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	
 	// Create every player FIFO
 	int i;
@@ -271,7 +272,7 @@ int main(int argc, char **argv){
 		printf("FATAL: Something went really wrong!\n");
 		return -1;
 	}
-
+    // @checkpoint start_simulation
 	log_write(NONE_L, "Main: Let the tournament begin!\n");
 	int i, j;
 
@@ -340,16 +341,18 @@ int main(int argc, char **argv){
 		if(cut_condition && (!courts_waken)) {
 			courts_waken = true;
 			log_write(INFO_L, "Main: Enough matches performed. Terminating processes!\n");
-			kill(0, SIGTERM);
+			kill(0, SIGQUIT);
+			break;
 		}
 	}
 
 	log_write(STAT_L, "Main: Tournament ended correctly \\o/\n");
 	print_tournament_results(tm);
+	// @checkpoint end_simulation
 
 	partners_table_free_table(pt);
 	tournament_free(tm);
-	score_table_free_table(st);		
+	score_table_free_table(st);
 
 	log_close();
 	return 0;
