@@ -1,0 +1,53 @@
+rule thirteen_servers_created
+for any s, pt:
+server_create(s, pt) must happen 13 times
+
+rule seventeen_observatories_created
+for any o, sp, ps:
+observatory_create(o, sp, ps) must happen 17 times
+
+rule no_observatory_sends_photos_before_creation
+for every o1 and any sp, ps:
+before observatory_create(o1, sp, ps):
+    for any o2, s, p with o2=o1:
+    send_to_server(o2, s, p) must not happen
+
+rule no_server_receives_photos_before_creation
+for every s1 and any pt:
+before server_create(s1, pt):
+    for any o, s2, p with s2=s1:
+    send_to_server(o, s2, p) must not happen
+
+rule send_to_server_precedes_send_to_obs
+for every o1, s1, p1, s2, o2, p2 with o1=o2, s1=s2, p1=p2:
+send_to_server(o1, s1, p1) must precede send_to_obs(s2, o2, p2)
+
+rule send_to_obs_precedes_rcv_from_server
+for every o1, p1:
+before rcv_from_server(o1, p1):
+    for every o2, p2 and any s with o2=o1, p2=p1:
+    send_to_obs(s, o2, p2) must happen
+
+rule observatory_has_replies_from_server_before_rcv_full_photo
+for every o1, p1 and any ps:
+before rcv_full_photo(o1, p1, ps):
+    for any o2, p2 with o2=o1, p2=p1:
+    rcv_from_server(o2, p2) must happen
+
+rule observatory_has_no_replies_from_server_after_rcv_full_photo
+for every o1, p1 and any ps:
+after rcv_full_photo(o1, p1, ps):
+    for any o2, p2 with o2=o1, p2=p1:
+    rcv_from_server(o2, p2) must not happen
+
+rule all_quadrants_sent_before_server_reply
+for every o1, s1, p1, o2, s2, p2 with o1=o2, s1=s2, p1=p2:
+between send_to_server(o1, s1, p1) and next send_to_server(o2, s2, p2):
+    for any s3, o3, p3 with s3=s1, o3=o1, p3=p1:
+    send_to_obs(s3, o3, p3) must not happen
+
+rule cannot_rcv_full_photo_before_rcv_from_server
+for every o1, p1:
+before rcv_from_server(o1, p1):
+    for every o2, p2 and any ps with o2=o1, p2=p1:
+    rcv_full_photo(o2, p2, ps) must not happen

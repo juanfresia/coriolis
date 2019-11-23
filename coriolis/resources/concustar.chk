@@ -1,0 +1,13 @@
+# Lines starting with '#' and empty lines are ignored
+# Format is:
+#   <breakpoint-name> [<param-name>:<param-type> ...]
+#
+# Valid param-types are: int, float, string, char
+#
+server_create         server_id:int  process_time:int
+observatory_create    obs_id:int     speed:int         photo_size:int
+
+send_to_server        obs_id:int     server_id:int     photo_id:int
+send_to_obs           server_id:int  obs_id:int        photo_id:int
+rcv_from_server       obs_id:int     photo_id:int
+rcv_full_photo        obs_id:int     photo_id:int      photo_size:int
