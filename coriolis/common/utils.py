@@ -11,12 +11,14 @@ LOGS_FOLDER = "coriolis_logs"
 
 
 def language_to_docker_image(language):
-    return {
+    image = {
         "c": "coriolis_cpp",
         "cpp": "coriolis_cpp",
         "py": "coriolis_python",
         "rs": "coriolis_rust"
     }[language]
+
+    return "coriolistesting/" + image
 
 
 def language_to_language_name(language):
