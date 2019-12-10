@@ -37,7 +37,7 @@ class CoriolisCLI():
         run_verifier(args, all_rules)
 
     def _print_version(self, args):
-        print("CORIOLIS CLI tool v.1.0")
+        print("CORIOLIS CLI tool 1.0.2")
 
     def _add_version_command(self):
         version_parser = self.subcommands.add_parser('version', description='CORIOLIS CLI tool version')
