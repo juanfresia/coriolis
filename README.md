@@ -51,15 +51,15 @@ Input files and the relationships between these three parts are summarized on th
 The recommended way of using CORIOLIS is downloading and installing the latest `.deb` package from the releases tab (you can find the latest release [here](https://github.com/juanfresia/coriolis/releases/latest)):
 
 ```
-$ wget https://github.com/juanfresia/coriolis/releases/download/1.0/coriolis_1.0_amd64.deb
-$ sudo dpkg -i coriolis_1.0_amd64.deb
+$ wget https://github.com/juanfresia/coriolis/releases/download/v1.0.2/coriolis_1.0.2_amd64.deb
+$ sudo dpkg -i coriolis_1.0.2_amd64.deb
 ```
 
 This will add the `coriolis` command to your binaries: 
 
 ```
 $ coriolis version
-CORIOLIS CLI tool v.1.0
+CORIOLIS CLI tool v.1.0.2
 ```
 
 Keep in mind that CORIOLIS package will also create a MongoDB service (as it is used for the rules verification) running on port 21592. You can check this service with `systemctl` or `service` using the name `coriolis-mongo`:
